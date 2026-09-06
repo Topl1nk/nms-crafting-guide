@@ -21,6 +21,10 @@ from .model import Book, Recipe
 
 INF = float("inf")
 
+# Nanites are the game's second currency and the recipe table treats them as an
+# ordinary product, so nothing marks them as special -- this does.
+NANITE_ID = "TECHFRAG"
+
 
 @dataclass(slots=True)
 class Step:
@@ -192,3 +196,36 @@ def one_hop_away(
             out.append((recipe, missing))
     out.sort(key=lambda pair: (pair[1][0][1], -pair[0].ratio))
     return out
+
+
+@dataclass(slots=True)
+class NaniteRow:
+    """One way to turn something into nanites."""
+
+    recipe: Recipe
+    nanites: int         # per batch
+    per_hour: float      # one refiner, kept fed
+    per_input: float     # nanites per unit of input consumed
+    units_cost: int      # base value of the inputs spent on one batch
+
+
+def nanite_ladder(book: Book) -> list[NaniteRow]:
+    """Every recipe that outputs nanites, best throughput first."""
+    rows = []
+    for recipe in book.produced_by.get(NANITE_ID, []):
+        consumed = sum(ing.n for ing in recipe.inputs)
+        rows.append(
+            NaniteRow(
+                recipe=recipe,
+                nanites=recipe.output.n,
+                per_hour=recipe.rate,
+                per_input=recipe.output.n / consumed if consumed else 0.0,
+                units_cost=sum(
+                    book.items[ing.id].value * ing.n
+                    for ing in recipe.inputs
+                    if ing.id in book.items
+                ),
+            )
+        )
+    rows.sort(key=lambda row: -row.per_hour)
+    return rows
