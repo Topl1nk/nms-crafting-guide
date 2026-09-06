@@ -59,6 +59,11 @@ class Item:
     rarity: str
     value: int
     description: str = ""
+    # Cooked food only: the stat eating it boosts, and the game's own 0-1
+    # quality rating for how strongly.
+    effect: str = ""
+    potency: float = 0.0
+    edible: bool = False
 
     @property
     def search_key(self) -> str:
@@ -157,6 +162,9 @@ class Book:
                 rarity=row.get("rarity", ""),
                 value=row.get("value", 0),
                 description=row.get("description", ""),
+                effect=row.get("effect", ""),
+                potency=row.get("potency", 0.0),
+                edible=row.get("edible", False),
             )
             for key, row in raw_items.items()
         }

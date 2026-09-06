@@ -34,6 +34,14 @@ MACHINE_BY_INPUTS = {
 }
 
 
+# A handful of rows carry a placeholder rather than a real stat name.
+_NO_EFFECT = {"", "None", "NONE"}
+
+
+def _effect(text: str | None) -> str:
+    return "" if (text or "") in _NO_EFFECT else str(text)
+
+
 def _num(value: str | int | float | None, default: float = 0.0) -> float:
     try:
         return float(value)  # type: ignore[arg-type]
@@ -66,6 +74,13 @@ def build_items(substances: dict, products: dict) -> dict:
             "value": int(_num(row.get("BaseValue"))),
             "cooking_ingredient": row.get("CookingIngredient") == "True",
             "description": row.get("Description_Text", ""),
+            # Eating a cooked product grants a temporary buff. The files name
+            # the stat it boosts and carry a 0-1 quality for it, which is the
+            # only measure of strength they record.
+            "effect": _effect(row.get("FoodBonusStatTypeText")),
+            "effect_id": row.get("FoodBonusStatType", ""),
+            "potency": round(_num(row.get("CookingValue")), 2),
+            "edible": row.get("Consumable") == "true",
         }
 
     for key, row in substances.items():
