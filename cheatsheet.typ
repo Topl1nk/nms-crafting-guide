@@ -113,6 +113,8 @@
    [the second currency · where the inputs come from · essentials · what a refiner reaches]),
   ([No Man's Sky Kitchen],
    [cook once, eat one, sell the rest · top dishes by units · every buff and its best dishes]),
+  ([No Man's Sky Multi-Tools],
+   [types · weapons · the free S-class Sentinel tool · supercharged slots · upgrade order]),
 )
 #set page(
   paper: "a4",
@@ -149,7 +151,7 @@
 
 // Sections cycle through the Catppuccin accents.
 #let section-count = counter("section")
-#let section(title, body, breakable: false) = block(breakable: breakable, below: 7pt)[
+#let section(title, body, breakable: false, below: 7pt) = block(breakable: breakable, below: below)[
   #section-count.step()
   #context {
     let i = section-count.get().first()
@@ -168,11 +170,11 @@
   text(size: 0.88em, fill: pal.subtext, body))
 
 // Dense striped table with a small header row.
-#let dense(cols, aligns, head, ..rows) = table(
+#let dense(cols, aligns, head, ..rows, pad: 1.9pt) = table(
   columns: cols,
   align: aligns,
   stroke: none,
-  inset: (x: 3pt, y: 1.9pt),
+  inset: (x: 3pt, y: pad),
   fill: (x, y) => if y > 0 and calc.even(y) { pal.card },
   table.header(
     ..head.map(h => text(size: 0.82em, weight: "bold", fill: pal.subtext, upper(h)))),
@@ -549,4 +551,134 @@
       )).flatten(),
     )).flatten()
   )
+]
+
+// ════════════════════════ page 4 — multi-tools ══════════════════════════════
+// The only page not generated from the recipe tables: it comes from the
+// hand-written guides, so it is mostly prose. Two wide columns, small type.
+#pagebreak()
+#section-count.update(0)
+#set text(size: 6.7pt)
+#set list(spacing: 2pt)
+#set enum(spacing: 2pt)
+
+#let mt = data.multitools
+// This page is nearly all prose: every section runs tighter than the rest.
+#let msection(title, body) = section(title, body, breakable: true, below: 4pt)
+#let mrow(i, body) = block(
+  width: 100%, breakable: false,
+  fill: if calc.odd(i) { pal.card },
+  inset: (x: 3pt, y: 1.2pt), body,
+)
+
+// Highlight the claims the headline makes: a best in its column, or a zero.
+#let stat(s, best) = if s == "+0%" {
+  text(fill: pal.neg, weight: "bold", s)
+} else if best {
+  text(fill: pal.pos, weight: "bold", s)
+} else { s }
+
+#block(
+  width: 100%, radius: 2pt, below: 7pt,
+  stroke: 0.9pt + pal.accents.at(0), inset: (x: 5pt, y: 4pt),
+)[
+  #text(weight: "black", size: 1.3em, fill: pal.accents.at(0))[
+    THE TOOL IS THE BUILD]
+  #h(4pt) #text(size: 0.95em)[#mt._headline]
+  #v(1pt)
+  #text(size: 0.92em, fill: pal.subtext)[
+    #mt.types.len() types · #mt.weapons.len() weapons · the one page not
+    generated from the recipe tables — it comes from the written guides.
+  ]
+]
+
+#msection("Tool types — what the class range actually buys you")[
+  #note[
+    ranges run C-class to S-class ·
+    #text(fill: pal.pos, weight: "bold")[green] = best in column ·
+    #text(fill: pal.neg, weight: "bold")[red] = no bonus at all
+  ]
+  #dense(
+    (auto, auto, auto, auto, auto, 1fr),
+    (left, right, right, right, right, left),
+    ("type", "damage", "mining", "scan", "slots", ""),
+    pad: 1.4pt,
+    ..mt.types.map(t => (
+      text(weight: "bold", t.type),
+      stat(t.damage, t.damage.ends-with("50%")),
+      stat(t.mining, t.mining.ends-with("50%")),
+      stat(t.scan, t.scan.contains("100%")),
+      t.slots,
+      text(size: 0.92em, fill: pal.subtext, t.note),
+    )).flatten()
+  )
+]
+
+#msection("Getting the rare types")[
+  #stack(..mt.getting.enumerate().map(((i, g)) => mrow(i, grid(
+      columns: (auto, auto, 1fr),
+      column-gutter: 5pt, row-gutter: 1pt,
+      text(weight: "bold", g.type),
+      text(weight: "bold",
+        fill: if g.cost == "free" { pal.pos } else { bands.work }, g.cost),
+      text(fill: pal.subtext, g.where),
+      grid.cell(colspan: 3, text(size: 0.92em, fill: pal.subtext, g.how)),
+    ))))
+]
+
+#msection(mt.sentinel_puzzle.title)[
+  #block(inset: (x: 3pt, y: 2pt))[
+    #enum(..mt.sentinel_puzzle.steps)
+    #v(2pt)
+    #text(weight: "bold")[Once it is yours]
+    #list(..mt.sentinel_puzzle.after.map(a => text(fill: pal.subtext, a)))
+  ]
+]
+
+#msection("Finding a specific tool")[
+  #block(inset: (x: 3pt, y: 2pt))[
+    #text(weight: "bold", mt.cabinet_trick.title)
+    #enum(..mt.cabinet_trick.steps)
+    #text(size: 0.92em, fill: pal.subtext, mt.cabinet_trick.note)
+    #v(3pt)
+    #text(weight: "bold", mt.hunting.title)
+    #enum(..mt.hunting.steps)
+  ]
+]
+
+#msection("Weapons — measured best hit")[
+  #note[
+    the last two are secondaries — no damage figure; they back up a primary
+  ]
+  #stack(..mt.weapons.enumerate().map(((i, w)) => mrow(i, grid(
+      columns: (auto, 1fr, auto),
+      column-gutter: 5pt, row-gutter: 1pt,
+      text(weight: "bold", w.weapon),
+      text(size: 0.92em, fill: pal.subtext, w.kind),
+      if w.best_hit == "-" { text(fill: pal.subtext, sym.dash.em) } else {
+        text(weight: "bold", w.best_hit) },
+      grid.cell(colspan: 3, {
+        set text(size: 0.92em, fill: pal.subtext)
+        text(fill: pal.pos, weight: "bold", "+ ")
+        w.pro
+        linebreak()
+        text(fill: pal.neg, weight: "bold", sym.minus + " ")
+        w.con
+      }),
+    ))))
+]
+
+#msection("Rules of thumb")[
+  #stack(..mt.rules.enumerate().map(((i, r)) => mrow(i, {
+    text(weight: "bold", r.title)
+    text(fill: pal.subtext, [ — #r.body])
+  })))
+]
+
+#msection("Upgrades — where they come from, what to fit first")[
+  #stack(..mt.upgrade_sources.enumerate().map(((i, u)) => mrow(i, {
+    text(weight: "bold", u.kind)
+    text(fill: pal.subtext, [ — #u.where · #u.note])
+  })))
+  #block(inset: (x: 3pt, y: 2pt), enum(..mt.upgrade_order))
 ]
