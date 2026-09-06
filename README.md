@@ -23,6 +23,7 @@ is the prose version of what this app queries.
 | 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
 | 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
 | 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
+| 🔫 **Multi-tools** | The 8 types compared, the 5 weapons measured, and how to get the free S-class ones |
 | 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
 
 ---
@@ -47,6 +48,7 @@ mise run tui        # go
 | `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `k` allow cooking |
 | `n` | the **nanite ladder** — every route to nanites, ranked |
 | `e` | **cooking effects** — what each dish does when eaten |
+| `m` | **multi-tools** — types, weapons, getting one, tips |
 | `a` `i` | add to inventory / open the inventory screen |
 | `d` | show/hide the detail pane — it hides itself below 100 columns |
 | `?` | full help |
@@ -103,6 +105,16 @@ adds over its ingredients.
 
 ![cooking buffs](docs/img/food.svg)
 
+### Multi-tools
+
+Four tabs: the 8 types side by side, the 5 primary weapons with their measured
+best hit, where each rare type comes from (three of them free — the Harmonic
+Camp puzzle, Sentinel Pillars, Korvax Monolith interfaces), and the tips that
+matter: adjacency is horizontal and vertical only, supercharged slots want a
+2×2 block, and Damage Potential is not damage output.
+
+![multi-tools](docs/img/multitools.svg)
+
 ### Inventory
 
 ![inventory](docs/img/inventory.svg)
@@ -120,6 +132,8 @@ adds over its ingredients.
    essentials you should stop mining, and what Tier 0 / Tier 1 reach.
 3. **Kitchen** — top dishes by value, then all 19 buffs with their three best
    dishes each.
+4. **Multi-tools** — the 8 types, the weapons measured, how to get the free
+   ones, and the adjacency and supercharged-slot rules.
 
 It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
 including its own prose: claims like "every row below is 5s in the Processor"
@@ -140,6 +154,7 @@ reads:
 | `data/recipes.json` | 1,680 recipes — flat, with ratio, loop multiplier, batch time, profit and rate precomputed |
 | `data/cheatsheet.json` | the subset the PDF prints |
 | `data/acquisition.json` | **hand-written** — where loot comes from, since the game files record what a recipe needs but never where to find it. Taken from the guides; where they say nothing, the app says "unknown" rather than guessing |
+| `data/multitools.json` | **hand-written** — the multi-tool reference. The game files carry nothing useful about multi-tools, so this comes wholesale from guides 05 and 21 |
 
 After a game patch:
 
@@ -179,6 +194,7 @@ src/nms_items/
   graph.py     chain planning (Knuth's AND-OR Dijkstra), reachability, the nanite ladder
   ease.py      how gettable an item is: tier, chain depth, raw breadth, loot notes
   food.py      cooked dishes grouped by the buff they grant
+  multitools.py  the hand-written multi-tool reference, loaded from data/
   inventory.py what you're carrying, persisted to XDG state
   app.py       the recipe table + detail pane
   screens.py   chain, nanites, cooking, inventory, help

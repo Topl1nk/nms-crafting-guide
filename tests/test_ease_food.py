@@ -103,3 +103,24 @@ def test_cooking_pays_as_well_as_buffs(book: Book) -> None:
     top = max(food.dishes(book), key=lambda d: d.value)
     assert top.value > 100_000
     assert top.uplift > 0
+
+
+def test_multitool_reference_loads() -> None:
+    """The one file no game table backs -- guard its shape, not its prose."""
+    from nms_items import multitools
+
+    data = multitools.load()
+    assert len(data.types) == 8
+    assert {t.type for t in data.types} >= {"Sentinel", "Atlantid", "Voltaic Staff"}
+
+    # The guides' headline claim, which the type table has to keep agreeing with.
+    best_damage = {t.type for t in data.types if t.damage.endswith("50%")}
+    assert best_damage == {"Sentinel", "Voltaic Staff"}
+    pistol = next(t for t in data.types if t.type == "Pistol")
+    assert pistol.damage == "+0%"
+
+    assert len(data.weapons) == 7
+    assert data.weapons[0].weapon == "Scatter Blaster"  # ranked by best hit
+    assert all(rule.title and rule.body for rule in data.rules)
+    assert all(p.title and p.steps for p in data.procedures)
+    assert data.upgrade_order

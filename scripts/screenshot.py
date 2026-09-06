@@ -67,7 +67,14 @@ async def shoot() -> None:
         await pilot.press("escape")
         await pilot.pause(0.2)
 
-        # 5. Inventory, with something in it.
+        # 5. Multi-tool reference.
+        await pilot.press("m")
+        await pilot.pause(0.5)
+        _save(app, "multitools.svg")
+        await pilot.press("escape")
+        await pilot.pause(0.2)
+
+        # 6. Inventory, with something in it.
         await pilot.press("i")
         await pilot.pause(0.3)
         for text in ("platinum 250", "oxygen 400", "ferrite dust 800"):

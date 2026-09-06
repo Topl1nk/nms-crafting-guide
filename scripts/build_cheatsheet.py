@@ -24,9 +24,10 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+DATA = ROOT / "data"
 sys.path.insert(0, str(ROOT / "src"))
 
-from nms_items import food, graph  # noqa: E402
+from nms_items import food, graph, multitools  # noqa: E402
 from nms_items.ease import EaseIndex  # noqa: E402
 from nms_items.model import SOURCE_SETS, TIER0, Book, Recipe  # noqa: E402
 
@@ -216,6 +217,9 @@ def main() -> int:
             for r in best_per_output(cooking, 14)
         ],
         "effects": effects,
+        # Straight passthrough: multi-tools are not in the recipe tables, so
+        # data/multitools.json is the source for both the TUI and the sheet.
+        "multitools": json.loads((DATA / "multitools.json").read_text()),
         "tier0": tier0,
         "tier1_extra": tier1_extra,
         "must_find": must_find,
@@ -225,7 +229,7 @@ def main() -> int:
         },
     }
 
-    out = ROOT / "data" / "cheatsheet.json"
+    out = DATA / "cheatsheet.json"
     out.write_text(json.dumps(sheet, indent=1))
     print(f"wrote {out}")
     for key in (
@@ -233,6 +237,9 @@ def main() -> int:
         "cooking", "effects",
     ):
         print(f"  {key:11} {len(sheet[key])} rows")
+    tools = sheet["multitools"]
+    print(f"  multitools  {len(tools['types'])} types, {len(tools['weapons'])} weapons, "
+          f"{len(tools['rules'])} tips")
     print(f"  tier0       {len(tier0)} materials")
     print(f"  must_find   {len(must_find)} items")
     return 0

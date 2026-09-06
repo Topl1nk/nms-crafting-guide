@@ -144,5 +144,26 @@ def test_nanite_and_food_screens(book: Book, tmp_path) -> None:
             assert foods.__class__.__name__ == "FoodScreen"
             assert foods.query_one("#effect-table").row_count == 19
             assert foods.query_one("#dish-table").row_count > 0
+            await pilot.press("escape")
+            await pilot.pause(0.2)
+
+            await pilot.press("m")
+            await pilot.pause(0.4)
+            tools = app.screen
+            assert tools.__class__.__name__ == "MultiToolScreen"
+            assert tools.query_one("#type-table").row_count == 8
+            assert tools.query_one("#weapon-table").row_count == 7
+            tabs = tools.query_one("#mt-tabs")
+            assert tabs.active == "tab-types"
+            # Brackets must work even with a wide DataTable focused, which
+            # would otherwise swallow the arrow keys for scrolling.
+            tools.query_one("#type-table").focus()
+            await pilot.pause(0.2)
+            await pilot.press("]")
+            await pilot.pause(0.3)
+            assert tabs.active == "tab-weapons"
+            await pilot.press("[")
+            await pilot.pause(0.3)
+            assert tabs.active == "tab-types"
 
     run(scenario())
