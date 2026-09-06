@@ -1,0 +1,91 @@
+# mise (https://mise.jdx.dev) — tools + tasks for NMS Items.
+#
+#   mise install     # typst + uv, pinned below
+#   mise run setup   # fonts (paru) + Python deps
+#   mise run tui     # the app
+#   mise run refresh # re-pull the game recipe table and rebuild everything
+#
+# Same shape as the minecraft-tui project: uv owns the Python side, typst owns
+# the PDF side, and every routine action is a task here so nothing has to be
+# remembered.
+
+[tools]
+uv = "latest"
+typst = "latest"
+
+[env]
+# Keep uv's venv in-repo and importable without installing the package.
+UV_PROJECT_ENVIRONMENT = "{{config_root}}/.venv"
+PYTHONPATH = "{{config_root}}/src"
+
+# --- setup ------------------------------------------------------------------
+
+[tasks.setup]
+description = "System deps: the two fonts the PDF uses"
+run = "paru -S --needed inter-font ttf-jetbrains-mono"
+
+[tasks.sync]
+description = "Install / update Python dependencies (textual)"
+run = "uv sync --extra dev"
+
+# --- the app ----------------------------------------------------------------
+
+[tasks.tui]
+description = "Open the recipe browser"
+run = "uv run python -m nms_items"
+alias = "run"
+
+[tasks.dev]
+description = "Run the TUI with live CSS reload (edit app.tcss and watch it apply)"
+run = "uv run textual run --dev nms_items.app:RecipeApp"
+
+[tasks.console]
+description = "Textual debug console — run in a second terminal alongside `mise run dev`"
+run = "uv run textual console"
+
+[tasks.web]
+description = "Serve the TUI in a browser on localhost:8000"
+run = "uv run textual serve 'python -m nms_items'"
+
+# --- data -------------------------------------------------------------------
+
+[tasks.fetch]
+description = "Download the game's recipe tables from NMS-Handbook into .cache/"
+run = "uv run python scripts/fetch_source.py"
+
+[tasks.build-data]
+description = "Normalise .cache/ into the committed data/items.json + recipes.json"
+run = "uv run python scripts/build_data.py"
+
+[tasks.cheatsheet-data]
+description = "Pick the cheat-sheet recipes into data/cheatsheet.json"
+run = "uv run python scripts/build_cheatsheet.py"
+
+[tasks.refresh]
+description = "Full data rebuild after a game patch: fetch → normalise → cheat sheet → PDF"
+depends = ["fetch", "build-data", "cheatsheet-data", "pdf"]
+
+# --- pdf --------------------------------------------------------------------
+
+[tasks.pdf]
+description = "Cheat-sheet PDFs into docs/pdf/ — Latte (print) and Mocha (screens)"
+depends = ["cheatsheet-data"]
+run = [
+  "mkdir -p docs/pdf",
+  "typst compile --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf",
+  "typst compile --input theme=mocha cheatsheet.typ docs/pdf/nms-cheatsheet-dark.pdf",
+]
+
+[tasks.pdf-watch]
+description = "Rebuild the light PDF on every save while editing cheatsheet.typ"
+run = "typst watch --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf"
+
+# --- checks -----------------------------------------------------------------
+
+[tasks.test]
+description = "Run the test suite (data integrity + a headless pass over the TUI)"
+run = "uv run pytest -q"
+
+[tasks.screenshot]
+description = "Refresh the SVG screenshots in docs/img/"
+run = "uv run python scripts/screenshot.py"
