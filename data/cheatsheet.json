@@ -275,7 +275,14 @@
    "machine": "Portable",
    "rate": 3000,
    "profit": -96500,
-   "operation": "Doom Cycling"
+   "operation": "Doom Cycling",
+   "nanites": 50,
+   "per_hour": 3000,
+   "per_input": 50.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Underwater \u2014 hives and the sea floor",
+   "note": ""
   },
   {
    "make": "50 Nanite Cluster",
@@ -285,7 +292,14 @@
    "machine": "Portable",
    "rate": 3000,
    "profit": -64000,
-   "operation": "NOT RECOMMENDED"
+   "operation": "NOT RECOMMENDED",
+   "nanites": 50,
+   "per_hour": 3000,
+   "per_input": 50.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Whispering Eggs, outside abandoned buildings",
+   "note": "Fastest nanites in the game per refiner, tied with Hadal Core."
   },
   {
    "make": "50 Nanite Cluster",
@@ -295,7 +309,14 @@
    "machine": "Portable",
    "rate": 2000,
    "profit": 984,
-   "operation": "Loosen Bonds"
+   "operation": "Loosen Bonds",
+   "nanites": 50,
+   "per_hour": 2000,
+   "per_input": 50.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Hives",
+   "note": ""
   },
   {
    "make": "50 Nanite Cluster",
@@ -305,7 +326,14 @@
    "machine": "Portable",
    "rate": 2000,
    "profit": -15016,
-   "operation": "Loosen Bonds"
+   "operation": "Loosen Bonds",
+   "nanites": 50,
+   "per_hour": 2000,
+   "per_input": 50.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Hives, underwater, Whispering Eggs",
+   "note": ""
   },
   {
    "make": "230 Nanite Cluster",
@@ -315,7 +343,14 @@
    "machine": "Portable",
    "rate": 259,
    "profit": -30400,
-   "operation": "Sentience Extraction"
+   "operation": "Sentience Extraction",
+   "nanites": 230,
+   "per_hour": 259,
+   "per_input": 230.0,
+   "gettable": "loot (hard)",
+   "band": "hard",
+   "where": "Corrupted-planet creatures, while hunting Sentinel Interceptors",
+   "note": "230 nanites in one inventory slot is unbeatable storage, but 53 min each: compact, not fast."
   },
   {
    "make": "15 Nanite Cluster",
@@ -325,7 +360,14 @@
    "machine": "Portable",
    "rate": 169,
    "profit": -51700,
-   "operation": "Nanite Extraction"
+   "operation": "Nanite Extraction",
+   "nanites": 15,
+   "per_hour": 169,
+   "per_input": 15.0,
+   "gettable": "loot (easy)",
+   "band": "ok",
+   "where": "Buried beside Damaged Machinery \u2014 dig with the Terrain Manipulator",
+   "note": "The Space Anomaly blueprints eat a few hundred; refine the rest at 15 nanites each."
   },
   {
    "make": "95 Nanite Cluster",
@@ -335,7 +377,14 @@
    "machine": "Portable",
    "rate": 155,
    "profit": -15100,
-   "operation": "Purge Corruption"
+   "operation": "Purge Corruption",
+   "nanites": 95,
+   "per_hour": 155,
+   "per_input": 95.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Byproduct of shooting Dissonant Resonators for Echo Locators",
+   "note": "Piles up unused during Echo Locator farming \u2014 refine the surplus."
   },
   {
    "make": "Nanite Cluster",
@@ -345,7 +394,14 @@
    "machine": "Portable",
    "rate": 120,
    "profit": -3430,
-   "operation": "Reality Filtering"
+   "operation": "Reality Filtering",
+   "nanites": 1,
+   "per_hour": 120,
+   "per_input": 0.04,
+   "gettable": "loot (easy)",
+   "band": "ok",
+   "where": "Destroyed Sentinels",
+   "note": ""
   },
   {
    "make": "50 Nanite Cluster",
@@ -355,7 +411,14 @@
    "machine": "Portable",
    "rate": 100,
    "profit": -900,
-   "operation": "Subjugation of Glass"
+   "operation": "Subjugation of Glass",
+   "nanites": 50,
+   "per_hour": 100,
+   "per_input": 50.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Hives, underwater, Whispering Eggs",
+   "note": ""
   },
   {
    "make": "2 Nanite Cluster",
@@ -365,7 +428,14 @@
    "machine": "Portable",
    "rate": 80,
    "profit": -340,
-   "operation": "Doom Cycling"
+   "operation": "Doom Cycling",
+   "nanites": 2,
+   "per_hour": 80,
+   "per_input": 2.0,
+   "gettable": "loot (medium)",
+   "band": "work",
+   "where": "Derelict freighters, Corrupted Sentinels, Autophage camps",
+   "note": "Highest volume, not highest per unit: 150-500 from one derelict run."
   },
   {
    "make": "Nanite Cluster",
@@ -375,7 +445,14 @@
    "machine": "Portable",
    "rate": 60,
    "profit": -17655,
-   "operation": "Reality Warping"
+   "operation": "Reality Warping",
+   "nanites": 1,
+   "per_hour": 60,
+   "per_input": 0.03,
+   "gettable": "T1 raw",
+   "band": "easy",
+   "where": "Asteroids \u2014 the rarer gold-tinted ones",
+   "note": ""
   },
   {
    "make": "Nanite Cluster",
@@ -385,7 +462,14 @@
    "machine": "Medium",
    "rate": 60,
    "profit": -664,
-   "operation": "Alchemical Construction"
+   "operation": "Alchemical Construction",
+   "nanites": 1,
+   "per_hour": 60,
+   "per_input": 0.5,
+   "gettable": "loot (hard)",
+   "band": "hard",
+   "where": "Guild Envoy reward",
+   "note": ""
   },
   {
    "make": "Nanite Cluster",
@@ -395,7 +479,14 @@
    "machine": "Large",
    "rate": 40,
    "profit": -20690,
-   "operation": "Transmutation"
+   "operation": "Transmutation",
+   "nanites": 1,
+   "per_hour": 40,
+   "per_input": 0.02,
+   "gettable": "T1 raw",
+   "band": "easy",
+   "where": "Asteroids \u2014 shoot them in any system",
+   "note": ""
   },
   {
    "make": "Nanite Cluster",
@@ -405,7 +496,14 @@
    "machine": "Portable",
    "rate": 24,
    "profit": -80,
-   "operation": "Recycle Waste Materials"
+   "operation": "Recycle Waste Materials",
+   "nanites": 1,
+   "per_hour": 24,
+   "per_input": 0.2,
+   "gettable": "loot (easy)",
+   "band": "ok",
+   "where": "Curious Deposits, which respawn every time you return to the planet",
+   "note": "Gathering is trivial; at 5:1 and 150 s per nanite the refining is the whole cost."
   }
  ],
  "engine": [
@@ -542,28 +640,8 @@
    "operation": "High-Speed Sublimation"
   },
   {
-   "make": "Thermic Condensate",
-   "from": "100 Sulphurine + 10 Condensed Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation"
-  },
-  {
    "make": "Enriched Carbon",
    "from": "100 Radon + 20 Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Enriched Carbon",
-   "from": "100 Radon + 10 Condensed Carbon + 10 Salt",
    "mult": "x0.01",
    "time": "1.5m",
    "machine": "Large",
@@ -579,76 +657,6 @@
    "machine": "Large",
    "rate": 40,
    "profit": 46750,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Nitrogen Salt",
-   "from": "100 Nitrogen + 10 Condensed Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Thermic Condensate",
-   "from": "100 Sulphurine + 20 Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Thermic Condensate",
-   "from": "100 Sulphurine + 10 Condensed Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Enriched Carbon",
-   "from": "100 Radon + 20 Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Enriched Carbon",
-   "from": "100 Radon + 10 Condensed Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Nitrogen Salt",
-   "from": "100 Nitrogen + 20 Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation"
-  },
-  {
-   "make": "Nitrogen Salt",
-   "from": "100 Nitrogen + 10 Condensed Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "20s",
-   "machine": "Large",
-   "rate": 180,
-   "profit": 46735,
    "operation": "High-Speed Sublimation"
   },
   {
@@ -670,6 +678,96 @@
    "rate": 6,
    "profit": 23740,
    "operation": "Antimatter Bypass"
+  },
+  {
+   "make": "250 Silver",
+   "from": "Aronium",
+   "mult": "x250",
+   "time": "5.0m",
+   "machine": "Portable",
+   "rate": 3000,
+   "profit": 21500,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "Dirty Bronze",
+   "from": "30 Pyrite + 120 Ferrite Dust + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 21340,
+   "operation": "Alloy Latticing"
+  },
+  {
+   "make": "Lemmium",
+   "from": "30 Uranium + 120 Ferrite Dust + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 21340,
+   "operation": "Alloy Latticing"
+  },
+  {
+   "make": "Aronium",
+   "from": "30 Paraffinium + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing"
+  },
+  {
+   "make": "Herox",
+   "from": "30 Ammonia + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing"
+  },
+  {
+   "make": "Magno-Gold",
+   "from": "30 Phosphorus + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing"
+  },
+  {
+   "make": "Grantine",
+   "from": "30 Dioxite + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing"
+  },
+  {
+   "make": "Unstable Plasma",
+   "from": "10 Oxygen + 20 Ferrite Dust + 20 Carbon",
+   "mult": "x0.02",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 4890,
+   "operation": "Plasma Pressurisation"
+  },
+  {
+   "make": "30 Chromatic Metal",
+   "from": "Silver + Gold + Indium",
+   "mult": "x10",
+   "time": "20m",
+   "machine": "Large",
+   "rate": 90,
+   "profit": 1969,
+   "operation": "Chromatic Stellar Fusion"
   }
  ],
  "per_hour": [
@@ -696,17 +794,6 @@
    "per_hour": 1870000
   },
   {
-   "make": "Thermic Condensate",
-   "from": "100 Sulphurine + 10 Condensed Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1870000
-  },
-  {
    "make": "Enriched Carbon",
    "from": "100 Radon + 20 Carbon + 10 Salt",
    "mult": "x0.01",
@@ -716,94 +803,6 @@
    "profit": 46750,
    "operation": "High-Speed Sublimation",
    "per_hour": 1870000
-  },
-  {
-   "make": "Enriched Carbon",
-   "from": "100 Radon + 10 Condensed Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1870000
-  },
-  {
-   "make": "Nitrogen Salt",
-   "from": "100 Nitrogen + 20 Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1870000
-  },
-  {
-   "make": "Nitrogen Salt",
-   "from": "100 Nitrogen + 10 Condensed Carbon + 10 Salt",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46750,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1870000
-  },
-  {
-   "make": "Thermic Condensate",
-   "from": "100 Sulphurine + 20 Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1869400
-  },
-  {
-   "make": "Thermic Condensate",
-   "from": "100 Sulphurine + 10 Condensed Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1869400
-  },
-  {
-   "make": "Enriched Carbon",
-   "from": "100 Radon + 20 Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1869400
-  },
-  {
-   "make": "Enriched Carbon",
-   "from": "100 Radon + 10 Condensed Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1869400
-  },
-  {
-   "make": "Nitrogen Salt",
-   "from": "100 Nitrogen + 20 Carbon + 5 Chlorine",
-   "mult": "x0.01",
-   "time": "1.5m",
-   "machine": "Large",
-   "rate": 40,
-   "profit": 46735,
-   "operation": "High-Speed Sublimation",
-   "per_hour": 1869400
   },
   {
    "make": "100 Gold",
@@ -826,38 +825,138 @@
    "profit": 21340,
    "operation": "Alloy Latticing",
    "per_hour": 853600
+  },
+  {
+   "make": "Lemmium",
+   "from": "30 Uranium + 120 Ferrite Dust + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 21340,
+   "operation": "Alloy Latticing",
+   "per_hour": 853600
+  },
+  {
+   "make": "Aronium",
+   "from": "30 Paraffinium + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing",
+   "per_hour": 738400
+  },
+  {
+   "make": "Herox",
+   "from": "30 Ammonia + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing",
+   "per_hour": 738400
+  },
+  {
+   "make": "Magno-Gold",
+   "from": "30 Phosphorus + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing",
+   "per_hour": 738400
+  },
+  {
+   "make": "Grantine",
+   "from": "30 Dioxite + 60 Cobalt + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 18460,
+   "operation": "Alloy Latticing",
+   "per_hour": 738400
+  },
+  {
+   "make": "250 Silver",
+   "from": "Herox",
+   "mult": "x250",
+   "time": "4.2m",
+   "machine": "Portable",
+   "rate": 3600,
+   "profit": 21500,
+   "operation": "Extreme Alloy Separation",
+   "per_hour": 309600
+  },
+  {
+   "make": "Unstable Plasma",
+   "from": "10 Oxygen + 20 Ferrite Dust + 20 Carbon",
+   "mult": "x0.02",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 4890,
+   "operation": "Plasma Pressurisation",
+   "per_hour": 195600
+  },
+  {
+   "make": "Warp Cell",
+   "from": "25 Condensed Carbon + 10 Sodium + 250 Chromatic Metal",
+   "mult": "x0.00",
+   "time": "10m",
+   "machine": "Large",
+   "rate": 6,
+   "profit": 23740,
+   "operation": "Antimatter Bypass",
+   "per_hour": 142440
+  },
+  {
+   "make": "Glass",
+   "from": "40 Silicate Powder",
+   "mult": "x0.03",
+   "time": "10s",
+   "machine": "Portable",
+   "rate": 360,
+   "profit": 120,
+   "operation": "Silicate Forging",
+   "per_hour": 43200
   }
  ],
  "essentials": [
   {
-   "make": "4 Chromatic Metal",
-   "from": "2 Indium",
-   "mult": "x2",
-   "time": "25s",
-   "machine": "Portable",
-   "rate": 576,
-   "profit": 88,
-   "operation": "Extract Chromatic Material"
+   "make": "30 Chromatic Metal",
+   "from": "Silver + Gold + Quartzite",
+   "mult": "x10",
+   "time": "20m",
+   "machine": "Large",
+   "rate": 90,
+   "profit": 1969,
+   "operation": "Chromatic Stellar Fusion",
+   "seed": "refinable once you have Activated Quartzite"
   },
   {
-   "make": "2 Condensed Carbon",
-   "from": "Uranium + Di-hydrogen",
-   "mult": "x1",
-   "time": "10s",
+   "make": "5 Condensed Carbon",
+   "from": "2 Carbon + 2 Oxygen",
+   "mult": "x1.25",
+   "time": "1.5m",
    "machine": "Medium",
-   "rate": 720,
-   "profit": -48,
-   "operation": "Harness Energy"
+   "rate": 200,
+   "profit": 28,
+   "operation": "Oxygenate Carbon"
   },
   {
-   "make": "50 Sodium Nitrate",
-   "from": "Crystal Sulphide",
-   "mult": "x50",
-   "time": "1.0m",
-   "machine": "Portable",
-   "rate": 3000,
-   "profit": -3700,
-   "operation": "Sulphur Release"
+   "make": "2 Sodium Nitrate",
+   "from": "Condensed Carbon + Sodium",
+   "mult": "x1",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 99,
+   "operation": "Catalyse Carbon"
   },
   {
    "make": "10 Magnetised Ferrite",
@@ -880,14 +979,14 @@
    "operation": "Demagnetise Metal"
   },
   {
-   "make": "6 Ionised Cobalt",
-   "from": "Ionised Cobalt + 2 Oxygen",
-   "mult": "x6 loop",
+   "make": "2 Ionised Cobalt",
+   "from": "Marrow Bulb + Oxygen",
+   "mult": "x1",
    "time": "1.5m",
    "machine": "Medium",
-   "rate": 240,
-   "profit": 742,
-   "operation": "Efficient Cobalt Ionisation"
+   "rate": 80,
+   "profit": 249,
+   "operation": "Bonded Cobalt Extraction"
   },
   {
    "make": "Deuterium",
@@ -901,23 +1000,23 @@
   },
   {
    "make": "Starship Launch Fuel",
-   "from": "10 Di-hydrogen + 10 Magnetised Ferrite + 5 Sodium Nitrate",
-   "mult": "x0.04",
+   "from": "10 Di-hydrogen + 20 Ferrite Dust + 5 Sodium Nitrate",
+   "mult": "x0.03",
    "time": "1.5m",
    "machine": "Large",
    "rate": 40,
-   "profit": -1120,
+   "profit": -580,
    "operation": "Di-hydrogen Capture"
   },
   {
-   "make": "3 Pyrite",
-   "from": "Lithium + Magnetised Ferrite",
-   "mult": "x1.50",
+   "make": "2 Pyrite",
+   "from": "Gold + Oxygen",
+   "mult": "x1",
    "time": "1.5m",
    "machine": "Medium",
-   "rate": 120,
-   "profit": 32,
-   "operation": "Loosen Bonds"
+   "rate": 80,
+   "profit": -263,
+   "operation": "Mineral Alchemy"
   },
   {
    "make": "Salt",
@@ -931,23 +1030,23 @@
   },
   {
    "make": "Glass",
-   "from": "40 Silicate Powder",
+   "from": "40 Frost Crystal",
    "mult": "x0.03",
-   "time": "10s",
+   "time": "1.0m",
    "machine": "Portable",
-   "rate": 360,
-   "profit": 120,
-   "operation": "Silicate Forging"
+   "rate": 60,
+   "profit": -280,
+   "operation": "Polish Crystals"
   },
   {
-   "make": "2 Oxygen",
-   "from": "Kelp Sac + Carbon",
-   "mult": "x1",
-   "time": "1.5m",
-   "machine": "Medium",
-   "rate": 80,
-   "profit": 15,
-   "operation": "Release Captured Oxygen"
+   "make": "10 Oxygen",
+   "from": "Frost Crystal + Kelp Sac + Condensed Carbon",
+   "mult": "x3.33",
+   "time": "15m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 263,
+   "operation": "Artificial Photosynthesis"
   }
  ],
  "cooking": [
@@ -974,17 +1073,6 @@
    "per_hour": 68112000
   },
   {
-   "make": "Cream Fingers",
-   "from": "Sugar Dough + Proto-Cream",
-   "mult": "x0.50",
-   "time": "5s",
-   "machine": "Processor",
-   "rate": 720,
-   "profit": 92800,
-   "operation": "Dough Augmentation",
-   "per_hour": 66816000
-  },
-  {
    "make": "Bone Broth",
    "from": "Softened Marrow + Sweetroot",
    "mult": "x0.50",
@@ -996,114 +1084,716 @@
    "per_hour": 66384000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Pulpy Roots",
+   "make": "Nectar Islands",
+   "from": "Extra-Fluffy Batter + Syrupy Nectar",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 92200,
-   "operation": "Combine And Reduce",
-   "per_hour": 66384000
+   "profit": 79200,
+   "operation": "Assemble Baked Product",
+   "per_hour": 57024000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Meaty Chunks",
+   "make": "The Worst Stew",
+   "from": "Juicy Grub + Rancid Flesh",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 92000,
-   "operation": "Combine And Reduce",
-   "per_hour": 66240000
+   "profit": 78800,
+   "operation": "Purge by Fire",
+   "per_hour": 56736000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Meaty Wings",
-   "mult": "x0.50",
+   "make": "Softened Marrow",
+   "from": "Any Edible Bone",
+   "mult": "x1",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 77400,
+   "operation": "Stew Bones",
+   "per_hour": 55728000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Fiendish Roe",
+   "make": "Haunted Wafer",
+   "from": "Sugar Dough + Fiendish Roe",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 73600,
+   "operation": "Dough Augmentation",
+   "per_hour": 52992000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Offal Sac",
+   "make": "Cake of the Lost",
+   "from": "Writhing, Roiling Batter + Salty Custard",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 71200,
+   "operation": "Assemble Baked Product",
+   "per_hour": 51264000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + ProtoSausage",
-   "mult": "x0.50",
+   "make": "Sea's Bounty",
+   "from": "Any Cooked Seafood + Any Cooked Seafood + Any Cooked Seafood",
+   "mult": "x0.33",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 66650,
+   "operation": "Seafood Assembly",
+   "per_hour": 47988000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Diplo Chunks",
+   "make": "Horrifying, Gooey Delight",
+   "from": "Cake Batter + Monstrous Custard",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 62000,
+   "operation": "Assemble Baked Product",
+   "per_hour": 44640000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Scaly Meat",
+   "make": "'Apple' Cake of Lost Souls",
+   "from": "Wailing Batter + Crab 'Apple'",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 53700,
+   "operation": "Assemble Baked Product",
+   "per_hour": 38664000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Feline Liver",
+   "make": "Fish Biscuit",
+   "from": "Sugar Dough + Salty Chunks",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 53600,
+   "operation": "Dough Augmentation",
+   "per_hour": 38592000
   },
   {
-   "make": "Bone Broth",
-   "from": "Softened Marrow + Strider Sausage",
+   "make": "Soft Custard Fancy",
+   "from": "Extra-Fluffy Batter + Salty Custard",
    "mult": "x0.50",
    "time": "5s",
    "machine": "Processor",
    "rate": 720,
-   "profit": 91600,
-   "operation": "Combine And Reduce",
-   "per_hour": 65952000
+   "profit": 52800,
+   "operation": "Assemble Baked Product",
+   "per_hour": 38016000
+  },
+  {
+   "make": "Appalling Jam Sponge",
+   "from": "Wailing Batter + Grahj'am + Cream",
+   "mult": "x0.33",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 51900,
+   "operation": "Assemble Baked Product",
+   "per_hour": 37368000
+  }
+ ],
+ "effects": [
+  {
+   "effect": "Sprint Distance",
+   "use": "crossing ground on foot",
+   "count": 20,
+   "dishes": [
+    {
+     "dish": "Refined Flour",
+     "potency": 1.8,
+     "value": 1800,
+     "uplift": 1000,
+     "from": "Heptaploid Wheat",
+     "time": "5s"
+    },
+    {
+     "dish": "The Spawning Tart",
+     "potency": 1.0,
+     "value": 160000,
+     "uplift": 30000,
+     "from": "Pie Case + Monstrous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Haunted Pie",
+     "potency": 1.0,
+     "value": 52000,
+     "uplift": 20600,
+     "from": "Pie Case + Fiendish Roe",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Breathing Efficiency",
+   "use": "underwater exploration",
+   "count": 37,
+   "dishes": [
+    {
+     "dish": "Deathly-Cold Ice Cream",
+     "potency": 1.0,
+     "value": 128000,
+     "uplift": 27200,
+     "from": "Monstrous Custard + Frozen Tubers",
+     "time": "5s"
+    },
+    {
+     "dish": "Sea's Bounty",
+     "potency": 1.0,
+     "value": 71450,
+     "uplift": 66650,
+     "from": "Any Cooked Seafood + Any Cooked Seafood + Any Cooked Seafood",
+     "time": "5s"
+    },
+    {
+     "dish": "Salty Juice",
+     "potency": 0.9,
+     "value": 1800,
+     "uplift": -129,
+     "from": "Cactus Flesh + Salt + Fire Water",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Cold Resistance",
+   "use": "frozen planets",
+   "count": 13,
+   "dishes": [
+    {
+     "dish": "Iced Screams",
+     "potency": 1.0,
+     "value": 90000,
+     "uplift": 29200,
+     "from": "Hypnotic Eye + Frozen Tubers",
+     "time": "5s"
+    },
+    {
+     "dish": "Caramel Ice Cream",
+     "potency": 1.0,
+     "value": 56000,
+     "uplift": 17800,
+     "from": "Viscous Custard + Frozen Tubers + Crunchy Caramel",
+     "time": "5s"
+    },
+    {
+     "dish": "'Apple' Ice Cream",
+     "potency": 1.0,
+     "value": 56000,
+     "uplift": 20000,
+     "from": "Viscous Custard + Frozen Tubers + Crab 'Apple'",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Fauna Analysis Rewards",
+   "use": "scanning creatures for units",
+   "count": 22,
+   "dishes": [
+    {
+     "dish": "Cake of the Lost",
+     "potency": 1.0,
+     "value": 199200,
+     "uplift": 67200,
+     "from": "Writhing, Roiling Batter + Viscous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Ambrosial Curse",
+     "potency": 1.0,
+     "value": 199200,
+     "uplift": 97600,
+     "from": "Writhing, Roiling Batter + Syrupy Nectar",
+     "time": "5s"
+    },
+    {
+     "dish": "Gooey Screamer",
+     "potency": 1.0,
+     "value": 167200,
+     "uplift": 19200,
+     "from": "Thick, Sweet Batter + Monstrous Custard",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Flora Analysis Rewards",
+   "use": "scanning plants for units",
+   "count": 17,
+   "dishes": [
+    {
+     "dish": "Appalling Jam Sponge",
+     "potency": 1.0,
+     "value": 180700,
+     "uplift": 51900,
+     "from": "Wailing Batter + Grahj'am + Cream",
+     "time": "5s"
+    },
+    {
+     "dish": "Primordial Sponge",
+     "potency": 1.0,
+     "value": 180700,
+     "uplift": 19700,
+     "from": "Wailing Batter + Sweetened Mucous + Bone Cream",
+     "time": "5s"
+    },
+    {
+     "dish": "'Apple' Cake of Lost Souls",
+     "potency": 1.0,
+     "value": 176900,
+     "uplift": 53700,
+     "from": "Wailing Batter + Crab 'Apple'",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Hazard Protection Battery",
+   "use": "extreme planets, storms",
+   "count": 24,
+   "dishes": [
+    {
+     "dish": "Baked Cheese Tart",
+     "potency": 1.0,
+     "value": 62000,
+     "uplift": 23000,
+     "from": "Pie Case + Tangy Cheese",
+     "time": "5s"
+    },
+    {
+     "dish": "Cheesy Vegetable Pie",
+     "potency": 1.0,
+     "value": 62000,
+     "uplift": 22700,
+     "from": "Pie Case + Tangy Cheese + Solartillo",
+     "time": "5s"
+    },
+    {
+     "dish": "Proto-Beignet",
+     "potency": 0.8,
+     "value": 72000,
+     "uplift": 19200,
+     "from": "Proto-Oil + Dough + Processed Sugar",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Heat Resistance",
+   "use": "scorched planets",
+   "count": 23,
+   "dishes": [
+    {
+     "dish": "Cake of Burning Dread",
+     "potency": 1.0,
+     "value": 176900,
+     "uplift": 48100,
+     "from": "Wailing Batter + Ever-burning Jam + Cream",
+     "time": "5s"
+    },
+    {
+     "dish": "Burning Jam Surprise",
+     "potency": 1.0,
+     "value": 149400,
+     "uplift": 40600,
+     "from": "Writhing, Roiling Batter + Ever-burning Jam + Cream",
+     "time": "5s"
+    },
+    {
+     "dish": "Startling Fancy",
+     "potency": 1.0,
+     "value": 78000,
+     "uplift": 21200,
+     "from": "Proto-Batter + Ever-burning Jam + Cream",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Jetpack Tanks",
+   "use": "vertical caves, cliff bases",
+   "count": 22,
+   "dishes": [
+    {
+     "dish": "Horrifying, Gooey Delight",
+     "potency": 1.0,
+     "value": 200000,
+     "uplift": 62000,
+     "from": "Cake Batter + Monstrous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Cake of Glass",
+     "potency": 1.0,
+     "value": 179600,
+     "uplift": 48800,
+     "from": "Wailing Batter + Anomalous Jam + Cream",
+     "time": "5s"
+    },
+    {
+     "dish": "Unbound Monstrosity",
+     "potency": 1.0,
+     "value": 152200,
+     "uplift": 41400,
+     "from": "Writhing, Roiling Batter + Anomalous Jam + Cream",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Life Support Tanks",
+   "use": "long surface treks",
+   "count": 15,
+   "dishes": [
+    {
+     "dish": "Muculent Tart",
+     "potency": 1.0,
+     "value": 62000,
+     "uplift": 23000,
+     "from": "Pie Case + Sweetened Mucous",
+     "time": "5s"
+    },
+    {
+     "dish": "Seeping Pie",
+     "potency": 1.0,
+     "value": 62000,
+     "uplift": 30600,
+     "from": "Pie Case + Juicy Thorax",
+     "time": "5s"
+    },
+    {
+     "dish": "Honey Tart",
+     "potency": 1.0,
+     "value": 48000,
+     "uplift": 14800,
+     "from": "Pie Case + Sticky 'Honey'",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Mineral Analysis Rewards",
+   "use": "scanning minerals for units",
+   "count": 24,
+   "dishes": [
+    {
+     "dish": "Cake of Sin",
+     "potency": 1.0,
+     "value": 149400,
+     "uplift": 46200,
+     "from": "Writhing, Roiling Batter + Crab 'Apple'",
+     "time": "5s"
+    },
+    {
+     "dish": "Gooey Custard Fancy",
+     "potency": 1.0,
+     "value": 97200,
+     "uplift": 17200,
+     "from": "Thick, Sweet Batter + Viscous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Sponge of Ambrosia",
+     "potency": 1.0,
+     "value": 97200,
+     "uplift": 17200,
+     "from": "Syrupy Batter + Viscous Custard",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Mining Speed",
+   "use": "mining runs",
+   "count": 7,
+   "dishes": [
+    {
+     "dish": "Gooey ProtoDoughnut",
+     "potency": 1.0,
+     "value": 120000,
+     "uplift": 36000,
+     "from": "Lumpen Doughnut + Gooey ProtoButter",
+     "time": "5s"
+    },
+    {
+     "dish": "Custard Doughnut",
+     "potency": 1.0,
+     "value": 105000,
+     "uplift": 25000,
+     "from": "Lumpen Doughnut + Viscous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Honeybutter Doughnut",
+     "potency": 1.0,
+     "value": 105000,
+     "uplift": 31000,
+     "from": "Lumpen Doughnut + Sweetened Butter",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Radiation Resistance",
+   "use": "irradiated planets",
+   "count": 4,
+   "dishes": [
+    {
+     "dish": "Glowing Pie",
+     "potency": 1.0,
+     "value": 40000,
+     "uplift": 9200,
+     "from": "Pie Case + Fireberry",
+     "time": "5s"
+    },
+    {
+     "dish": "Grahj'am",
+     "potency": 0.8,
+     "value": 3400,
+     "uplift": 1000,
+     "from": "Grahberry + Processed Sugar",
+     "time": "5s"
+    },
+    {
+     "dish": "Wriggling Tack",
+     "potency": 0.66,
+     "value": 55000,
+     "uplift": 34000,
+     "from": "Sugar Dough + Nightmare Sausage",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Recharge Time",
+   "use": "keeping tech topped up",
+   "count": 6,
+   "dishes": [
+    {
+     "dish": "Monstrous Doughnut",
+     "potency": 1.0,
+     "value": 180000,
+     "uplift": 32000,
+     "from": "Lumpen Doughnut + Monstrous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Pollen Puffball",
+     "potency": 1.0,
+     "value": 120000,
+     "uplift": 40000,
+     "from": "Lumpen Doughnut + Butter Syrup",
+     "time": "5s"
+    },
+    {
+     "dish": "Custard Fancy",
+     "potency": 1.0,
+     "value": 85100,
+     "uplift": 15100,
+     "from": "Cake Batter + Viscous Custard",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Resources Mined",
+   "use": "mining runs - more per rock",
+   "count": 20,
+   "dishes": [
+    {
+     "dish": "The Stellarator",
+     "potency": 1.0,
+     "value": 100000,
+     "uplift": 24000,
+     "from": "Lumpen Doughnut + Stellar Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Questionably Sweet Cake",
+     "potency": 1.0,
+     "value": 73600,
+     "uplift": 32400,
+     "from": "Cake Batter + Sticky 'Honey'",
+     "time": "5s"
+    },
+    {
+     "dish": "Syrup-Drenched Delight",
+     "potency": 1.0,
+     "value": 73600,
+     "uplift": 24000,
+     "from": "Thick, Sweet Batter + Syrupy Nectar",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Shield Strength",
+   "use": "combat, sentinels",
+   "count": 16,
+   "dishes": [
+    {
+     "dish": "Cake of Eternal Sleep",
+     "potency": 1.0,
+     "value": 167200,
+     "uplift": 45600,
+     "from": "Wailing Batter + Syrupy Nectar",
+     "time": "5s"
+    },
+    {
+     "dish": "Volatile Chocolate Fancy",
+     "potency": 1.0,
+     "value": 123700,
+     "uplift": 21900,
+     "from": "Writhing, Roiling Batter + Bittersweet Cocoa",
+     "time": "5s"
+    },
+    {
+     "dish": "Cream Curiosity",
+     "potency": 1.0,
+     "value": 64900,
+     "uplift": 11500,
+     "from": "Proto-Batter + Cream",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Solar Panel Power",
+   "use": "exocraft and base power",
+   "count": 15,
+   "dishes": [
+    {
+     "dish": "Caramelised Nightmare",
+     "potency": 1.0,
+     "value": 128000,
+     "uplift": 22600,
+     "from": "Writhing, Roiling Batter + Crunchy Caramel",
+     "time": "5s"
+    },
+    {
+     "dish": "Jam Doughnut",
+     "potency": 1.0,
+     "value": 70000,
+     "uplift": 18600,
+     "from": "Lumpen Doughnut + Ever-burning Jam",
+     "time": "5s"
+    },
+    {
+     "dish": "Honied Proto-Cake",
+     "potency": 1.0,
+     "value": 62200,
+     "uplift": 10800,
+     "from": "Proto-Batter + Synthetic Honey",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Sprint Recovery Time",
+   "use": "crossing ground on foot",
+   "count": 30,
+   "dishes": [
+    {
+     "dish": "Monstrous Custard",
+     "potency": 1.0,
+     "value": 100000,
+     "uplift": 28000,
+     "from": "Larval Core + Cream + Processed Sugar",
+     "time": "5s"
+    },
+    {
+     "dish": "Custard Tart",
+     "potency": 1.0,
+     "value": 78000,
+     "uplift": 16000,
+     "from": "Pie Case + Viscous Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Creamy Treat",
+     "potency": 1.0,
+     "value": 62000,
+     "uplift": 26600,
+     "from": "Pie Case + Cream",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Toxic Resistance",
+   "use": "toxic planets",
+   "count": 12,
+   "dishes": [
+    {
+     "dish": "Briney Delight",
+     "potency": 1.0,
+     "value": 80200,
+     "uplift": 14200,
+     "from": "Cake Batter + Salty Custard",
+     "time": "5s"
+    },
+    {
+     "dish": "Mucal Doughnut",
+     "potency": 1.0,
+     "value": 70000,
+     "uplift": 13000,
+     "from": "Lumpen Doughnut + Sweetened Mucous",
+     "time": "5s"
+    },
+    {
+     "dish": "Slime Pop",
+     "potency": 1.0,
+     "value": 44000,
+     "uplift": 2200,
+     "from": "Very Thick Custard + Frozen Tubers + Sweetened Mucous",
+     "time": "5s"
+    }
+   ]
+  },
+  {
+   "effect": "Words Translated",
+   "use": "learning alien languages fast",
+   "count": 4,
+   "dishes": [
+    {
+     "dish": "Horrifying Mush",
+     "potency": 1.0,
+     "value": 90000,
+     "uplift": 30000,
+     "from": "Hypnotic Eye",
+     "time": "5s"
+    },
+    {
+     "dish": "Abyssal Stew",
+     "potency": 1.0,
+     "value": 90000,
+     "uplift": -30000,
+     "from": "Hypnotic Eye + Hypnotic Eye",
+     "time": "5s"
+    },
+    {
+     "dish": "Baked Anomaly",
+     "potency": 0.66,
+     "value": 40000,
+     "uplift": 29600,
+     "from": "Sugar Dough + Anomalous Jam",
+     "time": "5s"
+    }
+   ]
   }
  ],
  "tier0": [

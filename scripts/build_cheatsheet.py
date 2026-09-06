@@ -26,7 +26,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
-from nms_items import graph  # noqa: E402
+from nms_items import food, graph  # noqa: E402
+from nms_items.ease import EaseIndex  # noqa: E402
 from nms_items.model import SOURCE_SETS, TIER0, Book, Recipe  # noqa: E402
 
 NANITES = "TECHFRAG"
@@ -46,6 +47,25 @@ ESSENTIALS = [
     "FARMPROD3",   # Glass
     "OXYGEN",      # Oxygen
 ]
+
+
+def best_per_output(recipes: list[Recipe], limit: int) -> list[Recipe]:
+    """Keep the best row per distinct output.
+
+    Without this the profit tables are eleven ways to make Bone Broth: the
+    top-by-any-number lists are dominated by one output whose recipe differs
+    only in which interchangeable ingredient it takes.
+    """
+    seen: set[str] = set()
+    out: list[Recipe] = []
+    for recipe in recipes:
+        if recipe.output.id in seen:
+            continue
+        seen.add(recipe.output.id)
+        out.append(recipe)
+        if len(out) == limit:
+            break
+    return out
 
 
 def row(book: Book, recipe: Recipe, extra: dict | None = None) -> dict:
@@ -75,14 +95,6 @@ def main() -> int:
         key=lambda r: (-r.loop, r.time),
     )
 
-    # 2. Nanite converters, ranked by throughput per refiner rather than by the
-    #    headline number -- a 230-nanite recipe that takes 53 minutes loses to a
-    #    50-nanite one that takes a minute.
-    nanites = sorted(
-        (r for r in refine if r.output.id == NANITES),
-        key=lambda r: -r.rate,
-    )
-
     # 3. The precious-metal engine: anything that outputs Gold, Silver, Platinum
     #    or Chromatic Metal at a gain, plus the alloys that feed it.
     metals = {"ASTEROID1", "ASTEROID2", "ASTEROID3", "STELLAR2"}
@@ -98,20 +110,71 @@ def main() -> int:
         key=lambda r: -(r.profit * 3600 / r.time),
     )
 
-    # 6. Essentials: the cheapest way to make each, by machine time.
+    # 6. Essentials: the route the planner would actually take from asteroid
+    #    tier, not merely the fastest recipe -- picking by time alone suggests
+    #    seeding Pyrite with Lithium and Sodium Nitrate with Crystal Sulphide,
+    #    both of which are rarer than the thing being made.
+    _, via = graph.cheapest_costs(book, set(SOURCE_SETS["Tier 1 - + asteroids"]))
+    ease = EaseIndex(book)
     essentials = []
     for item_id in ESSENTIALS:
-        candidates = [r for r in book.produced_by.get(item_id, []) if r.domain == "refine"]
-        if not candidates:
+        if item_id in via:
+            essentials.append(row(book, via[item_id]))
             continue
-        best = min(candidates, key=lambda r: (r.time / r.output.n, -r.ratio))
-        essentials.append(row(book, best))
+        # Chromatic Metal and friends are not reachable from any source tier --
+        # they need a stellar-metal seed you find once. Fall back to whichever
+        # recipe has the most gettable ingredients.
+        candidates = [r for r in book.produced_by.get(item_id, []) if r.domain == "refine"]
+        if candidates:
+            best = max(candidates, key=lambda r: (ease.of_recipe(r).score, r.ratio))
+            how = ease.of_recipe(best)
+            # Only annotate when the blocker really is a seed material; an item
+            # that is itself a Tier 0 pickup just has no cheaper route to show.
+            extra = {"seed": how.describe(book)} if how.tier is None else None
+            essentials.append(row(book, best, extra))
 
     # 7. Cooking, ranked by value per processor-hour.
     cooking = sorted(
         (r for r in cook if r.profit > 0 and r.time),
         key=lambda r: -(r.profit * 3600 / r.time),
     )
+
+    # 8. Nanites: the second currency, which the units columns say nothing
+    #    about, with how gettable each source is.
+    nanite_rows = []
+    for entry in graph.nanite_ladder(book):
+        how = ease.of_recipe(entry.recipe)
+        nanite_rows.append(
+            row(book, entry.recipe, {
+                "nanites": entry.nanites,
+                "per_hour": round(entry.per_hour),
+                "per_input": round(entry.per_input, 2),
+                "gettable": how.label,
+                "band": how.band,
+                "where": how.where or how.describe(book),
+                "note": how.note,
+            })
+        )
+
+    # 9. Cooking for buffs rather than for money: the strongest dish per stat.
+    effects = []
+    for effect, group in food.by_effect(book).items():
+        effects.append({
+            "effect": effect,
+            "use": group[0].use,
+            "count": len(group),
+            "dishes": [
+                {
+                    "dish": dish.item.name,
+                    "potency": dish.potency,
+                    "value": dish.value,
+                    "uplift": dish.uplift,
+                    "from": dish.recipe.inputs_label,
+                    "time": dish.recipe.time_label,
+                }
+                for dish in group[:3]
+            ],
+        })
 
     tier0 = sorted(book.name(i) for i in graph.reachable(book, set(TIER0)))
     tier1_extra = sorted(
@@ -137,18 +200,22 @@ def main() -> int:
             "items": len(book.items),
         },
         "loops": [row(book, r) for r in loops],
-        "nanites": [row(book, r) for r in nanites],
+        "nanites": nanite_rows,
+        # Not deduped: the point of this section is that several different
+        # alloys all break down into the same metal, so the repeats are the
+        # information.
         "engine": [row(book, r) for r in engine[:12]],
-        "profit": [row(book, r) for r in by_profit[:14]],
+        "profit": [row(book, r) for r in best_per_output(by_profit, 14)],
         "per_hour": [
             row(book, r, {"per_hour": round(r.profit * 3600 / r.time)})
-            for r in by_hour[:14]
+            for r in best_per_output(by_hour, 14)
         ],
         "essentials": essentials,
         "cooking": [
             row(book, r, {"per_hour": round(r.profit * 3600 / r.time)})
-            for r in cooking[:14]
+            for r in best_per_output(cooking, 14)
         ],
+        "effects": effects,
         "tier0": tier0,
         "tier1_extra": tier1_extra,
         "must_find": must_find,
@@ -161,7 +228,10 @@ def main() -> int:
     out = ROOT / "data" / "cheatsheet.json"
     out.write_text(json.dumps(sheet, indent=1))
     print(f"wrote {out}")
-    for key in ("loops", "nanites", "engine", "profit", "per_hour", "essentials", "cooking"):
+    for key in (
+        "loops", "nanites", "engine", "profit", "per_hour", "essentials",
+        "cooking", "effects",
+    ):
         print(f"  {key:11} {len(sheet[key])} rows")
     print(f"  tier0       {len(tier0)} materials")
     print(f"  must_find   {len(must_find)} items")
