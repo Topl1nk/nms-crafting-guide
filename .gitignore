@@ -1,0 +1,9 @@
+# uv / Python
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Upstream NMS-Handbook JSON, re-fetched by `mise run fetch`.
+# Only the normalised data/ output is committed.
+.cache/
