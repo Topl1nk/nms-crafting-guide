@@ -1,0 +1,143 @@
+/* Catppuccin Mocha-ish, to match the rest of the terminal setup. */
+
+Screen {
+    background: #1e1e2e;
+    color: #cdd6f4;
+}
+
+Header {
+    background: #181825;
+    color: #89b4fa;
+}
+
+Footer {
+    background: #181825;
+}
+
+#search {
+    border: tall #45475a;
+    background: #313244;
+    margin: 0 1;
+}
+
+#search:focus {
+    border: tall #89b4fa;
+}
+
+#filter-note {
+    height: 1;
+    padding: 0 2;
+    color: #a6adc8;
+    background: #181825;
+}
+
+#body {
+    height: 1fr;
+}
+
+DataTable {
+    width: 2fr;
+    height: 100%;
+    background: #1e1e2e;
+}
+
+DataTable > .datatable--cursor {
+    background: #45475a;
+    color: #f9e2af;
+}
+
+DataTable > .datatable--header {
+    background: #313244;
+    color: #89b4fa;
+    text-style: bold;
+}
+
+#detail {
+    width: 1fr;
+    min-width: 34;
+    height: 100%;
+    border-left: solid #45475a;
+    padding: 1 2;
+    background: #181825;
+    overflow-y: auto;
+}
+
+/* --- chain screen --- */
+
+#chain-summary {
+    height: auto;
+    padding: 1 2;
+    background: #181825;
+    border-bottom: solid #45475a;
+}
+
+Tree {
+    background: #1e1e2e;
+    padding: 1 2;
+}
+
+/* --- inventory screen --- */
+
+#inv-body {
+    height: 1fr;
+}
+
+#inv-list {
+    width: 1fr;
+    border-right: solid #45475a;
+}
+
+#inv-right {
+    width: 2fr;
+}
+
+#inv-add {
+    border: tall #45475a;
+    background: #313244;
+    margin: 0 1;
+}
+
+#inv-add:focus {
+    border: tall #a6e3a1;
+}
+
+.pane-title {
+    padding: 0 2;
+    background: #313244;
+    color: #89b4fa;
+    text-style: bold;
+    height: 1;
+}
+
+/* --- modal --- */
+
+QuantityModal {
+    align: center middle;
+}
+
+#modal-box {
+    width: 52;
+    height: auto;
+    border: thick #89b4fa;
+    background: #181825;
+    padding: 1 2;
+}
+
+#modal-title {
+    height: auto;
+    padding-bottom: 1;
+}
+
+HelpScreen {
+    align: center middle;
+}
+
+#help-box {
+    width: 74;
+    height: auto;
+    max-height: 90%;
+    border: thick #89b4fa;
+    background: #181825;
+    padding: 1 2;
+    overflow-y: auto;
+}
