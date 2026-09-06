@@ -1,0 +1,180 @@
+"""Normalise the NMS-Handbook tables into data/items.json and data/recipes.json.
+
+Upstream keys every recipe table by its *output* product and nests the recipes
+inside, which is fine for a wiki page and useless for a lookup tool: there is no
+flat recipe list, no reverse index, and ingredient metadata is duplicated into
+every single recipe. This flattens all of that into two files:
+
+  items.json    id -> {name, kind, category, rarity, value, ...}
+  recipes.json  a flat list of {domain, output, inputs, time, machine, ...}
+
+Everything the TUI needs is in those two files, so the app never touches the
+upstream JSON (10 MB) or the network.
+
+Run via `mise run build-data`, after `mise run fetch`.
+"""
+
+from __future__ import annotations
+
+import json
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+CACHE = ROOT / ".cache"
+DATA = ROOT / "data"
+
+# Refiners are distinguished only by how many input slots they have, and the
+# game files don't record which machine a recipe belongs to -- the ingredient
+# count *is* the requirement. Cooking always uses the Nutrient Processor.
+MACHINE_BY_INPUTS = {
+    1: "Portable / Personal Refiner",
+    2: "Medium Refiner",
+    3: "Large Refiner",
+}
+
+
+def _num(value: str | int | float | None, default: float = 0.0) -> float:
+    try:
+        return float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return default
+
+
+def load(name: str) -> dict:
+    path = CACHE / name
+    if not path.exists():
+        sys.exit(f"missing {path}\nRun `mise run fetch` first.")
+    return json.loads(path.read_text())
+
+
+def build_items(substances: dict, products: dict) -> dict:
+    """One id -> item map across both upstream tables.
+
+    Substances win on collision: the refiner deals in raw elements, and where an
+    id exists in both tables the substance row is the one the recipes mean.
+    """
+    items: dict[str, dict] = {}
+
+    for key, row in products.items():
+        items[key] = {
+            "name": row.get("NameLower_Text") or row.get("Name_Text", key),
+            "kind": "product",
+            "subtitle": row.get("Subtitle_Text", ""),
+            "category": row.get("Category", ""),
+            "rarity": row.get("Rarity", ""),
+            "value": int(_num(row.get("BaseValue"))),
+            "cooking_ingredient": row.get("CookingIngredient") == "True",
+            "description": row.get("Description_Text", ""),
+        }
+
+    for key, row in substances.items():
+        items[key] = {
+            "name": row.get("NameLower_Text") or row.get("Name_Text", key),
+            "kind": "substance",
+            "subtitle": row.get("Subtitle_Text", ""),
+            "category": row.get("Category", ""),
+            "rarity": row.get("Rarity", ""),
+            "value": int(_num(row.get("BaseValue"))),
+            "cooking_ingredient": row.get("CookingIngredient") == "True",
+            "description": row.get("Description_Text", ""),
+        }
+
+    return items
+
+
+def build_recipes(table: dict, domain: str, items: dict) -> list[dict]:
+    recipes: list[dict] = []
+
+    for out_id, row in table.items():
+        # Ensure the output itself is a known item even if it appears in neither
+        # the substance nor the product table (a few cooking outputs do not).
+        if out_id not in items:
+            items[out_id] = {
+                "name": row.get("NameLower_Text") or row.get("Name_Text", out_id),
+                "kind": "product",
+                "subtitle": row.get("Subtitle_Text", ""),
+                "category": "",
+                "rarity": "",
+                "value": 0,
+                "cooking_ingredient": False,
+                "description": row.get("Description_Text", ""),
+            }
+
+        for recipe in row.get("Recipes", []):
+            ingredients = recipe.get("Ingredients", [])
+            if not ingredients:
+                continue
+
+            inputs = [
+                {"id": ing["Id"], "n": int(_num(ing.get("Amount"), 1))}
+                for ing in ingredients
+            ]
+            out_n = int(_num(recipe.get("Amount"), 1))
+            time = _num(recipe.get("TimeToMake"))
+
+            in_units = sum(i["n"] for i in inputs)
+            seed = sum(i["n"] for i in inputs if i["id"] == out_id)
+            in_value = sum(items.get(i["id"], {}).get("value", 0) * i["n"] for i in inputs)
+            out_value = items[out_id]["value"] * out_n
+
+            recipes.append(
+                {
+                    "domain": domain,
+                    # Upstream prefixes these with "Requested Operation: " /
+                    # "Processor Setting: "; RecipeName is the same string clean.
+                    "operation": recipe.get("RecipeName", ""),
+                    "output": {"id": out_id, "n": out_n},
+                    "inputs": inputs,
+                    "time": time,
+                    "machine": (
+                        "Nutrient Processor"
+                        if domain == "cook"
+                        else MACHINE_BY_INPUTS.get(len(inputs), "Large Refiner")
+                    ),
+                    # Units out per unit in. >1 means the refiner hands back
+                    # more than it ate.
+                    "ratio": round(out_n / in_units, 4) if in_units else 0.0,
+                    # The guides' "x6 multiplier": for a self-loop recipe
+                    # (1 Chlorine + 2 Oxygen -> 6 Chlorine) what matters is the
+                    # growth of the *seed*, not of total inputs. 0 when the
+                    # output is not also an input.
+                    "loop": round(out_n / seed, 4) if seed else 0.0,
+                    "profit": out_value - in_value,
+                    # Units per hour, one machine, assuming it is kept fed.
+                    "rate": round(out_n * 3600 / time, 2) if time else 0.0,
+                }
+            )
+
+    return recipes
+
+
+def main() -> int:
+    substances = load("Substance_Table.json")
+    products = load("Product_Table.json")
+
+    items = build_items(substances, products)
+    recipes = build_recipes(load("Refining_Table.json"), "refine", items)
+    recipes += build_recipes(load("Cooking_Table.json"), "cook", items)
+
+    # Drop items nothing references, so the shipped file stays small: the
+    # product table alone is 2,100 rows, of which recipes touch a few hundred.
+    used: set[str] = set()
+    for recipe in recipes:
+        used.add(recipe["output"]["id"])
+        used.update(i["id"] for i in recipe["inputs"])
+    items = {k: v for k, v in items.items() if k in used}
+
+    DATA.mkdir(exist_ok=True)
+    (DATA / "items.json").write_text(json.dumps(items, indent=1, sort_keys=True))
+    (DATA / "recipes.json").write_text(json.dumps(recipes, indent=1))
+
+    refine = sum(1 for r in recipes if r["domain"] == "refine")
+    print(f"items:   {len(items)}")
+    print(f"recipes: {len(recipes)}  ({refine} refining, {len(recipes) - refine} cooking)")
+    print(f"written to {DATA}")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
