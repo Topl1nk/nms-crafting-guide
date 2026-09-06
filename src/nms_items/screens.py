@@ -13,10 +13,12 @@ from textual.widgets import (
     Input,
     Label,
     Static,
+    TabbedContent,
+    TabPane,
     Tree,
 )
 
-from . import food, graph
+from . import food, graph, multitools
 from .ease import EaseIndex
 from .model import SOURCE_SETS, Book
 from .inventory import Inventory
@@ -557,6 +559,143 @@ class FoodScreen(Screen):
             self.show_dish(event.cursor_row)
 
 
+class MultiToolScreen(Screen):
+    """Multi-tool reference: which type, which weapon, and how to get one.
+
+    Everything else in the app is generated from the game's recipe tables; this
+    is read from data/multitools.json, written out of the guides, because the
+    files carry nothing useful about multi-tools.
+    """
+
+    BINDINGS = [
+        Binding("escape,q", "app.pop_screen", "back"),
+        # Brackets rather than arrows: the tables are wider than the pane, so a
+        # focused DataTable eats left/right for horizontal scrolling and the
+        # tabs would only switch while the tab bar itself had focus.
+        Binding("left_square_bracket", "prev_tab", "prev tab"),
+        Binding("right_square_bracket", "next_tab", "next tab"),
+    ]
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.data = multitools.load()
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Static(f"[b #a6e3a1]{self.data.headline}[/]", id="mt-headline")
+        with TabbedContent(id="mt-tabs"):
+            with TabPane("Types", id="tab-types"):
+                yield DataTable(id="type-table", cursor_type="row", zebra_stripes=True)
+                yield Static(id="type-detail")
+            with TabPane("Weapons", id="tab-weapons"):
+                yield DataTable(id="weapon-table", cursor_type="row", zebra_stripes=True)
+                yield Static(id="weapon-detail")
+            with TabPane("Getting one", id="tab-getting"):
+                yield VerticalScroll(Static(self._getting_text(), id="mt-getting"))
+            with TabPane("Tips", id="tab-tips"):
+                yield VerticalScroll(Static(self._tips_text(), id="mt-tips"))
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self.title = "Multi-tools"
+
+        types = self.query_one("#type-table", DataTable)
+        types.add_column("Type", width=15)
+        types.add_column("Damage", width=10)
+        types.add_column("Mining", width=10)
+        types.add_column("Scan", width=12)
+        types.add_column("Slots", width=10)
+        types.add_column("Notes", width=62)
+        for row in self.data.types:
+            types.add_row(
+                row.type, row.damage, row.mining, row.scan, row.slots, row.note
+            )
+
+        weapons = self.query_one("#weapon-table", DataTable)
+        weapons.add_column("Weapon", width=18)
+        weapons.add_column("Like a", width=20)
+        weapons.add_column("Best hit", width=10)
+        weapons.add_column("Good", width=46)
+        weapons.add_column("Bad", width=42)
+        for weapon in self.data.weapons:
+            weapons.add_row(
+                weapon.weapon, weapon.kind, weapon.best_hit, weapon.pro, weapon.con
+            )
+
+        self._show_type(0)
+        self._show_weapon(0)
+
+    # -- panes -----------------------------------------------------------
+
+    def _getting_text(self) -> str:
+        lines = ["[b #89b4fa]Where each type comes from[/]", ""]
+        for row in self.data.getting:
+            lines.append(
+                f"  [b]{row['type']}[/]  [#a6adc8]({row['cost']})[/]  {row['where']}"
+            )
+            lines.append(f"      [#a6adc8]{row['how']}[/]")
+        for procedure in self.data.procedures:
+            lines += ["", f"[b #89b4fa]{procedure.title}[/]"]
+            for i, step in enumerate(procedure.steps, 1):
+                lines.append(f"  {i}. {step}")
+            if procedure.note:
+                lines.append(f"  [#a6adc8]{procedure.note}[/]")
+            for extra in procedure.after:
+                lines.append(f"  [#f9e2af]-[/] {extra}")
+        return "\n".join(lines)
+
+    def _tips_text(self) -> str:
+        lines = []
+        for rule in self.data.rules:
+            lines.append(f"[b #f9e2af]{rule.title}[/]")
+            lines.append(f"  {rule.body}")
+            lines.append("")
+        lines.append("[b #89b4fa]Where upgrades come from[/]")
+        for row in self.data.upgrade_sources:
+            lines.append(
+                f"  [b]{row['kind']}[/]  {row['where']}   [#a6adc8]{row['note']}[/]"
+            )
+        lines += ["", "[b #89b4fa]Upgrade order[/]"]
+        for i, step in enumerate(self.data.upgrade_order, 1):
+            lines.append(f"  {i}. {step}")
+        return "\n".join(lines)
+
+    def _show_type(self, index: int) -> None:
+        row = self.data.types[min(index, len(self.data.types) - 1)]
+        self.query_one("#type-detail", Static).update(
+            f"[b #f9e2af]{row.type}[/]   "
+            f"[#89b4fa]damage[/] {row.damage}   "
+            f"[#89b4fa]mining[/] {row.mining}   "
+            f"[#89b4fa]scan[/] {row.scan}   "
+            f"[#89b4fa]slots at spawn[/] {row.slots}\n{row.note}"
+        )
+
+    def _show_weapon(self, index: int) -> None:
+        weapon = self.data.weapons[min(index, len(self.data.weapons) - 1)]
+        self.query_one("#weapon-detail", Static).update(
+            f"[b #f9e2af]{weapon.weapon}[/]  [#a6adc8]{weapon.kind}, "
+            f"best measured hit {weapon.best_hit}[/]\n"
+            f"[#a6e3a1]+[/] {weapon.pro}\n[#f38ba8]-[/] {weapon.con}"
+        )
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+        if event.data_table.id == "type-table":
+            self._show_type(event.cursor_row)
+        elif event.data_table.id == "weapon-table":
+            self._show_weapon(event.cursor_row)
+
+    def _step_tab(self, delta: int) -> None:
+        tabs = self.query_one("#mt-tabs", TabbedContent)
+        panes = [pane.id for pane in tabs.query(TabPane)]
+        tabs.active = panes[(panes.index(tabs.active) + delta) % len(panes)]
+
+    def action_prev_tab(self) -> None:
+        self._step_tab(-1)
+
+    def action_next_tab(self) -> None:
+        self._step_tab(1)
+
+
 HELP_TEXT = """\
 [b #89b4fa]NMS Items[/] - refining, cooking and chain lookup
 
@@ -576,6 +715,8 @@ HELP_TEXT = """\
                  (inside: t = source tier, n = quantity, k = allow cooking)
   n              the nanite ladder - every route to nanites, ranked
   e              cooking effects - what each dish does when you eat it
+  m              multi-tools - types, weapons, how to get the good ones
+                 (inside: [ and ] move between the four tabs)
   a              add the highlighted output to your inventory
   i              inventory screen
 

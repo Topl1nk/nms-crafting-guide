@@ -16,6 +16,7 @@ from .screens import (
     FoodScreen,
     HelpScreen,
     InventoryScreen,
+    MultiToolScreen,
     NaniteScreen,
     QuantityModal,
 )
@@ -85,6 +86,7 @@ class RecipeScreen(Screen):
         Binding("i", "inventory", "inventory"),
         Binding("n", "nanites", "nanites"),
         Binding("e", "effects", "food effects"),
+        Binding("m", "multitools", "multi-tools"),
         Binding("d", "toggle_detail", "detail pane"),
         Binding("backspace", "clear_item_filter", "clear filter"),
     ]
@@ -331,6 +333,9 @@ class RecipeScreen(Screen):
 
     def action_effects(self) -> None:
         self.app.push_screen(FoodScreen(self.book))
+
+    def action_multitools(self) -> None:
+        self.app.push_screen(MultiToolScreen())
 
     def action_toggle_detail(self) -> None:
         self.detail_on = not self.detail_on

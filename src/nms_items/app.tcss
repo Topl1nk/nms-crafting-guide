@@ -161,6 +161,38 @@ Tree {
     height: 1;
 }
 
+/* --- multi-tool screen --- */
+
+#mt-headline {
+    height: auto;
+    padding: 0 2;
+    background: #181825;
+}
+
+/* Without this the tab body sizes to its content and pushes the headline off
+   the top of the screen. */
+#mt-tabs {
+    height: 1fr;
+}
+
+#type-table, #weapon-table {
+    height: 1fr;
+    width: 100%;
+}
+
+#type-detail, #weapon-detail {
+    height: auto;
+    min-height: 3;
+    padding: 1 2;
+    background: #181825;
+    border-top: solid #45475a;
+}
+
+#mt-getting, #mt-tips {
+    padding: 1 2;
+    height: auto;
+}
+
 /* --- modal --- */
 
 QuantityModal {
