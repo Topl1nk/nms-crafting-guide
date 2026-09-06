@@ -28,7 +28,9 @@ def test_app_flows(book: Book, tmp_path_factory) -> None:
         app = RecipeApp(book)
         app.inv = Inventory(inv_path)
         async with app.run_test(size=(140, 40)) as pilot:
-            table = app.query_one("#table")
+            await pilot.pause()
+            main = app.screen
+            table = main.query_one("#table")
             assert table.row_count == 357  # refining is the default domain
 
             # search debounces, so give the timer a chance
@@ -38,25 +40,25 @@ def test_app_flows(book: Book, tmp_path_factory) -> None:
             await pilot.pause(0.3)
             await pilot.pause(0.3)
             assert 0 < table.row_count < 357
-            assert all("platinum" in r.search_key for r in app.rows)
+            assert all("platinum" in r.search_key for r in main.rows)
 
             await pilot.press("enter")  # back to the table
             await pilot.press("s")      # sort
             await pilot.press("f")      # domain
             await pilot.pause()
-            assert app.domain == "cook"
+            assert main.domain == "cook"
             await pilot.press("f")
             await pilot.press("f")
             await pilot.pause()
-            assert app.domain == "refine"
+            assert main.domain == "refine"
 
             # reverse lookup and back
             await pilot.press("r")
             await pilot.pause()
-            assert app.item_role == "input"
+            assert main.item_role == "input"
             await pilot.press("backspace")
             await pilot.pause()
-            assert app.item_filter is None
+            assert main.item_filter is None
 
             # chain screen
             await pilot.press("c")
@@ -84,6 +86,63 @@ def test_app_flows(book: Book, tmp_path_factory) -> None:
             await pilot.press("question_mark")
             await pilot.pause(0.2)
             assert app.screen.__class__.__name__ == "HelpScreen"
+            await pilot.press("escape")
+            await pilot.pause(0.2)
 
     run(scenario())
     assert json.loads(inv_path.read_text()) == {"ASTEROID3": 250}
+
+
+def test_bindings_do_not_leak_between_screens(book: Book, tmp_path) -> None:
+    """`s` sorts the recipe list, but only while the recipe list is on top."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(140, 40)) as pilot:
+            await pilot.pause()
+            main = app.screen
+            before = main.sort_index
+
+            await pilot.press("e")  # cooking effects
+            await pilot.pause(0.3)
+            assert app.screen is not main
+            await pilot.press("s")
+            await pilot.pause(0.2)
+            assert main.sort_index == before
+
+            await pilot.press("escape")
+            await pilot.pause(0.2)
+            await pilot.press("s")
+            await pilot.pause(0.2)
+            assert main.sort_index != before
+
+    run(scenario())
+
+
+def test_nanite_and_food_screens(book: Book, tmp_path) -> None:
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+
+            await pilot.press("n")
+            await pilot.pause(0.3)
+            nanites = app.screen
+            assert nanites.__class__.__name__ == "NaniteScreen"
+            assert nanites.query_one("#nanite-table").row_count == 14
+            await pilot.press("s")  # the screen's own sort, not the list's
+            await pilot.pause(0.2)
+            assert nanites.sort_index == 1
+            await pilot.press("escape")
+            await pilot.pause(0.2)
+
+            await pilot.press("e")
+            await pilot.pause(0.3)
+            foods = app.screen
+            assert foods.__class__.__name__ == "FoodScreen"
+            assert foods.query_one("#effect-table").row_count == 19
+            assert foods.query_one("#dish-table").row_count > 0
+
+    run(scenario())
