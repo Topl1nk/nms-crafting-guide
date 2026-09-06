@@ -5,11 +5,20 @@ from __future__ import annotations
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal
+from textual.screen import Screen
 from textual.widgets import DataTable, Footer, Header, Input, Static
 
+from .ease import EaseIndex
 from .inventory import Inventory
 from .model import Book, Recipe
-from .screens import ChainScreen, HelpScreen, InventoryScreen, QuantityModal
+from .screens import (
+    ChainScreen,
+    FoodScreen,
+    HelpScreen,
+    InventoryScreen,
+    NaniteScreen,
+    QuantityModal,
+)
 
 # Keep the table responsive: filtering 1,680 rows on every keystroke is fine,
 # rendering them all is not.
@@ -18,6 +27,13 @@ MAX_ROWS = 400
 # Below this width the detail pane costs more than it gives -- the table loses
 # its Mult/Time/Machine columns to make room -- so it hides itself.
 MIN_WIDTH_FOR_DETAIL = 100
+
+BAND_COLOUR = {
+    "easy": "#a6e3a1",
+    "ok": "#f9e2af",
+    "work": "#fab387",
+    "hard": "#f38ba8",
+}
 
 DOMAINS: list[tuple[str | None, str]] = [
     ("refine", "Refining"),
@@ -28,13 +44,14 @@ DOMAINS: list[tuple[str | None, str]] = [
 SORTS: list[tuple[str, str]] = [
     ("mult", "multiplier"),
     ("time", "fastest"),
-    ("rate", "units/hour"),
-    ("profit", "profit"),
+    ("rate", "output/hour"),
+    ("profit", "units profit"),
+    ("ease", "how gettable"),
     ("name", "name"),
 ]
 
 
-def sort_key(mode: str):
+def sort_key(mode: str, ease: EaseIndex):
     if mode == "mult":
         return lambda r: (-max(r.loop, r.ratio), r.time)
     if mode == "time":
@@ -43,12 +60,19 @@ def sort_key(mode: str):
         return lambda r: (-r.rate, r.time)
     if mode == "profit":
         return lambda r: (-r.profit, r.time)
+    if mode == "ease":
+        return lambda r: (-ease.of_recipe(r).score, r.time)
     return lambda r: (r.output_name, r.inputs_label)
 
 
-class RecipeApp(App):
-    CSS_PATH = "app.tcss"
-    TITLE = "NMS Items"
+class RecipeScreen(Screen):
+    """The recipe list.
+
+    This is a Screen rather than the App itself for one reason: App bindings
+    stay live under every other screen, so with `s` and `f` defined up there,
+    pressing them on the nanite or cooking screen would silently re-sort a
+    table nobody was looking at.
+    """
 
     BINDINGS = [
         Binding("slash", "focus_search", "search"),
@@ -59,16 +83,17 @@ class RecipeApp(App):
         Binding("c", "chain", "chain"),
         Binding("a", "add_to_inventory", "+inventory"),
         Binding("i", "inventory", "inventory"),
+        Binding("n", "nanites", "nanites"),
+        Binding("e", "effects", "food effects"),
         Binding("d", "toggle_detail", "detail pane"),
         Binding("backspace", "clear_item_filter", "clear filter"),
-        Binding("question_mark", "help", "help"),
-        Binding("q", "quit", "quit"),
     ]
 
-    def __init__(self, book: Book | None = None) -> None:
+    def __init__(self, book: Book, ease: EaseIndex, inventory: Inventory) -> None:
         super().__init__()
-        self.book = book or Book()
-        self.inv = Inventory()
+        self.book = book
+        self.ease = ease
+        self.inv = inventory
         self.domain_index = 0
         self.sort_index = 0
         self.query_text = ""
@@ -105,7 +130,7 @@ class RecipeApp(App):
 
     def _update_detail_visibility(self) -> None:
         self.query_one("#detail", Static).display = (
-            self.detail_on and self.size.width >= MIN_WIDTH_FOR_DETAIL
+            self.detail_on and self.app.size.width >= MIN_WIDTH_FOR_DETAIL
         )
 
     # -- data ------------------------------------------------------------
@@ -121,7 +146,7 @@ class RecipeApp(App):
         matches = self.book.search(
             self.query_text, self.domain, self.item_filter, self.item_role
         )
-        matches.sort(key=sort_key(SORTS[self.sort_index][0]))
+        matches.sort(key=sort_key(SORTS[self.sort_index][0], self.ease))
         self.rows = matches[:MAX_ROWS]
 
         table.clear()
@@ -183,6 +208,8 @@ class RecipeApp(App):
             f"[#89b4fa]Multiplier[/] {recipe.multiplier_label}",
             f"[#89b4fa]Rate[/]       {recipe.rate:,.0f}/h per machine",
             f"[#89b4fa]Profit[/]     {recipe.profit:+,} units per batch",
+            f"[#89b4fa]Gettable[/]   {self.ease.of_recipe(recipe).label}"
+            f"  [#a6adc8](hardest ingredient)[/]",
             "",
             "[#89b4fa]Ingredients[/]",
         ]
@@ -190,12 +217,13 @@ class RecipeApp(App):
             item = book.items.get(ing.id)
             have = self.inv.items.get(ing.id, 0)
             stock = f"  [#a6e3a1](have {have})[/]" if have else ""
-            sources = len(book.produced_by.get(ing.id, []))
-            makeable = f"  [#a6adc8]{sources} recipe(s)[/]" if sources else "  [#f38ba8]find it[/]"
+            ease = self.ease.of(ing.id)
             lines.append(
                 f"  {ing.n} x {book.name(ing.id)}"
-                f"  [#a6adc8]{item.value if item else 0}u[/]{stock}{makeable}"
+                f"  [#a6adc8]{item.value if item else 0}u[/]{stock}"
+                f"  [{BAND_COLOUR[ease.band]}]{ease.label}[/]"
             )
+            lines.append(f"     [#a6adc8]{ease.describe(book)}[/]")
 
         others = [r for r in book.produced_by.get(recipe.output.id, []) if r.index != recipe.index]
         if others:
@@ -271,7 +299,9 @@ class RecipeApp(App):
     def action_chain(self) -> None:
         recipe = self.current_recipe()
         if recipe:
-            self.push_screen(ChainScreen(self.book, recipe.output.id, recipe.output.n))
+            self.app.push_screen(
+                ChainScreen(self.book, recipe.output.id, recipe.output.n)
+            )
 
     def action_add_to_inventory(self) -> None:
         recipe = self.current_recipe()
@@ -285,7 +315,7 @@ class RecipeApp(App):
                 self.notify(f"{self.book.name(item_id)}: {total}")
                 self.refresh_rows(keep_cursor=True)
 
-        self.push_screen(
+        self.app.push_screen(
             QuantityModal(f"Add how many {self.book.name(item_id)}?", recipe.output.n),
             done,
         )
@@ -294,13 +324,40 @@ class RecipeApp(App):
         def done(_result=None) -> None:
             self.refresh_rows(keep_cursor=True)
 
-        self.push_screen(InventoryScreen(self.book, self.inv), done)
+        self.app.push_screen(InventoryScreen(self.book, self.inv), done)
+
+    def action_nanites(self) -> None:
+        self.app.push_screen(NaniteScreen(self.book, self.ease))
+
+    def action_effects(self) -> None:
+        self.app.push_screen(FoodScreen(self.book))
 
     def action_toggle_detail(self) -> None:
         self.detail_on = not self.detail_on
         self._update_detail_visibility()
-        if self.detail_on and self.size.width < MIN_WIDTH_FOR_DETAIL:
+        if self.detail_on and self.app.size.width < MIN_WIDTH_FOR_DETAIL:
             self.notify("Terminal too narrow for the detail pane")
+
+
+class RecipeApp(App):
+    """Holds the data and the two keys that make sense everywhere."""
+
+    CSS_PATH = "app.tcss"
+    TITLE = "NMS Items"
+
+    BINDINGS = [
+        Binding("question_mark", "help", "help"),
+        Binding("q", "quit", "quit"),
+    ]
+
+    def __init__(self, book: Book | None = None) -> None:
+        super().__init__()
+        self.book = book or Book()
+        self.ease = EaseIndex(self.book)
+        self.inv = Inventory()
+
+    def on_mount(self) -> None:
+        self.push_screen(RecipeScreen(self.book, self.ease, self.inv))
 
     def action_help(self) -> None:
         self.push_screen(HelpScreen())

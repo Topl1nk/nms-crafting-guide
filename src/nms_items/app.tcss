@@ -76,6 +76,58 @@ Tree {
     padding: 1 2;
 }
 
+/* --- nanite screen --- */
+
+#nanite-note {
+    height: 1;
+    padding: 0 2;
+    background: #181825;
+    color: #a6adc8;
+}
+
+#nanite-table {
+    width: 100%;
+    height: 1fr;
+}
+
+#nanite-detail {
+    height: auto;
+    min-height: 4;
+    padding: 1 2;
+    background: #181825;
+    border-top: solid #45475a;
+}
+
+/* --- food screen --- */
+
+#food-note {
+    height: 1;
+    padding: 0 2;
+    background: #181825;
+    color: #a6adc8;
+}
+
+#food-body {
+    height: 1fr;
+}
+
+#food-left {
+    width: 66;
+    border-right: solid #45475a;
+}
+
+#food-right {
+    width: 1fr;
+}
+
+#food-detail {
+    height: auto;
+    min-height: 5;
+    padding: 1 2;
+    background: #181825;
+    border-top: solid #45475a;
+}
+
 /* --- inventory screen --- */
 
 #inv-body {

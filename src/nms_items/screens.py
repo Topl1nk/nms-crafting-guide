@@ -16,7 +16,8 @@ from textual.widgets import (
     Tree,
 )
 
-from . import graph
+from . import food, graph
+from .ease import EaseIndex
 from .model import SOURCE_SETS, Book
 from .inventory import Inventory
 
@@ -345,6 +346,217 @@ class InventoryScreen(Screen):
         self.refresh_all()
 
 
+class NaniteScreen(Screen):
+    """Every route to nanites, ranked by throughput and by how gettable it is.
+
+    Nanites are the second currency and the units column says nothing useful
+    about them -- 1 Salvaged Data is worth ~51k units and 15 nanites, and which
+    of those you want depends entirely on the day. So they get their own view.
+    """
+
+    BINDINGS = [
+        Binding("escape,q", "app.pop_screen", "back"),
+        Binding("s", "cycle_sort", "sort"),
+    ]
+
+    SORTS = [
+        ("rate", "nanites/hour"),
+        ("ease", "how gettable"),
+        ("per_input", "nanites per item"),
+        ("nanites", "nanites per batch"),
+    ]
+
+    def __init__(self, book: Book, ease: EaseIndex) -> None:
+        super().__init__()
+        self.book = book
+        self.ease = ease
+        self.sort_index = 0
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Static(id="nanite-note")
+        yield DataTable(id="nanite-table", cursor_type="row", zebra_stripes=True)
+        yield Static(id="nanite-detail")
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self.title = "Nanites"
+        table = self.query_one("#nanite-table", DataTable)
+        table.add_column("Refine", width=34)
+        table.add_column("Nan", width=5)
+        table.add_column("Time", width=6)
+        table.add_column("Nan/h", width=7)
+        table.add_column("Per item", width=9)
+        table.add_column("Gettable", width=13)
+        table.add_column("Where it comes from", width=44)
+        self.rows = graph.nanite_ladder(self.book)
+        self.refresh_rows()
+        table.focus()
+
+    def refresh_rows(self) -> None:
+        key = self.SORTS[self.sort_index][0]
+        if key == "rate":
+            self.rows.sort(key=lambda r: -r.per_hour)
+        elif key == "ease":
+            self.rows.sort(key=lambda r: (-self.ease.of_recipe(r.recipe).score, -r.per_hour))
+        elif key == "per_input":
+            self.rows.sort(key=lambda r: -r.per_input)
+        else:
+            self.rows.sort(key=lambda r: -r.nanites)
+
+        table = self.query_one("#nanite-table", DataTable)
+        table.clear()
+        for row in self.rows:
+            ease = self.ease.of_recipe(row.recipe)
+            table.add_row(
+                row.recipe.inputs_label,
+                str(row.nanites),
+                row.recipe.time_label,
+                f"{row.per_hour:,.0f}",
+                f"{row.per_input:.2f}",
+                ease.label,
+                ease.where or ease.describe(self.book),
+                key=str(row.recipe.index),
+            )
+
+        self.query_one("#nanite-note", Static).update(
+            f"[b]{len(self.rows)}[/] ways to make nanites, sorted by "
+            f"[b]{self.SORTS[self.sort_index][1]}[/]   "
+            "[#a6adc8]one refiner, kept fed - press s to re-sort[/]"
+        )
+        if self.rows:
+            self.show_detail(0)
+
+    def show_detail(self, index: int) -> None:
+        row = self.rows[index]
+        ease = self.ease.of_recipe(row.recipe)
+        lines = [
+            f"[b #f9e2af]{row.recipe.inputs_label}[/] -> [b]{row.nanites} Nanite Cluster[/]"
+            f"   [#a6adc8]{row.recipe.operation}, {row.recipe.machine}[/]",
+            f"[#89b4fa]{row.per_hour:,.0f} nanites/hour[/] per refiner   "
+            f"[#a6adc8]{row.per_input:.2f} per item consumed, "
+            f"{row.units_cost:,} units of value spent[/]",
+        ]
+        if ease.where:
+            lines.append(f"[#a6e3a1]{ease.where}[/]")
+        else:
+            lines.append(f"[#a6adc8]{ease.describe(self.book)}[/]")
+        if ease.note:
+            lines.append(f"[#a6adc8]{ease.note}[/]")
+        self.query_one("#nanite-detail", Static).update("\n".join(lines))
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+        if 0 <= event.cursor_row < len(self.rows):
+            self.show_detail(event.cursor_row)
+
+    def action_cycle_sort(self) -> None:
+        self.sort_index = (self.sort_index + 1) % len(self.SORTS)
+        self.refresh_rows()
+
+
+class FoodScreen(Screen):
+    """What eating a cooked product actually does, per buff.
+
+    Cooking is usually pitched as a money engine, and it is one -- but every
+    dish also grants a temporary buff, and the files record which stat and how
+    strongly. This is the "what should I eat before going down there" view.
+    """
+
+    BINDINGS = [
+        Binding("escape,q", "app.pop_screen", "back"),
+        Binding("tab", "focus_next", "switch pane"),
+    ]
+
+    def __init__(self, book: Book) -> None:
+        super().__init__()
+        self.book = book
+        self.groups = food.by_effect(book)
+        self.effects = list(self.groups)
+        self.current: list[food.Dish] = []
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield Static(id="food-note")
+        with Horizontal(id="food-body"):
+            with Vertical(id="food-left"):
+                yield Label("Buff", classes="pane-title")
+                yield DataTable(id="effect-table", cursor_type="row")
+            with Vertical(id="food-right"):
+                yield Label("Dishes, strongest first", classes="pane-title")
+                yield DataTable(id="dish-table", cursor_type="row", zebra_stripes=True)
+        yield Static(id="food-detail")
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self.title = "Cooking - what it does"
+        effects = self.query_one("#effect-table", DataTable)
+        effects.add_column("Boosts", width=26)
+        effects.add_column("N", width=4)
+        effects.add_column("Good for", width=28)
+        for name in self.effects:
+            group = self.groups[name]
+            effects.add_row(
+                name, str(len(group)), group[0].use or "-", key=name
+            )
+
+        dishes = self.query_one("#dish-table", DataTable)
+        dishes.add_column("Dish", width=28)
+        dishes.add_column("Pot", width=5)
+        dishes.add_column("Value", width=9)
+        dishes.add_column("Uplift", width=9)
+        dishes.add_column("Cook from", width=40)
+        dishes.add_column("Time", width=6)
+
+        self.query_one("#food-note", Static).update(
+            f"[b]{sum(len(g) for g in self.groups.values())}[/] cooked dishes across "
+            f"[b]{len(self.effects)}[/] buffs   "
+            "[#a6adc8]Pot = the game's own 0-1 quality for the buff · "
+            "Uplift = units gained over the ingredients, one batch[/]"
+        )
+        self.show_effect(self.effects[0])
+        effects.focus()
+
+    def show_effect(self, name: str) -> None:
+        self.current = self.groups[name]
+        table = self.query_one("#dish-table", DataTable)
+        table.clear()
+        for dish in self.current:
+            table.add_row(
+                dish.item.name,
+                f"{dish.potency:.2f}",
+                f"{dish.value:,}",
+                f"{dish.uplift:+,}",
+                dish.recipe.inputs_label,
+                dish.recipe.time_label,
+            )
+        self.show_dish(0)
+
+    def show_dish(self, index: int) -> None:
+        if not self.current:
+            return
+        dish = self.current[min(index, len(self.current) - 1)]
+        ways = (
+            f"   [#a6adc8]{dish.ways} recipes make it[/]" if dish.ways > 1 else ""
+        )
+        lines = [
+            f"[b #f9e2af]{dish.item.name}[/]  [#a6adc8]{dish.item.subtitle}[/]{ways}",
+            f"[#89b4fa]{dish.effect}[/] at potency [b]{dish.potency:.2f}[/]"
+            + (f"  [#a6adc8]- {dish.use}[/]" if dish.use else ""),
+            f"[#a6e3a1]{dish.recipe.inputs_label}[/] -> {dish.recipe.output_label}"
+            f"   [#a6adc8]{dish.recipe.operation}, {dish.recipe.time_label}[/]",
+            f"[#a6adc8]Sells for {dish.value:,} units; cooking one batch adds "
+            f"{dish.uplift:,} over the ingredients.[/]",
+        ]
+        self.query_one("#food-detail", Static).update("\n".join(lines))
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+        if event.data_table.id == "effect-table":
+            if 0 <= event.cursor_row < len(self.effects):
+                self.show_effect(self.effects[event.cursor_row])
+        elif event.data_table.id == "dish-table":
+            self.show_dish(event.cursor_row)
+
+
 HELP_TEXT = """\
 [b #89b4fa]NMS Items[/] - refining, cooking and chain lookup
 
@@ -362,6 +574,8 @@ HELP_TEXT = """\
 [b]Planning[/]
   c              chain plan for the highlighted output
                  (inside: t = source tier, n = quantity, k = allow cooking)
+  n              the nanite ladder - every route to nanites, ranked
+  e              cooking effects - what each dish does when you eat it
   a              add the highlighted output to your inventory
   i              inventory screen
 
@@ -375,12 +589,28 @@ HELP_TEXT = """\
           1 Chlorine + 2 Oxygen -> 6 Chlorine multiplies the seed six times.
   Time    one batch, from the game files. In-game display is often wrong.
   Rate    units per hour if you keep one machine fed.
-  Profit  base-value difference, output minus inputs, for one batch.
+  Profit  base-value difference, output minus inputs, for one batch. Says
+          nothing about nanites - press n for those.
+  Gettable  how reachable the hardest ingredient is.
+          T0/T1/T2 +n   refinable from surface materials / asteroids /
+                        an atmosphere harvester, n refining steps away
+          needs seed    refinable, but wants a material none of those
+                        tiers contain (a stellar metal, typically)
+          loot (...)    no recipe makes it; the rating is how much of a
+                        detour the guides make it sound
+
+[b]Is cooking worth it, or should you just sell?[/]
+  Both, in that order. Every cooked product carries a buff AND multiplies
+  base value several times over, so the dish you eat and the dish you sell
+  are the same dish. Cook the batch, eat one, sell the rest. The Uplift
+  column on the e screen is what one batch adds over its ingredients.
 
 [b]Data[/]
   357 refining and 1,323 cooking recipes parsed from the game's own
   recipe table by NMS-Handbook. Regenerate with: mise run fetch, then
   mise run build-data.
+  Where loot comes from is the one thing the game files do not record;
+  that lives in data/acquisition.json, written from the guides.
 
 Press any key to close.
 """
