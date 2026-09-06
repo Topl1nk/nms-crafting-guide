@@ -19,7 +19,7 @@ is the prose version of what this app queries.
 | | |
 | --- | --- |
 | ⌨️ **`nms`** | The TUI: fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
-| 🖨️ **Cheat sheet** | Two-page landscape A4 ([Typst](https://typst.app)), Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf` |
+| 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf` |
 | 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
 | 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
 | 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
@@ -108,6 +108,23 @@ adds over its ingredients.
 ![inventory](docs/img/inventory.svg)
 
 ---
+
+### The cheat sheet
+
+`mise run pdf` writes `docs/pdf/nms-cheatsheet.pdf` (Latte, for print) and
+`nms-cheatsheet-dark.pdf` (Mocha, for screens):
+
+1. **Money engine** — the ×6 loops, the precious-metal engine, best profit per
+   batch and per machine-hour, the six refiner rules.
+2. **Nanites** — every converter with where its input drops, then the
+   essentials you should stop mining, and what Tier 0 / Tier 1 reach.
+3. **Kitchen** — top dishes by value, then all 19 buffs with their three best
+   dishes each.
+
+It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
+including its own prose: claims like "every row below is 5s in the Processor"
+are re-checked against the rows on each build and disappear if they stop being
+true.
 
 ## Where the data comes from
 
