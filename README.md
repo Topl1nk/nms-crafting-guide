@@ -21,6 +21,8 @@ is the prose version of what this app queries.
 | ⌨️ **`nms`** | The TUI: fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
 | 🖨️ **Cheat sheet** | Two-page landscape A4 ([Typst](https://typst.app)), Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf` |
 | 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
+| 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
+| 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
 | 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
 
 ---
@@ -43,6 +45,8 @@ mise run tui        # go
 | `p` `r` | recipes that **produce** the highlighted item / that **consume** it |
 | `Enter` | pivot to everything touching that item · `Backspace` clears the filter |
 | `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `k` allow cooking |
+| `n` | the **nanite ladder** — every route to nanites, ranked |
+| `e` | **cooking effects** — what each dish does when eaten |
 | `a` `i` | add to inventory / open the inventory screen |
 | `d` | show/hide the detail pane — it hides itself below 100 columns |
 | `?` | full help |
@@ -55,7 +59,13 @@ mise run tui        # go
 - **Time** — one batch, from the game files. The in-game display is often wrong.
 - **Machine** — Portable/Personal (1 input), Medium (2), Large (3).
 - **Rate / Profit** — units per hour with one machine kept fed, and the
-  base-value difference across one batch.
+  base-value difference across one batch. Profit is in units and says nothing
+  about nanites; those get their own screen.
+- **Gettable** — how reachable the hardest ingredient is. `T0/T1/T2 +n` means
+  refinable from surface materials / asteroids / an atmosphere harvester, `n`
+  refining steps away. `needs seed` means refinable but wanting a material none
+  of those tiers contain — a stellar metal, typically, of which you need two
+  units ever. `loot (...)` means no recipe makes it.
 
 ### The chain planner
 
@@ -69,6 +79,31 @@ the one that ties up a machine for the least time, not merely the shortest one.
 
 If nothing reaches the target it says so and lists what the item *is* made
 from — that is how you find out something has to be looted rather than refined.
+
+### Nanites
+
+Nanites are the second currency, and a units column is actively misleading
+about them: one Salvaged Data is ~51,000 units *or* 15 nanites. Press `n` for
+every route to nanites ranked by nanites/hour per refiner — which reproduces
+the guide's finding that Larval and Hadal Cores (3,000/h) beat the headline
+230-nanite Hyaline Brain (259/h) twelvefold, and that Runaway Mould is the
+slowest converter in the game at 24/h.
+
+Each row also carries how gettable the input is and where it drops.
+
+![the nanite ladder](docs/img/nanites.svg)
+
+### Cooking
+
+Eat or sell? Both, in that order. Every cooked product grants a temporary buff
+*and* multiplies base value several times over, so the dish you eat is the dish
+you sell — cook the batch, eat one, sell the rest. Press `e` for the 19 buffs
+and the strongest dishes for each, with what they sell for and what one batch
+adds over its ingredients.
+
+![cooking buffs](docs/img/food.svg)
+
+### Inventory
 
 ![inventory](docs/img/inventory.svg)
 
@@ -84,9 +119,10 @@ reads:
 
 | | |
 | --- | --- |
-| `data/items.json` | 693 items — name, category, rarity, base value |
+| `data/items.json` | 693 items — name, category, rarity, base value, and for cooked food the stat it buffs and how strongly |
 | `data/recipes.json` | 1,680 recipes — flat, with ratio, loop multiplier, batch time, profit and rate precomputed |
 | `data/cheatsheet.json` | the subset the PDF prints |
+| `data/acquisition.json` | **hand-written** — where loot comes from, since the game files record what a recipe needs but never where to find it. Taken from the guides; where they say nothing, the app says "unknown" rather than guessing |
 
 After a game patch:
 
@@ -97,8 +133,9 @@ mise run test       # 13 checks, including the numbers the written guides assert
 
 The test suite is the point of that second command: it asserts the claims the
 notes make — the three ×6 loops, Living Pearl → 100 Gold, Tier 0 reaching
-exactly 30 materials, the 25 items no recipe produces — so if upstream or the
-game moves a ratio, it fails loudly instead of quietly printing a wrong sheet.
+exactly 30 materials, the 25 items no recipe produces, Larval Cores at 3,000
+nanites/hour against Runaway Mould's 24 — so if upstream or the game moves a
+ratio, it fails loudly instead of quietly printing a wrong sheet.
 
 ---
 
@@ -122,10 +159,12 @@ game moves a ratio, it fails loudly instead of quietly printing a wrong sheet.
 ```
 src/nms_items/
   model.py     items, recipes, the forward/reverse indexes, search
-  graph.py     chain planning (Knuth's AND-OR Dijkstra), reachability, inventory queries
+  graph.py     chain planning (Knuth's AND-OR Dijkstra), reachability, the nanite ladder
+  ease.py      how gettable an item is: tier, chain depth, raw breadth, loot notes
+  food.py      cooked dishes grouped by the buff they grant
   inventory.py what you're carrying, persisted to XDG state
   app.py       the recipe table + detail pane
-  screens.py   chain, inventory, help
+  screens.py   chain, nanites, cooking, inventory, help
 scripts/       fetch, normalise, pick cheat-sheet rows, screenshots
 cheatsheet.typ the PDF
 ```

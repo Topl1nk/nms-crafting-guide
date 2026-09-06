@@ -30,6 +30,9 @@ async def shoot() -> None:
     app = RecipeApp(Book())
 
     async with app.run_test(size=SIZE) as pilot:
+        await pilot.pause()
+        main = app.screen
+
         # 1. The recipe list, searched.
         await pilot.press("slash")
         for char in "cobalt":
@@ -41,8 +44,8 @@ async def shoot() -> None:
         _save(app, "recipes.svg")
 
         # 2. A production chain.
-        app.query_text = ""
-        app.refresh_rows()
+        main.query_text = ""
+        main.refresh_rows()
         await pilot.pause(0.2)
         await pilot.press("c")
         await pilot.pause(0.5)
@@ -50,7 +53,21 @@ async def shoot() -> None:
         await pilot.press("escape")
         await pilot.pause(0.2)
 
-        # 3. Inventory, with something in it.
+        # 3. The nanite ladder.
+        await pilot.press("n")
+        await pilot.pause(0.5)
+        _save(app, "nanites.svg")
+        await pilot.press("escape")
+        await pilot.pause(0.2)
+
+        # 4. Cooking buffs.
+        await pilot.press("e")
+        await pilot.pause(0.5)
+        _save(app, "food.svg")
+        await pilot.press("escape")
+        await pilot.pause(0.2)
+
+        # 5. Inventory, with something in it.
         await pilot.press("i")
         await pilot.pause(0.3)
         for text in ("platinum 250", "oxygen 400", "ferrite dust 800"):
