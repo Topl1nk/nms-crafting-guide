@@ -1,0 +1,1199 @@
+{
+ "counts": {
+  "refine": 357,
+  "cook": 1323,
+  "items": 693
+ },
+ "loops": [
+  {
+   "make": "6 Condensed Carbon",
+   "from": "Condensed Carbon + 2 Oxygen",
+   "mult": "x6 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 240,
+   "profit": 52,
+   "operation": "Oxygenate Carbon"
+  },
+  {
+   "make": "6 Ionised Cobalt",
+   "from": "Ionised Cobalt + 2 Oxygen",
+   "mult": "x6 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 240,
+   "profit": 742,
+   "operation": "Efficient Cobalt Ionisation"
+  },
+  {
+   "make": "6 Chlorine",
+   "from": "Chlorine + 2 Oxygen",
+   "mult": "x6 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 240,
+   "profit": 957,
+   "operation": "Chlorine Expansion"
+  },
+  {
+   "make": "3 Sodium Nitrate",
+   "from": "Sodium Nitrate + Pugneum",
+   "mult": "x3 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 120,
+   "profit": 26,
+   "operation": "Sentinel Catalysation"
+  },
+  {
+   "make": "3 Condensed Carbon",
+   "from": "Faecium + Condensed Carbon",
+   "mult": "x3 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 120,
+   "profit": 18,
+   "operation": "Feed Microbes"
+  },
+  {
+   "make": "3 Faecium",
+   "from": "Faecium + Oxygen",
+   "mult": "x3 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 120,
+   "profit": 26,
+   "operation": "Oxygenate Microbes"
+  },
+  {
+   "make": "2 Sodium Nitrate",
+   "from": "Sodium Nitrate + Oxygen",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 48,
+   "operation": "Oxygenate Sodium"
+  },
+  {
+   "make": "2 Sodium Nitrate",
+   "from": "Nitrogen + Sodium Nitrate",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 62,
+   "operation": "Gas Catalysation"
+  },
+  {
+   "make": "2 Sodium Nitrate",
+   "from": "Marrow Bulb + Sodium Nitrate",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 41,
+   "operation": "Harness Organic Nitrogren"
+  },
+  {
+   "make": "2 Sodium Nitrate",
+   "from": "Kelp Sac + Sodium Nitrate",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 41,
+   "operation": "Harness Organic Nitrogren"
+  },
+  {
+   "make": "2 Sodium Nitrate",
+   "from": "Faecium + Sodium Nitrate",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 52,
+   "operation": "Feed Microbes"
+  },
+  {
+   "make": "2 Sodium Nitrate",
+   "from": "Methane + Sodium Nitrate",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 47,
+   "operation": "Gas Catalysation"
+  },
+  {
+   "make": "2 Ionised Cobalt",
+   "from": "Marrow Bulb + Ionised Cobalt",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 121,
+   "operation": "Ionise Bulbs"
+  },
+  {
+   "make": "2 Chlorine",
+   "from": "Kelp Sac + Chlorine",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 164,
+   "operation": "Dissolve Natural Salts"
+  },
+  {
+   "make": "2 Solanium",
+   "from": "Phosphorus + Solanium",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 8,
+   "operation": "Organic Expansion"
+  },
+  {
+   "make": "2 Cadmium",
+   "from": "Cadmium + Chromatic Metal",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -5,
+   "operation": "Chromatic Expansion"
+  },
+  {
+   "make": "2 Indium",
+   "from": "Indium + Chromatic Metal",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 44,
+   "operation": "Chromatic Expansion"
+  },
+  {
+   "make": "2 Emeril",
+   "from": "Emeril + Chromatic Metal",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 26,
+   "operation": "Chromatic Expansion"
+  },
+  {
+   "make": "2 Copper",
+   "from": "Copper + Chromatic Metal",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -47,
+   "operation": "Chromatic Expansion"
+  },
+  {
+   "make": "2 Star Bulb",
+   "from": "Paraffinium + Star Bulb",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -30,
+   "operation": "Organic Expansion"
+  },
+  {
+   "make": "2 Cactus Flesh",
+   "from": "Pyrite + Cactus Flesh",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -34,
+   "operation": "Organic Expansion"
+  },
+  {
+   "make": "2 Fungal Mould",
+   "from": "Ammonia + Fungal Mould",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -46,
+   "operation": "Organic Expansion"
+  },
+  {
+   "make": "2 Gamma Root",
+   "from": "Uranium + Gamma Root",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -46,
+   "operation": "Organic Expansion"
+  },
+  {
+   "make": "2 Frost Crystal",
+   "from": "Dioxite + Frost Crystal",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": -50,
+   "operation": "Organic Expansion"
+  },
+  {
+   "make": "2 Quartzite",
+   "from": "Quartzite + Chromatic Metal",
+   "mult": "x2 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 44,
+   "operation": "Chromatic Expansion"
+  },
+  {
+   "make": "4 Magnetised Ferrite",
+   "from": "3 Magnetised Ferrite + Pugneum",
+   "mult": "x1.3333 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 160,
+   "profit": -56,
+   "operation": "Matter Expansion"
+  }
+ ],
+ "nanites": [
+  {
+   "make": "50 Nanite Cluster",
+   "from": "Hadal Core",
+   "mult": "x50",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 3000,
+   "profit": -96500,
+   "operation": "Doom Cycling"
+  },
+  {
+   "make": "50 Nanite Cluster",
+   "from": "Larval Core",
+   "mult": "x50",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 3000,
+   "profit": -64000,
+   "operation": "NOT RECOMMENDED"
+  },
+  {
+   "make": "50 Nanite Cluster",
+   "from": "Vile Spawn",
+   "mult": "x50",
+   "time": "1.5m",
+   "machine": "Portable",
+   "rate": 2000,
+   "profit": 984,
+   "operation": "Loosen Bonds"
+  },
+  {
+   "make": "50 Nanite Cluster",
+   "from": "Flesh Rope",
+   "mult": "x50",
+   "time": "1.5m",
+   "machine": "Portable",
+   "rate": 2000,
+   "profit": -15016,
+   "operation": "Loosen Bonds"
+  },
+  {
+   "make": "230 Nanite Cluster",
+   "from": "Hyaline Brain",
+   "mult": "x230",
+   "time": "53m",
+   "machine": "Portable",
+   "rate": 259,
+   "profit": -30400,
+   "operation": "Sentience Extraction"
+  },
+  {
+   "make": "15 Nanite Cluster",
+   "from": "Salvaged Data",
+   "mult": "x15",
+   "time": "5.3m",
+   "machine": "Portable",
+   "rate": 169,
+   "profit": -51700,
+   "operation": "Nanite Extraction"
+  },
+  {
+   "make": "95 Nanite Cluster",
+   "from": "Inverted Mirror",
+   "mult": "x95",
+   "time": "37m",
+   "machine": "Portable",
+   "rate": 155,
+   "profit": -15100,
+   "operation": "Purge Corruption"
+  },
+  {
+   "make": "Nanite Cluster",
+   "from": "25 Pugneum",
+   "mult": "x0.04",
+   "time": "30s",
+   "machine": "Portable",
+   "rate": 120,
+   "profit": -3430,
+   "operation": "Reality Filtering"
+  },
+  {
+   "make": "50 Nanite Cluster",
+   "from": "Radiant Shard",
+   "mult": "x50",
+   "time": "30m",
+   "machine": "Portable",
+   "rate": 100,
+   "profit": -900,
+   "operation": "Subjugation of Glass"
+  },
+  {
+   "make": "2 Nanite Cluster",
+   "from": "Tainted Metal",
+   "mult": "x2",
+   "time": "1.5m",
+   "machine": "Portable",
+   "rate": 80,
+   "profit": -340,
+   "operation": "Doom Cycling"
+  },
+  {
+   "make": "Nanite Cluster",
+   "from": "35 Platinum",
+   "mult": "x0.03",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 60,
+   "profit": -17655,
+   "operation": "Reality Warping"
+  },
+  {
+   "make": "Nanite Cluster",
+   "from": "Faecium + Hexite",
+   "mult": "x0.50",
+   "time": "1.0m",
+   "machine": "Medium",
+   "rate": 60,
+   "profit": -664,
+   "operation": "Alchemical Construction"
+  },
+  {
+   "make": "Nanite Cluster",
+   "from": "15 Silver + 15 Gold + 25 Platinum",
+   "mult": "x0.02",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": -20690,
+   "operation": "Transmutation"
+  },
+  {
+   "make": "Nanite Cluster",
+   "from": "5 Runaway Mould",
+   "mult": "x0.20",
+   "time": "2.5m",
+   "machine": "Portable",
+   "rate": 24,
+   "profit": -80,
+   "operation": "Recycle Waste Materials"
+  }
+ ],
+ "engine": [
+  {
+   "make": "100 Gold",
+   "from": "Living Pearl",
+   "mult": "x100",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 6000,
+   "profit": 30250,
+   "operation": "Calcite Transmutation"
+  },
+  {
+   "make": "250 Silver",
+   "from": "Aronium",
+   "mult": "x250",
+   "time": "5.0m",
+   "machine": "Portable",
+   "rate": 3000,
+   "profit": 21500,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "250 Silver",
+   "from": "Dirty Bronze",
+   "mult": "x250",
+   "time": "5.0m",
+   "machine": "Portable",
+   "rate": 3000,
+   "profit": 21500,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "250 Silver",
+   "from": "Herox",
+   "mult": "x250",
+   "time": "4.2m",
+   "machine": "Portable",
+   "rate": 3600,
+   "profit": 21500,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "125 Gold",
+   "from": "Lemmium",
+   "mult": "x125",
+   "time": "5.0m",
+   "machine": "Portable",
+   "rate": 1500,
+   "profit": 19125,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "125 Gold",
+   "from": "Magno-Gold",
+   "mult": "x125",
+   "time": "5.0m",
+   "machine": "Portable",
+   "rate": 1500,
+   "profit": 19125,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "125 Gold",
+   "from": "Grantine",
+   "mult": "x125",
+   "time": "5.0m",
+   "machine": "Portable",
+   "rate": 1500,
+   "profit": 19125,
+   "operation": "Extreme Alloy Separation"
+  },
+  {
+   "make": "10 Gold",
+   "from": "Ferrite Dust + Oxygen + Emeril",
+   "mult": "x3.33",
+   "time": "20m",
+   "machine": "Large",
+   "rate": 30,
+   "profit": 3368,
+   "operation": "Chromatic Alchemy"
+  },
+  {
+   "make": "30 Chromatic Metal",
+   "from": "Silver + Gold + Indium",
+   "mult": "x10",
+   "time": "20m",
+   "machine": "Large",
+   "rate": 90,
+   "profit": 1969,
+   "operation": "Chromatic Stellar Fusion"
+  },
+  {
+   "make": "30 Chromatic Metal",
+   "from": "Silver + Gold + Quartzite",
+   "mult": "x10",
+   "time": "20m",
+   "machine": "Large",
+   "rate": 90,
+   "profit": 1969,
+   "operation": "Chromatic Stellar Fusion"
+  },
+  {
+   "make": "20 Chromatic Metal",
+   "from": "Silver + Gold + Emeril",
+   "mult": "x6.67",
+   "time": "20m",
+   "machine": "Large",
+   "rate": 60,
+   "profit": 1107,
+   "operation": "Chromatic Stellar Fusion"
+  },
+  {
+   "make": "2 Gold",
+   "from": "Faecium + Pugneum",
+   "mult": "x1",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 538,
+   "operation": "Pugneum Alchemy"
+  }
+ ],
+ "profit": [
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 20 Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 10 Condensed Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 20 Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 10 Condensed Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 20 Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 10 Condensed Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 20 Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 10 Condensed Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 20 Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 10 Condensed Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 20 Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 10 Condensed Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "20s",
+   "machine": "Large",
+   "rate": 180,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation"
+  },
+  {
+   "make": "100 Gold",
+   "from": "Living Pearl",
+   "mult": "x100",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 6000,
+   "profit": 30250,
+   "operation": "Calcite Transmutation"
+  },
+  {
+   "make": "Warp Cell",
+   "from": "25 Condensed Carbon + 10 Sodium + 250 Chromatic Metal",
+   "mult": "x0.00",
+   "time": "10m",
+   "machine": "Large",
+   "rate": 6,
+   "profit": 23740,
+   "operation": "Antimatter Bypass"
+  }
+ ],
+ "per_hour": [
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 10 Condensed Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "20s",
+   "machine": "Large",
+   "rate": 180,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 8412300
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 20 Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1870000
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 10 Condensed Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1870000
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 20 Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1870000
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 10 Condensed Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1870000
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 20 Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1870000
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 10 Condensed Carbon + 10 Salt",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46750,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1870000
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 20 Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1869400
+  },
+  {
+   "make": "Thermic Condensate",
+   "from": "100 Sulphurine + 10 Condensed Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1869400
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 20 Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1869400
+  },
+  {
+   "make": "Enriched Carbon",
+   "from": "100 Radon + 10 Condensed Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1869400
+  },
+  {
+   "make": "Nitrogen Salt",
+   "from": "100 Nitrogen + 20 Carbon + 5 Chlorine",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 46735,
+   "operation": "High-Speed Sublimation",
+   "per_hour": 1869400
+  },
+  {
+   "make": "100 Gold",
+   "from": "Living Pearl",
+   "mult": "x100",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 6000,
+   "profit": 30250,
+   "operation": "Calcite Transmutation",
+   "per_hour": 1815000
+  },
+  {
+   "make": "Dirty Bronze",
+   "from": "30 Pyrite + 120 Ferrite Dust + 20 Tritium",
+   "mult": "x0.01",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": 21340,
+   "operation": "Alloy Latticing",
+   "per_hour": 853600
+  }
+ ],
+ "essentials": [
+  {
+   "make": "4 Chromatic Metal",
+   "from": "2 Indium",
+   "mult": "x2",
+   "time": "25s",
+   "machine": "Portable",
+   "rate": 576,
+   "profit": 88,
+   "operation": "Extract Chromatic Material"
+  },
+  {
+   "make": "2 Condensed Carbon",
+   "from": "Uranium + Di-hydrogen",
+   "mult": "x1",
+   "time": "10s",
+   "machine": "Medium",
+   "rate": 720,
+   "profit": -48,
+   "operation": "Harness Energy"
+  },
+  {
+   "make": "50 Sodium Nitrate",
+   "from": "Crystal Sulphide",
+   "mult": "x50",
+   "time": "1.0m",
+   "machine": "Portable",
+   "rate": 3000,
+   "profit": -3700,
+   "operation": "Sulphur Release"
+  },
+  {
+   "make": "10 Magnetised Ferrite",
+   "from": "Platinum + Oxygen",
+   "mult": "x5",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 400,
+   "profit": 281,
+   "operation": "Mineral Alchemy"
+  },
+  {
+   "make": "2 Pure Ferrite",
+   "from": "Magnetised Ferrite",
+   "mult": "x2",
+   "time": "40s",
+   "machine": "Portable",
+   "rate": 180,
+   "profit": -26,
+   "operation": "Demagnetise Metal"
+  },
+  {
+   "make": "6 Ionised Cobalt",
+   "from": "Ionised Cobalt + 2 Oxygen",
+   "mult": "x6 loop",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 240,
+   "profit": 742,
+   "operation": "Efficient Cobalt Ionisation"
+  },
+  {
+   "make": "Deuterium",
+   "from": "Di-hydrogen + Tritium",
+   "mult": "x0.50",
+   "time": "1.0m",
+   "machine": "Medium",
+   "rate": 60,
+   "profit": -6,
+   "operation": "Di-hydrogen Cycling"
+  },
+  {
+   "make": "Starship Launch Fuel",
+   "from": "10 Di-hydrogen + 10 Magnetised Ferrite + 5 Sodium Nitrate",
+   "mult": "x0.04",
+   "time": "1.5m",
+   "machine": "Large",
+   "rate": 40,
+   "profit": -1120,
+   "operation": "Di-hydrogen Capture"
+  },
+  {
+   "make": "3 Pyrite",
+   "from": "Lithium + Magnetised Ferrite",
+   "mult": "x1.50",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 120,
+   "profit": 32,
+   "operation": "Loosen Bonds"
+  },
+  {
+   "make": "Salt",
+   "from": "Di-hydrogen + Oxygen",
+   "mult": "x0.50",
+   "time": "20s",
+   "machine": "Medium",
+   "rate": 180,
+   "profit": 33,
+   "operation": "Rapid Formation / Evaporation"
+  },
+  {
+   "make": "Glass",
+   "from": "40 Silicate Powder",
+   "mult": "x0.03",
+   "time": "10s",
+   "machine": "Portable",
+   "rate": 360,
+   "profit": 120,
+   "operation": "Silicate Forging"
+  },
+  {
+   "make": "2 Oxygen",
+   "from": "Kelp Sac + Carbon",
+   "mult": "x1",
+   "time": "1.5m",
+   "machine": "Medium",
+   "rate": 80,
+   "profit": 15,
+   "operation": "Release Captured Oxygen"
+  }
+ ],
+ "cooking": [
+  {
+   "make": "Ambrosial Curse",
+   "from": "Writhing, Roiling Batter + Syrupy Nectar",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 97600,
+   "operation": "Assemble Baked Product",
+   "per_hour": 70272000
+  },
+  {
+   "make": "Cream Fingers",
+   "from": "Sugar Dough + Cream",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 94600,
+   "operation": "Dough Augmentation",
+   "per_hour": 68112000
+  },
+  {
+   "make": "Cream Fingers",
+   "from": "Sugar Dough + Proto-Cream",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 92800,
+   "operation": "Dough Augmentation",
+   "per_hour": 66816000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Sweetroot",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 92200,
+   "operation": "Combine And Reduce",
+   "per_hour": 66384000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Pulpy Roots",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 92200,
+   "operation": "Combine And Reduce",
+   "per_hour": 66384000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Meaty Chunks",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 92000,
+   "operation": "Combine And Reduce",
+   "per_hour": 66240000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Meaty Wings",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Fiendish Roe",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Offal Sac",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + ProtoSausage",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Diplo Chunks",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Scaly Meat",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Feline Liver",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  },
+  {
+   "make": "Bone Broth",
+   "from": "Softened Marrow + Strider Sausage",
+   "mult": "x0.50",
+   "time": "5s",
+   "machine": "Processor",
+   "rate": 720,
+   "profit": 91600,
+   "operation": "Combine And Reduce",
+   "per_hour": 65952000
+  }
+ ],
+ "tier0": [
+  "Ammonia",
+  "Basalt",
+  "Cactus Flesh",
+  "Chlorine",
+  "Cobalt",
+  "Condensed Carbon",
+  "Di-hydrogen Jelly",
+  "Dioxite",
+  "Faecium",
+  "Frost Crystal",
+  "Fungal Mould",
+  "Gamma Root",
+  "Glass",
+  "Ionised Cobalt",
+  "Life Support Gel",
+  "Magnetised Ferrite",
+  "Marrow Bulb",
+  "Mordite",
+  "Paraffinium",
+  "Phosphorus",
+  "Pure Ferrite",
+  "Pyrite",
+  "Rusted Metal",
+  "Salt",
+  "Sodium Nitrate",
+  "Solanium",
+  "Star Bulb",
+  "Starship Launch Fuel",
+  "Unstable Plasma",
+  "Uranium"
+ ],
+ "tier1_extra": [
+  "Aronium",
+  "Deuterium",
+  "Dirty Bronze",
+  "Grantine",
+  "Herox",
+  "Ion Battery",
+  "Lemmium",
+  "Magno-Gold",
+  "Nanite Cluster"
+ ],
+ "must_find": [
+  "Activated Cadmium",
+  "Activated Copper",
+  "Activated Emeril",
+  "Activated Indium",
+  "Atlantideum",
+  "Crystal Sulphide",
+  "Cursed Dust",
+  "Cyto-Phosphate",
+  "Flesh Rope",
+  "Geodesite",
+  "Hadal Core",
+  "Hexite",
+  "Hyaline Brain",
+  "Hypnotic Eye",
+  "Inverted Mirror",
+  "Iridesite",
+  "Larval Core",
+  "Living Pearl",
+  "Polished Stone",
+  "Radiant Shard",
+  "Salvaged Data",
+  "Silicate Powder",
+  "Tainted Metal",
+  "Tritium",
+  "Vile Spawn"
+ ],
+ "sources": {
+  "tier0": [
+   "Oxygen",
+   "Carbon",
+   "Ferrite Dust",
+   "Di-hydrogen",
+   "Sodium"
+  ],
+  "tier1": [
+   "Oxygen",
+   "Carbon",
+   "Ferrite Dust",
+   "Di-hydrogen",
+   "Sodium",
+   "Silver",
+   "Gold",
+   "Platinum",
+   "Tritium"
+  ]
+ }
+}
