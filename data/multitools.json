@@ -1,0 +1,128 @@
+{
+ "_source": "Hand-written from the Suika Box guides 05.multi-tools.md and 21.multitool-damage.md, which in turn come from OODA Looper, Shirty, Jason Plays and Xaine's World. None of this is in the recipe tables the rest of the app is generated from.",
+ "_headline": "Sentinel and Voltaic Staff tie for the best damage in the game at +50%; Atlantid owns mining at +50%; Experimental and Royal have a fixed +100% scan. Pistols have no damage bonus at any class.",
+ "types": [
+  {"type": "Pistol", "damage": "+0%", "mining": "+20-35%", "scan": "+40-50%", "slots": "9-18",
+   "note": "Your starter. Literally no damage bonus at any class - that is why it feels the way it does."},
+  {"type": "Rifle", "damage": "+15-20%", "mining": "+0%", "scan": "+15-20%", "slots": "13-30",
+   "note": "No mining bonus at all."},
+  {"type": "Experimental", "damage": "+15-25%", "mining": "+25-30%", "scan": "+100% fixed", "slots": "9-30",
+   "note": "Scan is always exactly +100%, whatever the class."},
+  {"type": "Alien", "damage": "+25-35%", "mining": "+15-20%", "scan": "+50-60%", "slots": "9-30",
+   "note": "The best scan outside the two fixed-100% types."},
+  {"type": "Royal", "damage": "+15-25%", "mining": "+25-30%", "scan": "+100% fixed", "slots": "always 20",
+   "note": "Only type with a fixed slot count."},
+  {"type": "Sentinel", "damage": "+25-50%", "mining": "+10-15%", "scan": "+40-50%", "slots": "17-30",
+   "note": "Best damage in the game, tied with the Voltaic Staff. Carries the Hijacker Laser; only two design variants."},
+  {"type": "Atlantid", "damage": "+10-20%", "mining": "+35-50%", "scan": "+40-50%", "slots": "17-30",
+   "note": "Best mining in the game. The Runic Lens triples mining beam efficiency and grants temporary invisibility."},
+  {"type": "Voltaic Staff", "damage": "+25-50%", "mining": "+10-15%", "scan": "+40-50%", "slots": "17-30",
+   "note": "Ties the Sentinel for best damage."}
+ ],
+ "getting": [
+  {"type": "Sentinel", "cost": "free", "where": "Harmonic Camp on a dissonant planet",
+   "how": "Solve the sealed-cabinet puzzle at the camp terminal. Best tool available early."},
+  {"type": "Royal", "cost": "free", "where": "Sentinel Pillar terminals", "how": "Always spawns with 20 slots."},
+  {"type": "Atlantid", "cost": "free", "where": "Korvax Monolith Discordant Interfaces",
+   "how": "Charge with Atlantideum. The interfaces ignore you until the mission They Who Returned is complete."},
+  {"type": "Voltaic Staff", "cost": "Void Motes", "where": "Autophage Synthesis Terminals",
+   "how": "Buy the parts and assemble. The same head at the same terminal always produces the same class and colour - to reroll, assemble at a different terminal."},
+  {"type": "Alien / Experimental", "cost": "units", "where": "Space station cabinets in wealthy systems",
+   "how": "Wealthy systems have the highest S-class chance, and every station has two cabinets. Use the rotation trick."}
+ ],
+ "sentinel_puzzle": {
+  "title": "The free S-class Sentinel tool, step by step",
+  "steps": [
+   "Go to the camp's terminal, not the container.",
+   "Choose Scan Memory Registers - you get three addition problems, e.g. 4+11, 2+7, 3+1.",
+   "Choose Input Override Glyphs and enter the three answers (15, 9, 4). The glyphs are numbered.",
+   "Order does not matter - only the three correct numbers.",
+   "Deactivate the multi-tool seal, then take the tool from the container."
+  ],
+  "after": [
+   "It arrives with broken nodes: repair with Radiant Shards and Atlantideum, the purple crystals on the same planet. Radiant Shards also refine to 50 nanites each.",
+   "At the 6 active tool cap you must exchange, not acquire - decide which one dies before walking in.",
+   "Strip the old tool first: Y (Xbox) / Triangle (PlayStation) on installed tech picks it back up, Terrain Manipulator included. You lose nothing by swapping.",
+   "The same dissonance spikes also mark crashed Sentinel ships, so stack the trip."
+  ]
+ },
+ "cabinet_trick": {
+  "title": "The cabinet rotation trick",
+  "steps": [
+   "Visit a planet in the system.",
+   "Save and reload on the planet's surface.",
+   "Return to the space station - both cabinets have changed."
+  ],
+  "note": "One cabinet pulls from the planetary pool, the other from the station's own rotation, which scales with the planet count. A six-planet system can offer up to 12 designs at one station."
+ },
+ "hunting": {
+  "title": "Hunting a specific tool from a location guide",
+  "steps": [
+   "Get to the right galaxy (for Eissentam: featured bases at the Anomaly, a hub player, or the Artemis questline's green choice).",
+   "Turn multiplayer OFF before you portal - the tool instance is shared, and if someone else grabs it first it is gone for everyone.",
+   "Dial the portal address.",
+   "Look for a communication station marking the spot, or navigate to the published coordinates.",
+   "At the settlement, get out of your ship and reload the autosave that just triggered - the tool appears in the cabinet after the reload.",
+   "You still pay for it. The worked example cost 7.5 million units."
+  ]
+ },
+ "weapons": [
+  {"weapon": "Scatter Blaster", "kind": "shotgun", "best_hit": "2,170",
+   "pro": "Excellent damage, one-shots some enemies; the pick for derelict freighters",
+   "con": "Almost useless at range, hard to control held down"},
+  {"weapon": "Neutron Cannon", "kind": "charge cannon", "best_hit": "1,600",
+   "pro": "Area of effect, hits several enemies, charges with Carbon rather than ammo",
+   "con": "Must hold to charge for real damage"},
+  {"weapon": "Blaze Javelin", "kind": "sniper", "best_hit": "1,184 x2",
+   "pro": "1-2 second stun, charges with Carbon",
+   "con": "Slow between shots, poor close range against groups"},
+  {"weapon": "Bolt Caster", "kind": "burst fire", "best_hit": "657",
+   "pro": "A great all-rounder, good at all ranges, excellent reload. The only weapon Sentinel and Autophage upgrades work with",
+   "con": "Lowest damage per shot"},
+  {"weapon": "Pulse Splitter", "kind": "full auto", "best_hit": "284",
+   "pro": "Fire rate shreds, bonus fire damage",
+   "con": "Chews through ammo, kicks on trigger pull"},
+  {"weapon": "Paralysis Mortar", "kind": "secondary - stun", "best_hit": "-",
+   "pro": "Strong against big enemies like Sentinel Walkers; its one upgrade also works with the Blaze Javelin. Reloads with Unstable Plasma",
+   "con": "Only one upgrade helps it, and it takes no adjacency bonus"},
+  {"weapon": "Plasma Launcher", "kind": "secondary - explosive", "best_hit": "-",
+   "pro": "Great against groups, and it does take adjacency upgrades",
+   "con": "The explosion is timed, not on impact - it bounces back at you. Mid-to-long range only"}
+ ],
+ "rules": [
+  {"title": "Damage Potential is not damage output",
+   "body": "It rolls up the installed weapons and damage tech, including the mining beam, and you can only fire one weapon at a time. There is no DPS readout anywhere in the game; the only real measurement is shooting something and reading the numbers. It is still the best measuring stick you have - strip the loadout to one thing and add pieces one at a time to watch the delta."},
+  {"title": "Adjacency runs horizontally and vertically, never diagonally",
+   "body": "Group same-weapon-type upgrades together; a coloured border means the bonus is live. The bonus takes the class of the lowest member of the pair, so an A next to an S gives an A-class bonus. Some upgrades give no adjacency at all - no border ever appears, so stop trying to fit them into the block."},
+  {"title": "Supercharged slots want to be a 2x2 block",
+   "body": "Four in a square all feed each other because adjacency is horizontal and vertical only; four in a line or scattered do not. This is fixed at spawn and is the single thing that separates a great tool from an average one - it is what to look for when hunting."},
+  {"title": "Supercharge the weapon itself",
+   "body": "The weapon shows no visible stats, so the slot looks wasted. Swapping the weapon out for an A-class upgrade dropped a loadout from 24,000 to 14,000. Worth testing yourself: this rests on the Damage Potential number, and part of the community argues the opposite."},
+  {"title": "Put the Optical Drill in a supercharged slot",
+   "body": "It boosts efficiency by 88%, nearly doubling mining output - one of the strongest early upgrades in the game."},
+  {"title": "Add the ordinary Mining Laser to a Sentinel tool",
+   "body": "Alongside the Sentinel's own laser it takes Damage Potential from 469 to 1,164 with no weapons installed, slows overheating and massively boosts mining."},
+  {"title": "Scanner Range above ~700 is wasted",
+   "body": "The game does not display critical survival resources beyond roughly a 600-unit radius even with Scanner Range over 2,000."},
+  {"title": "You do not need X-class",
+   "body": "X-class rolls come from pirate/outlaw station vendors and are a lottery - they can come out worse than C. The right tool with a good supercharged arrangement and the best S-class upgrades handles anything the game throws at you."},
+  {"title": "Do not rush slot expansion",
+   "body": "Each slot costs progressively more, eventually 600 million units, and filling one tool with units alone runs past 10 billion. Saved Multi-tool Expansion Slots are worth hundreds of millions each. Upgrade class with nanites first: max slots are C 21, B 30, A 45, S 60."},
+  {"title": "There is no need to chase a natural S-class",
+   "body": "Any tool upgrades to S at the station Upgrade Station with nanites. Pick a design you like and upgrade it yourself."},
+  {"title": "You can hold 6 active and 18 archived",
+   "body": "The archive is reached through a Weapon Rack - buildable on a base, a corvette or a freighter. Salvage unwanted tools at the Anomaly's Decommissioning Terminal, which can even return Expansion Slots."}
+ ],
+ "upgrade_sources": [
+  {"kind": "Craftable", "where": "Blueprints learned at the Anomaly", "note": "Max 3-4 per weapon; some add utility rather than damage"},
+  {"kind": "Purchased", "where": "Multi-tool vendor at any space station", "note": "Max 3 per weapon, C to B to A to S"},
+  {"kind": "X-class", "where": "Space stations in pirate/outlaw systems", "note": "Random roll - can beat S-class or come out worse than C"},
+  {"kind": "Sentinel / Autophage", "where": "Extract Components on Salvaged Glass from dead Sentinels", "note": "On the multi-tool side these only work with the Bolt Caster"}
+ ],
+ "upgrade_order": [
+  "Mining beam first: Advanced Mining Laser (unlocks advanced deposits and Radiant Shards on dissonant worlds), then Optical Drill.",
+  "Scanner upgrades - they directly improve exploration income.",
+  "One main weapon with proper upgrades, for when fighting is unavoidable.",
+  "Stick to one primary and one secondary; spreading upgrades across weapons wastes slots."
+ ]
+}
