@@ -1,0 +1,129 @@
+{
+ "_source": "Curated from the written guides in the Suika Box vault, chiefly 01.projects/03.no-mans-sky/20.refiner-recipes.md (nanite converters table) and 18.derelict-freighters.md. The game files record what a recipe needs, never where the ingredient is found, so this is the one hand-written file in the project. effort is a coarse rating of how much of a detour the item is: easy = you will pass some anyway, medium = a deliberate trip, hard = a specific hunt.",
+ "items": {
+  "BP_SALVAGE": {
+   "where": "Buried beside Damaged Machinery — dig with the Terrain Manipulator",
+   "effort": "easy",
+   "note": "The Space Anomaly blueprints eat a few hundred; refine the rest at 15 nanites each."
+  },
+  "AF_METAL": {
+   "where": "Derelict freighters, Corrupted Sentinels, Autophage camps",
+   "effort": "medium",
+   "note": "Highest volume, not highest per unit: 150-500 from one derelict run."
+  },
+  "SPACEGUNK2": {
+   "where": "Curious Deposits, which respawn every time you return to the planet",
+   "effort": "easy",
+   "note": "Gathering is trivial; at 5:1 and 150 s per nanite the refining is the whole cost."
+  },
+  "SPACEGUNK4": {
+   "where": "Pressurised capsules and festering pustules inside derelict freighters",
+   "effort": "medium",
+   "note": "Refines to Runaway Mould, then to nanites."
+  },
+  "FIENDCORE": {
+   "where": "Whispering Eggs, outside abandoned buildings",
+   "effort": "medium",
+   "note": "Fastest nanites in the game per refiner, tied with Hadal Core."
+  },
+  "FISHCORE": {
+   "where": "Underwater — hives and the sea floor",
+   "effort": "medium"
+  },
+  "WORMPROD": {
+   "where": "Hives",
+   "effort": "medium"
+  },
+  "WORMCORE": {
+   "where": "Hives, underwater, Whispering Eggs",
+   "effort": "medium"
+  },
+  "DRONE_SHARD": {
+   "where": "Hives, underwater, Whispering Eggs",
+   "effort": "medium"
+  },
+  "SHIPBRAIN": {
+   "where": "Corrupted-planet creatures, while hunting Sentinel Interceptors",
+   "effort": "hard",
+   "note": "230 nanites in one inventory slot is unbeatable storage, but 53 min each: compact, not fast."
+  },
+  "DRONE_SALVAGE": {
+   "where": "Byproduct of shooting Dissonant Resonators for Echo Locators",
+   "effort": "medium",
+   "note": "Piles up unused during Echo Locator farming — refine the surplus."
+  },
+  "SPECIAL_POOP": {
+   "where": "Guild Envoy reward",
+   "effort": "hard"
+  },
+  "CLAMPEARL": {
+   "where": "Giant clams on the ocean floor",
+   "effort": "medium",
+   "note": "Do not sell: one pearl refines into 100 Gold."
+  },
+  "ROBOT1": {
+   "where": "Destroyed Sentinels",
+   "effort": "easy"
+  },
+  "ROCKETSUB": {
+   "where": "Asteroids — a few minutes of shooting in any system",
+   "effort": "easy"
+  },
+  "WATERWORLD1": {
+   "where": "Deep-ocean planets in purple systems, or refine Crystallised Helium + Quartzite",
+   "effort": "hard"
+  },
+  "ROBOT2": {
+   "where": "Purple systems (post-story)",
+   "effort": "hard"
+  },
+  "SAND1": {
+   "where": "Mined from glass-bearing surface deposits",
+   "effort": "medium"
+  },
+  "ALLOY7": {
+   "where": "Loot only — never a refiner output, unlike the other alloys",
+   "effort": "hard"
+  },
+  "ALLOY8": {
+   "where": "Loot only — never a refiner output, unlike the other alloys",
+   "effort": "hard"
+  },
+  "OXYGEN": {
+   "where": "Any planet — oxygen plants, or a Gas Extractor on a hotspot",
+   "effort": "easy"
+  },
+  "FUEL1": {
+   "where": "Any planet — shoot any plant with the mining laser",
+   "effort": "easy"
+  },
+  "LAND1": {
+   "where": "Any planet — shoot any rock",
+   "effort": "easy"
+  },
+  "LAUNCHSUB": {
+   "where": "Any planet — blue crystal deposits",
+   "effort": "easy"
+  },
+  "CATALYST1": {
+   "where": "Any planet — yellow crystal deposits",
+   "effort": "easy"
+  },
+  "GAS3": {
+   "where": "Atmosphere harvester on a Nitrogen hotspot",
+   "effort": "easy"
+  },
+  "ASTEROID1": {
+   "where": "Asteroids — shoot them in any system",
+   "effort": "easy"
+  },
+  "ASTEROID2": {
+   "where": "Asteroids — shoot them in any system",
+   "effort": "easy"
+  },
+  "ASTEROID3": {
+   "where": "Asteroids — the rarer gold-tinted ones",
+   "effort": "easy"
+  }
+ }
+}
