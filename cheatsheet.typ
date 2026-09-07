@@ -13,10 +13,14 @@
 #let data = json("data/cheatsheet.json")
 
 // Catppuccin Latte (light, print-friendly) and Mocha (dark, screens).
+// Latte leaves the page white rather than using the palette's base: a printer
+// would lay a grey wash over every sheet for nothing. The zebra stripe keeps
+// Latte's own mantle, which now reads harder against white than it did against
+// the base — the rows are easier to follow on paper, not fainter.
 #let themes = (
   latte: (
-    bg: rgb("#eff1f5"), text: rgb("#4c4f69"), subtext: rgb("#6c6f85"),
-    card: rgb("#e6e9ef"), code: rgb("#1e66f5"), title-text: rgb("#eff1f5"),
+    bg: white, text: rgb("#4c4f69"), subtext: rgb("#6c6f85"),
+    card: rgb("#e6e9ef"), code: rgb("#1e66f5"), title-text: white,
     pos: rgb("#40a02b"), neg: rgb("#d20f39"),
     accents: (rgb("#40a02b"), rgb("#1e66f5"), rgb("#8839ef"), rgb("#fe640b"),
               rgb("#d20f39"), rgb("#179299"), rgb("#df8e1d"), rgb("#ea76cb")),
