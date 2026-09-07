@@ -40,6 +40,22 @@ mise run tui        # go
 
 ### Keys
 
+`Ctrl+P` opens the **command palette**, which lists every mode the app has by
+name and marks the one you are in:
+
+```
+● Recipes: Refining          ● Sort: multiplier        Nanite ladder
+· Recipes: Cooking           · Sort: fastest           Portal addresses
+· Recipes: All recipes       · Sort: units profit      Inventory
+```
+
+Type `profit` and press Enter to sort by profit; `shared` to filter saved
+addresses to the ones other people found. Cycle keys are faster once you know
+the order and opaque until you do — pressing `s` four times reaches "units
+profit", but nothing on screen ever said that was an option. The palette is
+also what lets the footer group its keys: nothing is hidden by being left out
+of the bar.
+
 Vim motions work in every table, tree and scrollable pane:
 
 | | |
@@ -53,7 +69,7 @@ Then the actions:
 
 | | |
 | --- | --- |
-| `f` `s` | cycle domain (refining / cooking / all) and sort |
+| `f` `s` | cycle domain (refining / cooking / all) and sort — or pick either by name from `Ctrl+P` |
 | `p` `r` | recipes that **produce** the highlighted item / that **consume** it |
 | `Enter` | pivot to everything touching that item · `Backspace` clears the filter |
 | `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `C` allow cooking |
@@ -61,9 +77,10 @@ Then the actions:
 | `e` | **cooking effects** — what each dish does when eaten |
 | `m` | **multi-tools** — types, weapons, getting one, tips |
 | `P` | **portal addresses** — convert glyphs, and the places worth going |
-| `a` `i` | add to inventory / open the inventory screen |
+| `a` `i` | add to inventory / open the inventory screen (`/` opens its add field) |
 | `d` | show/hide the detail pane — it hides itself below 100 columns |
 | `?` | full help |
+| `ctrl+p` | command palette — every mode by name |
 
 ### Reading the columns
 

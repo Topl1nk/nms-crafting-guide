@@ -7,7 +7,7 @@ import json
 
 import pytest
 
-from nms_items.app import RecipeApp
+from nms_items.app import SORTS, RecipeApp
 from nms_items.inventory import Inventory
 from nms_items.model import Book
 
@@ -74,6 +74,8 @@ def test_app_flows(book: Book, tmp_path_factory) -> None:
             await pilot.press("i")
             await pilot.pause(0.2)
             assert app.screen.__class__.__name__ == "InventoryScreen"
+            await pilot.press("slash")   # insert mode, as everywhere else
+            await pilot.pause(0.2)
             for char in "platinum 250":
                 await pilot.press(char)
             await pilot.press("enter")
@@ -400,5 +402,124 @@ def test_multitool_screen_reaches_the_addresses(book: Book, tmp_path) -> None:
             await pilot.pause(0.4)
             assert app.screen.__class__.__name__ == "PortalScreen"
             assert app.screen.kind == "multi-tool"
+
+    run(scenario())
+
+
+def _titles(screen) -> list[str]:
+    return [command.title for command in screen.palette_commands()]
+
+
+def test_palette_lists_every_mode_and_marks_the_current_one(book, tmp_path) -> None:
+    """Ctrl+P is the way to reach a mode without cycling to it blind."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(140, 40)) as pilot:
+            await pilot.pause()
+            main = app.screen
+            commands = list(main.palette_commands())
+
+            # Every domain and every sort is offered by name, not by cycle.
+            assert [c.title for c in commands if c.title.startswith("Recipes:")] == [
+                "Recipes: Refining", "Recipes: Cooking", "Recipes: All recipes",
+            ]
+            assert len([c for c in commands if c.title.startswith("Sort:")]) == 6
+
+            # Exactly one of each group is marked as where you are.
+            for group in ("Recipes:", "Sort:"):
+                on = [c for c in commands if c.title.startswith(group) and c.current]
+                assert len(on) == 1, group
+            assert "● " in [c for c in commands if c.current][0].display
+
+            # Running one sets that mode outright rather than stepping to it.
+            by_title = {c.title: c for c in commands}
+            by_title["Sort: units profit"].run()
+            await pilot.pause(0.2)
+            assert SORTS[main.sort_index][0] == "profit"
+            by_title["Recipes: All recipes"].run()
+            await pilot.pause(0.2)
+            assert main.domain is None
+
+            # And the marks follow.
+            now = {c.title: c.current for c in main.palette_commands()}
+            assert now["Sort: units profit"] and not now["Sort: multiplier"]
+
+            # Plain actions carry no mode mark.
+            assert by_title["Nanite ladder"].current is None
+            assert by_title["Nanite ladder"].display.startswith("  ")
+
+    run(scenario())
+
+
+def test_every_screen_with_modes_offers_them(book, tmp_path) -> None:
+    """A screen that has a cycle key must also have palette entries for it."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+
+            for key, expect in (
+                ("c", ("Source: Tier 0 - any planet", "Quantity")),
+                ("n", ("Sort: nanites/hour", "Sort: how gettable")),
+                ("m", ("Tab: types", "Tab: tips")),
+                ("i", ("Recipes: refining only", "Clear inventory")),
+                ("P", ("Kind: everything", "Found: my finds")),
+            ):
+                await pilot.press(key)
+                await pilot.pause(0.4)
+                screen = app.screen
+                assert screen.COMMANDS, screen.__class__.__name__
+                titles = _titles(screen)
+                for wanted in expect:
+                    assert wanted in titles, (screen.__class__.__name__, titles)
+                # Every mode group has exactly one current entry.
+                groups: dict[str, int] = {}
+                for command in screen.palette_commands():
+                    if command.current:
+                        groups[command.title.split(":")[0]] = (
+                            groups.get(command.title.split(":")[0], 0) + 1
+                        )
+                assert all(n == 1 for n in groups.values()), groups
+                # Twice: on the inventory screen the first Escape only leaves
+                # the add field, the way it does in vim.
+                await pilot.press("escape")
+                await pilot.pause(0.2)
+                await pilot.press("escape")
+                await pilot.pause(0.3)
+                assert app.screen.__class__.__name__ == "RecipeScreen"
+
+    run(scenario())
+
+
+def test_portal_palette_offers_the_address_actions_only_when_there_is_one(
+    book, tmp_path
+) -> None:
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            screen = app.screen
+            assert "Copy portal code" not in _titles(screen)
+
+            await pilot.press("slash")
+            for char in "40E907FF0D6B":
+                await pilot.press(char)
+            await pilot.pause(0.3)
+            titles = _titles(screen)
+            assert "Copy portal code" in titles
+            assert "Save this address" in titles
+
+            # The help line on a copy command is the thing it will copy.
+            copy = next(
+                c for c in screen.palette_commands() if c.title == "Copy portal code"
+            )
+            assert copy.help == "40E907FF0D6B"
 
     run(scenario())

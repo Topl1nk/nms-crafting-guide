@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
-from textual.app import App, ComposeResult
+from functools import partial
+from typing import Iterator
+
+from textual.app import App, ComposeResult, SystemCommand
 from textual.binding import Binding
 from textual.containers import Horizontal
 from textual.screen import Screen
 from textual.widgets import DataTable, Footer, Header, Static
 
+from .commands import ModeCommand, ModeCommands, mode
 from .ease import EaseIndex
 from .inventory import Inventory
 from .model import Book, Recipe
@@ -55,6 +59,12 @@ SORTS: list[tuple[str, str]] = [
 ]
 
 
+# Footer groups: five keys that all open another screen say "screens" once
+# instead of five times, which is most of what was overflowing the bar.
+GO = Binding.Group("screens")
+FILTER = Binding.Group("filter")
+
+
 def sort_key(mode: str, ease: EaseIndex):
     if mode == "mult":
         return lambda r: (-max(r.loop, r.ratio), r.time)
@@ -82,22 +92,24 @@ class RecipeScreen(Screen):
         Binding("slash", "focus_search", "search"),
         Binding("f", "cycle_domain", "domain"),
         Binding("s", "cycle_sort", "sort"),
-        Binding("p", "filter_produces", "produced by"),
-        Binding("r", "filter_consumes", "used in"),
+        Binding("p", "filter_produces", "produced by", group=FILTER),
+        Binding("r", "filter_consumes", "used in", group=FILTER),
+        Binding("backspace", "clear_item_filter", "clear filter", group=FILTER),
         Binding("c", "chain", "chain"),
-        Binding("a", "add_to_inventory", "+inventory"),
-        Binding("i", "inventory", "inventory"),
-        Binding("n", "nanites", "nanites"),
-        Binding("e", "effects", "food effects"),
-        Binding("m", "multitools", "multi-tools"),
+        Binding("a", "add_to_inventory", "+inv"),
+        Binding("n", "nanites", "nanites", group=GO),
+        Binding("e", "effects", "food effects", group=GO),
+        Binding("m", "multitools", "multi-tools", group=GO),
         # Capital P: lowercase p is already "produced by" on this table.
-        Binding("P", "portals", "portal addresses"),
-        Binding("d", "toggle_detail", "detail pane"),
-        Binding("backspace", "clear_item_filter", "clear filter"),
+        Binding("P", "portals", "portals", group=GO),
+        Binding("i", "inventory", "inventory", group=GO),
+        Binding("d", "toggle_detail", "detail"),
         # Escape in normal mode clears what you searched for; Escape in the
         # search box just leaves insert mode and keeps it.
         Binding("escape", "clear_search", "clear search", show=False),
     ]
+
+    COMMANDS = {ModeCommands}
 
     def __init__(self, book: Book, ease: EaseIndex, inventory: Inventory) -> None:
         super().__init__()
@@ -144,6 +156,45 @@ class RecipeScreen(Screen):
         self.query_one("#detail", Static).display = (
             self.detail_on and self.app.size.width >= MIN_WIDTH_FOR_DETAIL
         )
+
+    # -- command palette --------------------------------------------------
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        """Both cycles as flat lists, so `s` stops being a guessing game."""
+        for i, (_, label) in enumerate(DOMAINS):
+            yield mode(
+                "Recipes", label, partial(self._set_domain, i),
+                i == self.domain_index,
+            )
+        for i, (_, label) in enumerate(SORTS):
+            yield mode(
+                "Sort", label, partial(self._set_sort, i), i == self.sort_index,
+            )
+        yield ModeCommand("Nanite ladder", "Every route to nanites, ranked",
+                          self.action_nanites)
+        yield ModeCommand("Cooking effects", "What each dish does when eaten",
+                          self.action_effects)
+        yield ModeCommand("Multi-tools", "Types, weapons, getting the good ones",
+                          self.action_multitools)
+        yield ModeCommand("Portal addresses", "Glyphs, coordinates, saved places",
+                          self.action_portals)
+        yield ModeCommand("Inventory", "What you are carrying",
+                          self.action_inventory)
+        if self.query_text or self.item_filter:
+            yield ModeCommand("Clear search and filters", "Back to the full list",
+                              self.action_clear_search)
+        yield ModeCommand(
+            "Detail pane", "Show or hide the pane on the right",
+            self.action_toggle_detail,
+        )
+
+    def _set_domain(self, index: int) -> None:
+        self.domain_index = index
+        self.refresh_rows()
+
+    def _set_sort(self, index: int) -> None:
+        self.sort_index = index
+        self.refresh_rows()
 
     # -- data ------------------------------------------------------------
 
@@ -285,12 +336,10 @@ class RecipeScreen(Screen):
         self.query_one("#table", VimDataTable).focus()
 
     def action_cycle_domain(self) -> None:
-        self.domain_index = (self.domain_index + 1) % len(DOMAINS)
-        self.refresh_rows()
+        self._set_domain((self.domain_index + 1) % len(DOMAINS))
 
     def action_cycle_sort(self) -> None:
-        self.sort_index = (self.sort_index + 1) % len(SORTS)
-        self.refresh_rows()
+        self._set_sort((self.sort_index + 1) % len(SORTS))
 
     def action_filter_produces(self) -> None:
         recipe = self.current_recipe()
@@ -390,6 +439,17 @@ class RecipeApp(App):
 
     def on_mount(self) -> None:
         self.push_screen(RecipeScreen(self.book, self.ease, self.inv))
+
+    def get_system_commands(self, screen: Screen):
+        """Trim the built-ins to the two that mean anything here.
+
+        The defaults add Keys, Maximize and Screenshot, which between them push
+        this app's own modes off the bottom of the palette on open -- and the
+        key reference is better on `?` than in a panel.
+        """
+        yield SystemCommand("Theme", "Change the colour theme",
+                            self.action_change_theme)
+        yield SystemCommand("Quit", "Leave", self.action_quit)
 
     def action_help(self) -> None:
         self.push_screen(HelpScreen())

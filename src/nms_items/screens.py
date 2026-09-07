@@ -2,6 +2,9 @@
 
 from __future__ import annotations
 
+from functools import partial
+from typing import Iterator
+
 from textual.app import ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal, Vertical
@@ -19,8 +22,15 @@ from textual.widgets import (
 )
 
 from . import food, graph, multitools, portals
+from .commands import ModeCommand, ModeCommands, mode
 from .ease import EaseIndex
 from .widgets import SearchInput, VimDataTable, VimTree, VimVerticalScroll
+
+# Footer groups. Keys that all do the same kind of thing say what that is once.
+FILTER = Binding.Group("filter")
+ITEM = Binding.Group("item")
+SAVED = Binding.Group("saved")
+COPY = Binding.Group("copy")
 from .model import SOURCE_SETS, Book
 from .portals import Address, AddressError, Location, LocationBook
 from .inventory import Inventory
@@ -75,6 +85,8 @@ class ChainScreen(Screen):
         Binding("C", "toggle_cooking", "incl. cooking"),
     ]
 
+    COMMANDS = {ModeCommands}
+
     def __init__(self, book: Book, target: str, qty: int = 1) -> None:
         super().__init__()
         self.book = book
@@ -92,6 +104,30 @@ class ChainScreen(Screen):
 
     def on_mount(self) -> None:
         self.title = f"Chain - {self.book.name(self.target)}"
+        self.refresh_plan()
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        for i, name in enumerate(self.tier_names):
+            yield mode(
+                "Source", name, partial(self._set_tier, i), i == self.tier_index,
+                "What the plan is allowed to start from",
+            )
+        yield mode(
+            "Recipes", "refining only", partial(self._set_cooking, False),
+            not self.with_cooking,
+        )
+        yield mode(
+            "Recipes", "refining and cooking", partial(self._set_cooking, True),
+            self.with_cooking,
+        )
+        yield ModeCommand("Quantity", "How many to plan for", self.action_set_qty)
+
+    def _set_tier(self, index: int) -> None:
+        self.tier_index = index
+        self.refresh_plan()
+
+    def _set_cooking(self, on: bool) -> None:
+        self.with_cooking = on
         self.refresh_plan()
 
     @property
@@ -199,12 +235,18 @@ class InventoryScreen(Screen):
 
     BINDINGS = [
         Binding("escape,q", "app.pop_screen", "back"),
-        Binding("d,delete", "drop", "drop item"),
-        Binding("e", "edit", "edit count"),
-        Binding("x", "clear_all", "clear all"),
+        # `/` is insert mode here too. This screen used to open with the add
+        # field focused, which made every letter key type instead of act -- so
+        # the footer was correctly, and uselessly, empty on arrival.
+        Binding("slash", "focus_add", "add item"),
+        Binding("d,delete", "drop", "drop item", group=ITEM),
+        Binding("e", "edit", "edit count", group=ITEM),
+        Binding("x", "clear_all", "clear all", group=ITEM),
         # Not k: that is cursor-up in the tables now.
         Binding("C", "toggle_cooking", "incl. cooking"),
     ]
+
+    COMMANDS = {ModeCommands}
 
     def __init__(self, book: Book, inventory: Inventory) -> None:
         super().__init__()
@@ -215,7 +257,7 @@ class InventoryScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         yield SearchInput(
-            placeholder="add to inventory:  <item name> <count>   e.g. platinum 250",
+            placeholder="/ to add:  <item name> <count>   e.g. platinum 250",
             id="inv-add",
         )
         with Horizontal(id="inv-body"):
@@ -237,7 +279,25 @@ class InventoryScreen(Screen):
         )
         self.query_one("#near-table", DataTable).add_columns("Make", "From", "Missing")
         self.refresh_all()
-        self.query_one("#inv-add", SearchInput).focus()
+        self.query_one("#inv-table", VimDataTable).focus()
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        yield mode(
+            "Recipes", "refining only", partial(self._set_cooking, False),
+            not self.with_cooking,
+        )
+        yield mode(
+            "Recipes", "refining and cooking", partial(self._set_cooking, True),
+            self.with_cooking,
+        )
+        yield ModeCommand("Add an item", "Type a name and a count",
+                          self.action_focus_add)
+        yield ModeCommand("Clear inventory", "Drop everything you are carrying",
+                          self.action_clear_all)
+
+    def _set_cooking(self, on: bool) -> None:
+        self.with_cooking = on
+        self.refresh_all()
 
     @property
     def domains(self) -> tuple[str, ...]:
@@ -280,6 +340,9 @@ class InventoryScreen(Screen):
                 recipe.output_label, recipe.inputs_label, need, key=str(recipe.index)
             )
 
+    def action_focus_add(self) -> None:
+        self.query_one("#inv-add", SearchInput).focus()
+
     def on_search_input_escaped(self, event: SearchInput.Escaped) -> None:
         """Leaving the add field must not add whatever is half-typed."""
         self.query_one("#inv-table", VimDataTable).focus()
@@ -313,6 +376,7 @@ class InventoryScreen(Screen):
         total = self.inv.add(item.id, count)
         self.notify(f"{item.name}: {total}")
         self.refresh_all()
+        # Stay in the field: adding things comes in runs.
 
     def _selected_item(self) -> str | None:
         table = self.query_one("#inv-table", DataTable)
@@ -352,8 +416,7 @@ class InventoryScreen(Screen):
         self.notify("Inventory cleared")
 
     def action_toggle_cooking(self) -> None:
-        self.with_cooking = not self.with_cooking
-        self.refresh_all()
+        self._set_cooking(not self.with_cooking)
 
 
 class NaniteScreen(Screen):
@@ -368,6 +431,8 @@ class NaniteScreen(Screen):
         Binding("escape,q", "app.pop_screen", "back"),
         Binding("s", "cycle_sort", "sort"),
     ]
+
+    COMMANDS = {ModeCommands}
 
     SORTS = [
         ("rate", "nanites/hour"),
@@ -458,6 +523,16 @@ class NaniteScreen(Screen):
     def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
         if 0 <= event.cursor_row < len(self.rows):
             self.show_detail(event.cursor_row)
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        for i, (_, label) in enumerate(self.SORTS):
+            yield mode(
+                "Sort", label, partial(self._set_sort, i), i == self.sort_index,
+            )
+
+    def _set_sort(self, index: int) -> None:
+        self.sort_index = index
+        self.refresh_rows()
 
     def action_cycle_sort(self) -> None:
         self.sort_index = (self.sort_index + 1) % len(self.SORTS)
@@ -587,9 +662,33 @@ class MultiToolScreen(Screen):
         Binding("P", "portals", "portal addresses"),
     ]
 
+    COMMANDS = {ModeCommands}
+
+    TABS = [
+        ("tab-types", "types"),
+        ("tab-weapons", "weapons"),
+        ("tab-getting", "getting one"),
+        ("tab-tips", "tips"),
+    ]
+
     def __init__(self) -> None:
         super().__init__()
         self.data = multitools.load()
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        active = self.query_one("#mt-tabs", TabbedContent).active
+        for pane_id, label in self.TABS:
+            yield mode(
+                "Tab", label, partial(self._set_tab, pane_id), pane_id == active,
+            )
+        yield ModeCommand(
+            "Portal addresses for these tools",
+            "The Euclid shortlist, filtered to multi-tools",
+            self.action_portals,
+        )
+
+    def _set_tab(self, pane_id: str) -> None:
+        self.query_one("#mt-tabs", TabbedContent).active = pane_id
 
     def action_portals(self) -> None:
         self.app.push_screen(PortalScreen(kind="multi-tool"))
@@ -889,15 +988,17 @@ class PortalScreen(Screen):
     BINDINGS = [
         Binding("escape,q", "app.pop_screen", "back"),
         Binding("slash", "focus_input", "convert / search"),
-        Binding("f", "cycle_kind", "kind"),
-        Binding("o", "cycle_origin", "mine/shared"),
+        Binding("f", "cycle_kind", "kind", group=FILTER),
+        Binding("o", "cycle_origin", "mine/shared", group=FILTER),
         Binding("p", "cycle_planet", "planet glyph"),
-        Binding("s", "save", "save"),
-        Binding("e", "edit", "edit"),
-        Binding("d,delete", "drop", "drop"),
-        Binding("y", "copy_code", "code"),
-        Binding("Y", "copy_galactic", "galactic"),
+        Binding("s", "save", "save", group=SAVED),
+        Binding("e", "edit", "edit", group=SAVED),
+        Binding("d,delete", "drop", "drop", group=SAVED),
+        Binding("y", "copy_code", "code", group=COPY),
+        Binding("Y", "copy_galactic", "galactic", group=COPY),
     ]
+
+    COMMANDS = {ModeCommands}
 
     def __init__(
         self, book: LocationBook | None = None, kind: str | None = None
@@ -941,6 +1042,37 @@ class PortalScreen(Screen):
         self.refresh_locations()
         self.refresh_readout()
         table.focus()
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        for i, (_, label) in enumerate(KIND_FILTERS):
+            yield mode(
+                "Kind", label, partial(self._set_kind, i), i == self.kind_index,
+            )
+        for i, (_, label) in enumerate(ORIGIN_FILTERS):
+            yield mode(
+                "Found", label, partial(self._set_origin, i),
+                i == self.origin_index,
+            )
+        if self.current is not None:
+            yield ModeCommand(
+                "Copy portal code", self.current.portal_code, self.action_copy_code)
+            yield ModeCommand(
+                "Copy galactic address", self.current.galactic,
+                self.action_copy_galactic)
+            yield ModeCommand(
+                "Save this address", "Name it and keep it", self.action_save)
+            yield ModeCommand(
+                "Next planet glyph",
+                "The one field a galactic address cannot carry",
+                self.action_cycle_planet)
+
+    def _set_kind(self, index: int) -> None:
+        self.kind_index = index
+        self.refresh_locations()
+
+    def _set_origin(self, index: int) -> None:
+        self.origin_index = index
+        self.refresh_locations()
 
     def on_resize(self) -> None:
         self._fit_to_width()
@@ -1145,13 +1277,11 @@ class PortalScreen(Screen):
         self.query_one("#portal-input", SearchInput).focus()
 
     def action_cycle_kind(self) -> None:
-        self.kind_index = (self.kind_index + 1) % len(KIND_FILTERS)
-        self.refresh_locations()
+        self._set_kind((self.kind_index + 1) % len(KIND_FILTERS))
 
     def action_cycle_origin(self) -> None:
         """Your own finds, or the ones off a catalogue -- they age differently."""
-        self.origin_index = (self.origin_index + 1) % len(ORIGIN_FILTERS)
-        self.refresh_locations()
+        self._set_origin((self.origin_index + 1) % len(ORIGIN_FILTERS))
 
     def action_cycle_planet(self) -> None:
         """The planet glyph is the one a galactic address cannot tell you."""
@@ -1239,6 +1369,16 @@ class PortalScreen(Screen):
 HELP_TEXT = """\
 [b #89b4fa]NMS Items[/] - refining, cooking and chain lookup
 
+[b]Ctrl+P - the command palette[/]
+  Every mode this app has, by name, with a [b]●[/] on the one you are in.
+  Open it and type: "profit" sorts by profit, "cooking" switches domain,
+  "portal" opens the addresses, "shared" filters the saved list.
+  This is the way out of guessing what the cycle keys cycle through -
+  pressing s four times to reach "units profit" works, but nothing on
+  screen ever told you that was an option.
+  It is also why the footer can group its keys: nothing is hidden by
+  being left out of the bar.
+
 [b]Moving around (vim keys work everywhere)[/]
   j k            down / up          g g   top
   ctrl+d ctrl+u  half page          G     bottom
@@ -1250,7 +1390,8 @@ HELP_TEXT = """\
 [b]Recipe list[/]
   Tab / Shift+Tab   move between search box and table
   f              cycle domain: refining -> cooking -> all
-  s              cycle sort: multiplier, time, rate, profit, name
+  s              cycle sort: multiplier, time, rate, profit, gettable, name
+                 (or pick either one by name from Ctrl+P)
   p              show only recipes that PRODUCE the highlighted item
   r              show only recipes that CONSUME it (reverse lookup)
   Enter          pivot: everything touching the highlighted output
@@ -1271,8 +1412,10 @@ HELP_TEXT = """\
   i              inventory screen
 
 [b]Inventory[/]
-  Type "[i]item name count[/]" and press Enter to add - "platinum 250".
-  A negative count subtracts. e     edit count      d   drop the item
+  / opens the add field, the same as everywhere else. Type
+  "[i]item name count[/]" and press Enter - "platinum 250". A negative
+  count subtracts, Esc goes back to normal mode.
+  e   edit count      d   drop the item
   x   clear everything             C   include cooking recipes
 
 [b]Portal addresses (P)[/]

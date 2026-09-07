@@ -90,11 +90,15 @@ async def shoot() -> None:
         # 7. Inventory, with something in it.
         await pilot.press("i")
         await pilot.pause(0.3)
+        await pilot.press("slash")
+        await pilot.pause(0.2)
         for text in ("platinum 250", "oxygen 400", "ferrite dust 800"):
             for char in text:
                 await pilot.press(char)
             await pilot.press("enter")
             await pilot.pause(0.2)
+        # Back to normal mode, so the shot shows the keys rather than a cursor.
+        await pilot.press("escape")
         await pilot.pause(0.3)
         _save(app, "inventory.svg")
 
