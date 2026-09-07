@@ -523,3 +523,95 @@ def test_portal_palette_offers_the_address_actions_only_when_there_is_one(
             assert copy.help == "40E907FF0D6B"
 
     run(scenario())
+
+
+def test_dropping_an_address_is_undoable(book: Book, tmp_path) -> None:
+    """The mistake this exists for: d, then realising, then u."""
+    from nms_items.portals import LocationBook
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        app.locations = LocationBook.load()
+        app.locations.path = tmp_path / "locations.json"
+        total = len(app.locations)
+
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            screen = app.screen
+            first = screen.rows[0].name
+
+            await pilot.press("d")
+            await pilot.pause(0.3)
+            assert len(app.locations) == total - 1
+            assert [loc.name for loc in app.locations.trash] == [first]
+            assert first not in [loc.name for loc in screen.rows]
+
+            # T shows the trash, and the row is in it.
+            await pilot.press("T")
+            await pilot.pause(0.3)
+            assert screen.showing_trash
+            assert [loc.name for loc in screen.rows] == [first]
+
+            # u from inside the trash puts the highlighted one back.
+            await pilot.press("u")
+            await pilot.pause(0.3)
+            assert len(app.locations) == total
+            assert app.locations.trash == []
+            # back where it was, not appended
+            assert app.locations.locations[0].name == first
+
+            await pilot.press("T")
+            await pilot.pause(0.3)
+            assert not screen.showing_trash
+            assert screen.rows[0].name == first
+
+    run(scenario())
+
+
+def test_undo_works_from_the_list_too(book: Book, tmp_path) -> None:
+    from nms_items.portals import LocationBook
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        app.locations = LocationBook.load()
+        app.locations.path = tmp_path / "locations.json"
+        total = len(app.locations)
+
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            screen = app.screen
+
+            await pilot.press("d")
+            await pilot.press("d")
+            await pilot.pause(0.4)
+            assert len(app.locations.trash) == 2
+            second = app.locations.trash[-1].name
+
+            # u without opening the trash undoes the last drop.
+            await pilot.press("u")
+            await pilot.pause(0.3)
+            assert len(app.locations) == total - 1
+            assert app.locations.locations[0].name == second
+
+            # The palette offers it by name, and says which one.
+            undo = next(
+                c for c in screen.palette_commands() if c.title == "Undo the last drop"
+            )
+            assert undo.help == app.locations.trash[-1].name
+            undo.run()
+            await pilot.pause(0.3)
+            assert len(app.locations) == total
+            assert app.locations.trash == []
+
+            # With an empty trash the palette stops offering it.
+            assert "Undo the last drop" not in [
+                c.title for c in screen.palette_commands()
+            ]
+
+    run(scenario())

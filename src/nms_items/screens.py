@@ -31,6 +31,7 @@ FILTER = Binding.Group("filter")
 ITEM = Binding.Group("item")
 SAVED = Binding.Group("saved")
 COPY = Binding.Group("copy")
+TRASH = Binding.Group("trash")
 from .model import SOURCE_SETS, Book
 from .portals import Address, AddressError, Location, LocationBook
 from .inventory import Inventory
@@ -1001,6 +1002,9 @@ class PortalScreen(Screen):
         Binding("d,delete", "drop", "drop", group=SAVED),
         Binding("y", "copy_code", "code", group=COPY),
         Binding("Y", "copy_galactic", "galactic", group=COPY),
+        Binding("u", "restore", "undo drop", group=TRASH),
+        Binding("T", "toggle_trash", "trash", group=TRASH),
+        Binding("x", "empty_trash", "empty", group=TRASH, show=False),
     ]
 
     COMMANDS = {ModeCommands}
@@ -1017,6 +1021,7 @@ class PortalScreen(Screen):
             (i for i, (k, _) in enumerate(KIND_FILTERS) if k == kind), 0
         )
         self.origin_index = 0
+        self.showing_trash = False
         self.planet = 0
         self.rows: list[Location] = []
 
@@ -1039,11 +1044,13 @@ class PortalScreen(Screen):
         self.title = "Portals"
         self._fit_to_width()
         table = self.query_one("#loc-table", DataTable)
+        # Widths add up to the pane with a column to spare for a scrollbar:
+        # "Found" carries either the origin or, in the trash, a drop date.
         table.add_column("Name", width=21)
         table.add_column("Kind", width=10)
-        table.add_column("Found", width=6)
+        table.add_column("Found", width=10)
         table.add_column("Address", width=12)
-        table.add_column("What is there", width=26)
+        table.add_column("What is there", width=21)
         self.refresh_locations()
         self.refresh_readout()
         table.focus()
@@ -1057,6 +1064,25 @@ class PortalScreen(Screen):
             yield mode(
                 "Found", label, partial(self._set_origin, i),
                 i == self.origin_index,
+            )
+        yield mode(
+            "List", "saved addresses", partial(self._set_trash, False),
+            not self.showing_trash,
+        )
+        yield mode(
+            "List", f"trash ({len(self.locations.trash)})",
+            partial(self._set_trash, True), self.showing_trash,
+        )
+        if self.locations.trash:
+            yield ModeCommand(
+                "Undo the last drop",
+                self.locations.trash[-1].name,
+                self.action_restore,
+            )
+            yield ModeCommand(
+                "Empty the trash",
+                f"delete {len(self.locations.trash)} for good",
+                self.action_empty_trash,
             )
         if self.current is not None:
             yield ModeCommand(
@@ -1077,6 +1103,10 @@ class PortalScreen(Screen):
 
     def _set_origin(self, index: int) -> None:
         self.origin_index = index
+        self.refresh_locations()
+
+    def _set_trash(self, on: bool) -> None:
+        self.showing_trash = on
         self.refresh_locations()
 
     def on_resize(self) -> None:
@@ -1135,18 +1165,29 @@ class PortalScreen(Screen):
     def refresh_locations(self, keep_cursor: bool = False) -> None:
         table = self.query_one("#loc-table", DataTable)
         cursor = table.cursor_row if keep_cursor else 0
-        self.rows = self.locations.search(self.query_text, self.kind, self.origin)
+        self.rows = self.locations.search(
+            self.query_text, self.kind, self.origin, trash=self.showing_trash
+        )
 
         table.clear()
         for loc in self.rows:
             table.add_row(
-                loc.name, loc.kind, loc.origin, loc.code, loc.detail or "-"
+                loc.name,
+                loc.kind,
+                loc.dropped or loc.origin,
+                loc.code,
+                loc.detail or "-",
             )
         self._update_pane_title(len(self.rows))
 
         if self.rows:
             table.move_cursor(row=min(cursor, len(self.rows) - 1))
             self.show_location(self.rows[min(cursor, len(self.rows) - 1)])
+        elif self.showing_trash:
+            self.query_one("#loc-detail", Static).update(
+                "[#a6adc8]The trash is empty. Dropped addresses land here, "
+                "and stay until you delete them from data/locations.json.[/]"
+            )
         elif len(self.locations):
             self.query_one("#loc-detail", Static).update(
                 "[#a6adc8]Nothing matches. [b]f[/] widens the kind filter.[/]"
@@ -1158,7 +1199,15 @@ class PortalScreen(Screen):
             )
 
     def _update_pane_title(self, shown: int) -> None:
-        """The two filters are only discoverable if the header says they are on."""
+        """The filters and the trash view are only discoverable if this says so."""
+        dropped = len(self.locations.trash)
+        if self.showing_trash:
+            self.query_one("#loc-title", Label).update(
+                f"[#f9e2af]Trash[/]   [#a6adc8]{shown} of {dropped} dropped"
+                f"   u puts one back, T goes back to the list[/]"
+            )
+            return
+
         title = ["Saved addresses"]
         if self.kind:
             title.append(KIND_FILTERS[self.kind_index][1])
@@ -1166,10 +1215,14 @@ class PortalScreen(Screen):
             title.append(ORIGIN_FILTERS[self.origin_index][1])
         total = len(self.locations)
         count = f"{shown} of {total}" if shown != total else f"{total}"
-        self.query_one("#loc-title", Label).update(
-            f"{'  -  '.join(title)}   [#a6adc8]{count}"
+        tail = (
             f"   ({self.locations.count('mine')} mine,"
-            f" {self.locations.count('shared')} shared)[/]"
+            f" {self.locations.count('shared')} shared)"
+        )
+        if dropped:
+            tail += f"   [#f9e2af]{dropped} in the trash - T[/]"
+        self.query_one("#loc-title", Label).update(
+            f"{'  -  '.join(title)}   [#a6adc8]{count}{tail}[/]"
         )
 
     def current_location(self) -> Location | None:
@@ -1234,12 +1287,20 @@ class PortalScreen(Screen):
             lines.append("  " + "  ".join(row))
 
         saved = [loc for loc in self.locations.locations if loc.code == code]
+        binned = [loc for loc in self.locations.trash if loc.code == code]
         if saved:
             lines += ["", "[b #a6e3a1]Saved[/]"]
             for loc in saved:
                 lines.append(
                     f"  {loc.name}  [#a6adc8]{loc.kind}, {loc.origin},"
                     f" {loc.galaxy_label}[/]"
+                )
+        elif binned:
+            lines += ["", "[b #f9e2af]In the trash[/]"]
+            for loc in binned:
+                lines.append(
+                    f"  {loc.name}  [#a6adc8]dropped {loc.dropped}[/]"
+                    "  [#f9e2af]u puts it back[/]"
                 )
         else:
             lines += [
@@ -1257,7 +1318,9 @@ class PortalScreen(Screen):
                 "  [#a6e3a1]found by me[/]"
                 if loc.origin == "mine"
                 else "  [#89b4fa]shared[/]"
-            ),
+            )
+            + (f"  [#f9e2af]dropped {loc.dropped} - u puts it back[/]"
+               if loc.dropped else ""),
             f"[#89b4fa]Address[/]     [b]{loc.code}[/]"
             f"   [#a6adc8]{address.galactic}[/]",
             f"[#89b4fa]Galaxy[/]      {loc.galaxy_label}",
@@ -1375,7 +1438,7 @@ class PortalScreen(Screen):
 
     def action_edit(self) -> None:
         loc = self.current_location()
-        if loc is None:
+        if loc is None or self.showing_trash:
             return
         index = next(
             (i for i, other in enumerate(self.locations.locations) if other is loc),
@@ -1397,20 +1460,58 @@ class PortalScreen(Screen):
 
         self.app.push_screen(LocationModal(loc.code, existing=loc), done)
 
+    def _index_of(self, loc: Location, rows: list[Location]) -> int | None:
+        return next((i for i, other in enumerate(rows) if other is loc), None)
+
     def action_drop(self) -> None:
+        """From the list this trashes; from the trash it deletes for good."""
         loc = self.current_location()
         if loc is None:
             return
-        index = next(
-            (i for i, other in enumerate(self.locations.locations) if other is loc),
-            None,
-        )
-        if index is None:
-            return
-        gone = self.locations.remove(index)
-        if gone:
-            self.notify(f"Dropped {gone.name}")
+        if self.showing_trash:
+            index = self._index_of(loc, self.locations.trash)
+            if index is None:
+                return
+            gone = self.locations.purge(index)
+            if gone:
+                self.notify(f"Deleted {gone.name} for good", severity="warning")
+        else:
+            index = self._index_of(loc, self.locations.locations)
+            if index is None:
+                return
+            gone = self.locations.remove(index)
+            if gone:
+                self.notify(f"Dropped {gone.name} - press u to put it back")
         self.refresh_locations(keep_cursor=True)
+
+    def action_restore(self) -> None:
+        """In the list this undoes the last drop; in the trash, the one you point at."""
+        if not self.locations.trash:
+            self.notify("Nothing in the trash")
+            return
+        index = -1
+        if self.showing_trash:
+            loc = self.current_location()
+            if loc is not None:
+                found = self._index_of(loc, self.locations.trash)
+                if found is not None:
+                    index = found
+        back = self.locations.restore(index)
+        if back:
+            self.notify(f"Put {back.name} back")
+        self.refresh_locations(keep_cursor=True)
+        self.refresh_readout()
+
+    def action_toggle_trash(self) -> None:
+        self._set_trash(not self.showing_trash)
+
+    def action_empty_trash(self) -> None:
+        if not self.locations.trash:
+            self.notify("Nothing in the trash")
+            return
+        count = self.locations.empty_trash()
+        self.notify(f"Emptied the trash - {count} gone", severity="warning")
+        self.refresh_locations()
 
 
 HELP_TEXT = """\
@@ -1474,7 +1575,14 @@ HELP_TEXT = """\
   s   save what is converted     e   edit      d   drop
   f   filter by kind             o   filter by who found it
   p   change the planet glyph
+  u   undo the last drop         T   show the trash
   Enter on a saved row loads it back into the converter.
+
+  Nothing here deletes outright. d moves an address to the trash, u
+  takes the last one back, and T lists what is in there - inside the
+  trash, u restores the row you are on and d is the one that really
+  deletes. The trash lives in the same file, so an address dropped in
+  one session is still recoverable in the next.
 
   Saved addresses are one of two kinds, and o cycles between them:
     mine     you stood there. Dated when you save it.

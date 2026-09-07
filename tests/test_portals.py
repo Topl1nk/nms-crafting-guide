@@ -197,6 +197,83 @@ def test_book_round_trips_through_disk(tmp_path) -> None:
     assert [loc.name for loc in LocationBook.load(path).locations] == ["Konslis"]
 
 
+def test_dropping_moves_to_the_trash_rather_than_deleting(tmp_path) -> None:
+    """`d` is one key from `s`, so a drop has to be survivable."""
+    path = tmp_path / "locations.json"
+    book = LocationBook(path=path)
+    for name, code in (
+        ("A", "11AC008F4025"), ("B", "1006FD532B7E"), ("C", "6046FFAE4450")
+    ):
+        book.add(Location(name=name, code=code))
+
+    gone = book.remove(1)
+    assert gone.name == "B"
+    assert [loc.name for loc in book.locations] == ["A", "C"]
+    assert [loc.name for loc in book.trash] == ["B"]
+    assert gone.dropped  # dated on the way out
+
+    # It has to survive the trip through disk, or the trash is a lie.
+    reloaded = LocationBook.load(path)
+    assert [loc.name for loc in reloaded.trash] == ["B"]
+
+    # And come back where it was, not appended to the end.
+    back = reloaded.restore()
+    assert back.name == "B"
+    assert [loc.name for loc in reloaded.locations] == ["A", "B", "C"]
+    assert reloaded.trash == []
+    assert not back.dropped and back.dropped_from == -1
+    assert [loc.name for loc in LocationBook.load(path).locations] == ["A", "B", "C"]
+
+
+def test_restoring_an_empty_trash_is_a_no_op(tmp_path) -> None:
+    book = LocationBook(path=tmp_path / "locations.json")
+    assert book.restore() is None
+    assert book.purge(0) is None
+    assert book.empty_trash() == 0
+
+
+def test_the_trash_can_be_emptied_and_picked_through(tmp_path) -> None:
+    path = tmp_path / "locations.json"
+    book = LocationBook(path=path)
+    for name, code in (
+        ("Sunset", "11AC008F4025"),
+        ("Balloon", "1006FD532B7E"),
+        ("Dragonfly", "6046FFAE4450"),
+    ):
+        book.add(Location(name=name, code=code))
+    book.remove(0)
+    book.remove(0)
+    assert [loc.name for loc in book.trash] == ["Sunset", "Balloon"]
+
+    # searchable while it is in there, and gone from the live list
+    assert [loc.name for loc in book.search("sunset", trash=True)] == ["Sunset"]
+    assert not book.search("sunset")
+
+    assert book.purge(0).name == "Sunset"
+    assert [loc.name for loc in book.trash] == ["Balloon"]
+    assert book.empty_trash() == 1
+    assert LocationBook.load(path).trash == []
+
+
+def test_trash_only_fields_stay_out_of_the_live_list(tmp_path) -> None:
+    """A record that is not in the trash should not carry drop bookkeeping."""
+    path = tmp_path / "locations.json"
+    book = LocationBook(path=path)
+    book.add(Location(name="A", code="11AC008F4025"))
+    book.add(Location(name="B", code="1006FD532B7E"))
+    book.remove(1)
+
+    raw = json.loads(path.read_text())
+    assert "dropped" not in raw["locations"][0]
+    assert "dropped_from" not in raw["locations"][0]
+    assert raw["_trash"][0]["dropped_from"] == 1
+
+
+def test_the_committed_file_has_nothing_in_the_trash() -> None:
+    """A dropped address should not ship; it means somebody forgot to look."""
+    assert LocationBook.load().trash == []
+
+
 def test_origin_splits_the_two_kinds_of_find(tmp_path) -> None:
     path = tmp_path / "locations.json"
     book = LocationBook(path=path)

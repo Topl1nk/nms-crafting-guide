@@ -250,6 +250,47 @@ def _hex_only(text: str) -> str:
     return re.sub(r"[^0-9A-Fa-f]", "", text).upper()
 
 
+# Fields that exist only to make a drop undoable; the live list stays clean.
+TRASH_ONLY = ("dropped", "dropped_from")
+
+
+def _public(location: "Location") -> dict:
+    row = asdict(location)
+    for key in TRASH_ONLY:
+        row.pop(key, None)
+    return row
+
+
+def _rows(raw: list) -> list["Location"]:
+    """Parse a list of records, skipping any that are not dialable.
+
+    A typo in a hand-edited file must not take the screen down with it.
+    """
+    rows = []
+    for row in raw:
+        try:
+            Address.from_portal_code(row["code"])
+        except (AddressError, KeyError, TypeError):
+            continue
+        origin = row.get("origin", "mine")
+        rows.append(
+            Location(
+                name=row.get("name", "unnamed"),
+                code=_hex_only(row["code"]),
+                kind=row.get("kind", "other"),
+                origin=origin if origin in ORIGINS else "mine",
+                galaxy=int(row.get("galaxy", 1)),
+                detail=row.get("detail", ""),
+                where=row.get("where", ""),
+                source=row.get("source", ""),
+                added=row.get("added", ""),
+                dropped=row.get("dropped", ""),
+                dropped_from=int(row.get("dropped_from", -1)),
+            )
+        )
+    return rows
+
+
 # -- saved locations ------------------------------------------------------
 
 
@@ -270,6 +311,10 @@ class Location:
     where: str = ""
     source: str = ""
     added: str = ""
+    # Only set while the entry is in the trash: when it was dropped, and the
+    # row it came from, so putting it back is an undo rather than an append.
+    dropped: str = ""
+    dropped_from: int = -1
 
     @property
     def address(self) -> Address:
@@ -307,6 +352,9 @@ class LocationBook:
     source: str = ""
     note: str = ""
     locations: list[Location] = field(default_factory=list)
+    # Dropped entries. They stay in the file rather than leaving it: an
+    # address is a trip somebody made, and `d` is one key away from `s`.
+    trash: list[Location] = field(default_factory=list)
 
     @classmethod
     def load(cls, path: Path | None = None) -> "LocationBook":
@@ -315,31 +363,12 @@ class LocationBook:
             raw = json.loads(path.read_text())
         except (OSError, ValueError):
             return cls(path=path)
-        rows = []
-        for row in raw.get("locations", []):
-            try:
-                Address.from_portal_code(row["code"])
-            except (AddressError, KeyError):
-                continue  # a typo in the file must not take the screen down
-            origin = row.get("origin", "mine")
-            rows.append(
-                Location(
-                    name=row.get("name", "unnamed"),
-                    code=_hex_only(row["code"]),
-                    kind=row.get("kind", "other"),
-                    origin=origin if origin in ORIGINS else "mine",
-                    galaxy=int(row.get("galaxy", 1)),
-                    detail=row.get("detail", ""),
-                    where=row.get("where", ""),
-                    source=row.get("source", ""),
-                    added=row.get("added", ""),
-                )
-            )
         return cls(
             path=path,
             source=raw.get("_source", ""),
             note=raw.get("_note", ""),
-            locations=rows,
+            locations=_rows(raw.get("locations", [])),
+            trash=_rows(raw.get("_trash", [])),
         )
 
     def save(self) -> None:
@@ -360,7 +389,10 @@ class LocationBook:
                 "source": "who shared it, or where you found it",
                 "added": "YYYY-MM-DD, stamped when the TUI saves it",
             },
-            "locations": [asdict(loc) for loc in self.locations],
+            "locations": [_public(loc) for loc in self.locations],
+            # Dropped, not gone. u in the app puts one back; delete the entry
+            # from here by hand to be rid of it for good.
+            "_trash": [asdict(loc) for loc in self.trash],
         }
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(payload, indent=1, ensure_ascii=False) + "\n")
@@ -373,19 +405,55 @@ class LocationBook:
         self.save()
 
     def remove(self, index: int) -> Location | None:
+        """Move an entry to the trash. Nothing here deletes outright."""
         if not 0 <= index < len(self.locations):
             return None
         gone = self.locations.pop(index)
+        gone.dropped = date.today().isoformat()
+        gone.dropped_from = index
+        self.trash.append(gone)
         self.save()
         return gone
+
+    def restore(self, index: int = -1) -> Location | None:
+        """Put a trashed entry back where it was. Default is the last drop."""
+        if not self.trash:
+            return None
+        try:
+            back = self.trash.pop(index)
+        except IndexError:
+            return None
+        row = back.dropped_from
+        back.dropped, back.dropped_from = "", -1
+        if 0 <= row <= len(self.locations):
+            self.locations.insert(row, back)
+        else:
+            self.locations.append(back)
+        self.save()
+        return back
+
+    def purge(self, index: int) -> Location | None:
+        """Delete one trashed entry for good."""
+        if not 0 <= index < len(self.trash):
+            return None
+        gone = self.trash.pop(index)
+        self.save()
+        return gone
+
+    def empty_trash(self) -> int:
+        count = len(self.trash)
+        self.trash = []
+        self.save()
+        return count
 
     def search(
         self,
         query: str = "",
         kind: str | None = None,
         origin: str | None = None,
+        trash: bool = False,
     ) -> list[Location]:
-        rows = self.locations
+        rows = self.trash if trash else self.locations
         if kind:
             rows = [loc for loc in rows if loc.kind == kind]
         if origin:

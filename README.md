@@ -223,7 +223,8 @@ sheet would point at a different star, plausibly.
 | | |
 | --- | --- |
 | `y` `Y` | copy the portal code / the galactic address |
-| `s` `e` `d` | save what is converted, edit it, drop it |
+| `s` `e` `d` | save what is converted, edit it, drop it to the trash |
+| `u` `T` | undo the last drop / show the trash |
 | `f` `o` | filter the saved list by kind / by who found it |
 | `p` | change the planet glyph — the one a galactic address cannot carry |
 | `Enter` | on a saved row, loads it back into the converter |
@@ -242,6 +243,13 @@ is the **address** — the location is seeded to the coordinate and generally
 survives a patch. The class, the slot count and the headline damage figure are
 somebody else's claim about somebody else's save, and those rot. Your own finds
 are the ones you can vouch for.
+
+Nothing deletes outright. `d` moves an address to the trash, `u` takes the last
+one back, `T` lists what is in there — and inside the trash `u` restores the row
+you are on while `d` is the one that really deletes. The trash rides along in
+the same file under `_trash`, keeping the drop date and the row it came from, so
+undo puts an address back where it was rather than at the end, and something
+dropped in one session is still recoverable in the next.
 
 The saved addresses live in `data/locations.json`, committed alongside the
 guides they came from rather than hidden in XDG state, because they are
