@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from textual.app import ComposeResult
 from textual.binding import Binding
-from textual.containers import Horizontal, Vertical, VerticalScroll
+from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen, Screen
 from textual.widgets import (
     DataTable,
@@ -20,6 +20,7 @@ from textual.widgets import (
 
 from . import food, graph, multitools
 from .ease import EaseIndex
+from .widgets import SearchInput, VimDataTable, VimTree, VimVerticalScroll
 from .model import SOURCE_SETS, Book
 from .inventory import Inventory
 
@@ -69,7 +70,8 @@ class ChainScreen(Screen):
         Binding("escape,q", "app.pop_screen", "back"),
         Binding("t", "cycle_tier", "source tier"),
         Binding("n", "set_qty", "quantity"),
-        Binding("k", "toggle_cooking", "incl. cooking"),
+        # Not k: that is cursor-up in the tables now.
+        Binding("C", "toggle_cooking", "incl. cooking"),
     ]
 
     def __init__(self, book: Book, target: str, qty: int = 1) -> None:
@@ -84,7 +86,7 @@ class ChainScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Static(id="chain-summary")
-        yield Tree("plan", id="chain-tree")
+        yield VimTree("plan", id="chain-tree")
         yield Footer()
 
     def on_mount(self) -> None:
@@ -101,7 +103,7 @@ class ChainScreen(Screen):
         plan = graph.plan(self.book, self.target, sources, self.qty, self.domains)
 
         summary = self.query_one("#chain-summary", Static)
-        tree = self.query_one("#chain-tree", Tree)
+        tree = self.query_one("#chain-tree", VimTree)
         tree.clear()
 
         name = self.book.name(self.target)
@@ -199,7 +201,8 @@ class InventoryScreen(Screen):
         Binding("d,delete", "drop", "drop item"),
         Binding("e", "edit", "edit count"),
         Binding("x", "clear_all", "clear all"),
-        Binding("k", "toggle_cooking", "incl. cooking"),
+        # Not k: that is cursor-up in the tables now.
+        Binding("C", "toggle_cooking", "incl. cooking"),
     ]
 
     def __init__(self, book: Book, inventory: Inventory) -> None:
@@ -210,19 +213,19 @@ class InventoryScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Input(
+        yield SearchInput(
             placeholder="add to inventory:  <item name> <count>   e.g. platinum 250",
             id="inv-add",
         )
         with Horizontal(id="inv-body"):
             with Vertical(id="inv-list"):
                 yield Label("Carrying", classes="pane-title")
-                yield DataTable(id="inv-table", cursor_type="row")
+                yield VimDataTable(id="inv-table", cursor_type="row")
             with Vertical(id="inv-right"):
                 yield Label("Can refine right now", classes="pane-title")
-                yield DataTable(id="can-table", cursor_type="row")
+                yield VimDataTable(id="can-table", cursor_type="row")
                 yield Label("One ingredient short", classes="pane-title")
-                yield DataTable(id="near-table", cursor_type="row")
+                yield VimDataTable(id="near-table", cursor_type="row")
         yield Footer()
 
     def on_mount(self) -> None:
@@ -233,7 +236,7 @@ class InventoryScreen(Screen):
         )
         self.query_one("#near-table", DataTable).add_columns("Make", "From", "Missing")
         self.refresh_all()
-        self.query_one("#inv-add", Input).focus()
+        self.query_one("#inv-add", SearchInput).focus()
 
     @property
     def domains(self) -> tuple[str, ...]:
@@ -275,6 +278,10 @@ class InventoryScreen(Screen):
             near_table.add_row(
                 recipe.output_label, recipe.inputs_label, need, key=str(recipe.index)
             )
+
+    def on_search_input_escaped(self, event: SearchInput.Escaped) -> None:
+        """Leaving the add field must not add whatever is half-typed."""
+        self.query_one("#inv-table", VimDataTable).focus()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
         text = event.value.strip()
@@ -377,7 +384,7 @@ class NaniteScreen(Screen):
     def compose(self) -> ComposeResult:
         yield Header()
         yield Static(id="nanite-note")
-        yield DataTable(id="nanite-table", cursor_type="row", zebra_stripes=True)
+        yield VimDataTable(id="nanite-table", cursor_type="row", zebra_stripes=True)
         yield Static(id="nanite-detail")
         yield Footer()
 
@@ -482,10 +489,10 @@ class FoodScreen(Screen):
         with Horizontal(id="food-body"):
             with Vertical(id="food-left"):
                 yield Label("Buff", classes="pane-title")
-                yield DataTable(id="effect-table", cursor_type="row")
+                yield VimDataTable(id="effect-table", cursor_type="row")
             with Vertical(id="food-right"):
                 yield Label("Dishes, strongest first", classes="pane-title")
-                yield DataTable(id="dish-table", cursor_type="row", zebra_stripes=True)
+                yield VimDataTable(id="dish-table", cursor_type="row", zebra_stripes=True)
         yield Static(id="food-detail")
         yield Footer()
 
@@ -585,15 +592,15 @@ class MultiToolScreen(Screen):
         yield Static(f"[b #a6e3a1]{self.data.headline}[/]", id="mt-headline")
         with TabbedContent(id="mt-tabs"):
             with TabPane("Types", id="tab-types"):
-                yield DataTable(id="type-table", cursor_type="row", zebra_stripes=True)
+                yield VimDataTable(id="type-table", cursor_type="row", zebra_stripes=True)
                 yield Static(id="type-detail")
             with TabPane("Weapons", id="tab-weapons"):
-                yield DataTable(id="weapon-table", cursor_type="row", zebra_stripes=True)
+                yield VimDataTable(id="weapon-table", cursor_type="row", zebra_stripes=True)
                 yield Static(id="weapon-detail")
             with TabPane("Getting one", id="tab-getting"):
-                yield VerticalScroll(Static(self._getting_text(), id="mt-getting"))
+                yield VimVerticalScroll(Static(self._getting_text(), id="mt-getting"))
             with TabPane("Tips", id="tab-tips"):
-                yield VerticalScroll(Static(self._tips_text(), id="mt-tips"))
+                yield VimVerticalScroll(Static(self._tips_text(), id="mt-tips"))
         yield Footer()
 
     def on_mount(self) -> None:
@@ -699,8 +706,15 @@ class MultiToolScreen(Screen):
 HELP_TEXT = """\
 [b #89b4fa]NMS Items[/] - refining, cooking and chain lookup
 
+[b]Moving around (vim keys work everywhere)[/]
+  j k            down / up          g g   top
+  ctrl+d ctrl+u  half page          G     bottom
+  h l            pan a wide table sideways
+  /              search - this is insert mode: type freely, then
+                 Esc or Enter to go back to normal mode
+  Esc            in normal mode, clears the search and any filter
+
 [b]Recipe list[/]
-  /              focus the search box (type to filter, Esc to leave)
   Tab / Shift+Tab   move between search box and table
   f              cycle domain: refining -> cooking -> all
   s              cycle sort: multiplier, time, rate, profit, name
@@ -712,7 +726,7 @@ HELP_TEXT = """\
 
 [b]Planning[/]
   c              chain plan for the highlighted output
-                 (inside: t = source tier, n = quantity, k = allow cooking)
+                 (inside: t = source tier, n = quantity, C = allow cooking)
   n              the nanite ladder - every route to nanites, ranked
   e              cooking effects - what each dish does when you eat it
   m              multi-tools - types, weapons, how to get the good ones
@@ -723,7 +737,7 @@ HELP_TEXT = """\
 [b]Inventory[/]
   Type "[i]item name count[/]" and press Enter to add - "platinum 250".
   A negative count subtracts. e     edit count      d   drop the item
-  x   clear everything             k   include cooking recipes
+  x   clear everything             C   include cooking recipes
 
 [b]Reading the columns[/]
   Mult    units out per unit in. "x6 loop" means the recipe feeds itself:
@@ -753,19 +767,23 @@ HELP_TEXT = """\
   Where loot comes from is the one thing the game files do not record;
   that lives in data/acquisition.json, written from the guides.
 
-Press any key to close.
+j k  scroll     g G  top / bottom     Esc or q  close
 """
 
 
 class HelpScreen(ModalScreen[None]):
-    BINDINGS = [Binding("escape,q,question_mark,space,enter", "dismiss_help", "close")]
+    """The key reference. Scrollable, so it must not close on any keypress."""
+
+    BINDINGS = [
+        Binding("escape,q,question_mark,enter", "dismiss_help", "close"),
+    ]
 
     def compose(self) -> ComposeResult:
-        with VerticalScroll(id="help-box"):
+        with VimVerticalScroll(id="help-box"):
             yield Static(HELP_TEXT)
 
-    def action_dismiss_help(self) -> None:
-        self.dismiss(None)
+    def on_mount(self) -> None:
+        self.query_one("#help-box", VimVerticalScroll).focus()
 
-    def on_key(self) -> None:
+    def action_dismiss_help(self) -> None:
         self.dismiss(None)

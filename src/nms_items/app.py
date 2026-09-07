@@ -6,11 +6,12 @@ from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.containers import Horizontal
 from textual.screen import Screen
-from textual.widgets import DataTable, Footer, Header, Input, Static
+from textual.widgets import DataTable, Footer, Header, Static
 
 from .ease import EaseIndex
 from .inventory import Inventory
 from .model import Book, Recipe
+from .widgets import SearchInput, VimDataTable
 from .screens import (
     ChainScreen,
     FoodScreen,
@@ -89,6 +90,9 @@ class RecipeScreen(Screen):
         Binding("m", "multitools", "multi-tools"),
         Binding("d", "toggle_detail", "detail pane"),
         Binding("backspace", "clear_item_filter", "clear filter"),
+        # Escape in normal mode clears what you searched for; Escape in the
+        # search box just leaves insert mode and keeps it.
+        Binding("escape", "clear_search", "clear search", show=False),
     ]
 
     def __init__(self, book: Book, ease: EaseIndex, inventory: Inventory) -> None:
@@ -107,15 +111,17 @@ class RecipeScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Input(placeholder="search recipes - output, ingredient or operation", id="search")
+        yield SearchInput(
+            placeholder="search recipes - output, ingredient or operation", id="search"
+        )
         yield Static(id="filter-note")
         with Horizontal(id="body"):
-            yield DataTable(id="table", cursor_type="row", zebra_stripes=True)
+            yield VimDataTable(id="table", cursor_type="row", zebra_stripes=True)
             yield Static(id="detail")
         yield Footer()
 
     def on_mount(self) -> None:
-        table = self.query_one("#table", DataTable)
+        table = self.query_one("#table", VimDataTable)
         # Widths are tuned so the whole row fits beside the detail pane on an
         # 80-column terminal's worth of table (the pane takes a third).
         table.add_column("Make", width=24)
@@ -142,7 +148,7 @@ class RecipeScreen(Screen):
         return DOMAINS[self.domain_index][0]
 
     def refresh_rows(self, keep_cursor: bool = False) -> None:
-        table = self.query_one("#table", DataTable)
+        table = self.query_one("#table", VimDataTable)
         cursor = table.cursor_row if keep_cursor else 0
 
         matches = self.book.search(
@@ -185,7 +191,7 @@ class RecipeScreen(Screen):
             self.query_one("#detail", Static).update("[#a6adc8]No recipe matches.[/]")
 
     def current_recipe(self) -> Recipe | None:
-        table = self.query_one("#table", DataTable)
+        table = self.query_one("#table", VimDataTable)
         if not self.rows or table.cursor_row < 0:
             return None
         if table.cursor_row >= len(self.rows):
@@ -242,7 +248,7 @@ class RecipeScreen(Screen):
 
     # -- events ----------------------------------------------------------
 
-    def on_input_changed(self, event: Input.Changed) -> None:
+    def on_input_changed(self, event: SearchInput.Changed) -> None:
         if event.input.id != "search":
             return
         self.query_text = event.value
@@ -250,9 +256,9 @@ class RecipeScreen(Screen):
             self._debounce.stop()
         self._debounce = self.set_timer(0.12, self.refresh_rows)
 
-    def on_input_submitted(self, event: Input.Submitted) -> None:
+    def on_input_submitted(self, event: SearchInput.Submitted) -> None:
         if event.input.id == "search":
-            self.query_one("#table", DataTable).focus()
+            self.query_one("#table", VimDataTable).focus()
 
     def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
         if event.cursor_row < len(self.rows):
@@ -268,7 +274,11 @@ class RecipeScreen(Screen):
     # -- actions ---------------------------------------------------------
 
     def action_focus_search(self) -> None:
-        self.query_one("#search", Input).focus()
+        """`/` is insert mode; Escape or Enter puts you back in normal mode."""
+        self.query_one("#search", SearchInput).focus()
+
+    def on_search_input_escaped(self, event: SearchInput.Escaped) -> None:
+        self.query_one("#table", VimDataTable).focus()
 
     def action_cycle_domain(self) -> None:
         self.domain_index = (self.domain_index + 1) % len(DOMAINS)
@@ -291,6 +301,15 @@ class RecipeScreen(Screen):
             self.item_filter = recipe.output.id
             self.item_role = "input"
             self.refresh_rows()
+
+    def action_clear_search(self) -> None:
+        if not self.query_text and not self.item_filter:
+            return
+        self.query_text = ""
+        self.item_filter = None
+        self.item_role = "any"
+        self.query_one("#search", SearchInput).value = ""
+        self.refresh_rows()
 
     def action_clear_item_filter(self) -> None:
         if self.item_filter:
