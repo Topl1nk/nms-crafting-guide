@@ -11,6 +11,7 @@ from textual.widgets import DataTable, Footer, Header, Static
 from .ease import EaseIndex
 from .inventory import Inventory
 from .model import Book, Recipe
+from .portals import LocationBook
 from .widgets import SearchInput, VimDataTable
 from .screens import (
     ChainScreen,
@@ -19,6 +20,7 @@ from .screens import (
     InventoryScreen,
     MultiToolScreen,
     NaniteScreen,
+    PortalScreen,
     QuantityModal,
 )
 
@@ -88,6 +90,8 @@ class RecipeScreen(Screen):
         Binding("n", "nanites", "nanites"),
         Binding("e", "effects", "food effects"),
         Binding("m", "multitools", "multi-tools"),
+        # Capital P: lowercase p is already "produced by" on this table.
+        Binding("P", "portals", "portal addresses"),
         Binding("d", "toggle_detail", "detail pane"),
         Binding("backspace", "clear_item_filter", "clear filter"),
         # Escape in normal mode clears what you searched for; Escape in the
@@ -356,6 +360,9 @@ class RecipeScreen(Screen):
     def action_multitools(self) -> None:
         self.app.push_screen(MultiToolScreen())
 
+    def action_portals(self) -> None:
+        self.app.push_screen(PortalScreen(self.app.locations))
+
     def action_toggle_detail(self) -> None:
         self.detail_on = not self.detail_on
         self._update_detail_visibility()
@@ -379,6 +386,7 @@ class RecipeApp(App):
         self.book = book or Book()
         self.ease = EaseIndex(self.book)
         self.inv = Inventory()
+        self.locations = LocationBook.load()
 
     def on_mount(self) -> None:
         self.push_screen(RecipeScreen(self.book, self.ease, self.inv))

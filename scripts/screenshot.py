@@ -74,7 +74,20 @@ async def shoot() -> None:
         await pilot.press("escape")
         await pilot.pause(0.2)
 
-        # 6. Inventory, with something in it.
+        # 6. Portal addresses, with one decoded.
+        await pilot.press("P")
+        await pilot.pause(0.4)
+        await pilot.press("slash")
+        for char in "6046FFAE4450":
+            await pilot.press(char)
+        await pilot.pause(0.4)
+        await pilot.press("enter")
+        await pilot.pause(0.3)
+        _save(app, "portals.svg")
+        await pilot.press("escape")
+        await pilot.pause(0.2)
+
+        # 7. Inventory, with something in it.
         await pilot.press("i")
         await pilot.pause(0.3)
         for text in ("platinum 250", "oxygen 400", "ferrite dust 800"):

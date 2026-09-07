@@ -276,3 +276,129 @@ def test_cooking_toggle_survives_vim_keys(book: Book, tmp_path) -> None:
             assert inventory.with_cooking is False
 
     run(scenario())
+
+
+def test_portal_screen(book: Book, tmp_path) -> None:
+    """Convert, search, copy and save -- all through the one input box."""
+    from nms_items.portals import LocationBook
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        # A scratch file: the test must not append to the committed one.
+        app.locations = LocationBook.load()
+        app.locations.path = tmp_path / "locations.json"
+        saved_at_start = len(app.locations)
+
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            screen = app.screen
+            assert screen.__class__.__name__ == "PortalScreen"
+            assert screen.query_one("#loc-table").row_count == saved_at_start
+
+            # A pasted portal code converts.
+            await pilot.press("slash")
+            for char in "40E907FF0D6B":
+                await pilot.press(char)
+            await pilot.pause(0.3)
+            assert screen.current.galactic == "056A:0086:07EF:00E9"
+
+            # p cycles the planet glyph, which is the one a galactic
+            # address cannot carry.
+            await pilot.press("enter")  # back to the table
+            await pilot.press("p")
+            await pilot.pause(0.2)
+            assert screen.current.portal_code == "50E907FF0D6B"
+
+            # Anything that is not an address searches instead.
+            screen.query_one("#portal-input").value = ""
+            await pilot.pause(0.2)
+            screen.query_one("#portal-input").value = "royal"
+            await pilot.pause(0.3)
+            assert screen.current is None
+            assert 0 < screen.query_one("#loc-table").row_count < saved_at_start
+            assert all("royal" in loc.search_key for loc in screen.rows)
+
+            # f narrows to a kind, o to where it came from; independently.
+            screen.query_one("#portal-input").value = ""
+            await pilot.pause(0.3)
+            await pilot.press("f")
+            await pilot.pause(0.2)
+            assert screen.kind == "multi-tool"
+            assert all(loc.kind == "multi-tool" for loc in screen.rows)
+
+            await pilot.press("o")
+            await pilot.pause(0.2)
+            assert screen.origin == "mine"
+            assert screen.rows == []  # nothing shipped was found here
+            await pilot.press("o")
+            await pilot.pause(0.2)
+            assert screen.origin == "shared"
+            assert all(loc.kind == "multi-tool" for loc in screen.rows)
+            await pilot.press("o")
+            await pilot.pause(0.2)
+            assert screen.origin is None
+
+            # Enter on a saved row loads it into the converter.
+            screen.query_one("#loc-table").focus()
+            await pilot.press("enter")
+            await pilot.pause(0.2)
+            assert screen.current is not None
+            assert screen.current.portal_code == screen.rows[0].code
+
+            # s saves whatever is converted, through the modal.
+            await pilot.press("s")
+            await pilot.pause(0.3)
+            assert app.screen.__class__.__name__ == "LocationModal"
+            for char in "Test System":
+                await pilot.press(char)
+            await pilot.press("enter")
+            await pilot.pause(0.3)
+            assert len(app.locations) == saved_at_start + 1
+            saved = app.locations.locations[-1]
+            assert saved.name == "Test System"
+            # The modal defaults to your own find, and dates it.
+            assert saved.origin == "mine"
+            assert saved.added
+
+            # d drops the highlighted one again.
+            await pilot.press("G")
+            await pilot.pause(0.2)
+            await pilot.press("d")
+            await pilot.pause(0.3)
+            assert len(app.locations) == saved_at_start
+
+    run(scenario())
+
+
+def test_portal_screen_drops_the_list_when_narrow(book: Book, tmp_path) -> None:
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(80, 30)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            assert app.screen.query_one("#portal-right").display is False
+
+    run(scenario())
+
+
+def test_multitool_screen_reaches_the_addresses(book: Book, tmp_path) -> None:
+    """The shortlist in guide 21 is multi-tools, so m -> P lands filtered."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("m")
+            await pilot.pause(0.4)
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            assert app.screen.__class__.__name__ == "PortalScreen"
+            assert app.screen.kind == "multi-tool"
+
+    run(scenario())

@@ -24,6 +24,7 @@ is the prose version of what this app queries.
 | 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
 | 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
 | 🔫 **Multi-tools** | The 8 types compared, the 5 weapons measured, and how to get the free S-class ones |
+| 🌀 **Portal addresses** | Glyphs ↔ galactic coordinates, offline, plus the addresses from the guides — where the good tools and Exotics are |
 | 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
 
 ---
@@ -59,6 +60,7 @@ Then the actions:
 | `n` | the **nanite ladder** — every route to nanites, ranked |
 | `e` | **cooking effects** — what each dish does when eaten |
 | `m` | **multi-tools** — types, weapons, getting one, tips |
+| `P` | **portal addresses** — convert glyphs, and the places worth going |
 | `a` `i` | add to inventory / open the inventory screen |
 | `d` | show/hide the detail pane — it hides itself below 100 columns |
 | `?` | full help |
@@ -125,6 +127,72 @@ matter: adjacency is horizontal and vertical only, supercharged slots want a
 
 ![multi-tools](docs/img/multitools.svg)
 
+### Portal addresses
+
+Press `P`. One box does both jobs: paste a **portal code** (twelve hex digits,
+one per glyph), a **galactic address** (`0824:007F:00F3:01AC`, what a signal
+booster shows) or a nmsportals.github.io link and it converts as you type —
+type anything else and it searches the addresses you have saved.
+
+![portal addresses](docs/img/portals.svg)
+
+It is [nmsportals.github.io](https://nmsportals.github.io/) offline, with the
+same constants:
+
+```
+galactic X = (portal X + 2047) % 4096      portal X = (galactic X + 2049) % 4096
+galactic Y = (portal Y +  127) %  256      portal Y = (galactic Y +  129) %  256
+galactic Z = (portal Z + 2047) % 4096      portal Z = (galactic Z + 2049) % 4096
+```
+
+The two frames disagree only about where zero is — portal coordinates count
+from the **centre** of the galaxy, galactic ones from a corner — which is the
+whole reason the same place has two unrecognisably different addresses. The
+test suite pins that on the one fact both agree about: portal `000000000000`
+is the galaxy centre, and galactic coordinates call it `07FF:007F:07FF`.
+
+An address reads `p SSS YY ZZZ XXX` — planet, system index, then the voxel as
+height, width, length. The screen colours each field in the code and in the
+glyph list, so it is obvious which three glyphs are X.
+
+🔑 **The hex digit is the position on the dial.** The 16 glyphs sit in a fixed
+order, `0`–`9` then `A`–`F`, so `A` is the eleventh symbol, every time — and
+you need all 16 unlocked, not twelve.
+
+| | |
+| --- | --- |
+| `y` `Y` | copy the portal code / the galactic address |
+| `s` `e` `d` | save what is converted, edit it, drop it |
+| `f` `o` | filter the saved list by kind / by who found it |
+| `p` | change the planet glyph — the one a galactic address cannot carry |
+| `Enter` | on a saved row, loads it back into the converter |
+
+#### Mine, and shared
+
+Every saved address is one of two kinds, and `o` cycles between them:
+
+| | |
+| --- | --- |
+| **mine** | you stood there. Stamped with the date you saved it. The default when you press `s` |
+| **shared** | off a catalogue or from a friend |
+
+That split is worth more than it looks. What is verified in a catalogue entry
+is the **address** — the location is seeded to the coordinate and generally
+survives a patch. The class, the slot count and the headline damage figure are
+somebody else's claim about somebody else's save, and those rot. Your own finds
+are the ones you can vouch for.
+
+The saved addresses live in `data/locations.json`, committed alongside the
+guides they came from rather than hidden in XDG state, because they are
+findings: they diff, review and share like everything else here. Press `s` to
+add one through a form, or edit the file directly — it carries its own schema.
+It ships with the fifteen from the Euclid shortlists in guides
+[21](../../Documents/Suika%20Box/01.projects/03.no-mans-sky/21.multitool-damage.md)
+and [14](../../Documents/Suika%20Box/01.projects/03.no-mans-sky/14.starships-ranked.md)
+— seven multi-tools and eight Exotic starships, read off the Portal Repository
+in September 2026, all marked `shared`. From the multi-tool screen, `P` opens
+the list already filtered to tools.
+
 ### Inventory
 
 ![inventory](docs/img/inventory.svg)
@@ -165,6 +233,7 @@ reads:
 | `data/cheatsheet.json` | the subset the PDF prints |
 | `data/acquisition.json` | **hand-written** — where loot comes from, since the game files record what a recipe needs but never where to find it. Taken from the guides; where they say nothing, the app says "unknown" rather than guessing |
 | `data/multitools.json` | **hand-written** — the multi-tool reference. The game files carry nothing useful about multi-tools, so this comes wholesale from guides 05 and 21 |
+| `data/locations.json` | **hand-written** — portal addresses, from the Euclid shortlists in guides 14 and 21, plus whatever you find. The `s` key on the portal screen appends to it |
 
 After a game patch:
 
@@ -205,9 +274,10 @@ src/nms_items/
   ease.py      how gettable an item is: tier, chain depth, raw breadth, loot notes
   food.py      cooked dishes grouped by the buff they grant
   multitools.py  the hand-written multi-tool reference, loaded from data/
+  portals.py   glyphs <-> galactic coordinates, and the saved addresses
   inventory.py what you're carrying, persisted to XDG state
   app.py       the recipe table + detail pane
-  screens.py   chain, nanites, cooking, multi-tools, inventory, help
+  screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
 scripts/       fetch, normalise, pick cheat-sheet rows, screenshots
 cheatsheet.typ the PDF

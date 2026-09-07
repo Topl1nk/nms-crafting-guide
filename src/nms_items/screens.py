@@ -18,10 +18,11 @@ from textual.widgets import (
     Tree,
 )
 
-from . import food, graph, multitools
+from . import food, graph, multitools, portals
 from .ease import EaseIndex
 from .widgets import SearchInput, VimDataTable, VimTree, VimVerticalScroll
 from .model import SOURCE_SETS, Book
+from .portals import Address, AddressError, Location, LocationBook
 from .inventory import Inventory
 
 
@@ -581,11 +582,17 @@ class MultiToolScreen(Screen):
         # tabs would only switch while the tab bar itself had focus.
         Binding("left_square_bracket", "prev_tab", "prev tab"),
         Binding("right_square_bracket", "next_tab", "next tab"),
+        # The "getting one" tab ends in published portal addresses, so the
+        # screen that dials them belongs a single key away.
+        Binding("P", "portals", "portal addresses"),
     ]
 
     def __init__(self) -> None:
         super().__init__()
         self.data = multitools.load()
+
+    def action_portals(self) -> None:
+        self.app.push_screen(PortalScreen(kind="multi-tool"))
 
     def compose(self) -> ComposeResult:
         yield Header()
@@ -703,6 +710,532 @@ class MultiToolScreen(Screen):
         self._step_tab(1)
 
 
+# The readout needs 58 usable columns for the glyph grid; below this total the
+# saved-address list is dropped rather than squeezing both.
+MIN_WIDTH_FOR_LIST = 100
+READOUT_WIDTH = 62
+
+# The two filters on the portal screen, "everything" first in both.
+KIND_FILTERS: list[tuple[str | None, str]] = [(None, "everything")] + [
+    (kind, kind) for kind in portals.KINDS
+]
+ORIGIN_FILTERS: list[tuple[str | None, str]] = [
+    (None, "mine and shared"),
+    ("mine", "my finds"),
+    ("shared", "shared"),
+]
+
+# Which of the address's five fields each glyph belongs to, and the colour it
+# gets. The same colour is used in the grouped code and in the numbered glyph
+# list, so it is obvious at a glance which three glyphs are the X coordinate.
+FIELD_SPANS = [
+    ("planet", 1, "#f38ba8"),
+    ("system", 3, "#89b4fa"),
+    ("Y", 2, "#a6e3a1"),
+    ("Z", 3, "#f9e2af"),
+    ("X", 3, "#cba6f7"),
+]
+GLYPH_COLOURS = [colour for _, width, colour in FIELD_SPANS for _ in range(width)]
+
+PORTAL_PRIMER = """\
+[b #89b4fa]Portal addresses[/]
+
+Paste either form above; it converts as you type.
+
+  [b]portal code[/]        [#a6adc8]40E907FF0D6B[/]
+    12 hex digits, one per glyph
+  [b]galactic address[/]   [#a6adc8]056A:0086:07EF:00E9[/]
+    what a signal booster shows
+  [b]share link[/]         [#a6adc8]a nmsportals.github.io URL[/]
+
+Type anything else and it searches what you saved.
+
+[b #89b4fa]What the twelve glyphs are[/]
+
+  [b #f38ba8]p[/] [b #89b4fa]SSS[/] [b #a6e3a1]YY[/] [b #f9e2af]ZZZ[/] [b #cba6f7]XXX[/]
+
+  [#f38ba8]planet[/], [#89b4fa]system index[/], then the voxel as
+  [#a6e3a1]height[/], [#f9e2af]width[/], [#cba6f7]length[/]. Portal coordinates put
+  0,0,0 at the centre of the galaxy; a galactic
+  address counts from a corner, which is the whole
+  reason the two do not look alike.
+
+[b #89b4fa]Dialling one[/]
+
+  The 16 glyphs sit on the portal dial in a fixed
+  order, 0-9 then A-F, so the hex digit [i]is[/] the
+  position: [b]A[/] is the 11th symbol, every time. You
+  need all 16 unlocked, not twelve.
+
+[b #89b4fa]Sharing one[/]
+
+  The same twelve glyphs point at a different star
+  in each of the 256 galaxies, so an address alone
+  is ambiguous. Saved ones carry their galaxy.
+"""
+
+
+def ordinal(n: int) -> str:
+    if 10 <= n % 100 <= 20:
+        return f"{n}th"
+    return f"{n}{ {1: 'st', 2: 'nd', 3: 'rd'}.get(n % 10, 'th') }"
+
+
+def _looks_like_address(text: str) -> bool:
+    """Hex and separators only: they meant an address and mistyped it.
+
+    Anything with a letter past F in it is a search term, not a bad address,
+    so the error line stays quiet while you type a system name.
+    """
+    return bool(text) and all(ch in "0123456789abcdefABCDEF:,-. " for ch in text)
+
+
+class LocationModal(ModalScreen[Location | None]):
+    """Name an address so it is worth keeping. Tab between fields, Enter saves."""
+
+    BINDINGS = [Binding("escape", "cancel", "cancel")]
+
+    def __init__(self, code: str, existing: Location | None = None) -> None:
+        super().__init__()
+        self.code = code
+        self.existing = existing
+
+    def compose(self) -> ComposeResult:
+        base = self.existing
+        with Vertical(id="loc-modal-box"):
+            yield Static(
+                f"[b]Save[/] [#f9e2af]{self.code}[/]"
+                f"   [#a6adc8]Tab moves, Enter saves, Esc cancels[/]",
+                id="modal-title",
+            )
+            # Labelled single-line rows rather than seven bordered boxes: the
+            # placeholder vanishes the moment you type, and with this many
+            # fields that leaves you guessing which one you are in.
+            yield from self._field("Name", "loc-name", base.name if base else "",
+                                   "the system, usually")
+            yield from self._field("Kind", "loc-kind",
+                                   base.kind if base else "multi-tool",
+                                   " | ".join(portals.KINDS))
+            yield from self._field("Found", "loc-origin",
+                                   base.origin if base else "mine",
+                                   "mine (you found it) | shared (someone else did)")
+            yield from self._field("Galaxy", "loc-galaxy",
+                                   str(base.galaxy if base else 1),
+                                   "galaxy number - 1 is Euclid")
+            yield from self._field("There", "loc-detail-field",
+                                   base.detail if base else "",
+                                   "what is there - class, type, slots")
+            yield from self._field("Finding", "loc-where", base.where if base else "",
+                                   "how to find it once you arrive")
+            yield from self._field("Source", "loc-source", base.source if base else "",
+                                   "who shared it, or where you found it")
+
+    def _field(
+        self, label: str, field_id: str, value: str, placeholder: str
+    ) -> ComposeResult:
+        with Horizontal(classes="loc-field"):
+            yield Label(label, classes="loc-label")
+            yield Input(value=value, placeholder=placeholder, id=field_id)
+
+    def on_mount(self) -> None:
+        self.query_one("#loc-name", Input).focus()
+
+    def _value(self, selector: str) -> str:
+        return self.query_one(selector, Input).value.strip()
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        name = self._value("#loc-name")
+        if not name:
+            self.notify("It needs a name", severity="warning")
+            self.query_one("#loc-name", Input).focus()
+            return
+        kind = self._value("#loc-kind").lower()
+        if kind not in portals.KINDS:
+            kind = "other"
+        origin = self._value("#loc-origin").lower()
+        if origin not in portals.ORIGINS:
+            origin = "mine"
+        try:
+            galaxy = max(1, int(self._value("#loc-galaxy") or 1))
+        except ValueError:
+            galaxy = 1
+        self.dismiss(
+            Location(
+                name=name,
+                code=self.code,
+                kind=kind,
+                origin=origin,
+                galaxy=galaxy,
+                detail=self._value("#loc-detail-field"),
+                where=self._value("#loc-where"),
+                source=self._value("#loc-source"),
+                added=self.existing.added if self.existing else "",
+            )
+        )
+
+    def action_cancel(self) -> None:
+        self.dismiss(None)
+
+
+class PortalScreen(Screen):
+    """Convert an address, and keep the ones worth going back to.
+
+    One box does both jobs: paste a portal code or a galactic address and it
+    converts; type anything else and it searches what you have saved. That is
+    the actual workflow -- you are either decoding something someone shared or
+    looking for the thing you wrote down.
+    """
+
+    BINDINGS = [
+        Binding("escape,q", "app.pop_screen", "back"),
+        Binding("slash", "focus_input", "convert / search"),
+        Binding("f", "cycle_kind", "kind"),
+        Binding("o", "cycle_origin", "mine/shared"),
+        Binding("p", "cycle_planet", "planet glyph"),
+        Binding("s", "save", "save"),
+        Binding("e", "edit", "edit"),
+        Binding("d,delete", "drop", "drop"),
+        Binding("y", "copy_code", "code"),
+        Binding("Y", "copy_galactic", "galactic"),
+    ]
+
+    def __init__(
+        self, book: LocationBook | None = None, kind: str | None = None
+    ) -> None:
+        super().__init__()
+        self.locations = book or LocationBook.load()
+        self.current: Address | None = None
+        self.error = ""
+        self.query_text = ""
+        self.kind_index = next(
+            (i for i, (k, _) in enumerate(KIND_FILTERS) if k == kind), 0
+        )
+        self.origin_index = 0
+        self.planet = 0
+        self.rows: list[Location] = []
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield SearchInput(
+            placeholder="paste a portal code, a galactic address or a share link "
+            "- or type to search what you saved",
+            id="portal-input",
+        )
+        with Horizontal(id="portal-body"):
+            yield VimVerticalScroll(Static(id="portal-readout"), id="portal-left")
+            with Vertical(id="portal-right"):
+                yield Label(id="loc-title", classes="pane-title")
+                yield VimDataTable(id="loc-table", cursor_type="row", zebra_stripes=True)
+                yield Static(id="loc-detail")
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self.title = "Portals"
+        self._fit_to_width()
+        table = self.query_one("#loc-table", DataTable)
+        table.add_column("Name", width=21)
+        table.add_column("Kind", width=10)
+        table.add_column("Found", width=6)
+        table.add_column("Address", width=12)
+        table.add_column("What is there", width=26)
+        self.refresh_locations()
+        self.refresh_readout()
+        table.focus()
+
+    def on_resize(self) -> None:
+        self._fit_to_width()
+
+    def _fit_to_width(self) -> None:
+        """Under 100 columns the saved list goes and the readout takes it all.
+
+        Same bargain the recipe screen strikes with its detail pane: the
+        conversion is the thing you came for, the list is the luxury.
+        """
+        roomy = self.app.size.width >= MIN_WIDTH_FOR_LIST
+        left = self.query_one("#portal-left", VimVerticalScroll)
+        self.query_one("#portal-right", Vertical).display = roomy
+        left.styles.width = READOUT_WIDTH if roomy else "1fr"
+        # The divider is only a divider while there are two panes.
+        left.set_class(not roomy, "-solo")
+
+    # -- data ------------------------------------------------------------
+
+    @property
+    def kind(self) -> str | None:
+        return KIND_FILTERS[self.kind_index][0]
+
+    @property
+    def origin(self) -> str | None:
+        return ORIGIN_FILTERS[self.origin_index][0]
+
+    def refresh_locations(self, keep_cursor: bool = False) -> None:
+        table = self.query_one("#loc-table", DataTable)
+        cursor = table.cursor_row if keep_cursor else 0
+        self.rows = self.locations.search(self.query_text, self.kind, self.origin)
+
+        table.clear()
+        for loc in self.rows:
+            table.add_row(
+                loc.name, loc.kind, loc.origin, loc.code, loc.detail or "-"
+            )
+        self._update_pane_title(len(self.rows))
+
+        if self.rows:
+            table.move_cursor(row=min(cursor, len(self.rows) - 1))
+            self.show_location(self.rows[min(cursor, len(self.rows) - 1)])
+        elif len(self.locations):
+            self.query_one("#loc-detail", Static).update(
+                "[#a6adc8]Nothing matches. [b]f[/] widens the kind filter.[/]"
+            )
+        else:
+            self.query_one("#loc-detail", Static).update(
+                "[#a6adc8]Nothing saved yet - paste an address above and press "
+                "[b]s[/], or edit data/locations.json.[/]"
+            )
+
+    def _update_pane_title(self, shown: int) -> None:
+        """The two filters are only discoverable if the header says they are on."""
+        title = ["Saved addresses"]
+        if self.kind:
+            title.append(KIND_FILTERS[self.kind_index][1])
+        if self.origin:
+            title.append(ORIGIN_FILTERS[self.origin_index][1])
+        total = len(self.locations)
+        count = f"{shown} of {total}" if shown != total else f"{total}"
+        self.query_one("#loc-title", Label).update(
+            f"{'  -  '.join(title)}   [#a6adc8]{count}"
+            f"   ({self.locations.count('mine')} mine,"
+            f" {self.locations.count('shared')} shared)[/]"
+        )
+
+    def current_location(self) -> Location | None:
+        table = self.query_one("#loc-table", DataTable)
+        if not self.rows or not 0 <= table.cursor_row < len(self.rows):
+            return None
+        return self.rows[table.cursor_row]
+
+    # -- the readout -----------------------------------------------------
+
+    def refresh_readout(self) -> None:
+        self.query_one("#portal-readout", Static).update(self._readout_text())
+
+    def _readout_text(self) -> str:
+        if self.current is None:
+            head = f"[#f38ba8]{self.error}[/]\n\n" if self.error else ""
+            return head + PORTAL_PRIMER
+
+        address = self.current
+        code = address.portal_code
+        grouped = " ".join(
+            f"[b {colour}]{part}[/]"
+            for (_, _, colour), part in zip(
+                FIELD_SPANS, address.portal_grouped.split()
+            )
+        )
+        lines = [
+            f"{grouped}",
+            "",
+            f"[#89b4fa]Portal code[/]   [b]{code}[/]",
+            f"[#89b4fa]Galactic[/]      [b]{address.galactic}[/]",
+            f"[#89b4fa]Voxel[/]         {address.voxel_label}"
+            f"  [#a6adc8]from centre[/]",
+            f"[#89b4fa]Planet[/]        {ordinal(address.planet + 1)} of the system"
+            f"  [#a6adc8](glyph {address.planet:X})[/]",
+            f"[#89b4fa]System[/]        0x{address.system:03X}"
+            f"  [#a6adc8]({address.system})[/]",
+            f"[#89b4fa]Share link[/]",
+            f"  [#a6adc8]{address.share_link}[/]",
+        ]
+        for warning in address.warnings:
+            lines.append(f"[#f9e2af]![/] [#f9e2af]{warning}[/]")
+
+        # Position, then the digit, then the name -- because at the dial you
+        # count to the position and the digit is what you are counting to.
+        lines += ["", "[b #89b4fa]Glyphs, in dial order[/]"]
+        names = address.glyph_names
+        for start in range(0, 12, 3):
+            row = [
+                f"[#a6adc8]{i + 1:>2}[/] [b {GLYPH_COLOURS[i]}]{code[i]}[/]"
+                f" [{GLYPH_COLOURS[i]}]{names[i]:<9}[/]"
+                for i in range(start, start + 3)
+            ]
+            lines.append("  " + "  ".join(row))
+
+        saved = [loc for loc in self.locations.locations if loc.code == code]
+        if saved:
+            lines += ["", "[b #a6e3a1]Saved[/]"]
+            for loc in saved:
+                lines.append(
+                    f"  {loc.name}  [#a6adc8]{loc.kind}, {loc.origin},"
+                    f" {loc.galaxy_label}[/]"
+                )
+        else:
+            lines += [
+                "",
+                "[#a6adc8][b]y[/] copies the code   [b]Y[/] the galactic address"
+                "   [b]s[/] saves it   [b]p[/] changes the planet glyph[/]",
+            ]
+        return "\n".join(lines)
+
+    def show_location(self, loc: Location) -> None:
+        address = loc.address
+        lines = [
+            f"[b #f9e2af]{loc.name}[/]  [#a6adc8]{loc.kind}[/]"
+            + (
+                "  [#a6e3a1]found by me[/]"
+                if loc.origin == "mine"
+                else "  [#89b4fa]shared[/]"
+            ),
+            f"[#89b4fa]Address[/]     [b]{loc.code}[/]"
+            f"   [#a6adc8]{address.galactic}[/]",
+            f"[#89b4fa]Galaxy[/]      {loc.galaxy_label}",
+        ]
+        if loc.detail:
+            lines.append(f"[#89b4fa]There[/]       {loc.detail}")
+        if loc.where:
+            lines.append(f"[#89b4fa]Finding it[/]  {loc.where}")
+        trail = "  ".join(part for part in (loc.source, loc.added) if part)
+        if trail:
+            lines.append(f"[#a6adc8]{trail}[/]")
+        self.query_one("#loc-detail", Static).update("\n".join(lines))
+
+    # -- events ----------------------------------------------------------
+
+    def on_input_changed(self, event: SearchInput.Changed) -> None:
+        if event.input.id != "portal-input":
+            return
+        text = event.value.strip()
+        if not text:
+            self.current, self.error, self.query_text = None, "", ""
+        else:
+            try:
+                self.current = Address.parse(text, self.planet)
+                self.planet = self.current.planet
+                self.error, self.query_text = "", ""
+            except AddressError as exc:
+                self.current = None
+                self.error = str(exc) if _looks_like_address(text) else ""
+                self.query_text = "" if _looks_like_address(text) else text
+        self.refresh_locations()
+        self.refresh_readout()
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        if event.input.id == "portal-input":
+            self.query_one("#loc-table", VimDataTable).focus()
+
+    def on_search_input_escaped(self, event: SearchInput.Escaped) -> None:
+        self.query_one("#loc-table", VimDataTable).focus()
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+        if event.cursor_row < len(self.rows):
+            self.show_location(self.rows[event.cursor_row])
+
+    def on_data_table_row_selected(self, event: DataTable.RowSelected) -> None:
+        """Enter on a saved row loads it into the converter."""
+        loc = self.current_location()
+        if loc:
+            self.current = loc.address
+            self.planet = self.current.planet
+            self.error = ""
+            self.refresh_readout()
+
+    # -- actions ---------------------------------------------------------
+
+    def action_focus_input(self) -> None:
+        self.query_one("#portal-input", SearchInput).focus()
+
+    def action_cycle_kind(self) -> None:
+        self.kind_index = (self.kind_index + 1) % len(KIND_FILTERS)
+        self.refresh_locations()
+
+    def action_cycle_origin(self) -> None:
+        """Your own finds, or the ones off a catalogue -- they age differently."""
+        self.origin_index = (self.origin_index + 1) % len(ORIGIN_FILTERS)
+        self.refresh_locations()
+
+    def action_cycle_planet(self) -> None:
+        """The planet glyph is the one a galactic address cannot tell you."""
+        if self.current is None:
+            self.notify("Nothing to change - paste an address first")
+            return
+        self.planet = (self.current.planet + 1) % 16
+        self.current = self.current.with_planet(self.planet)
+        self.refresh_readout()
+
+    def action_copy_code(self) -> None:
+        self._copy(self.current.portal_code if self.current else None, "portal code")
+
+    def action_copy_galactic(self) -> None:
+        self._copy(self.current.galactic if self.current else None, "galactic address")
+
+    def _copy(self, text: str | None, what: str) -> None:
+        if not text:
+            self.notify("Nothing to copy", severity="warning")
+            return
+        self.app.copy_to_clipboard(text)
+        self.notify(f"Copied {what}: {text}")
+
+    def action_save(self) -> None:
+        if self.current is None:
+            self.notify("Paste an address first", severity="warning")
+            return
+        code = self.current.portal_code
+
+        def done(loc: Location | None) -> None:
+            if loc is None:
+                return
+            try:
+                self.locations.add(loc)
+            except OSError as exc:
+                self.notify(f"Could not write {self.locations.path}: {exc}",
+                            severity="error")
+                return
+            self.notify(f"Saved {loc.name} - {self.locations.path}")
+            self.refresh_locations()
+            self.refresh_readout()
+
+        self.app.push_screen(LocationModal(code), done)
+
+    def action_edit(self) -> None:
+        loc = self.current_location()
+        if loc is None:
+            return
+        index = next(
+            (i for i, other in enumerate(self.locations.locations) if other is loc),
+            None,
+        )
+        if index is None:
+            return
+
+        def done(updated: Location | None) -> None:
+            if updated is None:
+                return
+            self.locations.locations[index] = updated
+            try:
+                self.locations.save()
+            except OSError as exc:
+                self.notify(f"Could not write: {exc}", severity="error")
+                return
+            self.refresh_locations(keep_cursor=True)
+
+        self.app.push_screen(LocationModal(loc.code, existing=loc), done)
+
+    def action_drop(self) -> None:
+        loc = self.current_location()
+        if loc is None:
+            return
+        index = next(
+            (i for i, other in enumerate(self.locations.locations) if other is loc),
+            None,
+        )
+        if index is None:
+            return
+        gone = self.locations.remove(index)
+        if gone:
+            self.notify(f"Dropped {gone.name}")
+        self.refresh_locations(keep_cursor=True)
+
+
 HELP_TEXT = """\
 [b #89b4fa]NMS Items[/] - refining, cooking and chain lookup
 
@@ -730,7 +1263,10 @@ HELP_TEXT = """\
   n              the nanite ladder - every route to nanites, ranked
   e              cooking effects - what each dish does when you eat it
   m              multi-tools - types, weapons, how to get the good ones
-                 (inside: [ and ] move between the four tabs)
+                 (inside: [ and ] move between the four tabs, P for the
+                 portal addresses of the tools in the shortlist)
+  P              portal addresses - convert glyphs to galactic coordinates
+                 and back, and the places worth going
   a              add the highlighted output to your inventory
   i              inventory screen
 
@@ -738,6 +1274,36 @@ HELP_TEXT = """\
   Type "[i]item name count[/]" and press Enter to add - "platinum 250".
   A negative count subtracts. e     edit count      d   drop the item
   x   clear everything             C   include cooking recipes
+
+[b]Portal addresses (P)[/]
+  One box does both jobs. Paste a portal code (12 hex digits, one per
+  glyph), a galactic address (0824:007F:00F3:01AC, what a signal booster
+  shows) or a nmsportals.github.io link and it converts as you type;
+  type anything else and it searches the addresses you have saved.
+  y   copy the portal code       Y   copy the galactic address
+  s   save what is converted     e   edit      d   drop
+  f   filter by kind             o   filter by who found it
+  p   change the planet glyph
+  Enter on a saved row loads it back into the converter.
+
+  Saved addresses are one of two kinds, and o cycles between them:
+    mine     you stood there. Dated when you save it.
+    shared   off a catalogue or from a friend. What is verified in one
+             of those is the ADDRESS - the location is seeded to the
+             coordinate and survives patches. Class, slot count and
+             headline damage are somebody else's claim about somebody
+             else's save, and they rot.
+
+  The 16 glyphs sit on the portal dial in a fixed order, 0-9 then A-F,
+  so the hex digit IS the position: A is the eleventh symbol, every
+  time. You need all 16 unlocked, not twelve.
+
+  An address is  p SSS YY ZZZ XXX  - planet, system index, then the
+  voxel as height, width, length. Portal coordinates count from the
+  centre of the galaxy and galactic ones from a corner, which is the
+  whole reason the two forms do not look alike. The same twelve glyphs
+  mean a different star in each of the 256 galaxies, so saved addresses
+  carry theirs; galaxy 1 is Euclid.
 
 [b]Reading the columns[/]
   Mult    units out per unit in. "x6 loop" means the recipe feeds itself:
@@ -766,6 +1332,10 @@ HELP_TEXT = """\
   mise run build-data.
   Where loot comes from is the one thing the game files do not record;
   that lives in data/acquisition.json, written from the guides.
+  Portal addresses are in data/locations.json - hand-editable, and
+  what the s key on the portal screen writes to. It ships with the
+  fifteen off the Euclid shortlists in guides 14 and 21, all marked
+  shared; anything you add is marked mine by default.
 
 j k  scroll     g G  top / bottom     Esc or q  close
 """

@@ -225,3 +225,84 @@ HelpScreen {
     padding: 1 2;
     overflow-y: auto;
 }
+
+/* --- portal screen --- */
+
+#portal-input {
+    border: tall #45475a;
+    background: #313244;
+    margin: 0 1;
+}
+
+#portal-input:focus {
+    border: tall #cba6f7;
+}
+
+#portal-body {
+    height: 1fr;
+}
+
+/* Wide enough for the glyph grid: four "12 dragonfly F" cells across. */
+#portal-left {
+    width: 62;
+    min-width: 40;
+    padding: 1 2;
+    background: #181825;
+    border-right: solid #45475a;
+}
+
+/* No second pane, no divider. */
+#portal-left.-solo {
+    border-right: none;
+}
+
+#portal-right {
+    width: 1fr;
+}
+
+#loc-table {
+    height: 1fr;
+    width: 100%;
+}
+
+#loc-detail {
+    height: auto;
+    min-height: 6;
+    padding: 1 2;
+    background: #181825;
+    border-top: solid #45475a;
+}
+
+LocationModal {
+    align: center middle;
+}
+
+#loc-modal-box {
+    width: 66;
+    height: auto;
+    border: thick #cba6f7;
+    background: #181825;
+    padding: 1 2;
+}
+
+.loc-field {
+    height: 1;
+    margin-bottom: 1;
+}
+
+.loc-label {
+    width: 9;
+    color: #89b4fa;
+}
+
+#loc-modal-box Input {
+    border: none;
+    height: 1;
+    padding: 0 1;
+    background: #313244;
+}
+
+#loc-modal-box Input:focus {
+    background: #45475a;
+    color: #f9e2af;
+}
