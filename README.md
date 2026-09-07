@@ -244,6 +244,13 @@ survives a patch. The class, the slot count and the headline damage figure are
 somebody else's claim about somebody else's save, and those rot. Your own finds
 are the ones you can vouch for.
 
+The save form takes a prefix for Kind and Found — `multi`, `s` — and refuses
+anything it cannot read rather than correcting it quietly: a kind that is not a
+kind used to become `other`, and a galaxy of `twelve` used to become Euclid,
+both without a word. The address itself needs no checking, since the form only
+opens on one that already parsed. Saving a code you already have is allowed —
+one system can hold a tool *and* a ship — but it says so.
+
 Nothing deletes outright. `d` moves an address to the trash, `u` takes the last
 one back, `T` lists what is in there — and inside the trash `u` restores the row
 you are on while `d` is the one that really deletes. The trash rides along in

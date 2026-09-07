@@ -615,3 +615,74 @@ def test_undo_works_from_the_list_too(book: Book, tmp_path) -> None:
             ]
 
     run(scenario())
+
+
+def test_the_save_form_refuses_rather_than_quietly_correcting(book, tmp_path) -> None:
+    """A bad kind used to become "other" and a bad galaxy became Euclid."""
+    from nms_items.portals import LocationBook
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        app.locations = LocationBook.load()
+        app.locations.path = tmp_path / "locations.json"
+        total = len(app.locations)
+
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            await pilot.press("slash")
+            for char in "40E907FF0D6B":
+                await pilot.press(char)
+            await pilot.pause(0.3)
+            await pilot.press("enter")
+            await pilot.press("s")
+            await pilot.pause(0.4)
+            modal = app.screen
+            assert modal.__class__.__name__ == "LocationModal"
+
+            def field(selector):
+                return modal.query_one(selector)
+
+            def error():
+                return modal.problem
+
+            # No name: refused, and the cursor goes where the problem is.
+            field("#loc-name").value = ""
+            await pilot.press("enter")
+            await pilot.pause(0.3)
+            assert app.screen is modal
+            assert "needs a name" in error()
+            assert modal.focused.id == "loc-name"
+
+            # A kind that is not a kind: refused, and it says which are.
+            field("#loc-name").value = "Test System"
+            field("#loc-kind").value = "starfighter"
+            await pilot.press("enter")
+            await pilot.pause(0.3)
+            assert app.screen is modal
+            assert "multi-tool" in error()
+            assert modal.focused.id == "loc-kind"
+
+            # A galaxy that is not a galaxy: refused, with the range.
+            field("#loc-kind").value = "multi"      # a prefix is fine
+            field("#loc-galaxy").value = "999"
+            await pilot.press("enter")
+            await pilot.pause(0.3)
+            assert app.screen is modal
+            assert "1 to 256" in error()
+            assert modal.focused.id == "loc-galaxy"
+
+            # Fixed: it saves, and the prefix resolved to the full kind.
+            field("#loc-galaxy").value = "10"
+            await pilot.press("enter")
+            await pilot.pause(0.4)
+            assert app.screen is not modal
+            assert len(app.locations) == total + 1
+            saved = app.locations.locations[-1]
+            assert saved.kind == "multi-tool"
+            assert saved.galaxy == 10
+            assert saved.name == "Test System"
+
+    run(scenario())

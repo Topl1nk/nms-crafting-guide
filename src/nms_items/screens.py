@@ -904,6 +904,8 @@ class LocationModal(ModalScreen[Location | None]):
         super().__init__()
         self.code = code
         self.existing = existing
+        # What is currently wrong with the form, "" when nothing is.
+        self.problem = ""
 
     def compose(self) -> ComposeResult:
         base = self.existing
@@ -934,6 +936,7 @@ class LocationModal(ModalScreen[Location | None]):
                                    "how to find it once you arrive")
             yield from self._field("Source", "loc-source", base.source if base else "",
                                    "who shared it, or where you found it")
+            yield Static(id="loc-error")
 
     def _field(
         self, label: str, field_id: str, value: str, placeholder: str
@@ -945,26 +948,53 @@ class LocationModal(ModalScreen[Location | None]):
     def on_mount(self) -> None:
         self.query_one("#loc-name", Input).focus()
 
+    def on_input_changed(self, event: Input.Changed) -> None:
+        """Clear a complaint as soon as the field it was about is touched."""
+        self.problem = ""
+        self.query_one("#loc-error", Static).update("")
+
     def _value(self, selector: str) -> str:
         return self.query_one(selector, Input).value.strip()
 
-    def on_input_submitted(self, event: Input.Submitted) -> None:
+    def _check(self) -> tuple[Location | None, str, str]:
+        """Build the Location, or say what is wrong and which field it is in.
+
+        Nothing here corrects a field quietly. A kind of "starfighter" used to
+        become "other" and a galaxy of "twelve" became Euclid, both without a
+        word, which is the kind of thing you only notice much later in the
+        file. Prefixes are accepted -- "multi", "s" -- because those are what
+        anyone actually types.
+        """
         name = self._value("#loc-name")
         if not name:
-            self.notify("It needs a name", severity="warning")
-            self.query_one("#loc-name", Input).focus()
-            return
-        kind = self._value("#loc-kind").lower()
-        if kind not in portals.KINDS:
-            kind = "other"
-        origin = self._value("#loc-origin").lower()
-        if origin not in portals.ORIGINS:
-            origin = "mine"
-        try:
-            galaxy = max(1, int(self._value("#loc-galaxy") or 1))
-        except ValueError:
-            galaxy = 1
-        self.dismiss(
+            return None, "It needs a name.", "#loc-name"
+
+        kind = portals.resolve_choice(self._value("#loc-kind"), portals.KINDS)
+        if kind is None:
+            return (
+                None,
+                "Kind must be one of: " + ", ".join(portals.KINDS),
+                "#loc-kind",
+            )
+
+        origin = portals.resolve_choice(self._value("#loc-origin"), portals.ORIGINS)
+        if origin is None:
+            return (
+                None,
+                "Found must be [b]mine[/] (you found it) or [b]shared[/].",
+                "#loc-origin",
+            )
+
+        galaxy = portals.parse_galaxy(self._value("#loc-galaxy"))
+        if galaxy is None:
+            return (
+                None,
+                f"Galaxy must be a number from 1 to {portals.MAX_GALAXY}"
+                " - 1 is Euclid.",
+                "#loc-galaxy",
+            )
+
+        return (
             Location(
                 name=name,
                 code=self.code,
@@ -975,8 +1005,18 @@ class LocationModal(ModalScreen[Location | None]):
                 where=self._value("#loc-where"),
                 source=self._value("#loc-source"),
                 added=self.existing.added if self.existing else "",
-            )
+            ),
+            "",
+            "",
         )
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        location, self.problem, field = self._check()
+        if location is None:
+            self.query_one("#loc-error", Static).update(f"[#f38ba8]{self.problem}[/]")
+            self.query_one(field, Input).focus()
+            return
+        self.dismiss(location)
 
     def action_cancel(self) -> None:
         self.dismiss(None)
@@ -1430,7 +1470,20 @@ class PortalScreen(Screen):
                 self.notify(f"Could not write {self.locations.path}: {exc}",
                             severity="error")
                 return
-            self.notify(f"Saved {loc.name} - {self.locations.path}")
+            twins = [
+                other for other in self.locations.locations
+                if other.code == loc.code and other is not loc
+            ]
+            if twins:
+                # Legitimate -- one system can hold a tool and a ship -- so
+                # this says so rather than refusing the save.
+                self.notify(
+                    f"{loc.name}: that address is also saved as "
+                    + ", ".join(other.name for other in twins),
+                    severity="warning",
+                )
+            else:
+                self.notify(f"Saved {loc.name} - {self.locations.path}")
             self.refresh_locations()
             self.refresh_readout()
 
@@ -1577,6 +1630,13 @@ HELP_TEXT = """\
   p   change the planet glyph
   u   undo the last drop         T   show the trash
   Enter on a saved row loads it back into the converter.
+
+  The save form (s, and e to edit) takes a prefix for Kind and Found -
+  "multi", "s" - and refuses anything it cannot read rather than
+  quietly correcting it: a kind that is not a kind used to become
+  "other" and a galaxy of "twelve" used to become Euclid, both without
+  a word. Saving an address you already have is allowed, since one
+  system can hold a tool and a ship, but it tells you.
 
   Nothing here deletes outright. d moves an address to the trash, u
   takes the last one back, and T lists what is in there - inside the

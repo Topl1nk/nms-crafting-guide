@@ -16,12 +16,16 @@ import pytest
 
 from nms_items.portals import (
     GLYPH_NAMES,
+    KINDS,
+    MAX_GALAXY,
     ORIGINS,
     Address,
     AddressError,
     Location,
     LocationBook,
     galaxy_name,
+    parse_galaxy,
+    resolve_choice,
 )
 from nms_items.model import DATA_DIR
 
@@ -125,6 +129,58 @@ def test_galaxy_names() -> None:
     assert galaxy_name(1) == "Euclid"
     assert galaxy_name(10) == "Eissentam"
     assert galaxy_name(42) == "Galaxy 42"
+
+
+# -- what the add/edit form will accept ------------------------------------
+
+
+@pytest.mark.parametrize(
+    "typed, expected",
+    [
+        ("multi-tool", "multi-tool"),
+        ("MULTI-TOOL", "multi-tool"),
+        ("  starship  ", "starship"),
+        ("multi", "multi-tool"),   # a prefix, which is what you actually type
+        ("f", "freighter"),
+        ("sta", "starship"),
+    ],
+)
+def test_kind_takes_an_exact_match_or_a_clear_prefix(typed, expected) -> None:
+    assert resolve_choice(typed, KINDS) == expected
+
+
+@pytest.mark.parametrize("typed", ["", "starfighter", "s", "  "])
+def test_an_unclear_kind_is_refused_rather_than_corrected(typed) -> None:
+    """`s` is both starship and system; `starfighter` is nothing.
+
+    The old form turned all of these into "other" without a word, which is a
+    thing you discover much later while reading the file.
+    """
+    assert resolve_choice(typed, KINDS) is None
+
+
+def test_a_prefix_only_resolves_when_it_is_unambiguous() -> None:
+    """`s` is starship and system both; `p` is only planet."""
+    assert resolve_choice("s", KINDS) is None
+    assert resolve_choice("p", KINDS) == "planet"
+
+
+def test_origin_takes_a_prefix_too() -> None:
+    assert resolve_choice("m", ORIGINS) == "mine"
+    assert resolve_choice("s", ORIGINS) == "shared"
+    assert resolve_choice("SHARED", ORIGINS) == "shared"
+    assert resolve_choice("ours", ORIGINS) is None
+
+
+@pytest.mark.parametrize("typed, expected", [("1", 1), ("", 1), (" 10 ", 10), ("256", 256)])
+def test_galaxy_accepts_a_number_in_range(typed, expected) -> None:
+    assert parse_galaxy(typed) == expected
+
+
+@pytest.mark.parametrize("typed", ["0", "-3", "257", "twelve", "1.5", "e"])
+def test_galaxy_refuses_anything_that_is_not_a_galaxy(typed) -> None:
+    assert parse_galaxy(typed) is None
+    assert MAX_GALAXY == 256
 
 
 # -- the saved-address file ------------------------------------------------

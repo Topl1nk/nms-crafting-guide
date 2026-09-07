@@ -306,3 +306,9 @@ LocationModal {
     background: #45475a;
     color: #f9e2af;
 }
+
+/* Empty until something is wrong, so it takes no room until it does. */
+#loc-error {
+    height: auto;
+    padding: 0 10;
+}

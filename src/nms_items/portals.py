@@ -89,6 +89,32 @@ KINDS = [
 # catalogue carry somebody else's class claim on somebody else's save.
 ORIGINS = ["mine", "shared"]
 
+# There are 256 galaxies; galaxy_name() has the first ten and numbers the rest.
+MAX_GALAXY = 256
+
+
+def resolve_choice(value: str, options: list[str]) -> str | None:
+    """Exact match, or an unambiguous prefix of one. None if it is neither.
+
+    Prefixes because "multi" and "s" are what you actually type. None rather
+    than a default, because a field that quietly corrects itself is one you
+    find out about days later, reading the file.
+    """
+    value = value.strip().lower()
+    if value in options:
+        return value
+    hits = [option for option in options if option.startswith(value)] if value else []
+    return hits[0] if len(hits) == 1 else None
+
+
+def parse_galaxy(text: str) -> int | None:
+    """1-based galaxy number, or None if it is not one."""
+    try:
+        number = int(text.strip() or 1)
+    except ValueError:
+        return None
+    return number if 1 <= number <= MAX_GALAXY else None
+
 
 def galaxy_name(number: int) -> str:
     """Galaxy 1 is Euclid. Numbering is 1-based because the game's is."""
