@@ -21,7 +21,7 @@ from textual.widgets import (
     Tree,
 )
 
-from . import food, graph, multitools, portals
+from . import food, glyphart, graph, multitools, portals
 from .commands import ModeCommand, ModeCommands, mode
 from .ease import EaseIndex
 from .widgets import SearchInput, VimDataTable, VimTree, VimVerticalScroll
@@ -813,6 +813,11 @@ class MultiToolScreen(Screen):
 # saved-address list is dropped rather than squeezing both.
 MIN_WIDTH_FOR_LIST = 100
 READOUT_WIDTH = 62
+# `padding: 1 2` on both panes plus the divider between them, and a column of
+# slack: this number is only ever a fallback, and it should err narrow.
+PANE_GUTTERS = 6
+# The readout indents the glyphs to line up with the names below them.
+GLYPH_INDENT = 2
 
 # The two filters on the portal screen, "everything" first in both.
 KIND_FILTERS: list[tuple[str | None, str]] = [(None, "everything")] + [
@@ -1076,6 +1081,12 @@ class PortalScreen(Screen):
 
     def on_resize(self) -> None:
         self._fit_to_width()
+        # Both panes draw the glyphs at whatever size now fits, so both have
+        # to be redrawn -- a resize changes their content, not just their box.
+        self.refresh_readout()
+        loc = self.current_location()
+        if loc is not None:
+            self.show_location(loc)
 
     def _fit_to_width(self) -> None:
         """Under 100 columns the saved list goes and the readout takes it all.
@@ -1089,6 +1100,27 @@ class PortalScreen(Screen):
         left.styles.width = READOUT_WIDTH if roomy else "1fr"
         # The divider is only a divider while there are two panes.
         left.set_class(not roomy, "-solo")
+
+    def _pane_width(self, selector: str, fallback: int) -> int:
+        """Usable columns in a pane, for deciding how big the glyphs can be.
+
+        The widget knows exactly -- but only once it has been laid out, and
+        the first draw happens before that. So the fallback is the stylesheet
+        arithmetic, erring narrow on purpose: too narrow picks a smaller
+        layout, too wide wraps one and looks broken. `on_resize` fires after
+        the layout and redraws with the real number.
+        """
+        measured = self.query_one(selector, Static).content_size.width
+        return measured if measured > 0 else fallback
+
+    def _readout_width(self) -> int:
+        roomy = self.app.size.width >= MIN_WIDTH_FOR_LIST
+        box = READOUT_WIDTH if roomy else self.app.size.width
+        return self._pane_width("#portal-readout", box - PANE_GUTTERS)
+
+    def _detail_width(self) -> int:
+        return self._pane_width(
+            "#loc-detail", self.app.size.width - READOUT_WIDTH - PANE_GUTTERS)
 
     # -- data ------------------------------------------------------------
 
@@ -1184,6 +1216,14 @@ class PortalScreen(Screen):
         # Position, then the digit, then the name -- because at the dial you
         # count to the position and the digit is what you are counting to.
         lines += ["", "[b #89b4fa]Glyphs, in dial order[/]"]
+        # The symbols themselves first: names are how you talk about a glyph,
+        # but shapes are what the dial shows you. Stacked six and six here --
+        # the readout is a scrolling pane, so rows are the cheap dimension.
+        art = glyphart.load().render(
+            code, self._readout_width() - GLYPH_INDENT, colours=GLYPH_COLOURS)
+        if art:
+            pad = " " * GLYPH_INDENT
+            lines += [""] + [f"{pad}{row}" if row else row for row in art] + [""]
         names = address.glyph_names
         for start in range(0, 12, 3):
             row = [
@@ -1222,6 +1262,13 @@ class PortalScreen(Screen):
             f"   [#a6adc8]{address.galactic}[/]",
             f"[#89b4fa]Galaxy[/]      {loc.galaxy_label}",
         ]
+        # What you will be looking at on the dial. Stacked six and six when one
+        # line will not fit: this pane shares its height with the table above,
+        # but a pane that stayed empty until 190 columns would mostly be empty.
+        art = glyphart.load().render(
+            loc.code, self._detail_width(), colours=GLYPH_COLOURS)
+        if art:
+            lines += [""] + art
         if loc.detail:
             lines.append(f"[#89b4fa]There[/]       {loc.detail}")
         if loc.where:

@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 sys.path.insert(0, str(ROOT / "src"))
 
-from nms_items import food, graph, multitools, portals  # noqa: E402
+from nms_items import food, glyphart, graph, multitools, portals  # noqa: E402
 from nms_items.ease import EaseIndex  # noqa: E402
 from nms_items.model import SOURCE_SETS, TIER0, Book, Recipe  # noqa: E402
 
@@ -96,6 +96,19 @@ def portal_page() -> dict:
     centre = portals.Address.from_portal_code("000000000000")
     if centre.galactic != "07FF:007F:07FF:0000":
         raise SystemExit(f"portal conversion moved: centre is {centre.galactic}")
+
+    # The sheet draws the symbols straight out of data/glyphs.json, which no
+    # Python here writes -- so this is the only place that can catch it having
+    # drifted from the dial. One position out and every address on the page
+    # points at a different star, and it would look perfectly plausible.
+    art = glyphart.load()
+    for i, name in enumerate(portals.GLYPH_NAMES):
+        g = art.glyphs[i]
+        if (g.position, g.hex, g.name) != (i + 1, f"{i:X}", name):
+            raise SystemExit(
+                f"data/glyphs.json is off the dial at {i}: expected "
+                f"{i + 1}/{i:X}/{name}, found {g.position}/{g.hex}/{g.name}. "
+                f"Rebuild it: mise run glyphs")
 
     book = portals.LocationBook.load()
     rows = []

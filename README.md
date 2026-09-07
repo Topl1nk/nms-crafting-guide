@@ -33,7 +33,7 @@ is the prose version of what this app queries.
 
 ```fish
 mise install        # uv + typst
-mise run setup      # fonts for the PDF (paru)
+mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
 mise run sync       # python deps
 mise run tui        # go
 ```
@@ -169,12 +169,56 @@ test suite pins that on the one fact both agree about: portal `000000000000`
 is the galaxy centre, and galactic coordinates call it `07FF:007F:07FF`.
 
 An address reads `p SSS YY ZZZ XXX` — planet, system index, then the voxel as
-height, width, length. The screen colours each field in the code and in the
-glyph list, so it is obvious which three glyphs are X.
+height, width, length. The screen colours each field in the code, in the glyph
+list and in the drawn symbols, so it is obvious which three glyphs are X.
 
 🔑 **The hex digit is the position on the dial.** The 16 glyphs sit in a fixed
 order, `0`–`9` then `A`–`F`, so `A` is the eleventh symbol, every time — and
 you need all 16 unlocked, not twelve.
+
+#### The symbols themselves
+
+A hex code is only half an address: at the portal you are looking at sixteen
+pictures, not sixteen digits. So the actual shapes are in here too, once, in
+`data/glyphs.json` — outlines traced off the art
+[nmsportals](https://nmsportals.github.io/) draws its dial with, plus the same
+mask knocked down to braille for the terminal. `mise run glyphs` re-derives
+both; it needs `potrace`, and it is deliberately **not** part of
+`mise run refresh`, because the symbols do not change when the game patches.
+
+One source, two shapes, because the two places a glyph appears want opposite
+things. The cheat sheet wants **vectors**: the fill is left out of the traced
+path, so the same shape prints dark on Latte and light on Mocha — a PNG of
+white line art would simply vanish on paper. A terminal wants **characters**:
+it cannot show a PNG and no ordinary font has these symbols, so the same mask
+is also stored as braille, 2×4 dots per cell, which is the only resolution
+fine enough to keep `sunset` from collapsing into a blob.
+
+On the portal screen both the converter and the saved-address detail draw the
+twelve symbols, coloured by field the way the hex already is. The layout is
+whatever the pane can hold: twelve across at 8×4 cells wants 107 columns, at
+6×3 it wants 83, and below that it stacks six and six on the field boundary —
+planet, system and Y above, Z and X below. Under about 40 columns it gives up
+and leaves the hex, which is all it ever had.
+
+Whether that draws is up to the terminal, not the app. **Ghostty draws braille
+itself**, with its internal sprite renderer rather than the font — ask it:
+
+```fish
+ghostty +show-face --string="A⣿"
+# U+41 « A » found in face "JetBrains Mono".
+# U+28FF « ⣿ » is handled by Ghostty's internal sprites.
+```
+
+so it is cell-perfect there whatever `font-family` says. A terminal that asks
+the font instead needs one carrying `U+2800`–`U+28FF`: plain JetBrains Mono
+does **not** have it, its Nerd Font build does, and so do most patched
+monospace fonts. With neither you get boxes where the glyphs should be, and
+nothing else on the screen changes.
+
+Because nothing at runtime re-derives that file, `mise run pdf` checks it
+against `portals.py` before drawing: one position out and every address on the
+sheet would point at a different star, plausibly.
 
 | | |
 | --- | --- |
@@ -229,9 +273,11 @@ the list already filtered to tools.
    dishes each.
 4. **Multi-tools** — the 8 types, the weapons measured, how to get the free
    ones, and the adjacency and supercharged-slot rules.
-5. **Portals** — all 16 glyphs in dial order, how to read an address, the
-   conversion both ways, and every saved address in two tables: the ones you
-   found and the ones you were told about.
+5. **Portals** — all 16 glyphs in dial order **drawn**, how to read an address,
+   the conversion both ways, and every saved address in two tables: the ones
+   you found and the ones you were told about. Every address carries its twelve
+   symbols beside the hex, coloured by field, so at the portal you dial off the
+   page without translating anything.
 
 It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
 including its own prose: claims like "every row below is 5s in the Processor"
@@ -256,6 +302,7 @@ reads:
 | `data/acquisition.json` | **hand-written** — where loot comes from, since the game files record what a recipe needs but never where to find it. Taken from the guides; where they say nothing, the app says "unknown" rather than guessing |
 | `data/multitools.json` | **hand-written** — the multi-tool reference. The game files carry nothing useful about multi-tools, so this comes wholesale from guides 05 and 21 |
 | `data/locations.json` | **hand-written** — portal addresses, from the Euclid shortlists in guides 14 and 21, plus whatever you find. The `s` key on the portal screen appends to it |
+| `data/glyphs.json` | the 16 symbols — outlines for the PDF and braille for the terminal, both traced from the [nmsportals](https://nmsportals.github.io/) dial art by `mise run glyphs`. Regenerated only if it is lost; the glyphs do not move |
 
 After a game patch:
 
@@ -282,6 +329,7 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` |
 | `mise run pdf-watch` | rebuild the light PDF on every save |
 | `mise run refresh` | full data rebuild from upstream |
+| `mise run glyphs` | re-trace the 16 portal symbols into `data/glyphs.json` |
 | `mise run test` | pytest — data integrity + a headless pass over the TUI |
 | `mise run screenshot` | regenerate the SVGs in this README |
 
@@ -297,10 +345,11 @@ src/nms_items/
   food.py      cooked dishes grouped by the buff they grant
   multitools.py  the hand-written multi-tool reference, loaded from data/
   portals.py   glyphs <-> galactic coordinates, and the saved addresses
+  glyphart.py  the 16 symbols as braille, for drawing a code in a terminal
   inventory.py what you're carrying, persisted to XDG state
   app.py       the recipe table + detail pane
   screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
-scripts/       fetch, normalise, pick cheat-sheet rows, screenshots
+scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots
 cheatsheet.typ the PDF
 ```

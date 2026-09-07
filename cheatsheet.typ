@@ -698,6 +698,23 @@
 
 #let pt = data.portals
 #let mono(body) = text(font: "JetBrains Mono", size: 0.95em, body)
+
+// The glyphs themselves. data/glyphs.json carries them as outlines traced from
+// the game's own symbols (scripts/build_glyphs.py) with no fill of their own,
+// which is the whole reason they are paths and not the source PNGs: white line
+// art is invisible on Latte's paper, and a raster cannot be recoloured. The
+// fill is handed in here, so one set of shapes prints in both themes.
+#let gd = json("data/glyphs.json")
+#let glyph(hex, size: 1.9em, fill: pal.text) = {
+  let g = gd.glyphs.find(g => g.hex == upper(hex))
+  let svg = (
+    "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"" + g.viewbox + "\">"
+      + "<g transform=\"" + g.transform + "\" fill=\"" + fill.to-hex() + "\">"
+      + g.paths.map(d => "<path d=\"" + d + "\"/>").join("")
+      + "</g></svg>"
+  )
+  box(image(bytes(svg), format: "svg", width: size, height: size))
+}
 // The five fields of an address, coloured the same way the TUI colours them.
 // Five accents that stay distinct in both themes -- the yellow that works on
 // the TUI's dark background is unreadable on Latte's white.
@@ -706,6 +723,22 @@
 #let f-y = pal.accents.at(0)
 #let f-z = pal.accents.at(3)
 #let f-x = pal.accents.at(2)
+// One colour per position in a twelve-glyph code -- planet, system, Y, Z, X --
+// so the symbols, the hex and the TUI all split an address the same way.
+#let field-colours = (
+  (f-planet,) + (f-system,) * 3 + (f-y,) * 2 + (f-z,) * 3 + (f-x,) * 3
+)
+
+// A code drawn the way you dial it. This is the line that saves the walk back
+// to the table above: twelve symbols in dial order, already in field colours.
+#let glyph-code(code, size: 1.5em) = box(baseline: 20%, {
+  for (i, digit) in code.clusters().enumerate() {
+    // A hair of space at each field boundary: dialling is done a field at a
+    // time, and twelve symbols in an unbroken row is where miscounts happen.
+    if i in (1, 4, 6, 9) { std.h(2pt) }
+    glyph(digit, size: size, fill: field-colours.at(i))
+  }
+})
 
 #block(
   width: 100%, radius: 2pt, below: 7pt,
@@ -732,18 +765,19 @@
     time · you need all 16 unlocked, not twelve
   ]
   #dense(
-    (auto, auto, 1fr, auto, auto, 1fr),
-    (right, center, left, right, center, left),
-    ("#", "hex", "glyph", "#", "hex", "glyph"),
-    pad: 1.5pt,
+    (auto, auto, auto, 1fr, auto, auto, auto, 1fr),
+    (right + horizon, center + horizon, center + horizon, left + horizon,
+     right + horizon, center + horizon, center + horizon, left + horizon),
+    ("#", "hex", "", "glyph", "#", "hex", "", "glyph"),
+    pad: 1.1pt,
     ..range(8).map(i => {
       let a = pt.glyphs.at(i)
       let b = pt.glyphs.at(i + 8)
       (
         text(fill: pal.subtext, str(a.position)),
-        mono(text(weight: "bold", a.hex)), a.name,
+        mono(text(weight: "bold", a.hex)), glyph(a.hex, size: 1.6em), a.name,
         text(fill: pal.subtext, str(b.position)),
-        mono(text(weight: "bold", b.hex)), b.name,
+        mono(text(weight: "bold", b.hex)), glyph(b.hex, size: 1.6em), b.name,
       )
     }).flatten()
   )
@@ -771,6 +805,7 @@
     #v(1pt)
     #grid(
       columns: (auto, 1fr), column-gutter: 5pt, row-gutter: 1.4pt,
+      text(fill: pal.subtext, "dial"), glyph-code(pt.example.code, size: 2em),
       text(fill: pal.subtext, "glyphs"),
       mono(text(weight: "bold",
         text(fill: f-planet, pt.example.planet) + " " +
@@ -840,12 +875,14 @@
 // The addresses themselves, split the way you actually think about them: the
 // ones you stood on, and the ones you took somebody's word for.
 #let address-rows(rows) = stack(..rows.enumerate().map(((i, r)) => mrow(i, grid(
-  columns: (1fr, auto, auto),
+  columns: (1fr, auto, auto, auto),
   column-gutter: 5pt, row-gutter: 1.2pt,
+  align: (left + horizon, right + horizon, center + horizon, right + horizon),
   text(weight: "bold", r.name),
   text(size: 0.9em, fill: pal.subtext, r.kind),
+  glyph-code(r.code),
   mono(text(weight: "bold", r.code)),
-  grid.cell(colspan: 3, {
+  grid.cell(colspan: 4, {
     set text(size: 0.9em, fill: pal.subtext)
     if r.detail != "" { r.detail }
     if r.where != "" [ · #r.where]

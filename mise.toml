@@ -21,8 +21,8 @@ PYTHONPATH = "{{config_root}}/src"
 # --- setup ------------------------------------------------------------------
 
 [tasks.setup]
-description = "System deps: the two fonts the PDF uses"
-run = "paru -S --needed inter-font ttf-jetbrains-mono"
+description = "System deps: the two fonts the PDF uses, and potrace for the glyphs"
+run = "paru -S --needed inter-font ttf-jetbrains-mono potrace"
 
 [tasks.sync]
 description = "Install / update Python dependencies (textual)"
@@ -60,6 +60,18 @@ run = "uv run python scripts/build_data.py"
 [tasks.cheatsheet-data]
 description = "Pick the cheat-sheet recipes into data/cheatsheet.json"
 run = "uv run python scripts/build_cheatsheet.py"
+
+[tasks.fetch-glyphs]
+description = "Download the 16 portal glyph images into .cache/glyphs/"
+run = "uv run python scripts/fetch_glyphs.py"
+
+[tasks.build-glyphs]
+description = "Trace the glyph art into data/glyphs.json — outlines for the PDF, braille for the TUI"
+run = "uv run python scripts/build_glyphs.py"
+
+[tasks.glyphs]
+description = "Re-derive the portal glyphs from upstream art. Not part of `refresh`: the symbols do not change with a game patch, and data/glyphs.json is committed"
+depends = ["fetch-glyphs", "build-glyphs"]
 
 [tasks.refresh]
 description = "Full data rebuild after a game patch: fetch → normalise → cheat sheet → PDF"
