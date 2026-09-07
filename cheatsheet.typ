@@ -115,6 +115,8 @@
    [cook once, eat one, sell the rest · top dishes by units · every buff and its best dishes]),
   ([No Man's Sky Multi-Tools],
    [types · weapons · the free S-class Sentinel tool · supercharged slots · upgrade order]),
+  ([No Man's Sky Portals],
+   [the 16 glyphs in dial order · glyphs ↔ galactic coordinates · addresses worth the trip]),
 )
 #set page(
   paper: "a4",
@@ -681,4 +683,196 @@
     text(fill: pal.subtext, [ — #u.where · #u.note])
   })))
   #block(inset: (x: 3pt, y: 2pt), enum(..mt.upgrade_order))
+]
+
+
+// ════════════════════════ page 5 — portal addresses ═════════════════════════
+// Also hand-written rather than generated, but the arithmetic in it is real:
+// build_cheatsheet.py round-trips every address below and re-checks the
+// galaxy-centre invariant, so this page cannot print a code you cannot dial.
+#pagebreak()
+#section-count.update(0)
+#set text(size: 7.2pt)
+#set list(spacing: 2.5pt)
+#set enum(spacing: 2.5pt)
+
+#let pt = data.portals
+#let mono(body) = text(font: "JetBrains Mono", size: 0.95em, body)
+// The five fields of an address, coloured the same way the TUI colours them.
+// Five accents that stay distinct in both themes -- the yellow that works on
+// the TUI's dark background is unreadable on Latte's white.
+#let f-planet = pal.accents.at(4)
+#let f-system = pal.accents.at(1)
+#let f-y = pal.accents.at(0)
+#let f-z = pal.accents.at(3)
+#let f-x = pal.accents.at(2)
+
+#block(
+  width: 100%, radius: 2pt, below: 7pt,
+  stroke: 0.9pt + pal.accents.at(0), inset: (x: 5pt, y: 4pt),
+)[
+  #text(weight: "black", size: 1.3em, fill: pal.accents.at(0))[
+    TWO NAMES FOR ONE PLACE]
+  #h(4pt) #text(size: 0.95em)[
+    The glyphs you dial count from the *centre* of the galaxy; the address a
+    signal booster shows counts from a *corner*. Same voxel, unrecognisable
+    numbers — which is the whole reason a converter exists.
+  ]
+  #v(1pt)
+  #text(size: 0.92em, fill: pal.subtext)[
+    16 glyphs · #pt.locations.len() addresses
+    (#pt.counts.mine found here, #pt.counts.shared shared) ·
+    press #raw("P") in the app to convert one
+  ]
+]
+
+#msection("The 16 glyphs — the dial is in this order")[
+  #note[
+    the hex digit *is* the position, so #raw("A") is the eleventh symbol every
+    time · you need all 16 unlocked, not twelve
+  ]
+  #dense(
+    (auto, auto, 1fr, auto, auto, 1fr),
+    (right, center, left, right, center, left),
+    ("#", "hex", "glyph", "#", "hex", "glyph"),
+    pad: 1.5pt,
+    ..range(8).map(i => {
+      let a = pt.glyphs.at(i)
+      let b = pt.glyphs.at(i + 8)
+      (
+        text(fill: pal.subtext, str(a.position)),
+        mono(text(weight: "bold", a.hex)), a.name,
+        text(fill: pal.subtext, str(b.position)),
+        mono(text(weight: "bold", b.hex)), b.name,
+      )
+    }).flatten()
+  )
+]
+
+#msection("Reading an address")[
+  #block(inset: (x: 3pt, y: 2pt))[
+    #mono(text(size: 1.5em, weight: "bold",
+      text(fill: f-planet, "p") + " " + text(fill: f-system, "SSS") + " " +
+      text(fill: f-y, "YY") + " " + text(fill: f-z, "ZZZ") + " " +
+      text(fill: f-x, "XXX")))
+    #v(2pt)
+    #grid(
+      columns: (auto, 1fr), column-gutter: 5pt, row-gutter: 1.4pt,
+      text(fill: f-planet, weight: "bold", "p"),
+      [planet index in the system — a galactic address does *not*
+        carry it, so you pick one],
+      text(fill: f-system, weight: "bold", "SSS"), [star system index],
+      text(fill: f-y, weight: "bold", "YY"), [voxel height],
+      text(fill: f-z, weight: "bold", "ZZZ"), [voxel width],
+      text(fill: f-x, weight: "bold", "XXX"), [voxel length],
+    )
+    #v(3pt)
+    #text(weight: "bold")[Worked example]
+    #v(1pt)
+    #grid(
+      columns: (auto, 1fr), column-gutter: 5pt, row-gutter: 1.4pt,
+      text(fill: pal.subtext, "glyphs"),
+      mono(text(weight: "bold",
+        text(fill: f-planet, pt.example.planet) + " " +
+        text(fill: f-system, pt.example.system) + " " +
+        text(fill: f-y, pt.example.y) + " " +
+        text(fill: f-z, pt.example.z) + " " +
+        text(fill: f-x, pt.example.x))),
+      text(fill: pal.subtext, "galactic"), mono(pt.example.galactic),
+      text(fill: pal.subtext, "voxel"), mono(pt.example.voxel),
+    )
+  ]
+]
+
+#msection("Converting by hand")[
+  #note[all arithmetic is hex; the system index crosses over unchanged]
+  #block(inset: (x: 3pt, y: 2pt))[
+    #dense(
+      (auto, 1fr, 1fr),
+      (right, left, left),
+      ("", "glyphs → galactic", "galactic → glyphs"),
+      pad: 1.5pt,
+      text(fill: f-x, weight: "bold", "X"),
+      mono("(X + 2047) % 4096"), mono("(X + 2049) % 4096"),
+      text(fill: f-y, weight: "bold", "Y"),
+      mono("(Y + 127) % 256"), mono("(Y + 129) % 256"),
+      text(fill: f-z, weight: "bold", "Z"),
+      mono("(Z + 2047) % 4096"), mono("(Z + 2049) % 4096"),
+    )
+    #v(2pt)
+    #text(size: 0.92em, fill: pal.subtext)[
+      The anchor: glyphs #mono("000000000000") are the centre of the galaxy, and
+      galactic coordinates call the same place #mono("07FF:007F:07FF"). Get a
+      constant wrong and that moves.
+    ]
+  ]
+]
+
+#msection("Before you dial")[
+  #stack(
+    mrow(0, {
+      text(weight: "bold")[The galaxy is not in the address.]
+      text(fill: pal.subtext)[ — the same twelve glyphs mean a different star in
+        each of the 256 galaxies, so an address shared without its galaxy is
+        ambiguous. Everything below is #text(weight: "bold")[Euclid], galaxy 1.]
+    }),
+    mrow(1, {
+      text(weight: "bold")[Trust the address, not the label.]
+      text(fill: pal.subtext)[ — the location is seeded to the coordinate and
+        generally survives a patch. Class, slot count and headline damage are
+        submitter metadata and rot.]
+    }),
+    mrow(2, {
+      text(weight: "bold")[Reload location is part of the address.]
+      text(fill: pal.subtext)[ — a design is seeded by where you last loaded, so
+        one monolith yields several tools. An entry naming a reload planet is
+        telling you which roll it saw.]
+    }),
+    mrow(3, {
+      text(weight: "bold")[Activating a portal is not knowing glyphs.]
+      text(fill: pal.subtext)[ — charging the four pillars only powers the
+        machine; the glyphs are what lets you type a destination.
+        #text(weight: "bold")[Artemis → The Purge] grants one per warp.]
+    }),
+  )
+]
+
+// The addresses themselves, split the way you actually think about them: the
+// ones you stood on, and the ones you took somebody's word for.
+#let address-rows(rows) = stack(..rows.enumerate().map(((i, r)) => mrow(i, grid(
+  columns: (1fr, auto, auto),
+  column-gutter: 5pt, row-gutter: 1.2pt,
+  text(weight: "bold", r.name),
+  text(size: 0.9em, fill: pal.subtext, r.kind),
+  mono(text(weight: "bold", r.code)),
+  grid.cell(colspan: 3, {
+    set text(size: 0.9em, fill: pal.subtext)
+    if r.detail != "" { r.detail }
+    if r.where != "" [ · #r.where]
+    linebreak()
+    mono(r.galactic)
+    if r.source != "" [ · #r.source]
+    if r.added != "" [ · #r.added]
+  }),
+))))
+
+#let mine = pt.locations.filter(r => r.origin == "mine")
+#let shared-rows = pt.locations.filter(r => r.origin == "shared")
+
+#msection("Found here — my own addresses")[
+  #if mine.len() == 0 {
+    note[
+      nothing yet. In the app: paste or decode an address, press #raw("s"),
+      set #emph[Found] to #raw("mine") — it is written to
+      #raw("data/locations.json") and appears here on the next
+      #raw("mise run pdf").
+    ]
+  } else {
+    address-rows(mine)
+  }
+]
+
+#msection("Shared — read off the catalogues")[
+  #note[#pt.source]
+  #address-rows(shared-rows)
 ]

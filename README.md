@@ -212,11 +212,16 @@ the list already filtered to tools.
    dishes each.
 4. **Multi-tools** — the 8 types, the weapons measured, how to get the free
    ones, and the adjacency and supercharged-slot rules.
+5. **Portals** — all 16 glyphs in dial order, how to read an address, the
+   conversion both ways, and every saved address in two tables: the ones you
+   found and the ones you were told about.
 
 It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
 including its own prose: claims like "every row below is 5s in the Processor"
 are re-checked against the rows on each build and disappear if they stop being
-true.
+true. The portals page goes further: `mise run pdf` round-trips every address
+and re-checks the galaxy-centre invariant, so the build fails rather than
+printing a code you cannot dial.
 
 ## Where the data comes from
 

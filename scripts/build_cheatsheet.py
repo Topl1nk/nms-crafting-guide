@@ -27,7 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
 sys.path.insert(0, str(ROOT / "src"))
 
-from nms_items import food, graph, multitools  # noqa: E402
+from nms_items import food, graph, multitools, portals  # noqa: E402
 from nms_items.ease import EaseIndex  # noqa: E402
 from nms_items.model import SOURCE_SETS, TIER0, Book, Recipe  # noqa: E402
 
@@ -83,6 +83,70 @@ def row(book: Book, recipe: Recipe, extra: dict | None = None) -> dict:
     if extra:
         data.update(extra)
     return data
+
+
+def portal_page() -> dict:
+    """The portal reference plus every saved address, both forms precomputed.
+
+    Typst cannot do the arithmetic, so the galactic address is worked out here.
+    While we are in there, every committed address is round-tripped and the
+    galaxy-centre invariant re-checked, so a typo in data/locations.json fails
+    the build rather than printing a sheet you cannot dial.
+    """
+    centre = portals.Address.from_portal_code("000000000000")
+    if centre.galactic != "07FF:007F:07FF:0000":
+        raise SystemExit(f"portal conversion moved: centre is {centre.galactic}")
+
+    book = portals.LocationBook.load()
+    rows = []
+    for loc in book.locations:
+        address = loc.address
+        if address.portal_code != loc.code:
+            raise SystemExit(f"{loc.name}: {loc.code} does not round-trip")
+        if address.warnings:
+            raise SystemExit(f"{loc.name}: {address.warnings[0]}")
+        rows.append({
+            "name": loc.name,
+            "code": loc.code,
+            "grouped": address.portal_grouped,
+            "galactic": address.galactic,
+            "kind": loc.kind,
+            "origin": loc.origin,
+            "galaxy": loc.galaxy_label,
+            "detail": loc.detail,
+            "where": loc.where,
+            "source": loc.source,
+            "added": loc.added,
+        })
+
+    example = portals.Address.from_portal_code("11AC008F4025")
+    return {
+        "source": book.source,
+        "glyphs": [
+            {"position": i + 1, "hex": f"{i:X}", "name": name}
+            for i, name in enumerate(portals.GLYPH_NAMES)
+        ],
+        "galaxies": [
+            {"number": i + 1, "name": name}
+            for i, name in enumerate(portals.GALAXY_NAMES)
+        ],
+        "example": {
+            "code": example.portal_code,
+            "grouped": example.portal_grouped,
+            "galactic": example.galactic,
+            "planet": f"{example.planet:X}",
+            "system": f"{example.system:03X}",
+            "y": f"{example.y:02X}",
+            "z": f"{example.z:03X}",
+            "x": f"{example.x:03X}",
+            "voxel": example.voxel_label.replace("   ", "  "),
+        },
+        "locations": rows,
+        "counts": {
+            "mine": book.count("mine"),
+            "shared": book.count("shared"),
+        },
+    }
 
 
 def main() -> int:
@@ -220,6 +284,8 @@ def main() -> int:
         # Straight passthrough: multi-tools are not in the recipe tables, so
         # data/multitools.json is the source for both the TUI and the sheet.
         "multitools": json.loads((DATA / "multitools.json").read_text()),
+        # Same deal: portal addresses are not in the recipe tables either.
+        "portals": portal_page(),
         "tier0": tier0,
         "tier1_extra": tier1_extra,
         "must_find": must_find,
@@ -240,6 +306,9 @@ def main() -> int:
     tools = sheet["multitools"]
     print(f"  multitools  {len(tools['types'])} types, {len(tools['weapons'])} weapons, "
           f"{len(tools['rules'])} tips")
+    ports = sheet["portals"]
+    print(f"  portals     {len(ports['locations'])} addresses "
+          f"({ports['counts']['mine']} mine, {ports['counts']['shared']} shared)")
     print(f"  tier0       {len(tier0)} materials")
     print(f"  must_find   {len(must_find)} items")
     return 0
