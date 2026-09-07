@@ -39,13 +39,23 @@ mise run tui        # go
 
 ### Keys
 
+Vim motions work in every table, tree and scrollable pane:
+
 | | |
 | --- | --- |
-| `/` | search — output, ingredient or operation name |
+| `j` `k` | down / up · `h` `l` pan a wide table sideways |
+| `g g` `G` | top / bottom · `ctrl+d` `ctrl+u` half page |
+| `/` | search — **insert mode**: type freely, `Esc` or `Enter` returns to normal mode |
+| `Esc` | in normal mode, clears the search and any filter |
+
+Then the actions:
+
+| | |
+| --- | --- |
 | `f` `s` | cycle domain (refining / cooking / all) and sort |
 | `p` `r` | recipes that **produce** the highlighted item / that **consume** it |
 | `Enter` | pivot to everything touching that item · `Backspace` clears the filter |
-| `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `k` allow cooking |
+| `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `C` allow cooking |
 | `n` | the **nanite ladder** — every route to nanites, ranked |
 | `e` | **cooking effects** — what each dish does when eaten |
 | `m` | **multi-tools** — types, weapons, getting one, tips |
@@ -197,7 +207,8 @@ src/nms_items/
   multitools.py  the hand-written multi-tool reference, loaded from data/
   inventory.py what you're carrying, persisted to XDG state
   app.py       the recipe table + detail pane
-  screens.py   chain, nanites, cooking, inventory, help
+  screens.py   chain, nanites, cooking, multi-tools, inventory, help
+  widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
 scripts/       fetch, normalise, pick cheat-sheet rows, screenshots
 cheatsheet.typ the PDF
 ```

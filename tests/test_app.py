@@ -167,3 +167,112 @@ def test_nanite_and_food_screens(book: Book, tmp_path) -> None:
             assert tabs.active == "tab-types"
 
     run(scenario())
+
+
+def test_vim_motions(book: Book, tmp_path) -> None:
+    """j/k/gg/G/ctrl+d move the cursor; the search box is insert mode."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 30)) as pilot:
+            await pilot.pause()
+            main = app.screen
+            table = main.query_one("#table")
+
+            for _ in range(3):
+                await pilot.press("j")
+            await pilot.pause(0.2)
+            assert table.cursor_row == 3
+            await pilot.press("k")
+            await pilot.pause(0.2)
+            assert table.cursor_row == 2
+
+            await pilot.press("G")
+            await pilot.pause(0.3)
+            assert table.cursor_row == table.row_count - 1
+
+            # A lone g does nothing; gg goes to the top.
+            await pilot.press("g")
+            await pilot.pause(0.1)
+            assert table.cursor_row == table.row_count - 1
+            await pilot.press("g")
+            await pilot.pause(0.3)
+            assert table.cursor_row == 0
+
+            await pilot.press("ctrl+d")
+            await pilot.pause(0.2)
+            assert table.cursor_row > 0
+
+            # Insert mode: letters are text, not commands.
+            await pilot.press("slash")
+            await pilot.pause(0.2)
+            assert app.focused.id == "search"
+            for char in "cobalt":
+                await pilot.press(char)
+            await pilot.pause(0.3)
+            await pilot.pause(0.3)
+            assert main.query_text == "cobalt"
+            assert main.sort_index == 0  # the s in "cobalt" did not sort
+
+            # Escape leaves insert mode and keeps the filter...
+            await pilot.press("escape")
+            await pilot.pause(0.3)
+            assert app.focused.id == "table"
+            assert main.query_text == "cobalt"
+
+            # ...and a second Escape, in normal mode, clears it.
+            await pilot.press("escape")
+            await pilot.pause(0.3)
+            assert main.query_text == ""
+            assert table.row_count == 357
+
+    run(scenario())
+
+
+def test_help_scrolls_instead_of_closing(book: Book, tmp_path) -> None:
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 30)) as pilot:
+            await pilot.pause()
+            await pilot.press("question_mark")
+            await pilot.pause(0.3)
+            box = app.screen.query_one("#help-box")
+
+            for _ in range(5):
+                await pilot.press("j")
+            await pilot.pause(0.3)
+            assert app.screen.__class__.__name__ == "HelpScreen"
+            assert box.scroll_offset.y > 0
+
+            await pilot.press("q")
+            await pilot.pause(0.3)
+            assert app.screen.__class__.__name__ == "RecipeScreen"
+
+    run(scenario())
+
+
+def test_cooking_toggle_survives_vim_keys(book: Book, tmp_path) -> None:
+    """k is cursor-up now, so the cooking toggle had to move to C."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 30)) as pilot:
+            await pilot.pause()
+            await pilot.press("i")
+            await pilot.pause(0.3)
+            inventory = app.screen
+            assert inventory.with_cooking is True
+
+            inventory.query_one("#inv-table").focus()
+            await pilot.press("k")  # cursor-up, not a toggle
+            await pilot.pause(0.2)
+            assert inventory.with_cooking is True
+
+            await pilot.press("C")
+            await pilot.pause(0.3)
+            assert inventory.with_cooking is False
+
+    run(scenario())
