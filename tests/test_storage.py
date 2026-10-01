@@ -14,7 +14,8 @@ from nms_items.model import Book
 from nms_items.storage import StorageGuide
 
 # Section 10's table, verbatim, minus the rows' prose. Container 9 is the inbox
-# and names nothing.
+# and names nothing. One name is missing from row 8: Fossil Sample, a real
+# item but a procedural one, absent from the game tables this app reads.
 GUIDE_TABLE = {
     "0": "Ferrite Dust, Carbon, Sodium, Oxygen, Di-hydrogen, Cobalt, Chromatic Metal,"
          " Silicate Powder, Tritium",
@@ -32,7 +33,7 @@ GUIDE_TABLE = {
          " Exocraft Boost Module, Sentinel Weapons Shard, Repair Kit",
     "7": "Starship AI Valves, Gravitino Ball, Vortex Cube, Albumen Pearl, Storm Crystal,"
          " Sac Venom, Neutron Microscope, Decrypted User Data",
-    "8": "Larval Core, Echo Seed, Hadal Core, Fossilised Egg",
+    "8": "Larval Core, Echo Seed, Hadal Core, Fossilised Egg, Companion Egg",
 }
 
 
