@@ -5,8 +5,11 @@ from __future__ import annotations
 from functools import partial
 from typing import Iterator
 
+from rich.style import Style
+from rich.text import Text
 from textual.app import ComposeResult
 from textual.binding import Binding
+from textual.color import Color
 from textual.containers import Horizontal, Vertical
 from textual.screen import ModalScreen, Screen
 from textual.widgets import (
@@ -41,12 +44,26 @@ from .storage import StorageGuide
 # Colour per action, so a screen of results reads at a glance: green to keep,
 # red to throw away.
 ACTION_COLOUR = {
-    "keep": "#a6e3a1",
-    "store": "#89b4fa",
-    "sell": "#f9e2af",
-    "discard": "#f38ba8",
-    "use": "#cba6f7",
+    "keep": "$success",
+    "store": "$primary",
+    "sell": "$warning",
+    "discard": "$error",
+    "use": "$accent",
 }
+
+
+def tint(app, colour: str, text: str) -> Text:
+    """Theme-coloured text for a DataTable cell.
+
+    Panes take `[$warning]...[/]` markup and resolve it themselves. DataTable
+    cells go through Rich, which has never heard of a theme, so the variable
+    is looked up here -- and a table has to be redrawn when the theme changes.
+    """
+    try:
+        color = Color.parse(app.theme_variables[colour.lstrip("$")])
+    except (KeyError, ValueError):
+        return Text(text)
+    return Text(text, style=Style(color=color.rich_color))
 
 
 def fmt_time(seconds: float) -> str:
@@ -165,7 +182,7 @@ class ChainScreen(Screen):
         if not plan.ok:
             head.append("")
             head.append(
-                "[#f38ba8]Not reachable from this source set.[/]  "
+                "[$error]Not reachable from this source set.[/]  "
                 "Press [b]t[/b] for a wider tier"
                 + ("" if self.with_cooking else ", [b]k[/b] to allow cooking recipes")
                 + "."
@@ -173,12 +190,12 @@ class ChainScreen(Screen):
             producers = self.book.produced_by.get(self.target, [])
             if producers:
                 head.append("")
-                head.append("[#a6adc8]It is made by:[/]")
+                head.append("[$text-muted]It is made by:[/]")
                 for recipe in producers[:6]:
                     head.append(f"  {recipe.inputs_label} -> {recipe.output_label}")
             else:
                 head.append("")
-                head.append("[#a6adc8]No recipe produces it - this one you have to find.[/]")
+                head.append("[$text-muted]No recipe produces it - this one you have to find.[/]")
             summary.update("\n".join(head))
             tree.root.label = "nothing to do"
             return
@@ -190,14 +207,14 @@ class ChainScreen(Screen):
             )
         )
         head.append("")
-        head.append(f"[#a6e3a1]Gather:[/] {raw}")
+        head.append(f"[$success]Gather:[/] {raw}")
         head.append(
-            f"[#a6adc8]{plan.steps} refining step(s), "
+            f"[$text-muted]{plan.steps} refining step(s), "
             f"{fmt_time(plan.total_seconds)} of machine time "
             f"(one refiner, unattended).[/]"
         )
         if not self.with_cooking:
-            head.append("[#a6adc8]Refining only - press k to allow cooking recipes.[/]")
+            head.append("[$text-muted]Refining only - press k to allow cooking recipes.[/]")
         summary.update("\n".join(head))
 
         tree.root.label = f"{self.qty} x {name}"
@@ -328,7 +345,7 @@ class InventoryScreen(Screen):
             where = ""
             if item:
                 placement = self.app.storage.place(item)
-                where = f"[{ACTION_COLOUR[placement.action]}]{placement.label}[/]"
+                where = tint(self.app, ACTION_COLOUR[placement.action], placement.label)
             inv_table.add_row(
                 self.book.name(item_id),
                 str(count),
@@ -359,6 +376,9 @@ class InventoryScreen(Screen):
             near_table.add_row(
                 recipe.output_label, recipe.inputs_label, need, key=str(recipe.index)
             )
+
+    def recolour(self) -> None:
+        self.refresh_all()
 
     def action_focus_add(self) -> None:
         self.query_one("#inv-add", SearchInput).focus()
@@ -517,11 +537,10 @@ class StorageScreen(Screen):
         table = self.query_one("#store-table", VimDataTable)
         table.clear()
         for item, placement in self.rows:
-            colour = ACTION_COLOUR[placement.action]
             table.add_row(
                 item.name,
                 item.subtitle,
-                f"[{colour}]{placement.label}[/]",
+                tint(self.app, ACTION_COLOUR[placement.action], placement.label),
                 key=item.id,
             )
         if self.query_text.strip() and self.rows:
@@ -529,27 +548,30 @@ class StorageScreen(Screen):
         else:
             self.show_layout(len(matches))
 
+    def recolour(self) -> None:
+        self.refresh_rows()
+
     def show_item(self, index: int) -> None:
         item, placement = self.rows[index]
         colour = ACTION_COLOUR[placement.action]
         lines = [
-            f"[b #f9e2af]{item.name}[/]",
-            f"[#a6adc8]{item.subtitle}  ·  {item.value:,}u[/]",
+            f"[b $warning]{item.name}[/]",
+            f"[$text-muted]{item.subtitle}  ·  {item.value:,}u[/]",
             "",
             f"[b {colour}]{placement.label}[/]",
             placement.advice(),
             "",
-            f"[#89b4fa]Why[/]   {placement.why}",
+            f"[$primary]Why[/]   {placement.why}",
         ]
         if placement.home.key != "none":
-            lines.append(f"[#89b4fa]{placement.home.label}[/]  [#a6adc8]{placement.home.note}[/]")
+            lines.append(f"[$primary]{placement.home.label}[/]  [$text-muted]{placement.home.note}[/]")
         have = self.inv.items.get(item.id, 0)
         if have:
-            lines += ["", f"[#a6e3a1]You are carrying {have}.[/]"]
+            lines += ["", f"[$success]You are carrying {have}.[/]"]
         if placement.home.is_container:
             lines += [
                 "",
-                "[#a6adc8]Once one is in its container, sending more to storage"
+                "[$text-muted]Once one is in its container, sending more to storage"
                 " routes them there by itself.[/]",
             ]
         self.query_one("#store-detail", Static).update("\n".join(lines))
@@ -565,27 +587,27 @@ class StorageScreen(Screen):
 
         def row(label: str, n: int, colour: str = "") -> str:
             name = f"[b {colour}]{label}[/]" if colour else f"[b]{label}[/]"
-            return f"{name}  [#a6adc8]{n} items[/]"
+            return f"{name}  [$text-muted]{n} items[/]"
 
-        lines = ["[b #89b4fa]The ten containers[/]", ""]
+        lines = ["[b $primary]The ten containers[/]", ""]
         lines += [row(h.label, homes.get(h.key, 0))
                   for h in self.guide.homes.values() if h.is_container]
-        lines += ["", "[b #89b4fa]Everything else[/]", ""]
+        lines += ["", "[b $primary]Everything else[/]", ""]
         lines += [row(h.label, homes.get(h.key, 0))
                   for h in self.guide.homes.values()
                   if not h.is_container and h.key != "none"]
         lines += [
             "",
             row("Sell", actions.get("sell", 0), ACTION_COLOUR["sell"])
-            + "  [#a6adc8](parked in 7 until then)[/]",
+            + "  [$text-muted](parked in 7 until then)[/]",
             row("Junk", actions.get("discard", 0), ACTION_COLOUR["discard"]),
             row("Use it", actions.get("use", 0), ACTION_COLOUR["use"]),
             "",
-            "[#a6adc8]From the storage guide, section 10. Change it in"
+            "[$text-muted]From the storage guide, section 10. Change it in"
             " data/storage.json.[/]",
             "",
-            f"[#a6adc8]{total} items match.[/]" if self.query_text.strip()
-            else "[#a6adc8]Type a name - or sell, junk, use.[/]",
+            f"[$text-muted]{total} items match.[/]" if self.query_text.strip()
+            else "[$text-muted]Type a name - or sell, junk, use.[/]",
         ]
         self.query_one("#store-detail", Static).update("\n".join(lines))
 
@@ -695,7 +717,7 @@ class NaniteScreen(Screen):
         self.query_one("#nanite-note", Static).update(
             f"[b]{len(self.rows)}[/] ways to make nanites, sorted by "
             f"[b]{self.SORTS[self.sort_index][1]}[/]   "
-            "[#a6adc8]one refiner, kept fed - press s to re-sort[/]"
+            "[$text-muted]one refiner, kept fed - press s to re-sort[/]"
         )
         if self.rows:
             self.show_detail(0)
@@ -704,18 +726,18 @@ class NaniteScreen(Screen):
         row = self.rows[index]
         ease = self.ease.of_recipe(row.recipe)
         lines = [
-            f"[b #f9e2af]{row.recipe.inputs_label}[/] -> [b]{row.nanites} Nanite Cluster[/]"
-            f"   [#a6adc8]{row.recipe.operation}, {row.recipe.machine}[/]",
-            f"[#89b4fa]{row.per_hour:,.0f} nanites/hour[/] per refiner   "
-            f"[#a6adc8]{row.per_input:.2f} per item consumed, "
+            f"[b $warning]{row.recipe.inputs_label}[/] -> [b]{row.nanites} Nanite Cluster[/]"
+            f"   [$text-muted]{row.recipe.operation}, {row.recipe.machine}[/]",
+            f"[$primary]{row.per_hour:,.0f} nanites/hour[/] per refiner   "
+            f"[$text-muted]{row.per_input:.2f} per item consumed, "
             f"{row.units_cost:,} units of value spent[/]",
         ]
         if ease.where:
-            lines.append(f"[#a6e3a1]{ease.where}[/]")
+            lines.append(f"[$success]{ease.where}[/]")
         else:
-            lines.append(f"[#a6adc8]{ease.describe(self.book)}[/]")
+            lines.append(f"[$text-muted]{ease.describe(self.book)}[/]")
         if ease.note:
-            lines.append(f"[#a6adc8]{ease.note}[/]")
+            lines.append(f"[$text-muted]{ease.note}[/]")
         self.query_one("#nanite-detail", Static).update("\n".join(lines))
 
     def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
@@ -793,7 +815,7 @@ class FoodScreen(Screen):
         self.query_one("#food-note", Static).update(
             f"[b]{sum(len(g) for g in self.groups.values())}[/] cooked dishes across "
             f"[b]{len(self.effects)}[/] buffs   "
-            "[#a6adc8]Pot = the game's own 0-1 quality for the buff · "
+            "[$text-muted]Pot = the game's own 0-1 quality for the buff · "
             "Uplift = units gained over the ingredients, one batch[/]"
         )
         self.show_effect(self.effects[0])
@@ -819,15 +841,15 @@ class FoodScreen(Screen):
             return
         dish = self.current[min(index, len(self.current) - 1)]
         ways = (
-            f"   [#a6adc8]{dish.ways} recipes make it[/]" if dish.ways > 1 else ""
+            f"   [$text-muted]{dish.ways} recipes make it[/]" if dish.ways > 1 else ""
         )
         lines = [
-            f"[b #f9e2af]{dish.item.name}[/]  [#a6adc8]{dish.item.subtitle}[/]{ways}",
-            f"[#89b4fa]{dish.effect}[/] at potency [b]{dish.potency:.2f}[/]"
-            + (f"  [#a6adc8]- {dish.use}[/]" if dish.use else ""),
-            f"[#a6e3a1]{dish.recipe.inputs_label}[/] -> {dish.recipe.output_label}"
-            f"   [#a6adc8]{dish.recipe.operation}, {dish.recipe.time_label}[/]",
-            f"[#a6adc8]Sells for {dish.value:,} units; cooking one batch adds "
+            f"[b $warning]{dish.item.name}[/]  [$text-muted]{dish.item.subtitle}[/]{ways}",
+            f"[$primary]{dish.effect}[/] at potency [b]{dish.potency:.2f}[/]"
+            + (f"  [$text-muted]- {dish.use}[/]" if dish.use else ""),
+            f"[$success]{dish.recipe.inputs_label}[/] -> {dish.recipe.output_label}"
+            f"   [$text-muted]{dish.recipe.operation}, {dish.recipe.time_label}[/]",
+            f"[$text-muted]Sells for {dish.value:,} units; cooking one batch adds "
             f"{dish.uplift:,} over the ingredients.[/]",
         ]
         self.query_one("#food-detail", Static).update("\n".join(lines))
@@ -893,7 +915,7 @@ class MultiToolScreen(Screen):
 
     def compose(self) -> ComposeResult:
         yield Header()
-        yield Static(f"[b #a6e3a1]{self.data.headline}[/]", id="mt-headline")
+        yield Static(f"[b $success]{self.data.headline}[/]", id="mt-headline")
         with TabbedContent(id="mt-tabs"):
             with TabPane("Types", id="tab-types"):
                 yield VimDataTable(id="type-table", cursor_type="row", zebra_stripes=True)
@@ -939,34 +961,34 @@ class MultiToolScreen(Screen):
     # -- panes -----------------------------------------------------------
 
     def _getting_text(self) -> str:
-        lines = ["[b #89b4fa]Where each type comes from[/]", ""]
+        lines = ["[b $primary]Where each type comes from[/]", ""]
         for row in self.data.getting:
             lines.append(
-                f"  [b]{row['type']}[/]  [#a6adc8]({row['cost']})[/]  {row['where']}"
+                f"  [b]{row['type']}[/]  [$text-muted]({row['cost']})[/]  {row['where']}"
             )
-            lines.append(f"      [#a6adc8]{row['how']}[/]")
+            lines.append(f"      [$text-muted]{row['how']}[/]")
         for procedure in self.data.procedures:
-            lines += ["", f"[b #89b4fa]{procedure.title}[/]"]
+            lines += ["", f"[b $primary]{procedure.title}[/]"]
             for i, step in enumerate(procedure.steps, 1):
                 lines.append(f"  {i}. {step}")
             if procedure.note:
-                lines.append(f"  [#a6adc8]{procedure.note}[/]")
+                lines.append(f"  [$text-muted]{procedure.note}[/]")
             for extra in procedure.after:
-                lines.append(f"  [#f9e2af]-[/] {extra}")
+                lines.append(f"  [$warning]-[/] {extra}")
         return "\n".join(lines)
 
     def _tips_text(self) -> str:
         lines = []
         for rule in self.data.rules:
-            lines.append(f"[b #f9e2af]{rule.title}[/]")
+            lines.append(f"[b $warning]{rule.title}[/]")
             lines.append(f"  {rule.body}")
             lines.append("")
-        lines.append("[b #89b4fa]Where upgrades come from[/]")
+        lines.append("[b $primary]Where upgrades come from[/]")
         for row in self.data.upgrade_sources:
             lines.append(
-                f"  [b]{row['kind']}[/]  {row['where']}   [#a6adc8]{row['note']}[/]"
+                f"  [b]{row['kind']}[/]  {row['where']}   [$text-muted]{row['note']}[/]"
             )
-        lines += ["", "[b #89b4fa]Upgrade order[/]"]
+        lines += ["", "[b $primary]Upgrade order[/]"]
         for i, step in enumerate(self.data.upgrade_order, 1):
             lines.append(f"  {i}. {step}")
         return "\n".join(lines)
@@ -974,19 +996,19 @@ class MultiToolScreen(Screen):
     def _show_type(self, index: int) -> None:
         row = self.data.types[min(index, len(self.data.types) - 1)]
         self.query_one("#type-detail", Static).update(
-            f"[b #f9e2af]{row.type}[/]   "
-            f"[#89b4fa]damage[/] {row.damage}   "
-            f"[#89b4fa]mining[/] {row.mining}   "
-            f"[#89b4fa]scan[/] {row.scan}   "
-            f"[#89b4fa]slots at spawn[/] {row.slots}\n{row.note}"
+            f"[b $warning]{row.type}[/]   "
+            f"[$primary]damage[/] {row.damage}   "
+            f"[$primary]mining[/] {row.mining}   "
+            f"[$primary]scan[/] {row.scan}   "
+            f"[$primary]slots at spawn[/] {row.slots}\n{row.note}"
         )
 
     def _show_weapon(self, index: int) -> None:
         weapon = self.data.weapons[min(index, len(self.data.weapons) - 1)]
         self.query_one("#weapon-detail", Static).update(
-            f"[b #f9e2af]{weapon.weapon}[/]  [#a6adc8]{weapon.kind}, "
+            f"[b $warning]{weapon.weapon}[/]  [$text-muted]{weapon.kind}, "
             f"best measured hit {weapon.best_hit}[/]\n"
-            f"[#a6e3a1]+[/] {weapon.pro}\n[#f38ba8]-[/] {weapon.con}"
+            f"[$success]+[/] {weapon.pro}\n[$error]-[/] {weapon.con}"
         )
 
     def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
@@ -1031,45 +1053,45 @@ ORIGIN_FILTERS: list[tuple[str | None, str]] = [
 # gets. The same colour is used in the grouped code and in the numbered glyph
 # list, so it is obvious at a glance which three glyphs are the X coordinate.
 FIELD_SPANS = [
-    ("planet", 1, "#f38ba8"),
-    ("system", 3, "#89b4fa"),
-    ("Y", 2, "#a6e3a1"),
-    ("Z", 3, "#f9e2af"),
-    ("X", 3, "#cba6f7"),
+    ("planet", 1, "$error"),
+    ("system", 3, "$primary"),
+    ("Y", 2, "$success"),
+    ("Z", 3, "$warning"),
+    ("X", 3, "$accent"),
 ]
 GLYPH_COLOURS = [colour for _, width, colour in FIELD_SPANS for _ in range(width)]
 
 PORTAL_PRIMER = """\
-[b #89b4fa]Portal addresses[/]
+[b $primary]Portal addresses[/]
 
 Paste either form above; it converts as you type.
 
-  [b]portal code[/]        [#a6adc8]40E907FF0D6B[/]
+  [b]portal code[/]        [$text-muted]40E907FF0D6B[/]
     12 hex digits, one per glyph
-  [b]galactic address[/]   [#a6adc8]056A:0086:07EF:00E9[/]
+  [b]galactic address[/]   [$text-muted]056A:0086:07EF:00E9[/]
     what a signal booster shows
-  [b]share link[/]         [#a6adc8]a nmsportals.github.io URL[/]
+  [b]share link[/]         [$text-muted]a nmsportals.github.io URL[/]
 
 Type anything else and it searches what you saved.
 
-[b #89b4fa]What the twelve glyphs are[/]
+[b $primary]What the twelve glyphs are[/]
 
-  [b #f38ba8]p[/] [b #89b4fa]SSS[/] [b #a6e3a1]YY[/] [b #f9e2af]ZZZ[/] [b #cba6f7]XXX[/]
+  [b $error]p[/] [b $primary]SSS[/] [b $success]YY[/] [b $warning]ZZZ[/] [b $accent]XXX[/]
 
-  [#f38ba8]planet[/], [#89b4fa]system index[/], then the voxel as
-  [#a6e3a1]height[/], [#f9e2af]width[/], [#cba6f7]length[/]. Portal coordinates put
+  [$error]planet[/], [$primary]system index[/], then the voxel as
+  [$success]height[/], [$warning]width[/], [$accent]length[/]. Portal coordinates put
   0,0,0 at the centre of the galaxy; a galactic
   address counts from a corner, which is the whole
   reason the two do not look alike.
 
-[b #89b4fa]Dialling one[/]
+[b $primary]Dialling one[/]
 
   The 16 glyphs sit on the portal dial in a fixed
   order, 0-9 then A-F, so the hex digit [i]is[/] the
   position: [b]A[/] is the 11th symbol, every time. You
   need all 16 unlocked, not twelve.
 
-[b #89b4fa]Sharing one[/]
+[b $primary]Sharing one[/]
 
   The same twelve glyphs point at a different star
   in each of the 256 galaxies, so an address alone
@@ -1108,8 +1130,8 @@ class LocationModal(ModalScreen[Location | None]):
         base = self.existing
         with Vertical(id="loc-modal-box"):
             yield Static(
-                f"[b]Save[/] [#f9e2af]{self.code}[/]"
-                f"   [#a6adc8]Tab moves, Enter saves, Esc cancels[/]",
+                f"[b]Save[/] [$warning]{self.code}[/]"
+                f"   [$text-muted]Tab moves, Enter saves, Esc cancels[/]",
                 id="modal-title",
             )
             # Labelled single-line rows rather than seven bordered boxes: the
@@ -1210,7 +1232,7 @@ class LocationModal(ModalScreen[Location | None]):
     def on_input_submitted(self, event: Input.Submitted) -> None:
         location, self.problem, field = self._check()
         if location is None:
-            self.query_one("#loc-error", Static).update(f"[#f38ba8]{self.problem}[/]")
+            self.query_one("#loc-error", Static).update(f"[$error]{self.problem}[/]")
             self.query_one(field, Input).focus()
             return
         self.dismiss(location)
@@ -1422,16 +1444,16 @@ class PortalScreen(Screen):
             self.show_location(self.rows[min(cursor, len(self.rows) - 1)])
         elif self.showing_trash:
             self.query_one("#loc-detail", Static).update(
-                "[#a6adc8]The trash is empty. Dropped addresses land here, "
+                "[$text-muted]The trash is empty. Dropped addresses land here, "
                 "and stay until you delete them from data/locations.json.[/]"
             )
         elif len(self.locations):
             self.query_one("#loc-detail", Static).update(
-                "[#a6adc8]Nothing matches. [b]f[/] widens the kind filter.[/]"
+                "[$text-muted]Nothing matches. [b]f[/] widens the kind filter.[/]"
             )
         else:
             self.query_one("#loc-detail", Static).update(
-                "[#a6adc8]Nothing saved yet - paste an address above and press "
+                "[$text-muted]Nothing saved yet - paste an address above and press "
                 "[b]s[/], or edit data/locations.json.[/]"
             )
 
@@ -1440,7 +1462,7 @@ class PortalScreen(Screen):
         dropped = len(self.locations.trash)
         if self.showing_trash:
             self.query_one("#loc-title", Label).update(
-                f"[#f9e2af]Trash[/]   [#a6adc8]{shown} of {dropped} dropped"
+                f"[$warning]Trash[/]   [$text-muted]{shown} of {dropped} dropped"
                 f"   u puts one back, T goes back to the list[/]"
             )
             return
@@ -1457,9 +1479,9 @@ class PortalScreen(Screen):
             f" {self.locations.count('shared')} shared)"
         )
         if dropped:
-            tail += f"   [#f9e2af]{dropped} in the trash - T[/]"
+            tail += f"   [$warning]{dropped} in the trash - T[/]"
         self.query_one("#loc-title", Label).update(
-            f"{'  -  '.join(title)}   [#a6adc8]{count}{tail}[/]"
+            f"{'  -  '.join(title)}   [$text-muted]{count}{tail}[/]"
         )
 
     def current_location(self) -> Location | None:
@@ -1475,7 +1497,7 @@ class PortalScreen(Screen):
 
     def _readout_text(self) -> str:
         if self.current is None:
-            head = f"[#f38ba8]{self.error}[/]\n\n" if self.error else ""
+            head = f"[$error]{self.error}[/]\n\n" if self.error else ""
             return head + PORTAL_PRIMER
 
         address = self.current
@@ -1489,23 +1511,23 @@ class PortalScreen(Screen):
         lines = [
             f"{grouped}",
             "",
-            f"[#89b4fa]Portal code[/]   [b]{code}[/]",
-            f"[#89b4fa]Galactic[/]      [b]{address.galactic}[/]",
-            f"[#89b4fa]Voxel[/]         {address.voxel_label}"
-            f"  [#a6adc8]from centre[/]",
-            f"[#89b4fa]Planet[/]        {ordinal(address.planet + 1)} of the system"
-            f"  [#a6adc8](glyph {address.planet:X})[/]",
-            f"[#89b4fa]System[/]        0x{address.system:03X}"
-            f"  [#a6adc8]({address.system})[/]",
-            f"[#89b4fa]Share link[/]",
-            f"  [#a6adc8]{address.share_link}[/]",
+            f"[$primary]Portal code[/]   [b]{code}[/]",
+            f"[$primary]Galactic[/]      [b]{address.galactic}[/]",
+            f"[$primary]Voxel[/]         {address.voxel_label}"
+            f"  [$text-muted]from centre[/]",
+            f"[$primary]Planet[/]        {ordinal(address.planet + 1)} of the system"
+            f"  [$text-muted](glyph {address.planet:X})[/]",
+            f"[$primary]System[/]        0x{address.system:03X}"
+            f"  [$text-muted]({address.system})[/]",
+            f"[$primary]Share link[/]",
+            f"  [$text-muted]{address.share_link}[/]",
         ]
         for warning in address.warnings:
-            lines.append(f"[#f9e2af]![/] [#f9e2af]{warning}[/]")
+            lines.append(f"[$warning]![/] [$warning]{warning}[/]")
 
         # Position, then the digit, then the name -- because at the dial you
         # count to the position and the digit is what you are counting to.
-        lines += ["", "[b #89b4fa]Glyphs, in dial order[/]"]
+        lines += ["", "[b $primary]Glyphs, in dial order[/]"]
         # The symbols themselves first: names are how you talk about a glyph,
         # but shapes are what the dial shows you. Stacked six and six here --
         # the readout is a scrolling pane, so rows are the cheap dimension.
@@ -1517,7 +1539,7 @@ class PortalScreen(Screen):
         names = address.glyph_names
         for start in range(0, 12, 3):
             row = [
-                f"[#a6adc8]{i + 1:>2}[/] [b {GLYPH_COLOURS[i]}]{code[i]}[/]"
+                f"[$text-muted]{i + 1:>2}[/] [b {GLYPH_COLOURS[i]}]{code[i]}[/]"
                 f" [{GLYPH_COLOURS[i]}]{names[i]:<9}[/]"
                 for i in range(start, start + 3)
             ]
@@ -1526,23 +1548,23 @@ class PortalScreen(Screen):
         saved = [loc for loc in self.locations.locations if loc.code == code]
         binned = [loc for loc in self.locations.trash if loc.code == code]
         if saved:
-            lines += ["", "[b #a6e3a1]Saved[/]"]
+            lines += ["", "[b $success]Saved[/]"]
             for loc in saved:
                 lines.append(
-                    f"  {loc.name}  [#a6adc8]{loc.kind}, {loc.origin},"
+                    f"  {loc.name}  [$text-muted]{loc.kind}, {loc.origin},"
                     f" {loc.galaxy_label}[/]"
                 )
         elif binned:
-            lines += ["", "[b #f9e2af]In the trash[/]"]
+            lines += ["", "[b $warning]In the trash[/]"]
             for loc in binned:
                 lines.append(
-                    f"  {loc.name}  [#a6adc8]dropped {loc.dropped}[/]"
-                    "  [#f9e2af]u puts it back[/]"
+                    f"  {loc.name}  [$text-muted]dropped {loc.dropped}[/]"
+                    "  [$warning]u puts it back[/]"
                 )
         else:
             lines += [
                 "",
-                "[#a6adc8][b]y[/] copies the code   [b]Y[/] the galactic address"
+                "[$text-muted][b]y[/] copies the code   [b]Y[/] the galactic address"
                 "   [b]s[/] saves it   [b]p[/] changes the planet glyph[/]",
             ]
         return "\n".join(lines)
@@ -1550,17 +1572,17 @@ class PortalScreen(Screen):
     def show_location(self, loc: Location) -> None:
         address = loc.address
         lines = [
-            f"[b #f9e2af]{loc.name}[/]  [#a6adc8]{loc.kind}[/]"
+            f"[b $warning]{loc.name}[/]  [$text-muted]{loc.kind}[/]"
             + (
-                "  [#a6e3a1]found by me[/]"
+                "  [$success]found by me[/]"
                 if loc.origin == "mine"
-                else "  [#89b4fa]shared[/]"
+                else "  [$primary]shared[/]"
             )
-            + (f"  [#f9e2af]dropped {loc.dropped} - u puts it back[/]"
+            + (f"  [$warning]dropped {loc.dropped} - u puts it back[/]"
                if loc.dropped else ""),
-            f"[#89b4fa]Address[/]     [b]{loc.code}[/]"
-            f"   [#a6adc8]{address.galactic}[/]",
-            f"[#89b4fa]Galaxy[/]      {loc.galaxy_label}",
+            f"[$primary]Address[/]     [b]{loc.code}[/]"
+            f"   [$text-muted]{address.galactic}[/]",
+            f"[$primary]Galaxy[/]      {loc.galaxy_label}",
         ]
         # What you will be looking at on the dial. Stacked six and six when one
         # line will not fit: this pane shares its height with the table above,
@@ -1570,12 +1592,12 @@ class PortalScreen(Screen):
         if art:
             lines += [""] + art
         if loc.detail:
-            lines.append(f"[#89b4fa]There[/]       {loc.detail}")
+            lines.append(f"[$primary]There[/]       {loc.detail}")
         if loc.where:
-            lines.append(f"[#89b4fa]Finding it[/]  {loc.where}")
+            lines.append(f"[$primary]Finding it[/]  {loc.where}")
         trail = "  ".join(part for part in (loc.source, loc.added) if part)
         if trail:
-            lines.append(f"[#a6adc8]{trail}[/]")
+            lines.append(f"[$text-muted]{trail}[/]")
         self.query_one("#loc-detail", Static).update("\n".join(lines))
 
     # -- events ----------------------------------------------------------
@@ -1765,7 +1787,7 @@ class PortalScreen(Screen):
 
 
 HELP_TEXT = """\
-[b #89b4fa]NMS Items[/] - refining, cooking and chain lookup
+[b $primary]NMS Items[/] - refining, cooking and chain lookup
 
 [b]Ctrl+P - the command palette[/]
   Every mode this app has, by name, with a [b]●[/] on the one you are in.
@@ -1776,6 +1798,11 @@ HELP_TEXT = """\
   screen ever told you that was an option.
   It is also why the footer can group its keys: nothing is hidden by
   being left out of the bar.
+
+  "Theme" in the palette recolours everything. The default,
+  dracula-clear, has no background of its own - your terminal's shows
+  through, transparency included. dracula-neutral is the same colours
+  on solid greys. The choice is remembered.
 
 [b]Moving around (vim keys work everywhere)[/]
   j k            down / up          g g   top

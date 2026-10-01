@@ -57,6 +57,13 @@ profit", but nothing on screen ever said that was an option. The palette is
 also what lets the footer group its keys: nothing is hidden by being left out
 of the bar.
 
+**Themes.** The palette's *Theme* entry recolours the whole app, and the
+choice is remembered. The default, `dracula-clear`, is Dracula's accents with
+no background at all: your terminal's own shows through, transparency
+included. `dracula-neutral` is the same accents on solid greys, because stock
+Dracula's `#282A36` reads as blue next to a black terminal. Every Textual
+built-in works too.
+
 Vim motions work in every table, tree and scrollable pane:
 
 | | |

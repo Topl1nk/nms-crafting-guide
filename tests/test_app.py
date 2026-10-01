@@ -723,3 +723,36 @@ def test_storage_screen(book: Book, tmp_path) -> None:
             assert app.screen is main
 
     run(scenario())
+
+
+def test_every_theme_paints_every_screen(book: Book, tmp_path, monkeypatch) -> None:
+    """The stylesheet is all theme variables; a missing one fails at load.
+
+    Also: the choice is saved, and the transparent theme turns on the ANSI
+    colour that keeps the terminal's background showing through.
+    """
+    monkeypatch.setenv("XDG_STATE_HOME", str(tmp_path))
+    from nms_items import themes
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(140, 40)) as pilot:
+            await pilot.pause()
+            assert app.theme == themes.DEFAULT_THEME
+            assert app.ansi_color is True
+            for key in ("i", "w", "n", "e", "m", "P"):
+                await pilot.press(key)
+                await pilot.pause(0.2)
+                for name in app.available_themes:
+                    app.theme = name
+                    await pilot.pause()
+                await pilot.press("escape")
+                await pilot.press("escape")
+                await pilot.pause(0.2)
+            app.theme = "dracula-neutral"
+            await pilot.pause()
+            assert app.ansi_color is None
+
+    run(scenario())
+    assert themes.load_theme() == "dracula-neutral"

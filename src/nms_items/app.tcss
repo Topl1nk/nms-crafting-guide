@@ -1,34 +1,38 @@
-/* Catppuccin Mocha-ish, to match the rest of the terminal setup. */
+/* Every colour is a theme variable, so Ctrl+P > Theme repaints all of it.
+   The roles: $background behind the tables, $surface for the panes and
+   notes beside them, $panel for input boxes and pane titles, a lighter
+   $panel for dividers and the cursor row. Default theme: dracula-clear
+   (themes.py), where background and surface are the terminal's own. */
 
 Screen {
-    background: #1e1e2e;
-    color: #cdd6f4;
+    background: $background;
+    color: $foreground;
 }
 
 Header {
-    background: #181825;
-    color: #89b4fa;
+    background: $surface;
+    color: $primary;
 }
 
 Footer {
-    background: #181825;
+    background: $surface;
 }
 
 #search {
-    border: tall #45475a;
-    background: #313244;
+    border: tall $panel-lighten-1;
+    background: $panel;
     margin: 0 1;
 }
 
 #search:focus {
-    border: tall #89b4fa;
+    border: tall $primary;
 }
 
 #filter-note {
     height: 1;
     padding: 0 2;
-    color: #a6adc8;
-    background: #181825;
+    color: $text-muted;
+    background: $surface;
 }
 
 #body {
@@ -38,17 +42,17 @@ Footer {
 DataTable {
     width: 2fr;
     height: 100%;
-    background: #1e1e2e;
+    background: $background;
 }
 
 DataTable > .datatable--cursor {
-    background: #45475a;
-    color: #f9e2af;
+    background: $panel-lighten-1;
+    color: $warning;
 }
 
 DataTable > .datatable--header {
-    background: #313244;
-    color: #89b4fa;
+    background: $panel;
+    color: $primary;
     text-style: bold;
 }
 
@@ -56,9 +60,9 @@ DataTable > .datatable--header {
     width: 1fr;
     min-width: 34;
     height: 100%;
-    border-left: solid #45475a;
+    border-left: solid $panel-lighten-1;
     padding: 1 2;
-    background: #181825;
+    background: $surface;
     overflow-y: auto;
 }
 
@@ -67,12 +71,12 @@ DataTable > .datatable--header {
 #chain-summary {
     height: auto;
     padding: 1 2;
-    background: #181825;
-    border-bottom: solid #45475a;
+    background: $surface;
+    border-bottom: solid $panel-lighten-1;
 }
 
 Tree {
-    background: #1e1e2e;
+    background: $background;
     padding: 1 2;
 }
 
@@ -81,8 +85,8 @@ Tree {
 #nanite-note {
     height: 1;
     padding: 0 2;
-    background: #181825;
-    color: #a6adc8;
+    background: $surface;
+    color: $text-muted;
 }
 
 #nanite-table {
@@ -94,8 +98,8 @@ Tree {
     height: auto;
     min-height: 4;
     padding: 1 2;
-    background: #181825;
-    border-top: solid #45475a;
+    background: $surface;
+    border-top: solid $panel-lighten-1;
 }
 
 /* --- food screen --- */
@@ -103,8 +107,8 @@ Tree {
 #food-note {
     height: 1;
     padding: 0 2;
-    background: #181825;
-    color: #a6adc8;
+    background: $surface;
+    color: $text-muted;
 }
 
 #food-body {
@@ -113,7 +117,7 @@ Tree {
 
 #food-left {
     width: 66;
-    border-right: solid #45475a;
+    border-right: solid $panel-lighten-1;
 }
 
 #food-right {
@@ -124,20 +128,20 @@ Tree {
     height: auto;
     min-height: 5;
     padding: 1 2;
-    background: #181825;
-    border-top: solid #45475a;
+    background: $surface;
+    border-top: solid $panel-lighten-1;
 }
 
 /* --- storage screen --- */
 
 #store-search {
-    border: tall #45475a;
-    background: #313244;
+    border: tall $panel-lighten-1;
+    background: $panel;
     margin: 0 1;
 }
 
 #store-search:focus {
-    border: tall #a6e3a1;
+    border: tall $success;
 }
 
 #store-body {
@@ -153,9 +157,9 @@ Tree {
     width: 1fr;
     min-width: 30;
     height: 100%;
-    border-left: solid #45475a;
+    border-left: solid $panel-lighten-1;
     padding: 1 2;
-    background: #181825;
+    background: $surface;
     overflow-y: auto;
 }
 
@@ -167,7 +171,7 @@ Tree {
 
 #inv-list {
     width: 1fr;
-    border-right: solid #45475a;
+    border-right: solid $panel-lighten-1;
 }
 
 #inv-right {
@@ -176,19 +180,19 @@ Tree {
 }
 
 #inv-add {
-    border: tall #45475a;
-    background: #313244;
+    border: tall $panel-lighten-1;
+    background: $panel;
     margin: 0 1;
 }
 
 #inv-add:focus {
-    border: tall #a6e3a1;
+    border: tall $success;
 }
 
 .pane-title {
     padding: 0 2;
-    background: #313244;
-    color: #89b4fa;
+    background: $panel;
+    color: $primary;
     text-style: bold;
     height: 1;
 }
@@ -198,7 +202,7 @@ Tree {
 #mt-headline {
     height: auto;
     padding: 0 2;
-    background: #181825;
+    background: $surface;
 }
 
 /* Without this the tab body sizes to its content and pushes the headline off
@@ -216,8 +220,8 @@ Tree {
     height: auto;
     min-height: 3;
     padding: 1 2;
-    background: #181825;
-    border-top: solid #45475a;
+    background: $surface;
+    border-top: solid $panel-lighten-1;
 }
 
 #mt-getting, #mt-tips {
@@ -234,8 +238,8 @@ QuantityModal {
 #modal-box {
     width: 52;
     height: auto;
-    border: thick #89b4fa;
-    background: #181825;
+    border: thick $primary;
+    background: $surface;
     padding: 1 2;
 }
 
@@ -252,8 +256,8 @@ HelpScreen {
     width: 74;
     height: auto;
     max-height: 90%;
-    border: thick #89b4fa;
-    background: #181825;
+    border: thick $primary;
+    background: $surface;
     padding: 1 2;
     overflow-y: auto;
 }
@@ -261,13 +265,13 @@ HelpScreen {
 /* --- portal screen --- */
 
 #portal-input {
-    border: tall #45475a;
-    background: #313244;
+    border: tall $panel-lighten-1;
+    background: $panel;
     margin: 0 1;
 }
 
 #portal-input:focus {
-    border: tall #cba6f7;
+    border: tall $accent;
 }
 
 #portal-body {
@@ -279,8 +283,8 @@ HelpScreen {
     width: 62;
     min-width: 40;
     padding: 1 2;
-    background: #181825;
-    border-right: solid #45475a;
+    background: $surface;
+    border-right: solid $panel-lighten-1;
 }
 
 /* No second pane, no divider. */
@@ -301,8 +305,8 @@ HelpScreen {
     height: auto;
     min-height: 6;
     padding: 1 2;
-    background: #181825;
-    border-top: solid #45475a;
+    background: $surface;
+    border-top: solid $panel-lighten-1;
 }
 
 LocationModal {
@@ -312,8 +316,8 @@ LocationModal {
 #loc-modal-box {
     width: 66;
     height: auto;
-    border: thick #cba6f7;
-    background: #181825;
+    border: thick $accent;
+    background: $surface;
     padding: 1 2;
 }
 
@@ -324,19 +328,19 @@ LocationModal {
 
 .loc-label {
     width: 9;
-    color: #89b4fa;
+    color: $primary;
 }
 
 #loc-modal-box Input {
     border: none;
     height: 1;
     padding: 0 1;
-    background: #313244;
+    background: $panel;
 }
 
 #loc-modal-box Input:focus {
-    background: #45475a;
-    color: #f9e2af;
+    background: $panel-lighten-1;
+    color: $warning;
 }
 
 /* Empty until something is wrong, so it takes no room until it does. */

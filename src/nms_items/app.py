@@ -17,6 +17,7 @@ from .inventory import Inventory
 from .model import Book, Recipe
 from .portals import LocationBook
 from .storage import StorageGuide
+from .themes import THEMES, TRANSPARENT, load_theme, save_theme
 from .widgets import SearchInput, VimDataTable
 from .screens import (
     ChainScreen,
@@ -39,10 +40,10 @@ MAX_ROWS = 400
 MIN_WIDTH_FOR_DETAIL = 100
 
 BAND_COLOUR = {
-    "easy": "#a6e3a1",
-    "ok": "#f9e2af",
-    "work": "#fab387",
-    "hard": "#f38ba8",
+    "easy": "$success",
+    "ok": "$warning",
+    "work": "$warning-darken-2",
+    "hard": "$error",
 }
 
 DOMAINS: list[tuple[str | None, str]] = [
@@ -236,7 +237,7 @@ class RecipeScreen(Screen):
                 "input": "used in",
                 "any": "anything touching",
             }[self.item_role]
-            note.append(f"{role} [b #f9e2af]{self.book.name(self.item_filter)}[/]")
+            note.append(f"{role} [b $warning]{self.book.name(self.item_filter)}[/]")
         shown = len(self.rows)
         total = len(matches)
         note.append(f"{shown} of {total}" if total > shown else f"{total} recipes")
@@ -248,7 +249,7 @@ class RecipeScreen(Screen):
             table.move_cursor(row=min(cursor, len(self.rows) - 1))
             self.show_detail(self.rows[min(cursor, len(self.rows) - 1)])
         else:
-            self.query_one("#detail", Static).update("[#a6adc8]No recipe matches.[/]")
+            self.query_one("#detail", Static).update("[$text-muted]No recipe matches.[/]")
 
     def current_recipe(self) -> Recipe | None:
         table = self.query_one("#table", VimDataTable)
@@ -264,52 +265,52 @@ class RecipeScreen(Screen):
         book = self.book
         out = book.items.get(recipe.output.id)
         lines = [
-            f"[b #f9e2af]{recipe.output_label}[/]",
-            f"[#a6adc8]{out.subtitle if out else ''}[/]",
+            f"[b $warning]{recipe.output_label}[/]",
+            f"[$text-muted]{out.subtitle if out else ''}[/]",
             "",
             f"[b]{recipe.inputs_label}[/]",
             f"  -> [b]{recipe.output_label}[/]",
             "",
-            f"[#89b4fa]Operation[/]  {recipe.operation}",
-            f"[#89b4fa]Machine[/]    {recipe.machine}",
-            f"[#89b4fa]Batch time[/] {recipe.time_label}",
-            f"[#89b4fa]Multiplier[/] {recipe.multiplier_label}",
-            f"[#89b4fa]Rate[/]       {recipe.rate:,.0f}/h per machine",
-            f"[#89b4fa]Profit[/]     {recipe.profit:+,} units per batch",
-            f"[#89b4fa]Gettable[/]   {self.ease.of_recipe(recipe).label}"
-            f"  [#a6adc8](hardest ingredient)[/]",
+            f"[$primary]Operation[/]  {recipe.operation}",
+            f"[$primary]Machine[/]    {recipe.machine}",
+            f"[$primary]Batch time[/] {recipe.time_label}",
+            f"[$primary]Multiplier[/] {recipe.multiplier_label}",
+            f"[$primary]Rate[/]       {recipe.rate:,.0f}/h per machine",
+            f"[$primary]Profit[/]     {recipe.profit:+,} units per batch",
+            f"[$primary]Gettable[/]   {self.ease.of_recipe(recipe).label}"
+            f"  [$text-muted](hardest ingredient)[/]",
         ]
         if out:
             placement = self.app.storage.place(out)
             lines.append(
-                f"[#89b4fa]Store[/]      {placement.label}  [#a6adc8](w for more)[/]"
+                f"[$primary]Store[/]      {placement.label}  [$text-muted](w for more)[/]"
             )
         lines += [
             "",
-            "[#89b4fa]Ingredients[/]",
+            "[$primary]Ingredients[/]",
         ]
         for ing in recipe.inputs:
             item = book.items.get(ing.id)
             have = self.inv.items.get(ing.id, 0)
-            stock = f"  [#a6e3a1](have {have})[/]" if have else ""
+            stock = f"  [$success](have {have})[/]" if have else ""
             ease = self.ease.of(ing.id)
             lines.append(
                 f"  {ing.n} x {book.name(ing.id)}"
-                f"  [#a6adc8]{item.value if item else 0}u[/]{stock}"
+                f"  [$text-muted]{item.value if item else 0}u[/]{stock}"
                 f"  [{BAND_COLOUR[ease.band]}]{ease.label}[/]"
             )
-            lines.append(f"     [#a6adc8]{ease.describe(book)}[/]")
+            lines.append(f"     [$text-muted]{ease.describe(book)}[/]")
 
         others = [r for r in book.produced_by.get(recipe.output.id, []) if r.index != recipe.index]
         if others:
-            lines += ["", f"[#89b4fa]Other ways to make it[/]  ({len(others)})"]
+            lines += ["", f"[$primary]Other ways to make it[/]  ({len(others)})"]
             for alt in sorted(others, key=lambda r: -max(r.loop, r.ratio))[:5]:
-                lines.append(f"  {alt.inputs_label}  [#a6adc8]{alt.multiplier_label}[/]")
-            lines.append("  [#a6adc8]press p to list them all[/]")
+                lines.append(f"  {alt.inputs_label}  [$text-muted]{alt.multiplier_label}[/]")
+            lines.append("  [$text-muted]press p to list them all[/]")
 
         uses = book.consumed_by.get(recipe.output.id, [])
         if uses:
-            lines += ["", f"[#89b4fa]Used in[/]  {len(uses)} recipe(s) - press r"]
+            lines += ["", f"[$primary]Used in[/]  {len(uses)} recipe(s) - press r"]
 
         self.query_one("#detail", Static).update("\n".join(lines))
 
@@ -455,9 +456,30 @@ class RecipeApp(App):
         self.inv = Inventory()
         self.locations = LocationBook.load()
         self.storage = StorageGuide.load()
+        for theme in THEMES:
+            self.register_theme(theme)
+        name = load_theme()
+        self.theme = name if name in self.available_themes else THEMES[0].name
+        self._apply_transparency()
 
     def on_mount(self) -> None:
+        # Subscribed after the startup theme is set, so only a choice made in
+        # the palette is written back.
+        self.theme_changed_signal.subscribe(self, self._theme_changed)
         self.push_screen(RecipeScreen(self.book, self.ease, self.inv))
+
+    def _apply_transparency(self) -> None:
+        """ANSI colour on for a see-through theme; otherwise each theme decides."""
+        self.ansi_color = True if self.theme in TRANSPARENT else None
+
+    def _theme_changed(self, theme) -> None:
+        self._apply_transparency()
+        save_theme(theme.name)
+        # Table cells are coloured with resolved hex, not theme variables, so
+        # the screen on top has to redraw them.
+        redraw = getattr(self.screen, "recolour", None)
+        if redraw is not None:
+            redraw()
 
     def get_system_commands(self, screen: Screen):
         """Trim the built-ins to the two that mean anything here.
