@@ -72,6 +72,7 @@ def build_items(substances: dict, products: dict) -> dict:
             "category": row.get("Category", ""),
             "rarity": row.get("Rarity", ""),
             "value": int(_num(row.get("BaseValue"))),
+            "type": row.get("Type", ""),
             "cooking_ingredient": row.get("CookingIngredient") == "True",
             "description": row.get("Description_Text", ""),
             # Eating a cooked product grants a temporary buff. The files name
@@ -87,6 +88,7 @@ def build_items(substances: dict, products: dict) -> dict:
         items[key] = {
             "name": row.get("NameLower_Text") or row.get("Name_Text", key),
             "kind": "substance",
+            "type": "Substance",
             "subtitle": row.get("Subtitle_Text", ""),
             "category": row.get("Category", ""),
             "rarity": row.get("Rarity", ""),
@@ -96,6 +98,27 @@ def build_items(substances: dict, products: dict) -> dict:
         }
 
     return items
+
+
+# Product types that never occupy a cargo slot: base parts, ship and suit
+# cosmetics, emotes.
+NOT_CARRIED = {"BuildingPart", "CustomisationPart", "Emote"}
+
+
+def carriable(item: dict) -> bool:
+    """True for an item you could find in your exosuit.
+
+    Besides the types above, this drops the rows that only exist to drive the
+    UI: standing changes and settlement stats ("Reward Item"), and templates
+    whose name is filled in at runtime (%NAME%).
+    """
+    name = item["name"]
+    return (
+        item.get("type") not in NOT_CARRIED
+        and item.get("subtitle") != "Reward Item"
+        and bool(name.strip())
+        and "%" not in name
+    )
 
 
 def build_recipes(table: dict, domain: str, items: dict) -> list[dict]:
@@ -172,13 +195,15 @@ def main() -> int:
     recipes = build_recipes(load("Refining_Table.json"), "refine", items)
     recipes += build_recipes(load("Cooking_Table.json"), "cook", items)
 
-    # Drop items nothing references, so the shipped file stays small: the
-    # product table alone is 2,100 rows, of which recipes touch a few hundred.
+    # Keep what a recipe touches, plus anything that can sit in an inventory
+    # slot: the storage guide has to answer for a Gravitino Ball as much as for
+    # Chlorine. What goes is the build menu, the cosmetics and the rows that
+    # are not items at all.
     used: set[str] = set()
     for recipe in recipes:
         used.add(recipe["output"]["id"])
         used.update(i["id"] for i in recipe["inputs"])
-    items = {k: v for k, v in items.items() if k in used}
+    items = {k: v for k, v in items.items() if k in used or carriable(v)}
 
     DATA.mkdir(exist_ok=True)
     (DATA / "items.json").write_text(json.dumps(items, indent=1, sort_keys=True))

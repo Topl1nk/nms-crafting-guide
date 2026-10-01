@@ -128,6 +128,37 @@ Tree {
     border-top: solid #45475a;
 }
 
+/* --- storage screen --- */
+
+#store-search {
+    border: tall #45475a;
+    background: #313244;
+    margin: 0 1;
+}
+
+#store-search:focus {
+    border: tall #a6e3a1;
+}
+
+#store-body {
+    height: 1fr;
+}
+
+#store-table {
+    width: 92;
+    height: 100%;
+}
+
+#store-detail {
+    width: 1fr;
+    min-width: 30;
+    height: 100%;
+    border-left: solid #45475a;
+    padding: 1 2;
+    background: #181825;
+    overflow-y: auto;
+}
+
 /* --- inventory screen --- */
 
 #inv-body {
@@ -140,7 +171,8 @@ Tree {
 }
 
 #inv-right {
-    width: 2fr;
+    /* Even split: the carried list has a "Goes to" column to fit now. */
+    width: 1fr;
 }
 
 #inv-add {

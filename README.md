@@ -25,6 +25,7 @@ is the prose version of what this app queries.
 | 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
 | 🔫 **Multi-tools** | The 8 types compared, the 5 weapons measured, and how to get the free S-class ones |
 | 🌀 **Portal addresses** | Glyphs ↔ galactic coordinates, offline, plus the addresses from the guides — where the good tools and Exotics are |
+| 🗄️ **Where does it go?** | Every item's home in the storage guide's layout — one of the ten Storage Containers, the Nutrient Processor, Cold Storage — or *sell*, *junk*, *use it now*. Type a home ("sell", "cold") to list everything that goes there |
 | 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
 
 ---
@@ -78,6 +79,7 @@ Then the actions:
 | `m` | **multi-tools** — types, weapons, getting one, tips |
 | `P` | **portal addresses** — convert glyphs, and the places worth going |
 | `a` `i` | add to inventory / open the inventory screen (`/` opens its add field) |
+| `w` | **where does it go?** — the storage container for an item, or whether to sell or junk it |
 | `d` | show/hide the detail pane — it hides itself below 100 columns |
 | `?` | full help |
 | `ctrl+p` | command palette — every mode by name |
@@ -311,10 +313,11 @@ reads:
 
 | | |
 | --- | --- |
-| `data/items.json` | 693 items — name, category, rarity, base value, and for cooked food the stat it buffs and how strongly |
+| `data/items.json` | 1,447 items — the 693 that recipes touch plus everything else that can sit in a cargo slot. Name, type, category, rarity, base value, and for cooked food the stat it buffs and how strongly |
 | `data/recipes.json` | 1,680 recipes — flat, with ratio, loop multiplier, batch time, profit and rate precomputed |
 | `data/cheatsheet.json` | the subset the PDF prints |
 | `data/acquisition.json` | **hand-written** — where loot comes from, since the game files record what a recipe needs but never where to find it. Taken from the guides; where they say nothing, the app says "unknown" rather than guessing |
+| `data/storage.json` | **hand-written** — the storage layout from guide 24, section 10: what each of the ten containers holds, as ordered rules. The guide's named items first, then their families by the game's own subtitle and type; first match wins, no match means 9 - Inbox |
 | `data/multitools.json` | **hand-written** — the multi-tool reference. The game files carry nothing useful about multi-tools, so this comes wholesale from guides 05 and 21 |
 | `data/locations.json` | **hand-written** — portal addresses, from the Euclid shortlists in guides 14 and 21, plus whatever you find. The `s` key on the portal screen appends to it |
 | `data/glyphs.json` | the 16 symbols — outlines for the PDF and braille for the terminal, both traced from the [nmsportals](https://nmsportals.github.io/) dial art by `mise run glyphs`. Regenerated only if it is lost; the glyphs do not move |

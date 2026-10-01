@@ -59,6 +59,9 @@ class Item:
     rarity: str
     value: int
     description: str = ""
+    # The game's own item type: Substance, Consumable, Tradeable, Fish,
+    # Curiosity... What the storage rules match on, with the subtitle.
+    type: str = ""
     # Cooked food only: the stat eating it boosts, and the game's own 0-1
     # quality rating for how strongly.
     effect: str = ""
@@ -162,6 +165,7 @@ class Book:
                 rarity=row.get("rarity", ""),
                 value=row.get("value", 0),
                 description=row.get("description", ""),
+                type=row.get("type", ""),
                 effect=row.get("effect", ""),
                 potency=row.get("potency", 0.0),
                 edible=row.get("edible", False),

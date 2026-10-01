@@ -686,3 +686,40 @@ def test_the_save_form_refuses_rather_than_quietly_correcting(book, tmp_path) ->
             assert saved.name == "Test System"
 
     run(scenario())
+
+
+def test_storage_screen(book: Book, tmp_path) -> None:
+    """`w` answers for the highlighted output, then for anything typed."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(140, 40)) as pilot:
+            await pilot.pause()
+            main = app.screen
+            output = main.current_recipe().output_name
+            assert "Store" in str(main.query_one("#detail").render())
+
+            await pilot.press("w")
+            await pilot.pause(0.3)
+            storage = app.screen
+            assert storage.__class__.__name__ == "StorageScreen"
+            assert storage.rows[0][0].name == output
+
+            await pilot.press("slash")
+            search = storage.query_one("#store-search")
+            search.value = ""
+            for char in "gravitino":
+                await pilot.press(char)
+            await pilot.pause(0.3)
+            item, placement = storage.rows[0]
+            assert item.name == "Gravitino Ball"
+            assert placement.action == "sell"
+            assert "Sell" in str(storage.query_one("#store-detail").render())
+
+            await pilot.press("escape")  # out of the search box
+            await pilot.press("escape")  # off the screen
+            await pilot.pause(0.2)
+            assert app.screen is main
+
+    run(scenario())

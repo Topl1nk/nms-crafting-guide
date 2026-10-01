@@ -1,0 +1,69 @@
+{
+ "_source": "Section 10 of 01.projects/03.no-mans-sky/24.storage-guide.md in the Suika Box vault, 'A layout to start from'. The guide names a handful of items per container; the rules below extend each container to the families those items belong to, matched on the game's own subtitle and type. Rules are tried top to bottom and the first match wins, so the guide's named items come first and the broad families last. Anything no rule matches goes to 9 - Inbox, which is the guide's answer for an item you have not decided about yet. Hand-written, like acquisition.json: change the layout here.",
+ "homes": {
+  "exosuit": {"name": "Exosuit", "note": "You use it every few minutes, so it stays in the backpack."},
+  "0": {"name": "Raw - common", "note": "Mined everywhere, used by almost every recipe. Lowest number, so stray duplicates come back here."},
+  "1": {"name": "Raw - planetary", "note": "Biome-locked plants, minerals and gases; the crop and extractor inputs."},
+  "2": {"name": "Refined", "note": "Refiner outputs. Keep a stock and you rarely refine on demand."},
+  "3": {"name": "Components", "note": "Craft in bulk once, pull when building or repairing."},
+  "4": {"name": "Production chain", "note": "The money engine's intermediates and finished goods. Sell the finished ones in batches."},
+  "5": {"name": "Progression", "note": "Unlock currencies. Rare, never sold, always in one place."},
+  "6": {"name": "Upgrades & tech", "note": "Uninstalled modules waiting for a slot, or for scrapping into nanites."},
+  "7": {"name": "Sellables", "note": "Units waiting to happen. Empty it at a terminal when it fills."},
+  "8": {"name": "Collectables", "note": "Display pieces and keepsakes. Move them to a fleet ship once they outgrow 50 slots."},
+  "9": {"name": "Inbox", "note": "Not sorted yet. Give it a home, then every later one routes there by itself."},
+  "processor": {"name": "Nutrient Processor", "note": "50 food slots that cost no cargo."},
+  "cold": {"name": "Cold Storage", "note": "The Exo-Skiff's 60 fish slots."},
+  "exocraft": {"name": "Exocraft cargo", "note": "Vehicle spares stay with the vehicles."},
+  "none": {"name": "Nowhere", "note": "It should not take up a slot at all."}
+ },
+ "rules": [
+  {"home": "0", "why": "Named in the guide", "ids": ["LAND1", "FUEL1", "CATALYST1", "OXYGEN", "LAUNCHSUB", "CAVE1", "STELLAR2", "SAND1", "ROCKETSUB"]},
+  {"home": "1", "why": "Named in the guide", "ids": ["PLANT_LUSH", "PLANT_DUST", "PLANT_SNOW", "PLANT_HOT", "PLANT_RADIO", "PLANT_TOXIC", "DUSTY1", "LUSH1", "COLD1", "GAS1", "GAS2", "GAS3"]},
+  {"home": "2", "why": "Named in the guide", "ids": ["LAND2", "LAND3", "CAVE2", "FUEL2", "WATER2", "ASTEROID1", "ASTEROID2", "ASTEROID3"]},
+  {"home": "3", "why": "Named in the guide", "ids": ["CASING", "NANOTUBES", "MICROCHIP", "CARBON_SEAL", "ANTIMATTER", "HYPERFUEL1", "FARMPROD3"]},
+  {"home": "4", "why": "Named in the guide: the Stasis Device chain", "ids": ["ULTRAPROD2", "MEGAPROD2", "MEGAPROD3", "ALLOY8", "FARMPROD8", "COMPOUND6", "FARMPROD9", "COMPOUND5"]},
+  {"home": "5", "why": "Named in the guide", "ids": ["BP_SALVAGE", "SHIP_INV_TOKEN", "FREI_INV_TOKEN", "FRIG_TOKEN", "TECH_COMP", "DRONE_SHARD", "NAV_DATA", "ROBOT1"]},
+  {"home": "6", "why": "Named in the guide", "ids": ["REPAIRKIT", "U_HYPER1", "U_LAUNCH1", "U_ENERGY1", "U_EXOBOOST1", "U_SENTGUN"], "no_rocket": true},
+  {"home": "7", "action": "sell", "why": "Named in the guide", "ids": ["SALVAGE_TECH10", "GRAVBALL", "CAVECUBE", "ALBUMENPEARL", "STORM_CRYSTAL", "SACVENOM", "TRA_EXOTICS2", "TRA_COMMODITY1"]},
+  {"home": "8", "why": "Named in the guide", "ids": ["FIENDCORE", "S10_SOUL", "FISHCORE", "EXPD_EGG_18"]},
+
+  {"home": "none", "action": "use", "why": "The guide: use expansion units straight away, the starting exosuit is the only one you get", "ids": ["SUIT_INV_TOKEN", "WEAP_INV_TOKEN", "ALIEN_INV_TOKEN"]},
+  {"home": "none", "action": "use", "why": "Opens into something else - open it where you found it", "subtitles": ["Rogue Technology Echo", "Technology Echo", "Contraband", "Utopia Foundation Supply Cache", "Exclusive Spacecraft", "Exclusive Multifunction Survival Device", "Exclusive Companion Egg", "Exclusive Frigate", "Multifunction Survival Device Upgrade"]},
+  {"home": "none", "action": "use", "why": "Read it and it is gone", "ids": ["F_BOTTLE", "S15_BOT_1", "S15_BOT_2", "S15_BOT_3", "S15_BOT_4"]},
+
+  {"home": "none", "action": "discard", "why": "The game calls it junk; it sells for almost nothing", "subtitles": ["Junk"]},
+  {"home": "none", "action": "discard", "why": "Fishing flotsam, worth a few hundred units at most", "ids_prefix": ["F_TRASH_"]},
+  {"home": "7", "action": "sell", "why": "The Scrap Dealer on any space station buys it", "ids": ["AF_METAL"]},
+
+  {"home": "exosuit", "why": "Ammo, fuel and recharges you reach for while exploring", "ids": ["AMMO", "LAUNCHFUEL", "POWERCELL", "POWERCELL2", "SHIPCHARGE", "PRODFUEL1", "PRODFUEL2", "JELLY", "GRENFUEL1", "SIGNALCHARGE"]},
+  {"home": "exosuit", "why": "The guide keeps the Atlas Pass on you", "subtitles": ["Access Card"]},
+  {"home": "exosuit", "why": "Bait is used on the spot", "subtitles": ["Carnivore Bait", "Herbivore Bait", "Compressed Nutrients", "Fishing Bait"]},
+  {"home": "exocraft", "why": "Nautilon fuel; the guide keeps vehicle spares in the vehicles", "ids": ["SUBFUEL"]},
+
+  {"home": "cold", "why": "Fish go to the Exo-Skiff's Cold Storage", "types": ["Fish"]},
+  {"home": "processor", "why": "Food and ingredients go to the Nutrient Processor", "subtitles": ["Edible Product", "Raw Ingredient", "Vile Larva", "Ingredient Category"]},
+
+  {"home": "1", "why": "Same family as the guide's planetary raws", "subtitles": ["Localised Earth Element", "Harvested Agricultural Substance", "Compressed Atmospheric Gas", "Aquatic Mineral Extract", "Organic Compound", "Harvested Substance"]},
+  {"home": "2", "why": "Refined stellar metal, same family as the guide's refined", "types": ["Substance"], "categories": ["Stellar"]},
+  {"home": "2", "why": "A refiner output, same family as the guide's refined", "subtitles": ["Refined Catalytic Element", "Processed Aquatic Mineral", "Processed Subterranean Mineral", "Recycled Minerals", "High Energy Substance"]},
+  {"home": "5", "why": "A currency for one vendor or one storyline", "types": ["Substance"], "categories": ["Special"]},
+
+  {"home": "3", "why": "A crafted component, same family as the guide's", "subtitles": ["Crafted Technology Component", "Hyperdrive Charging Unit"]},
+  {"home": "3", "why": "A concentrated deposit, crafted and used in bulk", "subtitle_has": ["Concentrated"], "types": ["Curiosity"]},
+  {"home": "3", "why": "Frigate fuel: craft in bulk, pull before expeditions", "ids_prefix": ["FRIGATE_FUEL_"]},
+  {"home": "4", "why": "A production-chain product, same family as the Stasis chain", "types": ["Tradeable"], "subtitles": ["Advanced Agricultural Product", "Manufactured Gas Product", "Enhanced Gas Product", "Alloy Metal", "Enriched Alloy Metal", "Advanced Crafted Product", "Highly Refined Technology"]},
+
+  {"home": "5", "why": "Unlocks something; never sold", "subtitles": ["Advanced Research Module", "AI Master Key", "Overwritten Digital Record", "Encrypted Navigation Data", "System Authority Payment Substitute", "Timeless Artifact", "Aquatic Relic", "Very high value curiosity", "Recovered Sentinel Components"]},
+  {"home": "5", "why": "A chart: it unlocks a location when you use it", "subtitle_has": ["Cartographic", "Planetary Chart", "Location", "Coordinate Data", "Geographic Data", "Homing Device"]},
+
+  {"home": "6", "why": "An uninstalled upgrade module", "ids_prefix": ["U_", "AP_", "FRIG_BOOST_"], "no_rocket": true},
+
+  {"home": "7", "action": "sell", "why": "Trade goods: no other use", "subtitle_has": ["Trade Goods"]},
+  {"home": "7", "action": "sell", "why": "Only good for selling", "subtitles": ["Smuggled Goods", "Starship Subcomponent", "Multi-Tool Subcomponent", "Trade commodity", "Medium value curiosity", "High value curiosity", "Compressed Mineral", "Semi-Conscious Gemstone", "Horrific Sample", "Valuable Mineral Deposit", "Concentrated Element Shard", "Energetic Fragment", "Valuable Ore", "Valuable Rock Sample", "Communion of Hirk", "Anomalous Data Unit", "Medicinal Substance"]},
+  {"home": "7", "action": "sell", "why": "Loot from a creature or a machine; sells well", "subtitles": ["Anomalous Material", "Corrupted Aeronic Core", "Glorious Trophy", "Salvaged Identification Device", "Precious Material", "Battleship Core Remnant", "Burning Glassy Remnant", "Unblinking Eye", "Precious Spawn", "Fragile Medusoid"]},
+
+  {"home": "8", "why": "A companion egg", "types": ["CreatureEgg"]},
+  {"home": "8", "why": "A keepsake: lore, eggs, Atlas pieces, expedition rewards", "types": ["Curiosity"]}
+ ]
+}

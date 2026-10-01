@@ -275,7 +275,12 @@ def main() -> int:
         "counts": {
             "refine": len(refine),
             "cook": len(cook),
-            "items": len(book.items),
+            # Items a recipe touches. book.items also holds everything the
+            # storage guide answers for, which the sheet never mentions.
+            "items": len(
+                {r.output.id for r in book.recipes}
+                | {i.id for r in book.recipes for i in r.inputs}
+            ),
         },
         "loops": [row(book, r) for r in loops],
         "nanites": nanite_rows,

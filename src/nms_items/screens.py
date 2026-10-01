@@ -35,6 +35,18 @@ TRASH = Binding.Group("trash")
 from .model import SOURCE_SETS, Book
 from .portals import Address, AddressError, Location, LocationBook
 from .inventory import Inventory
+from .storage import StorageGuide
+
+
+# Colour per action, so a screen of results reads at a glance: green to keep,
+# red to throw away.
+ACTION_COLOUR = {
+    "keep": "#a6e3a1",
+    "store": "#89b4fa",
+    "sell": "#f9e2af",
+    "discard": "#f38ba8",
+    "use": "#cba6f7",
+}
 
 
 def fmt_time(seconds: float) -> str:
@@ -274,7 +286,9 @@ class InventoryScreen(Screen):
 
     def on_mount(self) -> None:
         self.title = "Inventory"
-        self.query_one("#inv-table", DataTable).add_columns("Item", "Have", "Value")
+        self.query_one("#inv-table", DataTable).add_columns(
+            "Item", "Have", "Value", "Goes to"
+        )
         self.query_one("#can-table", DataTable).add_columns(
             "Make", "From", "Mult", "Batches"
         )
@@ -311,10 +325,15 @@ class InventoryScreen(Screen):
             self.inv.items.items(), key=lambda kv: self.book.name(kv[0])
         ):
             item = self.book.items.get(item_id)
+            where = ""
+            if item:
+                placement = self.app.storage.place(item)
+                where = f"[{ACTION_COLOUR[placement.action]}]{placement.label}[/]"
             inv_table.add_row(
                 self.book.name(item_id),
                 str(count),
                 f"{(item.value if item else 0) * count:,}",
+                where,
                 key=item_id,
             )
 
@@ -418,6 +437,184 @@ class InventoryScreen(Screen):
 
     def action_toggle_cooking(self) -> None:
         self._set_cooking(not self.with_cooking)
+
+
+# Most rows a storage search draws: an empty query matches all 1,400 items.
+MAX_STORAGE_ROWS = 300
+
+
+class StorageScreen(Screen):
+    """Where does this go? Type an item, get its home.
+
+    The layout is the guide's (24.storage-guide.md, section 10): ten numbered
+    containers, the single-purpose stores, and the three answers that are not
+    a place -- sell it, drop it, use it.
+    """
+
+    BINDINGS = [
+        Binding("escape,q", "app.pop_screen", "back"),
+        Binding("slash", "focus_search", "search"),
+    ]
+
+    COMMANDS = {ModeCommands}
+
+    def __init__(self, book: Book, guide: StorageGuide, inventory: Inventory,
+                 query: str = "") -> None:
+        super().__init__()
+        self.book = book
+        self.guide = guide
+        self.inv = inventory
+        self.query_text = query
+        self.rows: list[tuple] = []
+        self._debounce = None
+
+    def compose(self) -> ComposeResult:
+        yield Header()
+        yield SearchInput(
+            placeholder="/ item name, or a home: sell, junk, cold, components...",
+            id="store-search",
+        )
+        with Horizontal(id="store-body"):
+            yield VimDataTable(id="store-table", cursor_type="row", zebra_stripes=True)
+            yield Static(id="store-detail")
+        yield Footer()
+
+    def on_mount(self) -> None:
+        self.title = "Where does it go?"
+        table = self.query_one("#store-table", VimDataTable)
+        table.add_column("Item", width=28)
+        table.add_column("What it is", width=30)
+        table.add_column("Goes to", width=28)
+        search = self.query_one("#store-search", SearchInput)
+        search.value = self.query_text
+        self.refresh_rows()
+        # Typing is the whole point here, so it opens in insert mode -- unless
+        # it was opened on an item, when the answer is already on screen.
+        if self.query_text:
+            table.focus()
+        else:
+            search.focus()
+
+    def palette_commands(self) -> Iterator[ModeCommand]:
+        for verdict in ("sell", "junk", "use it"):
+            yield ModeCommand(
+                f"Storage: everything to {verdict}", "List every item with that answer",
+                partial(self._search, verdict),
+            )
+        for home in self.guide.homes.values():
+            if home.key != "none":
+                yield ModeCommand(f"Storage: {home.label}", home.note,
+                                  partial(self._search, home.name.lower()))
+
+    def _search(self, text: str) -> None:
+        self.query_one("#store-search", SearchInput).value = text
+        self.query_text = text
+        self.refresh_rows()
+
+    def refresh_rows(self) -> None:
+        matches = self.guide.search(self.book, self.query_text)
+        self.rows = matches[:MAX_STORAGE_ROWS]
+        table = self.query_one("#store-table", VimDataTable)
+        table.clear()
+        for item, placement in self.rows:
+            colour = ACTION_COLOUR[placement.action]
+            table.add_row(
+                item.name,
+                item.subtitle,
+                f"[{colour}]{placement.label}[/]",
+                key=item.id,
+            )
+        if self.query_text.strip() and self.rows:
+            self.show_item(0)
+        else:
+            self.show_layout(len(matches))
+
+    def show_item(self, index: int) -> None:
+        item, placement = self.rows[index]
+        colour = ACTION_COLOUR[placement.action]
+        lines = [
+            f"[b #f9e2af]{item.name}[/]",
+            f"[#a6adc8]{item.subtitle}  ·  {item.value:,}u[/]",
+            "",
+            f"[b {colour}]{placement.label}[/]",
+            placement.advice(),
+            "",
+            f"[#89b4fa]Why[/]   {placement.why}",
+        ]
+        if placement.home.key != "none":
+            lines.append(f"[#89b4fa]{placement.home.label}[/]  [#a6adc8]{placement.home.note}[/]")
+        have = self.inv.items.get(item.id, 0)
+        if have:
+            lines += ["", f"[#a6e3a1]You are carrying {have}.[/]"]
+        if placement.home.is_container:
+            lines += [
+                "",
+                "[#a6adc8]Once one is in its container, sending more to storage"
+                " routes them there by itself.[/]",
+            ]
+        self.query_one("#store-detail", Static).update("\n".join(lines))
+
+    def show_layout(self, total: int) -> None:
+        """No item picked yet: the layout itself, which is worth a glance."""
+        homes: dict[str, int] = {}
+        actions: dict[str, int] = {}
+        for item in self.book.items.values():
+            placement = self.guide.place(item)
+            actions[placement.action] = actions.get(placement.action, 0) + 1
+            homes[placement.home.key] = homes.get(placement.home.key, 0) + 1
+
+        def row(label: str, n: int, colour: str = "") -> str:
+            name = f"[b {colour}]{label}[/]" if colour else f"[b]{label}[/]"
+            return f"{name}  [#a6adc8]{n} items[/]"
+
+        lines = ["[b #89b4fa]The ten containers[/]", ""]
+        lines += [row(h.label, homes.get(h.key, 0))
+                  for h in self.guide.homes.values() if h.is_container]
+        lines += ["", "[b #89b4fa]Everything else[/]", ""]
+        lines += [row(h.label, homes.get(h.key, 0))
+                  for h in self.guide.homes.values()
+                  if not h.is_container and h.key != "none"]
+        lines += [
+            "",
+            row("Sell", actions.get("sell", 0), ACTION_COLOUR["sell"])
+            + "  [#a6adc8](parked in 7 until then)[/]",
+            row("Junk", actions.get("discard", 0), ACTION_COLOUR["discard"]),
+            row("Use it", actions.get("use", 0), ACTION_COLOUR["use"]),
+            "",
+            "[#a6adc8]From the storage guide, section 10. Change it in"
+            " data/storage.json.[/]",
+            "",
+            f"[#a6adc8]{total} items match.[/]" if self.query_text.strip()
+            else "[#a6adc8]Type a name - or sell, junk, use.[/]",
+        ]
+        self.query_one("#store-detail", Static).update("\n".join(lines))
+
+    def on_input_changed(self, event: SearchInput.Changed) -> None:
+        if event.input.id != "store-search":
+            return
+        self.query_text = event.value
+        if self._debounce is not None:
+            self._debounce.stop()
+        self._debounce = self.set_timer(0.12, self.refresh_rows)
+
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        if event.input.id == "store-search":
+            self.query_one("#store-table", VimDataTable).focus()
+
+    def on_search_input_escaped(self, event: SearchInput.Escaped) -> None:
+        self.query_one("#store-table", VimDataTable).focus()
+
+    def on_data_table_row_highlighted(self, event: DataTable.RowHighlighted) -> None:
+        # With nothing typed the pane shows the layout, until you move into
+        # the list to look at something.
+        table = self.query_one("#store-table", VimDataTable)
+        if 0 <= event.cursor_row < len(self.rows) and (
+            self.query_text.strip() or table.has_focus
+        ):
+            self.show_item(event.cursor_row)
+
+    def action_focus_search(self) -> None:
+        self.query_one("#store-search", SearchInput).focus()
 
 
 class NaniteScreen(Screen):
@@ -1611,6 +1808,8 @@ HELP_TEXT = """\
                  and back, and the places worth going
   a              add the highlighted output to your inventory
   i              inventory screen
+  w              where does it go? - the storage container for an item,
+                 or whether to sell or junk it
 
 [b]Inventory[/]
   / opens the add field, the same as everywhere else. Type
@@ -1618,6 +1817,18 @@ HELP_TEXT = """\
   count subtracts, Esc goes back to normal mode.
   e   edit count      d   drop the item
   x   clear everything             C   include cooking recipes
+  The Goes to column says where each item belongs, so a full exosuit
+  becomes a drop-off list.
+
+[b]Where does it go? (w)[/]
+  Type an item and it tells you its home, from the storage guide's
+  layout: one of the ten Storage Containers, the Nutrient Processor,
+  Cold Storage, the exosuit, or no home at all - sell it, junk it
+  (drop it when you need the slot), or use it straight away.
+  Typing a home lists what goes there: "sell", "junk", "cold",
+  "components". Opened from a recipe, it starts on that item.
+  The layout lives in data/storage.json; rules are tried top to
+  bottom and anything no rule covers goes to 9 - Inbox.
 
 [b]Portal addresses (P)[/]
   One box does both jobs. Paste a portal code (12 hex digits, one per

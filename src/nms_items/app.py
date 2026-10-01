@@ -16,6 +16,7 @@ from .ease import EaseIndex
 from .inventory import Inventory
 from .model import Book, Recipe
 from .portals import LocationBook
+from .storage import StorageGuide
 from .widgets import SearchInput, VimDataTable
 from .screens import (
     ChainScreen,
@@ -26,6 +27,7 @@ from .screens import (
     NaniteScreen,
     PortalScreen,
     QuantityModal,
+    StorageScreen,
 )
 
 # Keep the table responsive: filtering 1,680 rows on every keystroke is fine,
@@ -103,6 +105,7 @@ class RecipeScreen(Screen):
         # Capital P: lowercase p is already "produced by" on this table.
         Binding("P", "portals", "portals", group=GO),
         Binding("i", "inventory", "inventory", group=GO),
+        Binding("w", "storage", "where it goes", group=GO),
         Binding("d", "toggle_detail", "detail"),
         # Escape in normal mode clears what you searched for; Escape in the
         # search box just leaves insert mode and keeps it.
@@ -180,6 +183,8 @@ class RecipeScreen(Screen):
                           self.action_portals)
         yield ModeCommand("Inventory", "What you are carrying",
                           self.action_inventory)
+        yield ModeCommand("Where does it go?", "Which storage container an item belongs in",
+                          self.action_storage)
         if self.query_text or self.item_filter:
             yield ModeCommand("Clear search and filters", "Back to the full list",
                               self.action_clear_search)
@@ -273,6 +278,13 @@ class RecipeScreen(Screen):
             f"[#89b4fa]Profit[/]     {recipe.profit:+,} units per batch",
             f"[#89b4fa]Gettable[/]   {self.ease.of_recipe(recipe).label}"
             f"  [#a6adc8](hardest ingredient)[/]",
+        ]
+        if out:
+            placement = self.app.storage.place(out)
+            lines.append(
+                f"[#89b4fa]Store[/]      {placement.label}  [#a6adc8](w for more)[/]"
+            )
+        lines += [
             "",
             "[#89b4fa]Ingredients[/]",
         ]
@@ -400,6 +412,12 @@ class RecipeScreen(Screen):
 
         self.app.push_screen(InventoryScreen(self.book, self.inv), done)
 
+    def action_storage(self) -> None:
+        """Open on the highlighted output, since that is usually the question."""
+        recipe = self.current_recipe()
+        query = recipe.output_name if recipe else ""
+        self.app.push_screen(StorageScreen(self.book, self.app.storage, self.inv, query))
+
     def action_nanites(self) -> None:
         self.app.push_screen(NaniteScreen(self.book, self.ease))
 
@@ -436,6 +454,7 @@ class RecipeApp(App):
         self.ease = EaseIndex(self.book)
         self.inv = Inventory()
         self.locations = LocationBook.load()
+        self.storage = StorageGuide.load()
 
     def on_mount(self) -> None:
         self.push_screen(RecipeScreen(self.book, self.ease, self.inv))
