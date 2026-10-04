@@ -3,6 +3,7 @@ name = "nms-items"
 version = "0.1.0"
 description = "TUI for No Man's Sky refining, cooking and crafting recipes"
 requires-python = ">=3.11"
+license = "GPL-3.0-only"
 dependencies = [
     # The TUI itself. DataTable + Tree + TabbedContent carry the whole UI.
     "textual>=1.0",

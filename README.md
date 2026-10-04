@@ -5,10 +5,9 @@ refine into*, and *how do I get that from what I'm carrying*. Plus a printable
 **cheat sheet** of the recipes worth memorising.
 
 Every number comes from the game's own recipe table — 357 refining and 1,323
-cooking recipes — not from a wiki transcription. The written guides this grew
-out of live in the Suika Box vault under `01.projects/03.no-mans-sky/`;
-[`20.refiner-recipes.md`](../../Documents/Suika%20Box/01.projects/03.no-mans-sky/20.refiner-recipes.md)
-is the prose version of what this app queries.
+cooking recipes — not from a wiki transcription. It grew out of a set of
+written guides (the Suika Box notes); `20.refiner-recipes.md` is the prose
+version of what this app queries.
 
 ![the recipe list](docs/img/recipes.svg)
 
@@ -272,8 +271,7 @@ guides they came from rather than hidden in XDG state, because they are
 findings: they diff, review and share like everything else here. Press `s` to
 add one through a form, or edit the file directly — it carries its own schema.
 It ships with the fifteen from the Euclid shortlists in guides
-[21](../../Documents/Suika%20Box/01.projects/03.no-mans-sky/21.multitool-damage.md)
-and [14](../../Documents/Suika%20Box/01.projects/03.no-mans-sky/14.starships-ranked.md)
+21 (`21.multitool-damage.md`) and 14 (`14.starships-ranked.md`)
 — seven multi-tools and eight Exotic starships, read off the Portal Repository
 in September 2026, all marked `shared`. From the multi-tool screen, `P` opens
 the list already filtered to tools.
@@ -378,3 +376,12 @@ src/nms_items/
 scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots
 cheatsheet.typ the PDF
 ```
+
+---
+
+## License
+
+[GPL-3.0](LICENSE). Recipe and item data are derived from
+[NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook) (GPL-3.0), which
+extracts them from the game files; No Man's Sky and its data belong to Hello
+Games. Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/).
