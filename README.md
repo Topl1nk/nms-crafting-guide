@@ -230,6 +230,7 @@ sheet would point at a different star, plausibly.
 
 | | |
 | --- | --- |
+| `D` | dial an address glyph by glyph — for when all you have is the symbols, off a video or a screenshot |
 | `y` `Y` | copy the portal code / the galactic address |
 | `s` `e` `d` | save what is converted, edit it, drop it to the trash |
 | `u` `T` | undo the last drop / show the trash |

@@ -313,6 +313,48 @@ LocationModal {
     align: center middle;
 }
 
+GlyphPickerModal {
+    align: center middle;
+}
+
+/* Eight 12-column cells ("8 dragonfly" plus a gap), padding and border. */
+#picker-box {
+    width: 102;
+    height: auto;
+    border: thick $accent;
+    background: $surface;
+    padding: 1 2;
+}
+
+#picker-code {
+    height: auto;
+    padding-bottom: 1;
+}
+
+#picker-grid {
+    height: auto;
+}
+
+.picker-row {
+    height: auto;
+}
+
+.glyph-cell {
+    width: 12;
+    height: auto;
+    padding: 0 1 0 0;
+    margin: 0 0 1 0;
+}
+
+.glyph-cell:hover {
+    background: $panel;
+}
+
+.glyph-cell.-cursor {
+    background: $panel-lighten-1;
+    color: $warning;
+}
+
 #loc-modal-box {
     width: 66;
     height: auto;

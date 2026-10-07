@@ -375,6 +375,47 @@ def test_portal_screen(book: Book, tmp_path) -> None:
     run(scenario())
 
 
+def test_glyph_picker_dials_an_address(book: Book, tmp_path) -> None:
+    """D builds a code from the symbols: keys, the cursor, and undo."""
+
+    async def scenario() -> None:
+        app = RecipeApp(book)
+        app.inv = Inventory(tmp_path / "inv.json")
+        async with app.run_test(size=(150, 40)) as pilot:
+            await pilot.pause()
+            await pilot.press("P")
+            await pilot.pause(0.4)
+            screen = app.screen
+            await pilot.press("D")
+            await pilot.pause(0.3)
+            picker = app.screen
+            assert picker.__class__.__name__ == "GlyphPickerModal"
+
+            # A typed digit picks that glyph; a stray one comes off again.
+            for char in "63FFD968046":
+                await pilot.press(char)
+            await pilot.press("9", "backspace")
+            assert picker.code == "63FFD968046"
+            # Undo puts the cursor back on the last glyph kept: boat, and
+            # one right of boat is bug.
+            await pilot.press("l", "enter")
+            assert picker.code == "63FFD9680467"
+            # Full: more digits are ignored, Enter hands the code over.
+            await pilot.press("A", "enter")
+            await pilot.pause(0.3)
+            assert app.screen is screen
+            assert screen.current.portal_code == "63FFD9680467"
+
+            # Escape leaves the converter as it was.
+            await pilot.press("D")
+            await pilot.pause(0.3)
+            await pilot.press("1", "escape")
+            await pilot.pause(0.3)
+            assert screen.current.portal_code == "63FFD9680467"
+
+    run(scenario())
+
+
 def test_portal_screen_drops_the_list_when_narrow(book: Book, tmp_path) -> None:
     async def scenario() -> None:
         app = RecipeApp(book)

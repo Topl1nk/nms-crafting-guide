@@ -1241,6 +1241,146 @@ class LocationModal(ModalScreen[Location | None]):
         self.dismiss(None)
 
 
+class GlyphCell(Static):
+    """One symbol on the picker's dial. Clicking it picks it."""
+
+    def __init__(self, digit: str) -> None:
+        super().__init__(classes="glyph-cell")
+        self.digit = digit
+
+    def on_click(self) -> None:
+        self.screen.pick(self.digit)
+
+
+class GlyphPickerModal(ModalScreen[str | None]):
+    """Build an address one symbol at a time, off what a video or a screenshot shows.
+
+    For when all you have is the glyphs -- a portal on screen, a short with the
+    address burned in -- and no hex. The sixteen sit in dial order, two rows of
+    eight, so picking here is the same motion as dialling at the portal.
+    """
+
+    BINDINGS = [
+        Binding("escape", "cancel", "cancel"),
+        Binding("left,h", "move(-1)", "left", show=False),
+        Binding("right,l", "move(1)", "right", show=False),
+        Binding("up,k", "move(-8)", "up", show=False),
+        Binding("down,j", "move(8)", "down", show=False),
+        Binding("enter,space", "pick_highlighted", "pick"),
+        Binding("backspace", "undo", "undo"),
+    ]
+
+    PER_ROW = 8
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.code = ""
+        self.cursor = 0
+
+    def compose(self) -> ComposeResult:
+        art = glyphart.load()
+        with Vertical(id="picker-box"):
+            yield Static(
+                "[b]Dial an address[/]   [$text-muted]hjkl + Enter, a click or the hex"
+                " digit picks; Backspace undoes, Esc cancels[/]",
+                id="modal-title",
+            )
+            yield Static(id="picker-code")
+            with Vertical(id="picker-grid"):
+                for start in range(0, 16, self.PER_ROW):
+                    with Horizontal(classes="picker-row"):
+                        for glyph in art.glyphs[start:start + self.PER_ROW]:
+                            yield GlyphCell(glyph.hex)
+
+    def on_mount(self) -> None:
+        art = glyphart.load()
+        for cell in self.query(GlyphCell):
+            glyph = art[cell.digit]
+            cell.update(
+                "\n".join(glyph.rows(glyphart.WIDE))
+                + f"\n[b]{glyph.hex}[/] [$text-muted]{glyph.name}[/]"
+            )
+        self._redraw()
+
+    def _redraw(self) -> None:
+        for i, cell in enumerate(self.query(GlyphCell)):
+            cell.set_class(i == self.cursor, "-cursor")
+        self.query_one("#picker-code", Static).update(self._code_text())
+
+    def _code_text(self) -> str:
+        """The address so far: drawn, then as hex, with the empty slots shown."""
+        art = glyphart.load()
+        size = glyphart.NARROW
+        blank = " " * art.width(size)
+        rows = []
+        for row in range(art.height(size)):
+            cells = []
+            for i in range(12):
+                if i < len(self.code):
+                    cells.append(
+                        f"[{GLYPH_COLOURS[i]}]"
+                        f"{art[self.code[i]].rows(size)[row]}[/]")
+                elif row == art.height(size) - 1:
+                    cells.append("[$text-muted]" + "_" * art.width(size) + "[/]")
+                else:
+                    cells.append(blank)
+            rows.append(" ".join(cells))
+        digits = " ".join(
+            f"[b {GLYPH_COLOURS[i]}]{self.code[i]}[/]" if i < len(self.code)
+            else "[$text-muted]_[/]"
+            for i in range(12)
+        )
+        field = next(
+            name for name, width, _ in _field_starts() if len(self.code) < width
+        ) if len(self.code) < 12 else ""
+        tail = (
+            f"[$text-muted]glyph {len(self.code) + 1} of 12 - {field}[/]"
+            if field else "[$success]all twelve - Enter takes it[/]"
+        )
+        return "\n".join(rows) + f"\n\n{digits}    {tail}"
+
+    def pick(self, digit: str) -> None:
+        if len(self.code) < 12:
+            self.code += digit.upper()
+            self.cursor = int(digit, 16)
+        self._redraw()
+
+    def on_key(self, event) -> None:
+        """A hex digit picks that glyph -- the digit *is* its place on the dial."""
+        char = (event.character or "").upper()
+        if len(char) == 1 and char in "0123456789ABCDEF":
+            event.stop()
+            self.pick(char)
+
+    def action_move(self, step: int) -> None:
+        self.cursor = (self.cursor + step) % 16
+        self._redraw()
+
+    def action_pick_highlighted(self) -> None:
+        if len(self.code) == 12:
+            self.dismiss(self.code)
+        else:
+            self.pick(f"{self.cursor:X}")
+
+    def action_undo(self) -> None:
+        self.code = self.code[:-1]
+        if self.code:
+            self.cursor = int(self.code[-1], 16)
+        self._redraw()
+
+    def action_cancel(self) -> None:
+        self.dismiss(None)
+
+
+def _field_starts() -> list[tuple[str, int, str]]:
+    """Each address field with the glyph count at which it ends."""
+    out, end = [], 0
+    for name, width, colour in FIELD_SPANS:
+        end += width
+        out.append((name, end, colour))
+    return out
+
+
 class PortalScreen(Screen):
     """Convert an address, and keep the ones worth going back to.
 
@@ -1253,6 +1393,7 @@ class PortalScreen(Screen):
     BINDINGS = [
         Binding("escape,q", "app.pop_screen", "back"),
         Binding("slash", "focus_input", "convert / search"),
+        Binding("D", "dial", "dial glyphs"),
         Binding("f", "cycle_kind", "kind", group=FILTER),
         Binding("o", "cycle_origin", "mine/shared", group=FILTER),
         Binding("p", "cycle_planet", "planet glyph"),
@@ -1343,6 +1484,8 @@ class PortalScreen(Screen):
                 f"delete {len(self.locations.trash)} for good",
                 self.action_empty_trash,
             )
+        yield ModeCommand(
+            "Dial an address", "Pick the twelve glyphs by eye", self.action_dial)
         if self.current is not None:
             yield ModeCommand(
                 "Copy portal code", self.current.portal_code, self.action_copy_code)
@@ -1645,6 +1788,17 @@ class PortalScreen(Screen):
     def action_focus_input(self) -> None:
         self.query_one("#portal-input", SearchInput).focus()
 
+    def action_dial(self) -> None:
+        """Pick the glyphs off the screen when there is no hex to paste."""
+
+        def done(code: str | None) -> None:
+            if code:
+                # Through the box, so it converts and searches like a paste.
+                self.query_one("#portal-input", SearchInput).value = code
+                self.query_one("#loc-table", VimDataTable).focus()
+
+        self.app.push_screen(GlyphPickerModal(), done)
+
     def action_cycle_kind(self) -> None:
         self._set_kind((self.kind_index + 1) % len(KIND_FILTERS))
 
@@ -1862,6 +2016,9 @@ HELP_TEXT = """\
   glyph), a galactic address (0824:007F:00F3:01AC, what a signal booster
   shows) or a nmsportals.github.io link and it converts as you type;
   type anything else and it searches the addresses you have saved.
+  D   dial an address glyph by glyph, for when all you have is
+      the symbols (a video, a screenshot): hjkl + Enter, a click,
+      or the hex digit; Backspace undoes
   y   copy the portal code       Y   copy the galactic address
   s   save what is converted     e   edit      d   drop
   f   filter by kind             o   filter by who found it

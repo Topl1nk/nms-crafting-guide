@@ -177,6 +177,40 @@
    "where": "As soon as you warp go to the space station, do not reload - the first set of ships in is it",
    "source": "Portal Repository / guide 14",
    "added": "2026-09-07"
+  },
+  {
+   "name": "Reforged-δ",
+   "code": "63FFD9680467",
+   "kind": "starship",
+   "origin": "shared",
+   "galaxy": 1,
+   "detail": "Black and yellow 'hornet' Sentinel interceptor. B-class as found, upgrades to S; 3+1 supercharged slots",
+   "where": "Landed at -29.54 / -152.69",
+   "source": "The Game Hub, youtube.com/shorts/mItcfa613Jw (2026-08-19)",
+   "added": "2026-10-07"
+  },
+  {
+   "name": "δ-Recovered",
+   "code": "217CDE686463",
+   "kind": "starship",
+   "origin": "shared",
+   "galaxy": 1,
+   "detail": "Black and grey 'bat-wing' Sentinel interceptor, S-class as found; 2 supercharged slots, stats above average",
+   "where": "Landed at -10.12 / -35.67, communication station placed beside it",
+   "source": "The Game Hub, youtube.com/shorts/6y1nQIfEIHM (2026-08-17)",
+   "added": "2026-10-07"
+  },
+  {
+   "name": "Orange S-class Fighter",
+   "code": "2413E47FF586",
+   "kind": "starship",
+   "origin": "shared",
+   "galaxy": 7,
+   "detail": "Orange and blue Fighter, natural S-class; 4 connected supercharged slots",
+   "where": "Lands at the space station; system and ship name not shown in the clip",
+   "source": "The Game Hub, youtube.com/shorts/mzRZu53WGoI (2026-07-27)",
+   "added": "2026-10-07"
   }
- ]
+ ],
+ "_trash": []
 }
