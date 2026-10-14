@@ -59,9 +59,13 @@ DILATE = 1
 # 6x3 is what a narrow terminal falls back to -- below about 12x12 dots the
 # line art stops being one glyph rather than another.
 SIZES = {"art": (8, 4), "art_small": (6, 3)}
-# How much of a dot's area must be ink before the dot is lit. Low, because a
-# stroke crossing a dot only covers a quarter of it.
-COVERAGE = 0.07
+# How much of a dot's area must be ink before the dot is lit. The braille is
+# shrunk from the *undilated* stroke, cropped to the glyph: at 16 dots across,
+# the upstream padding and the print dilation together cost so much room that
+# neighbouring strokes merged -- atlas's three triangles came out one pyramid,
+# sunset's waves a bowl. Cropped, a stroke crosses most of a dot it touches, so
+# a dot can ask for more of itself before lighting and gaps stay open.
+COVERAGE = 0.15
 
 # Braille dot bit per (x, y) within a cell -- the numbering is historical and
 # not row-major, which is the one thing to get right here.
@@ -134,18 +138,19 @@ def read_alpha(path: Path) -> tuple[int, int, bytearray]:
     return width, height, alpha
 
 
-def mask(width: int, height: int, alpha: bytearray) -> bytearray:
-    """Alpha -> 1-bit ink, thresholded and grown by DILATE pixels."""
+def mask(width: int, height: int, alpha: bytearray,
+         dilate: int = DILATE) -> bytearray:
+    """Alpha -> 1-bit ink, thresholded and grown by `dilate` pixels."""
     cut = int(INK * 255)
     ink = bytearray(1 if a >= cut else 0 for a in alpha)
-    if DILATE <= 0:
+    if dilate <= 0:
         return ink
     # A disk kernel; at radius 1 that is a 3x3 square without its corners.
     offsets = [
         (dx, dy)
-        for dy in range(-DILATE, DILATE + 1)
-        for dx in range(-DILATE, DILATE + 1)
-        if dx * dx + dy * dy <= DILATE * DILATE + 0.5
+        for dy in range(-dilate, dilate + 1)
+        for dx in range(-dilate, dilate + 1)
+        if dx * dx + dy * dy <= dilate * dilate + 0.5
     ]
     grown = bytearray(width * height)
     for y in range(height):
@@ -204,17 +209,32 @@ def transform_of(width: int, height: int) -> str:
 
 
 def braille(width: int, height: int, ink: bytearray, cells: tuple[int, int]) -> list[str]:
-    """Shrink the mask to a dot grid and encode it as braille rows."""
+    """Shrink the mask to a dot grid and encode it as braille rows.
+
+    The grid covers the glyph's own bounding box, squared up and centred, not
+    the whole image -- every dot is spent on the drawing. Outside the image
+    counts as blank.
+    """
     cols, rows = cells
     dots_x, dots_y = cols * 2, rows * 4
-    bw, bh = width / dots_x, height / dots_y
+    inked = [i for i, v in enumerate(ink) if v]
+    xs = [i % width for i in inked]
+    ys = [i // width for i in inked]
+    side = max(max(xs) + 1 - min(xs), max(ys) + 1 - min(ys))
+    left = (min(xs) + max(xs) + 1 - side) / 2
+    top = (min(ys) + max(ys) + 1 - side) / 2
+    bw, bh = side / dots_x, side / dots_y
     lit = [[False] * dots_x for _ in range(dots_y)]
     for dy in range(dots_y):
-        y0, y1 = int(dy * bh), max(int(dy * bh) + 1, int((dy + 1) * bh))
+        y0 = int(top + dy * bh)
+        y1 = max(y0 + 1, int(top + (dy + 1) * bh))
         for dx in range(dots_x):
-            x0, x1 = int(dx * bw), max(int(dx * bw) + 1, int((dx + 1) * bw))
+            x0 = int(left + dx * bw)
+            x1 = max(x0 + 1, int(left + (dx + 1) * bw))
             filled = sum(
-                ink[y * width + x] for y in range(y0, y1) for x in range(x0, x1)
+                ink[y * width + x]
+                for y in range(max(y0, 0), min(y1, height))
+                for x in range(max(x0, 0), min(x1, width))
             )
             area = (y1 - y0) * (x1 - x0)
             lit[dy][dx] = filled >= COVERAGE * area
@@ -251,8 +271,10 @@ def main() -> int:
             "transform": transform_of(width, height),
             "paths": trace(to_pbm(width, height, ink)),
         }
+        # The dilation is for print; the braille wants the stroke as drawn.
+        thin = mask(width, height, alpha, dilate=0)
         for key, cells in SIZES.items():
-            entry[key] = braille(width, height, ink, cells)
+            entry[key] = braille(width, height, thin, cells)
         glyphs.append(entry)
         print(f"  {entry['hex']} {name:<10} {len(entry['paths'])} paths")
 
