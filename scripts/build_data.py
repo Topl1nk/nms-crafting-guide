@@ -1,4 +1,14 @@
-"""Normalise the NMS-Handbook tables into data/items.json and data/recipes.json.
+"""Normalise the recipe tables into data/items.json and data/recipes.json.
+
+The tables arrive in the NMS-Handbook JSON shape from one of two places:
+
+  --source game      .cache/game/json/, written by extract_game.py from the
+                     installed game (the default)
+  --source handbook  .cache/handbook/, downloaded by fetch_source.py
+
+Both are the same game tables in the same shape, so this stays the one place
+recipes get normalised whichever fed it. The source's provenance is copied
+into data/source.json, so the committed data says which game build it is.
 
 Upstream keys every recipe table by its *output* product and nests the recipes
 inside, which is fine for a wiki page and useless for a lookup tool: there is no
@@ -11,17 +21,24 @@ every single recipe. This flattens all of that into two files:
 Everything the TUI needs is in those two files, so the app never touches the
 upstream JSON (10 MB) or the network.
 
-Run via `mise run build-data`, after `mise run fetch`.
+Run via `mise run build-data` after `mise run extract-convert` (or just
+`mise run extract`), or `mise run build-data-handbook` after `mise run fetch`.
 """
 
 from __future__ import annotations
 
+import argparse
 import json
 import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CACHE = ROOT / ".cache"
+# source -> (directory, the task that fills it)
+SOURCES = {
+    "game": (ROOT / ".cache" / "game" / "json", "mise run extract"),
+    "handbook": (ROOT / ".cache" / "handbook", "mise run fetch"),
+}
+CACHE = SOURCES["game"][0]
 DATA = ROOT / "data"
 
 # Refiners are distinguished only by how many input slots they have, and the
@@ -52,7 +69,8 @@ def _num(value: str | int | float | None, default: float = 0.0) -> float:
 def load(name: str) -> dict:
     path = CACHE / name
     if not path.exists():
-        sys.exit(f"missing {path}\nRun `mise run fetch` first.")
+        hint = next((task for d, task in SOURCES.values() if d == CACHE), "mise run extract")
+        sys.exit(f"missing {path}\nRun `{hint}` first.")
     return json.loads(path.read_text())
 
 
@@ -187,7 +205,14 @@ def build_recipes(table: dict, domain: str, items: dict) -> list[dict]:
     return recipes
 
 
-def main() -> int:
+def main(argv: list[str] | None = None) -> int:
+    global CACHE
+    parser = argparse.ArgumentParser(description="Normalise the recipe tables into data/")
+    parser.add_argument("--source", choices=sorted(SOURCES), default="game",
+                        help="where the tables come from (default: game)")
+    args = parser.parse_args(argv)
+    CACHE = SOURCES[args.source][0]
+
     substances = load("Substance_Table.json")
     products = load("Product_Table.json")
 
@@ -210,8 +235,17 @@ def main() -> int:
     (DATA / "recipes.json").write_text(json.dumps(recipes, indent=1))
 
     refine = sum(1 for r in recipes if r["domain"] == "refine")
+    # A separate file, not a key inside items.json: that file is an id -> item
+    # map, and every reader would have to learn to skip a "_source" row.
+    source = load("_source.json")
+    source["_source"] = ("Where data/items.json and data/recipes.json came from. "
+                         "Written by scripts/build_data.py; do not edit by hand.")
+    source["counts"] = {"items": len(items), "refine": refine, "cook": len(recipes) - refine}
+    (DATA / "source.json").write_text(json.dumps(source, indent=1, sort_keys=True) + "\n")
+
     print(f"items:   {len(items)}")
     print(f"recipes: {len(recipes)}  ({refine} refining, {len(recipes) - refine} cooking)")
+    print(f"source:  {source.get('summary', args.source)}")
     print(f"written to {DATA}")
     return 0
 

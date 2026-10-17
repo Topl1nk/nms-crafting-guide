@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hand-written test fixture in MBINCompiler's MXML layout. Invented items, not game data. -->
+<Data template="cGcProductTable">
+	<Property name="Table">
+		<Property name="Table" value="GcProductData" _id="T_BAR">
+			<Property name="ID" value="T_BAR" />
+			<Property name="Name" value="" />
+			<Property name="NameLower" value="T_BAR_NAME_L" />
+			<Property name="Subtitle" value="" />
+			<Property name="Description" value="" />
+			<Property name="BaseValue" value="120" />
+			<Property name="Category" value="GcRealitySubstanceCategory">
+				<Property name="SubstanceCategory" value="Catalyst" />
+			</Property>
+			<Property name="Type" value="GcProductCategory">
+				<Property name="ProductCategory" value="Component" />
+			</Property>
+			<Property name="Rarity" value="GcRarity">
+				<Property name="Rarity" value="Rare" />
+			</Property>
+			<Property name="Consumable" value="false" />
+			<Property name="Requirements">
+				<Property name="Requirements" value="GcTechnologyRequirement" _id="T_ORE">
+					<Property name="ID" value="T_ORE" />
+					<Property name="Type" value="GcInventoryType">
+						<Property name="InventoryType" value="Substance" />
+					</Property>
+					<Property name="Amount" value="10" />
+				</Property>
+			</Property>
+			<Property name="AltRequirements" />
+			<Property name="CookingIngredient" value="false" />
+			<Property name="CookingValue" value="0.000000" />
+			<Property name="FoodBonusStat" value="GcStatsTypes">
+				<Property name="StatsType" value="Unspecified" />
+			</Property>
+		</Property>
+		<Property name="Table" value="GcProductData" _id="T_PIE">
+			<Property name="ID" value="T_PIE" />
+			<Property name="Name" value="" />
+			<Property name="NameLower" value="T_PIE_NAME_L" />
+			<Property name="Subtitle" value="" />
+			<Property name="Description" value="" />
+			<Property name="BaseValue" value="900" />
+			<Property name="Category" value="GcRealitySubstanceCategory">
+				<Property name="SubstanceCategory" value="Fuel" />
+			</Property>
+			<Property name="Type" value="GcProductCategory">
+				<Property name="ProductCategory" value="Consumable" />
+			</Property>
+			<Property name="Rarity" value="GcRarity">
+				<Property name="Rarity" value="Common" />
+			</Property>
+			<Property name="Consumable" value="true" />
+			<Property name="Requirements" />
+			<Property name="CookingIngredient" value="true" />
+			<Property name="CookingValue" value="0.420000" />
+			<Property name="FoodBonusStat" value="GcStatsTypes">
+				<Property name="StatsType" value="Suit_Energy" />
+			</Property>
+		</Property>
+	</Property>
+</Data>
