@@ -80,8 +80,12 @@ depends = ["fetch", "build-data", "cheatsheet-data", "pdf"]
 # --- web site (nmsii.dlu.one) ------------------------------------------------
 
 [tasks.web-data]
-description = "Export the static site's data into web/data.json (plus the PDFs and screenshots)"
+description = "Export the static site's data into web/data.json, its markdown version (llms.txt, web/md/), plus the PDFs and screenshots"
 run = "uv run python scripts/build_web.py"
+
+[tasks.web-md]
+description = "Export only the markdown version of the site (llms.txt, web/md/, sitemap) and print the file sizes"
+run = "uv run python scripts/build_markdown.py"
 
 [tasks.site]
 description = "Export, then serve the static site on localhost:8001"
@@ -95,6 +99,10 @@ run = "uv run python scripts/build_favicon.py"
 [tasks.test-web]
 description = "The web checks only: the export, and web/core.js against the Python (needs node)"
 run = "uv run pytest -q tests/test_web.py"
+
+[tasks.test-md]
+description = "The markdown checks only: a page per item, numbers against data.json, chains against graph.plan and core.js, llms.txt links, the schema"
+run = "uv run pytest -q tests/test_markdown.py"
 
 # --- release -----------------------------------------------------------------
 
