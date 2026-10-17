@@ -1204,6 +1204,7 @@ VIEWS.home = () => {
       </p>
       <div class="hero-actions">
         <a class="primary" href="#/recipes">Open the recipes</a>
+        <a href="#/home" id="to-install">Run it locally</a>
         <a href="pdf/nms-cheatsheet-dark.pdf">Cheat sheet (PDF)</a>
         <a href="https://github.com/rdlu/nms-items">GitHub</a>
       </div>
@@ -1226,7 +1227,7 @@ VIEWS.home = () => {
         ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.", "sheet")}
       </div>
 
-      <h2 class="section">Run it on your machine</h2>
+      <h2 class="section" id="install">Run it on your machine</h2>
       <p class="lede muted">The terminal app has the same screens with vim keys, a command palette and themes, and
         saves portal addresses to a file you can share. It works offline once installed.</p>
       ${INSTALL}
@@ -1238,6 +1239,12 @@ VIEWS.home = () => {
         ${card("", "#/portals", "Share an address", "Found a ship, a tool or a base worth the trip? Convert it on the portals page and share it as a GitHub issue; a bot checks the glyphs, and accepted ones join the list.", "portals")}
       </div>
     </section>`;
+  // A scroll, not a #fragment: the hash is the router's.
+  $("#to-install").addEventListener("click", (e) => {
+    e.preventDefault();
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    $("#install").scrollIntoView({ behavior: still ? "auto" : "smooth" });
+  });
 };
 
 // Help -------------------------------------------------------------------------

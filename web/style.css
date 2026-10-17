@@ -781,6 +781,7 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
 
 /* Section titles: `┌─ What's inside ─────`, bigger than a pane's. */
 h2.section {
+  scroll-margin-top: calc(var(--nav-h) + 1rem);
   display: flex;
   align-items: baseline;
   gap: 0.6ch;
