@@ -42,6 +42,30 @@ OUT = WEB / "data.json"
 DOMAIN_SETS = {"refine": ("refine",), "all": ("refine", "cook")}
 
 
+def source(data_dir: Path = DATA_DIR) -> dict | None:
+    """Where the recipe data came from, from data/source.json, for the site to say.
+
+    `from` is "game" (extracted from the game files) or "handbook" (the
+    NMS-Handbook fallback, which records no game version). None when the file
+    is missing, so the pages fall back to saying the version is unknown.
+    """
+    path = data_dir / "source.json"
+    if not path.exists():
+        return None
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    game = raw.get("game") or {}
+    build = str(game.get("build") or "")
+    return {
+        "from": raw.get("source", ""),
+        "game": game.get("update", ""),
+        "version": game.get("version", ""),
+        "build": int(build) if build.isdigit() else None,
+        "extracted": raw.get("extracted") or raw.get("fetched") or "",
+        "summary": raw.get("summary", ""),
+        "tools": raw.get("tools", {}),
+    }
+
+
 def build(book: Book) -> dict:
     ease = EaseIndex(book)
     guide = StorageGuide.load()
@@ -156,6 +180,7 @@ def build(book: Book) -> dict:
     locations_raw = json.loads((DATA_DIR / "locations.json").read_text(encoding="utf-8"))
 
     return {
+        "source": source(),
         "items": items,
         "ease": eases,
         "recipes": recipes,

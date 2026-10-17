@@ -204,7 +204,22 @@ class Markdown:
     def header(self, title: str, lede: str) -> str:
         return f"# {title}\n\n{lede}"
 
+    def data_label(self) -> str:
+        """"No Man's Sky Cosmos 7.06 (build 180836), extracted from the game
+        files on 2026-10-17" -- or "" when the data does not say its version
+        (no data/source.json, or the NMS-Handbook fallback)."""
+        s = self.b.get("source") or {}
+        if s.get("from") != "game" or not s.get("version"):
+            return ""
+        name = " ".join(x for x in ("No Man's Sky", s.get("game"), s["version"]) if x)
+        build = f" (build {s['build']})" if s.get("build") else ""
+        when = f" on {s['extracted']}" if s.get("extracted") else ""
+        return f"{name}{build}, extracted from the game files{when}"
+
     def source_line(self) -> str:
+        label = self.data_label()
+        if label:
+            return f"Generated {self.built}. Data: {label}. Interactive version: {SITE}/"
         when = f"recipe data as of {self.data_date}" if self.data_date else \
             "recipe data date not recorded"
         return (f"Generated {self.built} from the game's recipe tables via "
@@ -580,13 +595,26 @@ no markdown version: it depends on what you type in.
         n_refine = sum(r["domain"] == "refine" for r in self.recipes)
         sections = "\n".join(f"- [{title}]({SITE}/md/{key}.md): {line}"
                              for key, title, line in SECTIONS)
-        when = (f"The recipe data was last regenerated on {self.data_date}"
-                if self.data_date else "The recipe data's date was not recorded in this build")
+        label = self.data_label()
+        if label:
+            provenance = (
+                f"Data: {label}. NMSii unpacks the game's recipe, product, substance and "
+                "language tables itself and normalises them; earlier builds read the same "
+                f"tables via [NMS-Handbook]({HANDBOOK}), still the fallback source.")
+        else:
+            when = (f"The recipe data was last regenerated on {self.data_date}"
+                    if self.data_date
+                    else "The recipe data's date was not recorded in this build")
+            provenance = (
+                f"The numbers come from the game files: [NMS-Handbook]({HANDBOOK}) parses "
+                "the game's NMS_REALITY_GCRECIPETABLE.MXML and its product and substance "
+                f"tables into JSON, and NMSii normalises them. {when}; the game version is "
+                "not recorded upstream, so read it as the patch current on that date.")
         return f"""# NMSii — No Man's Sky Items Interface
 
 > Recipes, nanites, cooking buffs, multi-tools, storage homes and portal addresses for No Man's Sky, computed from the game's own recipe tables: {len(self.items)} items, {n_refine} refining and {len(self.recipes) - n_refine} cooking recipes, the cheapest chain to make each item from what you can pick up, and every route to nanites ranked by nanites per hour.
 
-The numbers come from the game files: [NMS-Handbook]({HANDBOOK}) parses the game's NMS_REALITY_GCRECIPETABLE.MXML and its product and substance tables into JSON, and NMSii normalises them. {when}; the game version is not recorded upstream, so read it as the patch current on that date. Where loot drops, the storage layout and the multi-tool notes are hand-written from community guides.
+{provenance} Where loot drops, the storage layout and the multi-tool notes are hand-written from community guides.
 
 These files were generated on {self.built} by the export that builds the data of the interactive site at {SITE}/ (a JavaScript app), so they say what it shows. No Man's Sky and its data belong to Hello Games.
 

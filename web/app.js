@@ -19,6 +19,15 @@ const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ESC[c]);
 const $ = (sel, root = document) => root.querySelector(sel);
 const view = () => $("#view");
 
+// What the data is up to date with, from data/source.json via data.json:
+// "Cosmos 7.06", or "" when the build did not record a game version (data
+// from the NMS-Handbook fallback, or no source.json).
+const gameVersion = () => {
+  const s = D?.source;
+  return s?.from === "game" && s.version ? [s.game, s.version].filter(Boolean).join(" ") : "";
+};
+const gameBuild = () => (gameVersion() && D.source.build ? `build ${D.source.build}` : "");
+
 const name = (id) => D.items[id]?.name ?? id;
 const itemLink = (id, text = name(id)) =>
   `<a href="#/recipes?item=${encodeURIComponent(id)}">${esc(text)}</a>`;
@@ -1198,6 +1207,7 @@ VIEWS.home = () => {
         address drawn in glyphs. All of it computed from the game's own recipe tables,
         not copied from a wiki.
       </p>
+      ${gameVersion() ? `<p><a class="badge" href="${REPO_URL}/blob/main/docs/cosmos-changes.md"><i></i>Up to date with ${esc(gameVersion())}<em> · ${esc(gameBuild())} · read from the game files</em> <span>→</span></a></p>` : ""}
       <p class="lede muted">
         This is the web version of a terminal app. It runs entirely in your browser,
         and works on a phone propped up next to the game.
@@ -1224,7 +1234,7 @@ VIEWS.home = () => {
         ${card("5", "#/portals", "Portal addresses", `Convert between portal glyphs and galactic coordinates as you type, dial an address symbol by symbol, and browse ${n(D.portals.locations.length)} saved places worth going.`, "portals")}
         ${card("6", "#/storage", "Where does it go?", `Every one of ${n(Object.keys(D.items).length)} items gets a home: one of the ${containers} storage containers, Cold Storage, or sell, junk, use it now. Type "sell" to list everything to sell.`, "storage")}
         ${card("7", "#/inventory", "Inventory", "Type what you are carrying, and see what you can make right now and what you are one ingredient short of. Kept in this browser.", "inventory")}
-        ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.", "sheet")}
+        ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on six landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.", "sheet")}
       </div>
 
       <h2 class="section" id="install">Run it on your machine</h2>
@@ -1234,7 +1244,7 @@ VIEWS.home = () => {
 
       <h2 class="section">Good to know</h2>
       <div class="features">
-        ${card("", "https://github.com/ApexFatality93/NMS-Handbook", "Straight from the game files", "Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.", "data")}
+        ${card("", `${REPO_URL}#where-the-data-comes-from`, "Straight from the game files", `Recipes, batch times and values are read from the game's own files${gameVersion() ? `, currently ${esc(gameVersion())} (${esc(gameBuild())})` : ""}, re-extracted after each patch. NMS-Handbook, the original source, is the fallback. A test suite checks the claims the written guides make.`, "data")}
         ${card("?", "#/help", "Keys and columns", "<kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.", "keys")}
         ${card("", "#/portals", "Share an address", "Found a ship, a tool or a base worth the trip? Convert it on the portals page and share it as a GitHub issue; a bot checks the glyphs, and accepted ones join the list.", "portals")}
       </div>
@@ -1291,8 +1301,10 @@ VIEWS.help = () => {
       <p>Comfortable with git? Edit <a href="${REPO_URL}/blob/main/data/locations.json">data/locations.json</a> in a pull
       request instead; the same checks run on it. Locally, <code>mise run validate-locations</code>.</p></section>
     <section class="card"><h3>Where this comes from</h3>
-      <p>Every number comes from the game's own recipe table, via
-      <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>. This page is the web front end of a
+      <p>Every number is read from the game's own files${gameVersion()
+        ? `: ${esc(gameVersion())} (${esc(gameBuild())}), extracted ${esc(D.source.extracted)}` : ""}.
+      Earlier builds read the same tables via
+      <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>, still the fallback source. This page is the web front end of a
       terminal app; the source, the cheat-sheet PDFs and the full README are on
       <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>. Portal glyphs are traced from
       <a href="https://nmsportals.github.io/">nmsportals</a>. No Man's Sky and its data belong to Hello Games.</p></section>
@@ -1552,6 +1564,9 @@ async function main() {
     return;
   }
   prepareRecipes();
+  // The footer credit names the game version from the data, so a patch
+  // needs no HTML edit; index.html carries the version-less fallback.
+  if (gameVersion()) $("#data-version").textContent = `, ${gameVersion()} (${gameBuild()})`;
   // One shared datalist for every "type an item" box.
   const dl = document.createElement("datalist");
   dl.id = "item-names";
