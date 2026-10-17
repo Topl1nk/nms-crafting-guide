@@ -16,6 +16,13 @@ updates:
     groups:
       site-build:
         patterns: ["*"]
+    # svelte-check (4.7.x) declares typescript "^5.0.0 || ^6.0.0" as its peer
+    # range, so a TypeScript major beyond that would break `npm ci` or the type
+    # check. Hold majors here; lift this once svelte-check's peer range
+    # includes 7 (`npm view svelte-check peerDependencies`).
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
