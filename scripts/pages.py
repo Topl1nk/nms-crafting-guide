@@ -92,8 +92,9 @@ def status() -> None:
         print("Pages     off - run `mise run pages-setup`")
     else:
         cert = site.get("https_certificate") or {}
-        print(f"Pages     {site.get('status') or 'not built yet'}, source {site.get('build_type')}, "
-              f"domain {site.get('cname') or '-'}")
+        # `status` only tracks branch builds; with the Actions source it stays
+        # empty on a working site, so the deploy line below is the real answer.
+        print(f"Pages     on, source {site.get('build_type')}, domain {site.get('cname') or '-'}")
         print(f"HTTPS     certificate {cert.get('state', 'none')}, "
               f"{'enforced' if site.get('https_enforced') else 'not enforced'}")
         print(f"URL       {site.get('html_url')}")
