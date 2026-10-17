@@ -21,3 +21,7 @@ web/llms.txt
 web/llms-full.txt
 web/sitemap.xml
 web/robots.txt
+
+# The Svelte site: npm packages, and the build `mise run web-build` deploys.
+node_modules/
+dist/

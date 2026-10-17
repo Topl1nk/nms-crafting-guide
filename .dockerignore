@@ -7,3 +7,5 @@ web/data.json
 web/pdf
 web/img
 tests
+node_modules
+dist
