@@ -1,5 +1,6 @@
 <script>
   // Keys, what the columns mean, and how to run or add to it.
+  import InstallApp from "../components/InstallApp.svelte";
   import InstallPanes from "../components/InstallPanes.svelte";
   import { gameRelease, REPO_URL } from "../lib/data.js";
 
@@ -51,7 +52,8 @@
     <p>The terminal app reads the same data as this site, and adds vim keys, a command palette, themes, and saving
     portal addresses to <code>data/locations.json</code>.</p>
     <InstallPanes />
-    <p class="muted small">On Windows, use WSL or the podman route. The app is a Textual program: any modern terminal draws it.</p></section>
+    <p class="muted small">On Windows, use WSL or the podman route. The app is a Textual program: any modern terminal draws it.</p>
+    <InstallApp /></section>
   <section class="card"><h3>Sharing a portal address</h3>
     <p>Convert it on the <a href="#/portals">portals page</a>, fill in the form there, and press <b>Share on GitHub</b>.
     It opens an issue on the <i>Share a portal address</i> form with the fields filled in.</p>

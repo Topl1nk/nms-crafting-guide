@@ -9,6 +9,10 @@
   <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- Installable: the manifest here, the offline cache in sw.js (written
+       into dist/ by vite.config.js, registered by src/lib/pwa.svelte.js). -->
+  <link rel="manifest" href="/manifest.webmanifest">
+  <meta name="apple-mobile-web-app-title" content="NMSii">
   <!-- The markdown version of the page in view; App.svelte keeps it current. -->
   <link rel="alternate" type="text/markdown" href="llms.txt" title="NMSii as markdown" id="md-alt">
   <meta name="theme-color" content="#000000">

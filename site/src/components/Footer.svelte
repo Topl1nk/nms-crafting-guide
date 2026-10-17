@@ -3,6 +3,9 @@
   // stands on, as a second command -- and where the page in view is as
   // markdown (`markdown`, from lib/markdown.js).
   // `release` is lib/data.js's gameRelease(), once data.json is in.
+  // With no network, a line says so, and how old the saved data is.
+  import { install, pwa } from "../lib/pwa.svelte.js";
+
   let { markdown = "llms.txt", release = null } = $props();
 
   // © 2026, or 2026-now once it is later: plugii's footer does the same.
@@ -28,8 +31,14 @@
       <div>Recipes and items read from the game files{#if release}, {release.name} ({release.build}){/if}</div>
       <div>Portal glyphs traced from <a href="https://nmsportals.github.io/" target="_blank" rel="noopener">nmsportals</a></div>
       <div>Cheat sheet for <a href="pdf/nms-cheatsheet.pdf">print</a><span class="dim">{" · "}</span><a href="pdf/nms-cheatsheet-dark.pdf">screen</a><span class="dim">{" · "}</span><a href="https://github.com/rdlu/nms-items-interface" target="_blank" rel="noopener">source</a></div>
+      {#if pwa.canInstall && !pwa.standalone}
+        <div>As an app, offline: <button type="button" class="inst" onclick={install}>install it</button></div>
+      {/if}
       <div>AI friendly: <a id="md-page" href={markdown}>this page as markdown</a><span class="dim">{" · "}</span><a href="llms.txt">llms.txt</a><span class="dim">{" · "}</span><a href="md/items/index.md">every item</a></div>
       <div class="dim">No Man's Sky and its data belong to Hello Games</div>
+      {#if pwa.offline}
+        <div class="off"><i></i>offline — using saved data{release?.extracted ? ` from ${release.extracted}` : ""}</div>
+      {/if}
     </section>
   </div>
 </footer>
@@ -57,4 +66,8 @@
   .dim { color: var(--p-faint); }
   .whoami a { white-space: nowrap; color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
   .whoami a:hover { color: var(--p-accent); }
+  .inst { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  .inst:hover { color: var(--p-accent); }
+  .off { color: var(--p-orange); display: flex; align-items: center; gap: 8px; }
+  .off i { flex: none; width: 7px; height: 7px; background: var(--p-orange); }
 </style>

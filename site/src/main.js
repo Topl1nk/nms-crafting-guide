@@ -9,7 +9,10 @@
 import "./global.css";
 import { mount } from "svelte";
 import App from "./App.svelte";
+import { startPwa } from "./lib/pwa.svelte.js";
 
 const target = document.getElementById("app");
 target.replaceChildren(); // the "Loading…" line index.html shows until now
 mount(App, { target });
+// The service worker (a build only), the install prompt, online/offline.
+startPwa();

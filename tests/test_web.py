@@ -173,3 +173,42 @@ def test_every_route_has_a_view() -> None:
         "home", "recipes", "chain", "nanites", "cooking", "multitools", "portals",
         "storage", "inventory", "help",
     }
+
+
+# The built site as an installable, offline app: scripts/check_pwa.mjs, which
+# `npm run build` already runs after every build (so CI and the Pages workflow
+# never ship a dist/ that fails it). Here for `mise run test:web` after a local
+# build; skipped before the first one.
+DIST = ROOT / "dist"
+CHECK_PWA = ROOT / "scripts" / "check_pwa.mjs"
+built = pytest.mark.skipif(NODE is None or not (DIST / "sw.js").exists(),
+                           reason="needs node and a built dist/ (mise run web:build)")
+
+
+def check_pwa(dist: Path) -> subprocess.CompletedProcess:
+    return subprocess.run([NODE, str(CHECK_PWA), str(dist)], capture_output=True, text=True)
+
+
+@built
+def test_built_site_is_installable() -> None:
+    result = check_pwa(DIST)
+    assert result.returncode == 0, result.stderr
+    assert "manifest ok" in result.stdout
+
+
+@built
+def test_check_pwa_catches_a_broken_build(tmp_path: Path) -> None:
+    # The checker itself: a missing icon, a precached file gone, a bad scope.
+    broken = tmp_path / "dist"
+    shutil.copytree(DIST, broken, ignore=shutil.ignore_patterns("md", "pdf", "img", "llms*"))
+    (broken / "icon-192.png").unlink()
+    gone = next((broken / "assets").glob("*.css"))
+    gone.unlink()
+    manifest = json.loads((broken / "manifest.webmanifest").read_text(encoding="utf-8"))
+    manifest["scope"] = "/elsewhere/"
+    (broken / "manifest.webmanifest").write_text(json.dumps(manifest), encoding="utf-8")
+    result = check_pwa(broken)
+    assert result.returncode == 1
+    assert "icon icon-192.png is not in" in result.stderr
+    assert f"precaches assets/{gone.name}, which is not in" in result.stderr
+    assert "scope resolves to" in result.stderr

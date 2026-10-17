@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Redraw the site icon from the Atlas glyph: favicon.svg/.ico, apple-touch-icon.png"
+#MISE description="Redraw the site icon from the Atlas glyph: favicon.svg/.ico, apple-touch-icon.png, the app icons (192, 512, maskable 512)"
 #MISE alias="favicon"
 set -euo pipefail
 
