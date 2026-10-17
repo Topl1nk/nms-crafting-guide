@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Register NMSii with goose (the extension in ~/.config/goose/config.yaml, backed up first); re-running replaces the entry"
+#USAGE flag "--container" help="Register the podman route (podman compose run --rm -T tui nms mcp) instead of uv"
+#USAGE flag "--dry-run" help="Print the commands, or the config diff, and change nothing"
+set -euo pipefail
+
+exec uv run python scripts/mcp_clients.py install goose "$@"

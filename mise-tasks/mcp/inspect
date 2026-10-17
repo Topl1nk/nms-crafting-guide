@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Open the MCP server in the MCP Inspector web UI (npx fetches it on first run; needs node)"
+set -euo pipefail
+
+exec npx -y @modelcontextprotocol/inspector uv run nms mcp

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Serve NMSii to AI assistants over MCP on stdio (what a client launches; Ctrl-D ends it)"
+set -euo pipefail
+
+exec uv run nms mcp "$@"

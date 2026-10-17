@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#MISE description="Remove NMSii from an AI client, or from all of them (skipping the ones not installed)"
+#USAGE arg "<client>" help="Which client" {
+#USAGE   choices "claude" "codex" "opencode" "goose" "pi" "all"
+#USAGE }
+#USAGE flag "--scope <scope>" help="Claude Code only: remove from this scope (default: whichever has it)" {
+#USAGE   choices "user" "project" "local"
+#USAGE }
+#USAGE flag "--dry-run" help="Print the commands, or the config diff, and change nothing"
+set -euo pipefail
+
+exec uv run python scripts/mcp_clients.py uninstall "$@"

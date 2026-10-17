@@ -450,14 +450,44 @@ from), `nmsii://guide/{page}` (the site's markdown pages: `guide`, `recipes`,
 `nanites`, `cooking`, `multitools`, `storage`, `portals`) and
 `nmsii://items/{ID}` (one item's page). **Prompt:** `plan_refining_chain`.
 
-**Claude Code:**
+**Quick setup**, from the checkout:
+
+```fish
+mise run mcp:install-claude                  # Claude Code, user scope
+mise run mcp:install-codex                   # OpenAI's Codex CLI
+mise run mcp:config                          # the JSON for anything else
+```
+
+Each install task registers `uv run --directory <this checkout> nms mcp`;
+running it again replaces the entry rather than adding a second.
+`--container` registers the podman route below instead, `--dry-run` prints the
+commands (or the config diff) and changes nothing, and
+`mcp:install-claude --scope user|project|local` picks where Claude Code keeps
+it. `mise run mcp:uninstall claude` (or `codex`, ..., `all`) takes it out again.
+
+| Client | Task | How it registers |
+| --- | --- | --- |
+| Claude Code | `mcp:install-claude` | `claude mcp add` |
+| Codex | `mcp:install-codex` | `codex mcp add` |
+| pi ([pi.dev](https://pi.dev)) | `mcp:install-pi` | `pi mcp add` |
+| opencode | `mcp:install-opencode` | the `mcp.nmsii` entry in `~/.config/opencode/opencode.json` |
+| goose | `mcp:install-goose` | the `extensions.nmsii` entry in `~/.config/goose/config.yaml` |
+
+opencode and goose have no command that adds a server without prompting, so
+their files are edited directly: backed up first (`*.bak-<time>`), and only the
+nmsii entry is touched. A commented `opencode.jsonc` is refused rather than
+rewritten, with the entry printed to paste in by hand. Each task fails with a
+plain message when its client is not installed.
+
+**By hand**, the same thing. Claude Code:
 
 ```fish
 claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
 ```
 
 **Claude Desktop, and other clients** that take a JSON config
-(`claude_desktop_config.json`, `.mcp.json`, Cursor, and so on):
+(`claude_desktop_config.json`, `.mcp.json`, Cursor, and so on);
+`mise run mcp:config` prints this with the path filled in:
 
 ```json
 {
@@ -477,19 +507,17 @@ needs, so stdin and stdout are a plain pipe.
 claude mcp add nmsii -- podman compose -f /path/to/nms-items-interface/compose.yaml run --rm -T tui nms mcp
 ```
 
-or, as JSON, `"command": "podman"` with `"args": ["compose", "-f",
-"/path/to/nms-items-interface/compose.yaml", "run", "--rm", "-T", "tui", "nms",
-"mcp"]`. Build the image once first (`podman compose build tui`), so the first
-connection does not wait on it. `compose.yaml` sets `x-podman: in_pod: false`
-for this route: otherwise podman-compose creates a pod on the first `run` and
-prints its ID on stdout, into the JSON-RPC stream, and that first connection
-fails.
+or `mise run mcp:config --container` for the JSON. Build the image once first
+(`mise run box:build`), so the first connection does not wait on it.
+`compose.yaml` sets `x-podman: in_pod: false` for this route: otherwise
+podman-compose creates a pod on the first `run` and prints its ID on stdout,
+into the JSON-RPC stream, and that first connection fails.
 
-`mise run mcp-inspect` opens the server in the
+`mise run mcp:inspect` opens the server in the
 [MCP Inspector](https://github.com/modelcontextprotocol/inspector) to try the
-tools by hand (`npx` fetches it; needs node). `mise run test-mcp` checks every
+tools by hand (`npx` fetches it; needs node). `mise run test:mcp` checks every
 tool against the module it wraps, then the server in-process and as `nms mcp`
-over a real pipe.
+over a real pipe, and the install tasks against stand-in clients.
 
 ## Contributing a portal address
 
@@ -614,6 +642,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | --- | --- |
 | `mise run test:web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys |
 | `mise run test:md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
+| `mise run test:mcp` | only the MCP checks: each tool against its module, the server in-process and over stdio, the install tasks |
 
 **`web:*`** — the static site
 
@@ -651,6 +680,20 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | `mise run box:tui` | the TUI in a container |
 | `mise run box:site` | the static site in a container on `:8001` |
 | `mise run box:build` | rebuild both images |
+
+**`mcp:*`** — the MCP server for AI assistants ([setup](#for-ai-assistants-mcp))
+
+| Task | Does |
+| --- | --- |
+| `mise run mcp:serve` | the server on stdio, as a client launches it (`nms mcp`) |
+| `mise run mcp:inspect` | the server in the MCP Inspector web UI (`npx`, needs node) |
+| `mise run mcp:install-claude` | register with Claude Code; `--scope user\|project\|local`, `--container`, `--dry-run` |
+| `mise run mcp:install-codex` | register with OpenAI's Codex CLI; `--container`, `--dry-run` |
+| `mise run mcp:install-pi` | register with pi (pi.dev); `--container`, `--dry-run` |
+| `mise run mcp:install-opencode` | add the entry to opencode's config, backed up first; `--container`, `--dry-run` |
+| `mise run mcp:install-goose` | add the extension to goose's config, backed up first; `--container`, `--dry-run` |
+| `mise run mcp:uninstall <client>` | remove it from `claude`, `codex`, `opencode`, `goose`, `pi` or `all`; `--dry-run` |
+| `mise run mcp:config` | print the JSON config for any other client, path filled in; `--container` |
 
 **`extract:*`, `game:*`, `mbin:*`** — the game's tables
 
@@ -756,6 +799,7 @@ web/           served as it is: fonts/, favicons, and what build_web.py exports
 package.json, vite.config.js  the site's build, pinned by package-lock.json
 scripts/pages.py  GitHub Pages settings for nmsii.dlu.one, via gh
 scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
+scripts/mcp_clients.py  registers `nms mcp` with AI clients (the mcp:install-* tasks)
 .github/       the Pages deploy, the contributions bot, the issue form
 Containerfile, compose.yaml  the TUI and the site without a local Python
 cheatsheet.typ the PDF

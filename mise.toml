@@ -51,7 +51,9 @@ PYTHONPATH = "{{config_root}}/src"
 #   contrib:*  shared portal addresses: validate, setup, pending
 #   box:*      containers (podman): tui, site, build
 #   tui:*      the app's side tools: console, serve, screenshot
-#   test:*     slices of the suite: web, md
+#   test:*     slices of the suite: web, md, mcp
+#   mcp:*      the MCP server for AI assistants: serve, inspect, config,
+#              install-claude|codex|opencode|goose|pi, uninstall
 #   extract:*  the game's tables: unpack, decompile, convert, all, diff
 #   game:version, mbin:releases   which build is installed, which decompiler reads it
 #   data:*     normalise into data/: fetch, build, cheatsheet, glyphs, refresh-handbook

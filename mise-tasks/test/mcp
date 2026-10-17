@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="The MCP checks only: each tool against the module it wraps, the server in-process and over stdio, and the client installers"
+set -euo pipefail
+
+uv run pytest -q tests/test_mcp.py tests/test_mcp_clients.py "$@"
