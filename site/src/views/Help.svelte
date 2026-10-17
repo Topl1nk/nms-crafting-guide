@@ -4,9 +4,24 @@
   import { gameRelease, REPO_URL } from "../lib/data.js";
 
   const release = gameRelease();
+
+  let local;
+
+  // A scroll, not a #fragment: the hash is the router's.
+  function toLocal(e) {
+    e.preventDefault();
+    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    local.scrollIntoView({ behavior: still ? "auto" : "smooth" });
+  }
 </script>
 
 <div class="prose">
+  <section class="card span"><h3>What this is</h3>
+    <p>NMSii reads the numbers No Man's Sky doesn't show you out of the game's own files{#if release}, currently
+    {release.name} ({release.build}){/if}. This site is one way in. The same data is a
+    <a href="#/help" onclick={toLocal}>terminal app</a>, an <a href="{REPO_URL}#for-ai-assistants-mcp">MCP server</a>
+    for AI assistants, and <a href="llms.txt">markdown</a>, one page per item. Below: the keys, what the columns
+    mean, and how to run it or add to it.</p></section>
   <section class="card"><h3>Keys</h3>
     <dl class="rows keys">
       <dt><kbd>j</kbd> <kbd>k</kbd> / <kbd>↓</kbd> <kbd>↑</kbd></dt><dd>move through the list</dd>
@@ -32,9 +47,9 @@
   <section class="card"><h3>The chain planner</h3>
     <p>It works backwards to a source set - by default the five things you can pick up on any planet - and minimises
     <b>refiner-seconds per unit</b>, so the plan is the one that ties up a machine for the least time.</p></section>
-  <section class="card span"><h3>Running it locally</h3>
-    <p>This site is the web front end of a terminal app. Both read the same data, and the app adds vim keys,
-    a command palette, themes, and saving portal addresses to <code>data/locations.json</code>.</p>
+  <section class="card span" bind:this={local}><h3>Running it locally</h3>
+    <p>The terminal app reads the same data as this site, and adds vim keys, a command palette, themes, and saving
+    portal addresses to <code>data/locations.json</code>.</p>
     <InstallPanes />
     <p class="muted small">On Windows, use WSL or the podman route. The app is a Textual program: any modern terminal draws it.</p></section>
   <section class="card"><h3>Sharing a portal address</h3>
@@ -48,8 +63,8 @@
   <section class="card"><h3>Where this comes from</h3>
     <p>Every number is read from the game's own files{#if release}: {release.name} ({release.build}), extracted {release.extracted}{/if}.
     Earlier builds read the same tables via
-    <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>, still the fallback source. This page is the web front end of a
-    terminal app; the source, the cheat-sheet PDFs and the full README are on
+    <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>, still the fallback source. The site, the terminal app,
+    the MCP server and the markdown all read the same data; the source, the cheat-sheet PDFs and the full README are on
     <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>. Portal glyphs are traced from
     <a href="https://nmsportals.github.io/">nmsportals</a>. No Man's Sky and its data belong to Hello Games.</p></section>
 </div>
