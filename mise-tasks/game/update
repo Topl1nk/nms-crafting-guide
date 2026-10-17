@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+#MISE description="Did the game update since data/? If so: extract, test, diff and open the PR (or an issue while MBINCompiler lags)"
+#MISE alias="game-update"
+#USAGE flag "--check" help="Only compare: exit 0 current, 10 update available, 11 blocked on MBINCompiler, 2 no game"
+#USAGE flag "--dry-run" help="Extract and commit on a detached HEAD, print the issue/PR, push and write nothing"
+#USAGE flag "--no-pr" help="Extract and commit on data/game-<build> locally; no push, no PR"
+set -euo pipefail
+
+args=()
+[[ "${usage_check:-false}" == true ]] && args+=(--check)
+[[ "${usage_dry_run:-false}" == true ]] && args+=(--dry-run)
+[[ "${usage_no_pr:-false}" == true ]] && args+=(--no-pr)
+uv run --extra extract python scripts/game_update.py "${args[@]}"

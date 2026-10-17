@@ -64,10 +64,20 @@ LANGUAGE_GLOB = "language/nms_*_english.mbin"
 PAK_FILTERS = [f"{RECIPES}.mbin", f"{PRODUCTS}.mbin", f"{SUBSTANCES}.mbin", LANGUAGE_GLOB]
 
 
+def game_path(arg: str | None = None) -> Path:
+    return Path(arg or os.environ.get("NMS_GAME_DIR") or DEFAULT_GAME)
+
+
+def find_game(arg: str | None = None) -> Path | None:
+    """The install, or None when there is none (CI, a machine without it)."""
+    path = game_path(arg)
+    return path if (path / "GAMEDATA" / "PCBANKS").is_dir() else None
+
+
 def game_dir(arg: str | None) -> Path:
-    path = Path(arg or os.environ.get("NMS_GAME_DIR") or DEFAULT_GAME)
-    if not (path / "GAMEDATA" / "PCBANKS").is_dir():
-        sys.exit(f"no GAMEDATA/PCBANKS under {path}\n"
+    path = find_game(arg)
+    if path is None:
+        sys.exit(f"no GAMEDATA/PCBANKS under {game_path(arg)}\n"
                  "Point --game or $NMS_GAME_DIR at the No Man's Sky install.")
     return path
 
@@ -430,6 +440,20 @@ def decompile(src: Path = MBIN_DIR, dest: Path = MXML_DIR) -> str:
     return found.group(1) if found else ""
 
 
+def compiler_reads(game: Path) -> tuple[bool, str]:
+    """(True, "") if the pinned MBINCompiler reads every table this build
+    ships, else (False, why). Tried on a scratch copy; nothing in .cache/game
+    or the install is touched. Shared by game:version and game:update."""
+    with tempfile.TemporaryDirectory(prefix="nms-probe-") as tmp:
+        tmp_path = Path(tmp)
+        unpack(game, tmp_path / "mbin")
+        try:
+            decompile(tmp_path / "mbin", tmp_path / "mxml")
+        except SystemExit as exc:
+            return False, str(exc)
+    return True, ""
+
+
 def check_versions(game: Path) -> bool:
     """Print game and compiler versions; True if the compiler reads this build.
 
@@ -453,14 +477,10 @@ def check_versions(game: Path) -> bool:
     if numbers and version["version"] and numbers.group(1) != version["version"]:
         print(f"note          the release is numbered for {numbers.group(1)}, the game is "
               f"{version['version']}; what matters is whether it reads the tables:")
-    with tempfile.TemporaryDirectory(prefix="nms-probe-") as tmp:
-        tmp_path = Path(tmp)
-        unpack(game, tmp_path / "mbin")
-        try:
-            decompile(tmp_path / "mbin", tmp_path / "mxml")
-        except SystemExit as exc:
-            print(f"MISMATCH      {exc}")
-            return False
+    readable, problem = compiler_reads(game)
+    if not readable:
+        print(f"MISMATCH      {problem}")
+        return False
     print(f"match         yes: {tool} reads every table of build {version['build']}")
     return True
 
