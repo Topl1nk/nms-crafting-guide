@@ -1,6 +1,6 @@
 # mise (https://mise.jdx.dev) — tools + tasks for NMSii.
 #
-#   mise install     # typst + uv, pinned below
+#   mise install     # typst + uv + node, pinned below
 #   mise run setup   # fonts (paru) + Python deps
 #   mise run tui     # the app
 #   mise run refresh # re-extract the game's tables and rebuild everything
@@ -12,6 +12,10 @@
 [tools]
 uv = "latest"
 typst = "latest"
+# The site's build. The one place its version is set: the Pages workflow
+# installs node through mise from this line, so a bump is this line only.
+# Tracks the newest LTS; `mise run deps-outdated` shows when there is one.
+node = "24"
 
 # Decompiles the game's .MBIN tables to readable MXML for `mise run extract`.
 # Pinned, not "latest": each release targets one game version's struct
@@ -146,8 +150,8 @@ run = [{ task = "fetch" }, { task = "build-data-handbook" }, { task = "pdf" }]
 #
 # Two halves: the Python export writes the data into web/ (data.json, PDFs,
 # screenshots), and Vite builds the Svelte page in site/ around it into dist/,
-# which is what gets deployed. node and npm come from the system for now; the
-# npm side is pinned by package-lock.json.
+# which is what gets deployed. node is pinned in [tools] above, the npm side by
+# package-lock.json.
 
 [tasks.web-install]
 description = "Install the site's npm packages exactly as package-lock.json pins them (skipped when already current)"
@@ -276,3 +280,15 @@ run = "uv run pytest -q"
 [tasks.screenshot]
 description = "Refresh the SVG screenshots in docs/img/"
 run = "uv run python scripts/screenshot.py"
+
+# --- dependencies -------------------------------------------------------------
+
+# Read-only: says what is behind, changes nothing. npm outdated exits 1 when
+# anything is, which is an answer here, not a failure.
+[tasks.deps-outdated]
+description = "What is behind, in one place: mise tools (node, uv, typst), npm packages, and the direct Python dependencies"
+run = [
+  "echo '== mise tools (node: move to the newest LTS, not just the newest)' && mise outdated --bump --local",
+  "echo '== npm packages' && (npm outdated || true)",
+  "echo '== python (direct dependencies)' && (uv tree --outdated --depth 1 | grep -F '(latest' || echo 'all current')",
+]

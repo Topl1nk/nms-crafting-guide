@@ -36,6 +36,7 @@ COPY web ./web
 COPY docs ./docs
 RUN python scripts/build_web.py
 
+# The node major here follows `node` in mise.toml's [tools].
 FROM docker.io/library/node:24-slim AS site-build
 WORKDIR /site
 # Packages first, so editing a component does not re-download them.

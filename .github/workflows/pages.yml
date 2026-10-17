@@ -22,18 +22,18 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           # Full history: llms.txt dates the recipe data by data/'s last commit,
           # which a shallow clone cannot see.
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v6
-      # The node that builds the site also runs the web cross-checks in
-      # test_web.py, so both use the same version.
-      - uses: actions/setup-node@v7
+      - uses: astral-sh/setup-uv@v10.3.0
+      # node through mise, so CI runs the version mise.toml names and a bump
+      # there is the only edit. Only node: typst and the rest are not needed
+      # here. The same node runs the web cross-checks in test_web.py.
+      - uses: jdx/mise-action@v5
         with:
-          node-version: 24
-          cache: npm
+          install_args: node
       - run: uv sync --extra dev
       - run: npm ci
       - run: uv run pytest -q
@@ -41,8 +41,8 @@ jobs:
       # The export first: it writes into web/, which the build copies into dist/.
       - run: uv run python scripts/build_web.py
       - run: npm run build
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: dist
 
@@ -54,4 +54,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
