@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Turn the repo's git hooks off again (leaves any global hooks alone)"
+set -euo pipefail
+
+for event in pre-commit pre-push; do
+  git config --local --remove-section "hook.nmsii-$event" 2>/dev/null || true
+done
+echo 'removed: nmsii-pre-commit, nmsii-pre-push'

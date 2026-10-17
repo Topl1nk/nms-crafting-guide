@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="The full suite across every core (pytest-xdist, work-stealing): what `test`, CI and the pre-push hook run"
+set -euo pipefail
+
+# worksteal, not xdist's default "load": a handful of TUI tests take most of
+# the time (one ~20 s), and stealing keeps the other workers busy meanwhile.
+# Serial, for a readable traceback: uv run pytest -n0
+uv run pytest -n auto --dist worksteal "$@"

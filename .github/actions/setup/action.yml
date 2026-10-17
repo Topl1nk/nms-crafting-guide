@@ -1,0 +1,28 @@
+# The toolchain every build job starts from, so the Pages deploy and the pull
+# request checks run the same versions and a pin moves in one place: uv and
+# the Python deps, node through mise from mise.toml, and the site's npm
+# packages. Run actions/checkout first: a local action is read from the
+# checkout.
+name: Set up uv, node and the deps
+description: setup-uv, node from mise.toml, uv sync --extra dev, and npm ci
+
+inputs:
+  npm:
+    description: Also install the site's npm packages (npm ci)
+    default: "true"
+
+runs:
+  using: composite
+  steps:
+    - uses: astral-sh/setup-uv@v10.3.0
+    # node through mise, so CI runs the version mise.toml names and a bump
+    # there is the only edit. Only node: typst and the rest are not needed
+    # here. The same node runs the web cross-checks in test_web.py.
+    - uses: jdx/mise-action@v5
+      with:
+        install_args: node
+    - run: uv sync --extra dev
+      shell: bash
+    - if: inputs.npm == 'true'
+      run: npm ci
+      shell: bash

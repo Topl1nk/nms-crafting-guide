@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+# The slow checks, on what this push changes against the remote, decided by
+# scripts/changes.sh exactly as CI decides: the suite in parallel, and the
+# export plus the site build. Installed by `mise run hooks:install`; skip once
+# with NMSII_SKIP_HOOKS=1 or `git push --no-verify`.
+#
+#   NMSII_HOOK_ALL=1   run everything, ignoring what changed (hooks:run)
+set -euo pipefail
+
+[[ ${NMSII_SKIP_HOOKS:-} == 1 ]] && exit 0
+cd "$(git rev-parse --show-toplevel)"
+
+zero=0000000000000000000000000000000000000000
+if [[ ${NMSII_HOOK_ALL:-} == 1 ]]; then
+  decision=$'python=full\nweb=true'
+else
+  # git passes "<local ref> <local sha> <remote ref> <remote sha>" per ref.
+  changed=$(
+    while read -r _ local_sha _ remote_sha; do
+      [[ $local_sha == "$zero" ]] && continue # a branch delete
+      if [[ $remote_sha == "$zero" ]]; then
+        # A new branch: compare with where it left main.
+        base=$(git merge-base "$local_sha" origin/main 2>/dev/null || true)
+      else
+        base=$remote_sha
+      fi
+      if [[ -z $base ]] || ! git cat-file -e "$base^{commit}" 2>/dev/null; then
+        echo '<unknown base>' # an unknown path: changes.sh runs everything
+      else
+        git diff --name-only "$base" "$local_sha"
+      fi
+    done
+  )
+  [[ -n $changed ]] || exit 0
+  decision=$(scripts/changes.sh <<<"$changed")
+fi
+
+python=$(sed -n 's/^python=//p' <<<"$decision")
+web=$(sed -n 's/^web=//p' <<<"$decision")
+echo "pre-push: python=$python web=$web"
+
+case $python in
+  full) uv run pytest -n auto --dist worksteal ;;
+  web) uv run pytest -n auto --dist worksteal tests/test_web.py tests/test_markdown.py ;;
+esac
+
+if [[ $web == true ]]; then
+  uv run python scripts/build_web.py
+  npm run --silent build
+fi

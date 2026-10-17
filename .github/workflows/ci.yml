@@ -1,0 +1,81 @@
+# Checks for pull requests: everything the Pages workflow builds before it
+# uploads (svelte-check, the export, the site build), plus the test suite and a
+# lint of the shell scripts, without deploying. `mise run ci:local` runs the
+# same locally, and the git hooks (`mise run hooks:install`) run most of it on
+# commit and push; this is the gate for what arrives without them: Dependabot,
+# forks, contributors.
+#
+# Billed minutes, not wall time, are what this is shaped around. GitHub rounds
+# every job up to a whole minute, so it is one job that runs its steps in
+# sequence and skips the ones the change cannot affect (scripts/changes.sh),
+# rather than parallel jobs that would each bill a minute. Pull requests only,
+# no branch pushes, so a commit is not built twice; drafts wait until they are
+# ready for review.
+#
+# Read-only and secret-free, so it is safe on pull requests from forks and
+# from Dependabot: plain `pull_request`, never `pull_request_target`.
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+    # Prose only. Not docs/**: the export copies docs/pdf and docs/img into
+    # the site. Not .github/ISSUE_TEMPLATE/**: the portal bot reads its form.
+    paths-ignore:
+      - "**.md"
+      - LICENSE
+      - .github/ISSUE_TEMPLATE/config.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A new push to the pull request supersedes the run before it.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # Full history: the export dates data/ by its last commit, and the
+          # change filter below diffs against the base.
+          fetch-depth: 0
+
+      # Which steps this change needs; a manual run does everything.
+      - id: changes
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -n "$BASE" ]; then
+            git diff --name-only "$BASE" HEAD | tee /dev/stderr | scripts/changes.sh >>"$GITHUB_OUTPUT"
+          else
+            printf 'python=full\nweb=true\n' >>"$GITHUB_OUTPUT"
+          fi
+
+      # A second, so it always runs: bash -n and shellcheck over the scripts.
+      - run: mise-tasks/lint/shell
+
+      # uv, node from mise.toml, uv sync, npm ci: shared with pages.yml.
+      - if: steps.changes.outputs.python != 'none' || steps.changes.outputs.web == 'true'
+        uses: ./.github/actions/setup
+
+      # The whole suite, or for a site-only change the slice that reads the
+      # site's source (core.js against the Python, storage keys, routes).
+      - if: steps.changes.outputs.python == 'full'
+        run: uv run pytest -n auto --dist worksteal
+      - if: steps.changes.outputs.python == 'web'
+        run: uv run pytest -n auto --dist worksteal tests/test_web.py tests/test_markdown.py
+
+      - if: steps.changes.outputs.web == 'true'
+        run: npm run check
+      # The export first: it writes into web/, which the build copies into dist/.
+      - if: steps.changes.outputs.web == 'true'
+        run: uv run python scripts/build_web.py
+      - if: steps.changes.outputs.web == 'true'
+        run: npm run build
