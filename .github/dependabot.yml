@@ -11,6 +11,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # Setting labels replaces Dependabot's defaults, so they are repeated here.
+    labels: [dependencies, javascript, "area: web"]
     # One PR for the build toolchain, so svelte, vite and the plugin move
     # together, as their peer ranges expect.
     groups:
@@ -30,3 +32,4 @@ updates:
     directories: ["/", "/.github/actions/*"]
     schedule:
       interval: weekly
+    labels: [dependencies, "area: ci"]
