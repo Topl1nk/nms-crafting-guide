@@ -84,6 +84,9 @@
     box-shadow: inset 0 -1px 0 var(--p-outline);
     z-index: 1;
   }
+  /* A column marked muted is muted in its header too, as the global class
+     alone would have it if this scoped rule did not outrank it. */
+  th.muted { color: var(--p-faint); }
   th, td { padding: 5px 10px; vertical-align: top; }
   tbody tr { cursor: pointer; border-top: 1px solid var(--p-outline); }
   tbody tr:first-child { border-top: 0; }
