@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Export only the markdown version of the site (llms.txt, web/md/, sitemap) and print the file sizes"
+#MISE alias="web-md"
+set -euo pipefail
+
+uv run python scripts/build_markdown.py "$@"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Install the site's npm packages exactly as package-lock.json pins them (skipped when already current)"
+#MISE alias="web-install"
+#MISE sources=["package.json", "package-lock.json"]
+#MISE outputs=["node_modules/.package-lock.json"]
+set -euo pipefail
+
+npm ci

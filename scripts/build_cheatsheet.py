@@ -14,7 +14,7 @@ Selection is deliberate, not "top N by one number":
 Plus two lists that only fall out of a graph walk: what Tier 0 reaches, and
 what no recipe produces at all.
 
-Run via `mise run cheatsheet-data` (or just `mise run pdf`, which chains it).
+Run via `mise run data:cheatsheet` (or just `mise run pdf:build`, which chains it).
 """
 
 from __future__ import annotations
@@ -120,7 +120,7 @@ def portal_page() -> dict:
             raise SystemExit(
                 f"data/glyphs.json is off the dial at {i}: expected "
                 f"{i + 1}/{i:X}/{name}, found {g.position}/{g.hex}/{g.name}. "
-                f"Rebuild it: mise run glyphs")
+                f"Rebuild it: mise run data:glyphs")
 
     book = portals.LocationBook.load()
     rows = []

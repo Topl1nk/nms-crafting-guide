@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="What is behind, in one place: mise tools (node, uv, typst), npm packages, and the direct Python dependencies"
+#MISE alias="deps-outdated"
+set -euo pipefail
+
+# Read-only: says what is behind, changes nothing. npm outdated exits 1 when
+# anything is, which is an answer here, not a failure.
+echo '== mise tools (node: move to the newest LTS, not just the newest)'
+mise outdated --bump --local
+
+echo '== npm packages'
+npm outdated || true
+
+echo '== python (direct dependencies)'
+uv tree --outdated --depth 1 | grep -F '(latest' || echo 'all current'

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Build the site, then serve dist/ on localhost:8791 the way Pages will"
+#MISE alias="site"
+#MISE depends=["web:build"]
+set -euo pipefail
+
+npm run preview -- "$@"

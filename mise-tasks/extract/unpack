@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Unpack the recipe, product, substance and English language tables from the game's .pak files into .cache/game/mbin/"
+#MISE alias="extract-unpack"
+set -euo pipefail
+
+uv run --extra extract python scripts/extract_game.py unpack

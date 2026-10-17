@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Rebuild the light PDF on every save while editing cheatsheet.typ"
+#MISE alias="pdf-watch"
+set -euo pipefail
+
+typst watch --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf

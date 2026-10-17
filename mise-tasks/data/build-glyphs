@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Trace the glyph art into data/glyphs.json - outlines for the PDF, braille for the TUI"
+#MISE alias="build-glyphs"
+set -euo pipefail
+
+uv run python scripts/build_glyphs.py

@@ -4,7 +4,7 @@
 #
 # Not covered here: node itself lives in mise.toml's [tools] and the Pages
 # workflow follows it, and the Python side is uv.lock; `mise run
-# deps-outdated` shows both, with the npm packages, in one place.
+# deps:outdated` shows both, with the npm packages, in one place.
 version: 2
 updates:
   - package-ecosystem: npm

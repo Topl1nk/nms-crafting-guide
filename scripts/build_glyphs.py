@@ -27,7 +27,7 @@ Needs `potrace` on PATH (`mise run setup`). PNG decoding is done here with
 zlib rather than Pillow: these are the one image the project reads, they are
 all 8-bit RGBA and non-interlaced, and that is 40 lines against a dependency.
 
-Run via `mise run build-glyphs`, after `mise run fetch-glyphs`.
+Run via `mise run data:build-glyphs`, after `mise run data:fetch-glyphs`.
 """
 
 from __future__ import annotations
@@ -253,14 +253,14 @@ def braille(width: int, height: int, ink: bytearray, cells: tuple[int, int]) -> 
 
 def main() -> int:
     if not CACHE.is_dir():
-        raise SystemExit(f"{CACHE} missing. Run: mise run fetch-glyphs")
+        raise SystemExit(f"{CACHE} missing. Run: mise run data:fetch-glyphs")
 
     glyphs = []
     for i, name in enumerate(GLYPH_NAMES):
         digit = f"{i:x}"
         src = CACHE / f"{digit}.png"
         if not src.is_file():
-            raise SystemExit(f"{src} missing. Run: mise run fetch-glyphs")
+            raise SystemExit(f"{src} missing. Run: mise run data:fetch-glyphs")
         width, height, alpha = read_alpha(src)
         ink = mask(width, height, alpha)
         entry = {
@@ -284,7 +284,7 @@ def main() -> int:
             "Outlines traced from the nmsportals glyph art; fill is the "
             "caller's, so the same path prints on paper and on a dark screen. "
             "`art` is the same mask as braille, for the terminal. "
-            "Rebuild with: mise run glyphs"
+            "Rebuild with: mise run data:glyphs"
         ),
         "ink": INK,
         "dilate": DILATE,

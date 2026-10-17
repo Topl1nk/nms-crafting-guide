@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Download the 16 portal glyph images into .cache/glyphs/"
+#MISE alias="fetch-glyphs"
+set -euo pipefail
+
+uv run python scripts/fetch_glyphs.py

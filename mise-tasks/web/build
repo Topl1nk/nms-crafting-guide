@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Export, then build the deployable site into dist/ (what the Pages workflow uploads)"
+#MISE alias="web-build"
+#MISE depends=["web:install", "web:data"]
+set -euo pipefail
+
+npm run build

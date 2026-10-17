@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Normalise .cache/handbook/ (NMS-Handbook) into data/ instead of the game extract"
+#MISE alias="build-data-handbook"
+set -euo pipefail
+
+uv run python scripts/build_data.py --source handbook

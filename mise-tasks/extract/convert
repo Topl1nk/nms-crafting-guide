@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Parse the MXML into NMS-Handbook-shaped JSON in .cache/game/json/, with the game version recorded"
+#MISE alias="extract-convert"
+set -euo pipefail
+
+uv run --extra extract python scripts/extract_game.py convert

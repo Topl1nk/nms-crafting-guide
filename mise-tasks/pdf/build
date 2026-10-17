@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="Cheat-sheet PDFs into docs/pdf/ — Latte (print) and Mocha (screens), after re-picking the cheat sheet"
+#MISE alias="pdf"
+#MISE depends=["data:cheatsheet"]
+set -euo pipefail
+
+mkdir -p docs/pdf
+typst compile --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf
+typst compile --input theme=mocha cheatsheet.typ docs/pdf/nms-cheatsheet-dark.pdf

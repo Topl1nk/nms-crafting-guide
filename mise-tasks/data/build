@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Normalise .cache/game/json/ into the committed data/items.json + recipes.json + source.json"
+#MISE alias="build-data"
+set -euo pipefail
+
+uv run python scripts/build_data.py --source game

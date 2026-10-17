@@ -1,26 +1,28 @@
 # mise (https://mise.jdx.dev) — tools + tasks for NMSii.
 #
 #   mise install     # typst + uv + node, pinned below
-#   mise run setup   # fonts (paru) + Python deps
+#   mise run setup   # fonts, potrace, resvg, imagemagick (paru)
+#   mise run sync    # Python deps
 #   mise run tui     # the app
 #   mise run refresh # re-extract the game's tables and rebuild everything
 #
 # Same shape as the minecraft-tui project: uv owns the Python side, typst owns
-# the PDF side, and every routine action is a task here so nothing has to be
-# remembered.
+# the PDF side, and every routine action is a task so nothing has to be
+# remembered: the everyday ones at the bottom of this file, the rest as
+# scripts in mise-tasks/ (see "tasks" below).
 
 [tools]
 uv = "latest"
 typst = "latest"
 # The site's build. The one place its version is set: the Pages workflow
 # installs node through mise from this line, so a bump is this line only.
-# Tracks the newest LTS; `mise run deps-outdated` shows when there is one.
+# Tracks the newest LTS; `mise run deps:outdated` shows when there is one.
 node = "24"
 
-# Decompiles the game's .MBIN tables to readable MXML for `mise run extract`.
+# Decompiles the game's .MBIN tables to readable MXML for `mise run extract:all`.
 # Pinned, not "latest": each release targets one game version's struct
 # layouts, so after a patch bump this to the release made for it (list them
-# with `mise run mbin-releases`) and check with `mise run game-version`. The
+# with `mise run mbin:releases`) and check with `mise run game:version`. The
 # linux asset is a self-contained single-file binary, so no .NET is needed.
 #
 # v7.04.1-pre3 is the last full release before Cosmos 7.05 and 7.06, neither
@@ -37,7 +39,28 @@ format = "raw"
 UV_PROJECT_ENVIRONMENT = "{{config_root}}/.venv"
 PYTHONPATH = "{{config_root}}/src"
 
-# --- setup ------------------------------------------------------------------
+
+# --- tasks ------------------------------------------------------------------
+#
+# Only the everyday entry points live here. Everything else is a file task in
+# mise-tasks/<group>/<name>, which mise names group:name; `mise tasks` lists
+# them all:
+#
+#   web:*      the static site (nmsii.dlu.one): data, md, dev, check, build, site
+#   pages:*    GitHub Pages settings: setup, https, status
+#   contrib:*  shared portal addresses: validate, setup, pending
+#   box:*      containers (podman): tui, site, build
+#   tui:*      the app's side tools: console, serve, screenshot
+#   test:*     slices of the suite: web, md
+#   extract:*  the game's tables: unpack, decompile, convert, all, diff
+#   game:version, mbin:releases   which build is installed, which decompiler reads it
+#   data:*     normalise into data/: fetch, build, cheatsheet, glyphs, refresh-handbook
+#   pdf:*      the cheat sheet: build, watch
+#   deps:*     outdated
+#   deploy     check, push main over SSH, follow the Pages run
+#
+# Most of the old flat names (web-build, pdf, extract, validate-locations, ...)
+# still work as aliases of the new ones.
 
 [tasks.setup]
 description = "System deps: the two fonts the PDF uses, potrace for the glyphs, resvg + imagemagick for the favicon"
@@ -47,248 +70,26 @@ run = "paru -S --needed inter-font ttf-jetbrains-mono potrace resvg imagemagick"
 description = "Install / update Python dependencies (textual, plus hgpaktool for the game extract)"
 run = "uv sync --extra dev --extra extract"
 
-# --- the app ----------------------------------------------------------------
-
 [tasks.tui]
 description = "Open the recipe browser"
 run = "uv run python -m nms_items"
 alias = "run"
 
 [tasks.dev]
-description = "Run the TUI with live CSS reload (edit app.tcss and watch it apply)"
+description = "Run the TUI with live CSS reload (edit app.tcss and watch it apply); `mise run tui:console` in a second terminal"
 run = "uv run textual run --dev nms_items.app:RecipeApp"
-
-[tasks.console]
-description = "Textual debug console — run in a second terminal alongside `mise run dev`"
-run = "uv run textual console"
-
-[tasks.web]
-description = "Serve the TUI in a browser on localhost:8000"
-run = "uv run textual serve 'python -m nms_items'"
-
-# --- data -------------------------------------------------------------------
-
-# The data comes out of the installed game: unpack -> decompile -> convert ->
-# normalise. Each stage is its own task so a failing one can be re-run alone;
-# `extract` runs them in order. The game path defaults to the GOG install in
-# ~/Games; point $NMS_GAME_DIR elsewhere for Steam. See "After a game patch"
-# in the README for the whole routine.
-
-[tasks.game-version]
-description = "Installed game version + build, the pinned MBINCompiler, and whether it reads this build's tables"
-run = "uv run --extra extract python scripts/extract_game.py version"
-
-[tasks.mbin-releases]
-description = "The latest MBINCompiler releases, to pick the pin in mise.toml after a patch"
-run = "gh api repos/monkeyman192/MBINCompiler/releases -X GET -f per_page=8 --jq '.[] | \"\\(.tag_name)\\t\\(.published_at[:10])\\t\\(if .prerelease then \"pre-release\" else \"release\" end)\"'"
-
-[tasks.extract-unpack]
-description = "Unpack the recipe, product, substance and English language tables from the game's .pak files into .cache/game/mbin/"
-run = "uv run --extra extract python scripts/extract_game.py unpack"
-
-[tasks.extract-decompile]
-description = "Decompile .cache/game/mbin/ to MXML with the pinned MBINCompiler; fails if it does not recognise every table"
-run = "uv run --extra extract python scripts/extract_game.py decompile"
-
-[tasks.extract-convert]
-description = "Parse the MXML into NMS-Handbook-shaped JSON in .cache/game/json/, with the game version recorded"
-run = "uv run --extra extract python scripts/extract_game.py convert"
-
-[tasks.extract]
-description = "Rebuild data/ from the installed game: unpack → decompile → convert → build-data"
-run = [
-  { task = "extract-unpack" },
-  { task = "extract-decompile" },
-  { task = "extract-convert" },
-  { task = "build-data" },
-]
-
-[tasks.extract-diff]
-description = "What changed in data/ against the last commit: recipes, items, values, times (markdown)"
-run = "uv run python scripts/data_diff.py"
-
-[tasks.fetch]
-description = "Fallback source: download NMS-Handbook's copy of the tables into .cache/handbook/"
-run = "uv run python scripts/fetch_source.py"
-
-[tasks.build-data]
-description = "Normalise .cache/game/json/ into the committed data/items.json + recipes.json + source.json"
-run = "uv run python scripts/build_data.py --source game"
-
-[tasks.build-data-handbook]
-description = "Normalise .cache/handbook/ (NMS-Handbook) into data/ instead of the game extract"
-run = "uv run python scripts/build_data.py --source handbook"
-
-[tasks.cheatsheet-data]
-description = "Pick the cheat-sheet recipes into data/cheatsheet.json"
-run = "uv run python scripts/build_cheatsheet.py"
-
-[tasks.fetch-glyphs]
-description = "Download the 16 portal glyph images into .cache/glyphs/"
-run = "uv run python scripts/fetch_glyphs.py"
-
-[tasks.build-glyphs]
-description = "Trace the glyph art into data/glyphs.json — outlines for the PDF, braille for the TUI"
-run = "uv run python scripts/build_glyphs.py"
-
-[tasks.glyphs]
-description = "Re-derive the portal glyphs from upstream art. Not part of `refresh`: the symbols do not change with a game patch, and data/glyphs.json is committed"
-depends = ["fetch-glyphs", "build-glyphs"]
-
-# In order, not as `depends`: mise runs a task's dependencies in parallel, and
-# each step here reads what the one before it wrote.
-[tasks.refresh]
-description = "Full data rebuild after a game patch, from the installed game: extract → cheat sheet → PDF"
-run = [{ task = "extract" }, { task = "pdf" }]
-
-[tasks.refresh-handbook]
-description = "The same rebuild from NMS-Handbook, for when the game is not installed: fetch → normalise → cheat sheet → PDF"
-run = [{ task = "fetch" }, { task = "build-data-handbook" }, { task = "pdf" }]
-
-# --- web site (nmsii.dlu.one) ------------------------------------------------
-
-#
-# Two halves: the Python export writes the data into web/ (data.json, PDFs,
-# screenshots), and Vite builds the Svelte page in site/ around it into dist/,
-# which is what gets deployed. node is pinned in [tools] above, the npm side by
-# package-lock.json.
-
-[tasks.web-install]
-description = "Install the site's npm packages exactly as package-lock.json pins them (skipped when already current)"
-run = "npm ci"
-sources = ["package.json", "package-lock.json"]
-outputs = ["node_modules/.package-lock.json"]
-
-[tasks.web-data]
-description = "Export the static site's data into web/data.json, its markdown version (llms.txt, web/md/), plus the PDFs and screenshots"
-run = "uv run python scripts/build_web.py"
-
-[tasks.web-md]
-description = "Export only the markdown version of the site (llms.txt, web/md/, sitemap) and print the file sizes"
-run = "uv run python scripts/build_markdown.py"
-
-[tasks.web-dev]
-description = "Work on the site: export, then Vite's dev server on localhost:8790, reloading as you save"
-depends = ["web-install", "web-data"]
-run = "npm run dev"
-
-[tasks.web-check]
-description = "Check the Svelte components (svelte-check): template errors, a11y and unused-CSS warnings fail it"
-depends = ["web-install"]
-run = "npm run check"
-
-[tasks.web-build]
-description = "Export, then build the deployable site into dist/ (what the Pages workflow uploads)"
-depends = ["web-install", "web-data"]
-run = "npm run build"
-
-[tasks.site]
-description = "Build the site, then serve dist/ on localhost:8791 the way Pages will"
-depends = ["web-build"]
-run = "npm run preview"
-
-[tasks.favicon]
-description = "Redraw the site icon from the Atlas glyph: favicon.svg/.ico, apple-touch-icon.png"
-run = "uv run python scripts/build_favicon.py"
-
-[tasks.test-web]
-description = "The web checks only: the export, and site/src/lib/core.js against the Python (needs node)"
-run = "uv run pytest -q tests/test_web.py"
-
-[tasks.test-md]
-description = "The markdown checks only: a page per item, numbers against data.json, chains against graph.plan and core.js, llms.txt links, the schema"
-run = "uv run pytest -q tests/test_markdown.py"
-
-# --- release -----------------------------------------------------------------
-
-[tasks.check]
-description = "Everything CI runs before a deploy: the full test suite, the components and the site build"
-depends = ["test", "web-check"]
-run = ["uv run python scripts/portal_issue.py validate", "mise run web-build"]
-
-[tasks.deploy]
-description = "Check, push main over SSH, and follow the Pages deploy it triggers"
-depends = ["check"]
-run = [
-  "test \"$(git branch --show-current)\" = main || { echo 'deploy pushes main - switch to it first'; exit 1; }",
-  "test -z \"$(git status --porcelain)\" || { echo 'uncommitted changes - commit or stash them first'; exit 1; }",
-  "git push origin main",
-  "sleep 5 && gh run watch -R rdlu/nms-items-interface --exit-status $(gh run list -R rdlu/nms-items-interface -w pages.yml -L 1 --json databaseId -q '.[0].databaseId')",
-]
-
-[tasks.pages-setup]
-description = "Turn GitHub Pages on (Actions source) with the nmsii.dlu.one domain - idempotent"
-run = "uv run python scripts/pages.py setup"
-
-[tasks.pages-https]
-description = "Enforce HTTPS on nmsii.dlu.one, once GitHub has issued the certificate"
-run = "uv run python scripts/pages.py https"
-
-[tasks.pages-status]
-description = "DNS, Pages settings, certificate and the last deploy, at a glance"
-run = "uv run python scripts/pages.py status"
-
-# --- contributions -----------------------------------------------------------
-
-[tasks.validate-locations]
-description = "Check data/locations.json the way a pull request is checked"
-run = "uv run python scripts/portal_issue.py validate"
-
-[tasks.contrib-setup]
-description = "Create the labels the portal-address bot uses, and let it open PRs - idempotent"
-run = "uv run python scripts/portal_issue.py setup"
-
-[tasks.contrib-pending]
-description = "Shared addresses waiting for review: the bot's verdict on each open issue"
-run = "gh issue list -R rdlu/nms-items-interface -l portal-address --json number,title,labels -q '.[] | \"#\\(.number)  \\([.labels[].name | select(. != \"portal-address\")] | join(\",\"))  \\(.title)\"'"
-
-# --- containers (podman, or docker) -------------------------------------------
-
-[tasks.box-tui]
-description = "The TUI in a container: no Python or uv needed, only podman"
-run = "podman compose run --rm tui"
-
-[tasks.box-site]
-description = "The static site in a container on localhost:8001"
-run = "podman compose up site"
-
-[tasks.box-build]
-description = "Rebuild both container images, after a pull or a data refresh"
-run = "podman compose build tui site"
-
-# --- pdf --------------------------------------------------------------------
-
-[tasks.pdf]
-description = "Cheat-sheet PDFs into docs/pdf/ — Latte (print) and Mocha (screens)"
-depends = ["cheatsheet-data"]
-run = [
-  "mkdir -p docs/pdf",
-  "typst compile --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf",
-  "typst compile --input theme=mocha cheatsheet.typ docs/pdf/nms-cheatsheet-dark.pdf",
-]
-
-[tasks.pdf-watch]
-description = "Rebuild the light PDF on every save while editing cheatsheet.typ"
-run = "typst watch --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf"
-
-# --- checks -----------------------------------------------------------------
 
 [tasks.test]
 description = "Run the test suite (data integrity + a headless pass over the TUI)"
 run = "uv run pytest -q"
 
-[tasks.screenshot]
-description = "Refresh the SVG screenshots in docs/img/"
-run = "uv run python scripts/screenshot.py"
+[tasks.check]
+description = "Everything CI runs before a deploy: the full test suite, the components, the shared addresses and the site build"
+depends = ["test", "web:check"]
+run = [{ task = "contrib:validate" }, { task = "web:build" }]
 
-# --- dependencies -------------------------------------------------------------
-
-# Read-only: says what is behind, changes nothing. npm outdated exits 1 when
-# anything is, which is an answer here, not a failure.
-[tasks.deps-outdated]
-description = "What is behind, in one place: mise tools (node, uv, typst), npm packages, and the direct Python dependencies"
-run = [
-  "echo '== mise tools (node: move to the newest LTS, not just the newest)' && mise outdated --bump --local",
-  "echo '== npm packages' && (npm outdated || true)",
-  "echo '== python (direct dependencies)' && (uv tree --outdated --depth 1 | grep -F '(latest' || echo 'all current')",
-]
+# In order, not as `depends`: mise runs a task's dependencies in parallel, and
+# each step here reads what the one before it wrote.
+[tasks.refresh]
+description = "Full data rebuild after a game patch, from the installed game: extract → cheat sheet → PDF"
+run = [{ task = "extract:all" }, { task = "pdf:build" }]

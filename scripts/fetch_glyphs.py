@@ -6,7 +6,7 @@ public raster of them is the set nmsportals.github.io draws its dial with --
 the digit. That naming is the useful part: `a.png` *is* glyph `A`, the eleventh
 symbol on the dial, so the download needs no mapping table.
 
-Run via `mise run glyphs`, which chains straight into build_glyphs.py. The PNGs
+Run via `mise run data:glyphs`, which chains straight into build_glyphs.py. The PNGs
 stay in .cache/ (gitignored); what gets committed is data/glyphs.json, the
 traced outlines. Rerunning is only needed if that file is lost or the upstream
 art changes, which it has not since 2018.
@@ -45,7 +45,7 @@ def main() -> int:
         total += len(data)
         print(f"{len(data) / 1024:.0f} KiB")
     print(f"\nWrote {total / 1024:.0f} KiB to {CACHE}. "
-          f"Now run: mise run build-glyphs")
+          f"Now run: mise run data:build-glyphs")
     return 0
 
 

@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#MISE description="Rebuild data/ from the installed game: unpack → decompile → convert → data:build"
+#MISE alias="extract"
+set -euo pipefail
+
+# The data comes out of the installed game: unpack -> decompile -> convert ->
+# normalise. Each stage is its own task so a failing one can be re-run alone;
+# this runs them in order (not as depends, which mise runs in parallel, and
+# each stage reads what the one before it wrote). The game path defaults to
+# the GOG install in ~/Games; point $NMS_GAME_DIR elsewhere for Steam. See
+# "After a game patch" in the README for the whole routine.
+mise run extract:unpack
+mise run extract:decompile
+mise run extract:convert
+mise run data:build

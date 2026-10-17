@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Enforce HTTPS on nmsii.dlu.one, once GitHub has issued the certificate"
+#MISE alias="pages-https"
+set -euo pipefail
+
+uv run python scripts/pages.py https

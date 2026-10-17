@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="The static site in a container on localhost:8001"
+#MISE alias="box-site"
+set -euo pipefail
+
+podman compose up site

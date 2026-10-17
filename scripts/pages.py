@@ -13,7 +13,7 @@ the `gh` CLI, idempotently:
 DNS lives in Cloudflare and is not touched here: `nms` is a CNAME to
 rdlu.github.io, DNS only (grey cloud), so GitHub can issue the certificate.
 
-Run via `mise run pages-setup`, `mise run pages-https`, `mise run pages-status`.
+Run via `mise run pages:setup`, `mise run pages:https`, `mise run pages:status`.
 """
 
 from __future__ import annotations
@@ -55,13 +55,13 @@ def setup() -> None:
         print(f"Custom domain set to {DOMAIN}")
     else:
         print(f"Custom domain already {DOMAIN}")
-    print("Next: push to main to deploy, then `mise run pages-https` once the certificate is issued.")
+    print("Next: push to main to deploy, then `mise run pages:https` once the certificate is issued.")
 
 
 def https() -> None:
     site = pages()
     if site is None:
-        sys.exit("Pages is not on yet: run `mise run pages-setup` first.")
+        sys.exit("Pages is not on yet: run `mise run pages:setup` first.")
     if site.get("https_enforced"):
         print("HTTPS is already enforced")
         return
@@ -69,7 +69,7 @@ def https() -> None:
     if result.returncode != 0:
         # GitHub refuses until the certificate exists; that is the usual case.
         sys.exit("GitHub refused - the certificate is probably not issued yet.\n"
-                 "Check `mise run pages-status` and try again in a few minutes.\n"
+                 "Check `mise run pages:status` and try again in a few minutes.\n"
                  + result.stderr.strip())
     print(f"HTTPS enforced on https://{DOMAIN}")
 
@@ -89,7 +89,7 @@ def status() -> None:
 
     site = pages()
     if site is None:
-        print("Pages     off - run `mise run pages-setup`")
+        print("Pages     off - run `mise run pages:setup`")
     else:
         cert = site.get("https_certificate") or {}
         # `status` only tracks branch builds; with the Actions source it stays
