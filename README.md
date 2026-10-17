@@ -480,7 +480,10 @@ claude mcp add nmsii -- podman compose -f /path/to/nms-items-interface/compose.y
 or, as JSON, `"command": "podman"` with `"args": ["compose", "-f",
 "/path/to/nms-items-interface/compose.yaml", "run", "--rm", "-T", "tui", "nms",
 "mcp"]`. Build the image once first (`podman compose build tui`), so the first
-connection does not wait on it.
+connection does not wait on it. `compose.yaml` sets `x-podman: in_pod: false`
+for this route: otherwise podman-compose creates a pod on the first `run` and
+prints its ID on stdout, into the JSON-RPC stream, and that first connection
+fails.
 
 `mise run mcp-inspect` opens the server in the
 [MCP Inspector](https://github.com/modelcontextprotocol/inspector) to try the

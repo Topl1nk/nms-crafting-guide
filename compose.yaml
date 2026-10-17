@@ -9,6 +9,14 @@
 #
 # Name the service: the TUI wants this terminal, so it is started with `run`,
 # not `up`. (No profile for it: podman-compose's `run` ignores profiles.)
+
+# No pod. podman-compose otherwise creates one on the first `run` and prints
+# its ID on stdout -- into the JSON-RPC stream when that run is `nms mcp`,
+# which breaks the client's first connection. The two services share nothing
+# a pod would give them. docker compose ignores x- keys.
+x-podman:
+  in_pod: false
+
 services:
   tui:
     build:
