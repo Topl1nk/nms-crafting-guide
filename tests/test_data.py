@@ -18,18 +18,16 @@ def book() -> Book:
     return Book()
 
 
-# The xfails below are guide claims the Cosmos update (7.05/7.06) broke. The
-# game changed, not the parser: four new 5:1 refiner recipes for the new
-# deep-space materials. Strict, so a test fails again as XPASS if the data goes
-# back, and the marker comes off when the guide and the number here are
-# updated together. See docs/cosmos-changes.md.
-@pytest.mark.xfail(strict=True, reason=(
-    "Cosmos 7.06: 357 -> 361 refining recipes (Comet Dust, Contaminated Metal, "
-    "Gelatinous Fibres, Corrupted Ichor); cooking unchanged at 1323"))
 def test_recipe_counts(book: Book) -> None:
+    """The guide's totals, as of Cosmos 7.06: 361 refining, 1,323 cooking.
+
+    Cosmos added four refiner recipes (357 before), one per new deep-space
+    material: Comet Dust, Contaminated Metal, Gelatinous Fibres and Corrupted
+    Ichor. Cooking did not change.
+    """
     refine = [r for r in book.recipes if r.domain == "refine"]
     cook = [r for r in book.recipes if r.domain == "cook"]
-    assert len(refine) == 357
+    assert len(refine) == 361
     assert len(cook) == 1323
 
 
@@ -95,17 +93,18 @@ def test_asteroids_add_nine(book: Book) -> None:
     assert len(added) == 9
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "Cosmos 7.06: 25 -> 29 items no refiner recipe produces; the four new "
-    "materials (Comet Dust, Contaminated Metal, Gelatinous Fibres, Corrupted "
-    "Ichor) are only ever inputs"))
-def test_twentyfive_items_cannot_be_refined_into_existence(book: Book) -> None:
+def test_twentynine_items_cannot_be_refined_into_existence(book: Book) -> None:
+    """The guide's must-find list: 29 refiner inputs no refiner recipe makes.
+
+    25 before Cosmos 7.06; its four new materials are only ever inputs.
+    """
     refine = [r for r in book.recipes if r.domain == "refine"]
     inputs = {ing.id for r in refine for ing in r.inputs}
     outputs = {r.output.id for r in refine}
     missing = {book.name(i) for i in inputs - outputs}
-    assert len(missing) == 25
+    assert len(missing) == 29
     assert {"Living Pearl", "Salvaged Data", "Tainted Metal", "Atlantideum"} <= missing
+    assert {"Comet Dust", "Contaminated Metal", "Gelatinous Fibres", "Corrupted Ichor"} <= missing
 
 
 def test_plan_from_tier0(book: Book) -> None:

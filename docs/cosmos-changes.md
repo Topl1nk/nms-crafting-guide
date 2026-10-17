@@ -39,14 +39,14 @@ snapshots share came through unchanged apart from the lines below.
 
 ## Guide claims this changes
 
-The test suite asserts the numbers the written guides state. Three no longer
-hold; the tests are marked `xfail(strict=True)` with the new numbers until the
-guide is updated:
+The test suite asserts the numbers the written guides state. Cosmos changed
+three of them. The guide (`20.refiner-recipes.md` and the notes that repeat
+it) and the tests were both updated to the Cosmos 7.06 values:
 
 | Claim | Test | Was | Cosmos 7.06 |
 | --- | --- | --- | --- |
 | Refining recipe count | `test_data.py::test_recipe_counts` | 357 | 361 (cooking unchanged at 1,323) |
-| Items no refiner recipe produces | `test_data.py::test_twentyfive_items_cannot_be_refined_into_existence` | 25 | 29: the four new materials are only ever inputs |
+| Items no refiner recipe produces | `test_data.py::test_twentynine_items_cannot_be_refined_into_existence` (was `test_twentyfive_...`) | 25 | 29: the four new materials are only ever inputs |
 | Nanite converters | `test_ease_food.py::test_nanite_ladder_matches_the_guide` | 14 | 15: 5 Corrupted Ichor → 1 Nanite Cluster, 40/h, second slowest |
 
 Still true: the three ×6 loops (Condensed Carbon, Chlorine, Ionised Cobalt),

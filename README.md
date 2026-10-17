@@ -481,9 +481,9 @@ The test suite is the point of step 6: it asserts the claims the notes make —
 the three ×6 loops, Living Pearl → 100 Gold, Tier 0 reaching exactly 30
 materials, the items no recipe produces, Larval Cores at 3,000 nanites/hour
 against Runaway Mould's 24 — so if the game moves a ratio, it fails loudly
-instead of quietly printing a wrong sheet. When a claim really did change, the
-test is marked `xfail` with the new number until the guide catches up; Cosmos
-moved three (see `docs/cosmos-changes.md`).
+instead of quietly printing a wrong sheet. When a claim really did change,
+update the guide and the test together; Cosmos moved three (see
+`docs/cosmos-changes.md`).
 
 ---
 
