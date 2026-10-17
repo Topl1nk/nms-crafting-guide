@@ -1,7 +1,7 @@
-# Publish web/ to GitHub Pages at nmsii.dlu.one: test, export data.json from the
-# Python side, upload. Needs Settings -> Pages -> Source set to "GitHub
-# Actions", and the custom domain set there too: a CNAME file in web/ is
-# ignored by Actions deploys.
+# Publish the site to GitHub Pages at nmsii.dlu.one: test, export data.json from
+# the Python side into web/, build the Svelte page around it into dist/,
+# upload dist/. Needs Settings -> Pages -> Source set to "GitHub Actions", and
+# the custom domain set there too: a CNAME file is ignored by Actions deploys.
 name: Pages
 
 on:
@@ -28,14 +28,23 @@ jobs:
           # which a shallow clone cannot see.
           fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
+      # The node that builds the site also runs the web cross-checks in
+      # test_web.py, so both use the same version.
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
       - run: uv sync --extra dev
-      # The runner ships node, so the web cross-checks in test_web.py run too.
+      - run: npm ci
       - run: uv run pytest -q
+      - run: npm run check
+      # The export first: it writes into web/, which the build copies into dist/.
       - run: uv run python scripts/build_web.py
+      - run: npm run build
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: web
+          path: dist
 
   deploy:
     needs: build
