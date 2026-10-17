@@ -82,6 +82,10 @@ same exported `via` maps; `tests/test_markdown.py` holds it to both
 `graph.plan` and the JS. `mise run web-md` rebuilds only these and prints their
 sizes.
 
+Every page's footer says so too: *AI friendly* links that page's markdown twin
+(an item's own page from its recipes or chain view), llms.txt and the item index,
+and the head's `<link rel="alternate" type="text/markdown">` follows it.
+
 What lives in the browser stays there: the inventory and any portal addresses
 you save are kept in `localStorage`. *Export mine* on the portals page downloads
 the saved addresses in `data/locations.json`'s shape, to merge into the file.

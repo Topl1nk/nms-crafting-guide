@@ -237,3 +237,15 @@ def test_data_json_fits_schema(bundle: dict) -> None:
     schema = json.loads((ROOT / "web" / "data.schema.json").read_text(encoding="utf-8"))
     # Round-trip so the check sees what data.json holds, not Python objects.
     check(schema, json.loads(json.dumps(bundle)), schema["$defs"])
+
+
+def test_app_markdown_links_exist(pages: dict[str, str]) -> None:
+    # app.js points each page's footer link and <link rel=alternate> at its
+    # markdown twin; every file it can name has to be one the export writes.
+    app = (ROOT / "web" / "app.js").read_text(encoding="utf-8")
+    table = re.search(r"const MD_PAGES = \{(.*?)\};", app, re.S).group(1)
+    targets = re.findall(r'"([^"]+\.md)"', table)
+    assert len(targets) >= 8
+    for path in [*targets, "llms.txt", "md/items/index.md"]:
+        assert path in pages, path
+    assert "md/items/${encodeURIComponent(item)}.md" in app

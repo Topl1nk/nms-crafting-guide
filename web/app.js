@@ -1307,6 +1307,19 @@ const NAV = [
   ["inventory", "Inventory"], ["help", "Help"],
 ];
 
+// The markdown twin of each page (scripts/build_markdown.py writes them), for
+// the footer link and the <link rel=alternate> a crawler or an AI reads.
+const MD_PAGES = {
+  nanites: "md/nanites.md", cooking: "md/cooking.md", multitools: "md/multitools.md",
+  portals: "md/portals.md", storage: "md/storage.md", inventory: "md/items/index.md",
+  help: "md/guide.md", recipes: "md/recipes.md",
+};
+function markdownFor(section, rest, params) {
+  const item = section === "chain" ? rest : section === "recipes" ? params.get("item") : null;
+  if (item && D.items[item]) return `md/items/${encodeURIComponent(item)}.md`;
+  return MD_PAGES[section] || "llms.txt";
+}
+
 function route() {
   const hash = location.hash.replace(/^#\/?/, "") || "home";
   const [path, query = ""] = hash.split("?");
@@ -1323,7 +1336,11 @@ function route() {
   view().replaceWith(fresh);
   active = { list: null, search: null };
   window.scrollTo(0, 0);
-  render(params, decodeURIComponent(rest.join("/")));
+  const target = decodeURIComponent(rest.join("/"));
+  render(params, target);
+  const md = markdownFor(section, target, params);
+  $("#md-page").href = md;
+  document.querySelector('link[rel="alternate"][type="text/markdown"]')?.setAttribute("href", md);
   document.title = section === "home" || !VIEWS[section]
     ? "NMSii - No Man's Sky recipes, nanites, portals"
     : `${NAV.find(([k]) => k === section)?.[1] ?? "Chain"} · NMSii`;
