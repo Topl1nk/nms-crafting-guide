@@ -13,13 +13,25 @@ TUI and the web page already use (nms_items.portals):
     validate  data/locations.json as a whole, strictly -- what a pull request
               that edits it has to pass. The TUI's loader skips a broken row
               so a typo cannot take a screen down; a PR gets told instead.
-    setup     once per repo, through `gh`: the labels the bot uses, and the
-              setting that lets a workflow open the pull request.
+    setup     once per repo, through `gh`: the labels the bot uses, the
+              setting that lets a workflow open the pull request, and the one
+              that holds every outside contributor's pull request for approval.
+    lockdown  the emergency brake: GitHub interaction limits, so only existing
+              users (or contributors, or collaborators) can open or comment,
+              for a day up to a month. `unlock` lifts it.
+    status    the limits, the fork approval policy, open submissions per
+              author, and how often the workflow ran in the last 24 hours.
+
+One person may have MAX_OPEN other submissions waiting at a time. Past that,
+`check` puts the issue on hold instead of checking it, and a later edit checks
+it once the others are reviewed. The owner, members and collaborators are
+exempt.
 
 The issue body is untrusted text. It is only ever read from the event file
 and parsed here, never interpolated into a shell command.
 
-Locally: `mise run contrib:validate`, `mise run contrib:setup`.
+Locally: `mise run contrib:validate`, `contrib:setup`, `contrib:lockdown`,
+`contrib:unlock`, `contrib:status`; every one that writes takes `--dry-run`.
 """
 
 from __future__ import annotations
@@ -28,9 +40,10 @@ import argparse
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
-from datetime import date
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -49,7 +62,16 @@ LABELS = {
     "valid": ("3fb950", "The bot read the address cleanly"),
     "needs-fix": ("d1242f", "The bot found something to fix in the form"),
     "accepted": ("8a5a00", "Maintainer: add it - the bot opens the pull request"),
+    "on-hold": ("bfbfbf", "The author has too many submissions waiting; edit it once they are reviewed"),
 }
+
+# How many other submissions one person may have waiting before the next one
+# is put on hold, so a flood of issues cannot turn the bot into a runner-time
+# sink. The owner and anyone with write access are trusted and exempt.
+MAX_OPEN = 3
+EXEMPT = frozenset({"OWNER", "MEMBER", "COLLABORATOR"})
+LIMITS = ("existing_users", "contributors_only", "collaborators_only")
+EXPIRIES = ("one_day", "three_days", "one_week", "one_month")
 
 # The form's labels, as GitHub renders them into the issue body (`### Label`),
 # mapped to the field each one fills. tests/test_contrib.py holds these to the
@@ -185,6 +207,32 @@ def reply(loc: Location | None, errors: list[str], warnings: list[str]) -> str:
     return "\n".join(lines) + "\n"
 
 
+# -- the per-author cap ---------------------------------------------------------
+
+def open_elsewhere(issue: dict, open_issues: list[dict]) -> int:
+    """The author's other open submissions; `open_issues` is `gh issue list --json number`."""
+    return sum(1 for i in open_issues if i.get("number") != issue.get("number"))
+
+
+def on_hold(issue: dict, others: int) -> bool:
+    """Too many already waiting, unless the author is trusted."""
+    return issue.get("author_association") not in EXEMPT and others >= MAX_OPEN
+
+
+def hold_reply(others: int) -> str:
+    """The bot's comment on an issue it will not check yet."""
+    return "\n".join([
+        "<!-- portal-address-bot -->",
+        "### ⏸ On hold for now", "",
+        f"Thank you for sharing! You already have {others} other portal "
+        f"{'address' if others == 1 else 'addresses'} waiting for review, and I take "
+        f"{MAX_OPEN} at a time from one person.",
+        "",
+        f"Please wait until your open submissions are reviewed. Once fewer than {MAX_OPEN} "
+        "others are open, edit this issue (any small change will do) and I will check it.",
+    ]) + "\n"
+
+
 # -- the whole file, for a pull request ----------------------------------------
 
 def validate(path: Path) -> list[str]:
@@ -247,17 +295,91 @@ def set_output(name: str, value: str) -> None:
             fh.write(f"{name}={value}\n")
 
 
-def setup() -> None:
+def gh(args: list[str], dry_run: bool = False) -> None:
+    """Make a `gh` call that changes something, or only print it."""
+    if dry_run:
+        print("would run: gh " + shlex.join(args))
+        return
+    subprocess.run(["gh", *args], check=True)
+
+
+def gh_read(args: list[str]) -> tuple[bool, str]:
+    """A read-only `gh` call: (ok, its output or its error)."""
+    done = subprocess.run(["gh", *args], capture_output=True, text=True)
+    return done.returncode == 0, (done.stdout if done.returncode == 0 else done.stderr).strip()
+
+
+def setup(dry_run: bool = False) -> None:
     for name, (colour, about) in LABELS.items():
-        subprocess.run(["gh", "label", "create", name, "-R", REPO, "--force",
-                        "--color", colour, "--description", about], check=True)
+        gh(["label", "create", name, "-R", REPO, "--force",
+            "--color", colour, "--description", about], dry_run)
         print(f"label     {name}")
     # Off by default on every repo: GITHUB_TOKEN may push a branch but not open
     # a pull request. The accept-issue job needs it; nothing else does.
-    subprocess.run(["gh", "api", "-X", "PUT", f"repos/{REPO}/actions/permissions/workflow",
-                    "-f", "default_workflow_permissions=read",
-                    "-F", "can_approve_pull_request_reviews=true"], check=True)
+    gh(["api", "-X", "PUT", f"repos/{REPO}/actions/permissions/workflow",
+        "-f", "default_workflow_permissions=read",
+        "-F", "can_approve_pull_request_reviews=true"], dry_run)
     print("actions   may open pull requests (default token stays read-only)")
+    # The default only holds a first-time contributor's fork PR for approval;
+    # this holds every outside contributor's, so no fork PR spends runner time
+    # until a maintainer has looked at it.
+    gh(["api", "-X", "PUT", f"repos/{REPO}/actions/permissions/fork-pr-contributor-approval",
+        "-f", "approval_policy=all_external_contributors"], dry_run)
+    print("actions   fork pull requests from every outside contributor wait for approval")
+
+
+def lockdown(limit: str, expiry: str, dry_run: bool = False) -> None:
+    gh(["api", "-X", "PUT", f"repos/{REPO}/interaction-limits",
+        "-f", f"limit={limit}", "-f", f"expiry={expiry}"], dry_run)
+    print(f"locked    to {limit.replace('_', ' ')}, for {expiry.replace('_', ' ')}")
+
+
+def unlock(dry_run: bool = False) -> None:
+    gh(["api", "-X", "DELETE", f"repos/{REPO}/interaction-limits"], dry_run)
+    print("unlocked  interaction limits removed")
+
+
+def status(dry_run: bool = False) -> None:
+    since = (datetime.now(timezone.utc) - timedelta(days=1)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    limits_call = ["api", f"repos/{REPO}/interaction-limits"]
+    forks_call = ["api", f"repos/{REPO}/actions/permissions/fork-pr-contributor-approval",
+                  "-q", ".approval_policy"]
+    open_call = ["issue", "list", "-R", REPO, "-l", "portal-address", "--state", "open",
+                 "--limit", "500", "--json", "number,author"]
+    runs_call = ["api", f"repos/{REPO}/actions/workflows/contrib.yml/runs?created=>={since}&per_page=1",
+                 "-q", ".total_count"]
+    if dry_run:
+        for args in (limits_call, forks_call, open_call, runs_call):
+            print("would run: gh " + shlex.join(args))
+        return
+
+    ok, out = gh_read(limits_call)
+    limits = json.loads(out or "{}") if ok else None
+    if limits is None:
+        print(f"limits    unavailable: {out}")
+    elif not limits:
+        print("limits    none - anyone may open issues and pull requests")
+    else:
+        print(f"limits    {limits.get('limit')} only, until {limits.get('expires_at')}")
+
+    ok, out = gh_read(forks_call)
+    print(f"forks     {out if ok else 'unavailable: ' + out}")
+
+    ok, out = gh_read(open_call)
+    if ok:
+        authors: dict[str, int] = {}
+        for issue in json.loads(out or "[]"):
+            login = (issue.get("author") or {}).get("login", "?")
+            authors[login] = authors.get(login, 0) + 1
+        total = sum(authors.values())
+        print(f"open      {total} portal-address issue{'' if total == 1 else 's'}")
+        for login, n in sorted(authors.items(), key=lambda kv: (-kv[1], kv[0])):
+            print(f"          {n:>3}  {login}{'  (next one goes on hold)' if n >= MAX_OPEN else ''}")
+    else:
+        print(f"open      unavailable: {out}")
+
+    ok, out = gh_read(runs_call)
+    print(f"runs      {out if ok else 'unavailable: ' + out} Contributions runs in the last 24h")
 
 
 def main() -> None:
@@ -267,13 +389,26 @@ def main() -> None:
         p = sub.add_parser(name)
         p.add_argument("--event", default=os.environ.get("GITHUB_EVENT_PATH"), required=False)
         p.add_argument("--out", default="bot-reply.md")
+    sub.choices["check"].add_argument(
+        "--open", metavar="JSON",
+        help="the author's open portal-address issues, as `gh issue list --json number` writes them")
     p = sub.add_parser("validate")
     p.add_argument("path", nargs="?", default=str(LOCATIONS))
-    sub.add_parser("setup")
+    for name in ("setup", "lockdown", "unlock", "status"):
+        p = sub.add_parser(name)
+        p.add_argument("--dry-run", action="store_true", help="print the gh calls instead of making them")
+    sub.choices["lockdown"].add_argument("--limit", choices=LIMITS, default="existing_users")
+    sub.choices["lockdown"].add_argument("--expiry", choices=EXPIRIES, default="one_day")
     args = parser.parse_args()
 
     if args.cmd == "setup":
-        return setup()
+        return setup(args.dry_run)
+    if args.cmd == "lockdown":
+        return lockdown(args.limit, args.expiry, args.dry_run)
+    if args.cmd == "unlock":
+        return unlock(args.dry_run)
+    if args.cmd == "status":
+        return status(args.dry_run)
 
     if args.cmd == "validate":
         problems = validate(Path(args.path))
@@ -286,6 +421,14 @@ def main() -> None:
         sys.exit(1 if problems else 0)
 
     issue = load_issue(args.event)
+    if args.cmd == "check" and args.open:
+        others = open_elsewhere(issue, json.loads(Path(args.open).read_text(encoding="utf-8") or "[]"))
+        if on_hold(issue, others):
+            Path(args.out).write_text(hold_reply(others), encoding="utf-8")
+            set_output("held", "true")
+            print(Path(args.out).read_text(encoding="utf-8"))
+            return
+    set_output("held", "false")
     book = LocationBook.load(LOCATIONS)
     loc, errors, warnings = check(parse_form(issue.get("body") or ""), book)
     Path(args.out).write_text(reply(loc, errors, warnings), encoding="utf-8")

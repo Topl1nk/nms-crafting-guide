@@ -3,7 +3,8 @@
 # requests that edit data/locations.json to the same rules.
 #
 # The issue body is untrusted. It never reaches a shell: scripts/portal_issue.py
-# reads it from the event file. Only numbers from the event are interpolated.
+# reads it from the event file. Only numbers from the event are interpolated;
+# the author's login reaches the shell only as an environment variable.
 name: Contributions
 
 on:
@@ -24,20 +25,44 @@ jobs:
       github.event_name == 'issues' && github.event.action != 'labeled' &&
       contains(github.event.issue.labels.*.name, 'portal-address')
     runs-on: ubuntu-latest
+    timeout-minutes: 3
+    # A burst of edits to one issue only needs its last one checked.
+    concurrency:
+      group: contrib-check-${{ github.event.issue.number }}
+      cancel-in-progress: true
     permissions:
       contents: read
       issues: write
     env:
       GH_TOKEN: ${{ github.token }}
       ISSUE: ${{ github.event.issue.number }}
+      AUTHOR: ${{ github.event.issue.user.login }}
     steps:
       - uses: actions/checkout@v7
+      # The author's open submissions, for the per-author cap. The script
+      # drops this issue from the count and exempts the owner and anyone
+      # with write access (author_association, read from the event file).
+      - run: >-
+          gh issue list -R "$GITHUB_REPOSITORY" --author "$AUTHOR"
+          --label portal-address --state open --limit 20 --json number > open.json
       - id: check
-        run: python3 scripts/portal_issue.py check --out reply.md
-      - run: gh issue comment "$ISSUE" --edit-last --create-if-none --body-file reply.md
-      - if: steps.check.outputs.valid == 'true'
+        run: python3 scripts/portal_issue.py check --open open.json --out reply.md
+      # On hold: say so once. Further edits while it stays on hold are quiet.
+      - if: >-
+          steps.check.outputs.held == 'true' &&
+          !contains(github.event.issue.labels.*.name, 'on-hold')
+        run: |
+          gh issue comment "$ISSUE" --edit-last --create-if-none --body-file reply.md
+          gh issue edit "$ISSUE" --add-label on-hold
+      - if: steps.check.outputs.held != 'true'
+        run: gh issue comment "$ISSUE" --edit-last --create-if-none --body-file reply.md
+      - if: >-
+          steps.check.outputs.held != 'true' &&
+          contains(github.event.issue.labels.*.name, 'on-hold')
+        run: gh issue edit "$ISSUE" --remove-label on-hold
+      - if: steps.check.outputs.held != 'true' && steps.check.outputs.valid == 'true'
         run: gh issue edit "$ISSUE" --add-label valid --remove-label needs-fix
-      - if: steps.check.outputs.valid != 'true'
+      - if: steps.check.outputs.held != 'true' && steps.check.outputs.valid != 'true'
         run: gh issue edit "$ISSUE" --add-label needs-fix --remove-label valid
 
   # The repo owner adds `accepted`; the bot writes the entry and opens a PR
@@ -50,6 +75,12 @@ jobs:
       github.event.sender.login == github.repository_owner &&
       contains(github.event.issue.labels.*.name, 'portal-address')
     runs-on: ubuntu-latest
+    timeout-minutes: 3
+    # Its own group, never cancelled: an edit landing mid-accept must not
+    # leave a half-pushed branch behind.
+    concurrency:
+      group: contrib-accept-${{ github.event.issue.number }}
+      cancel-in-progress: false
     permissions:
       contents: write
       issues: write
@@ -86,6 +117,10 @@ jobs:
   validate-pr:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    concurrency:
+      group: contrib-pr-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
     steps:
       - uses: actions/checkout@v7
       - run: python3 scripts/portal_issue.py validate
