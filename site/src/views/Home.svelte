@@ -9,9 +9,11 @@
   // plugii and dotfiles start pages. Every count on it is read off data.json,
   // so the page cannot claim a number the data no longer has.
   import FeatureCard from "../components/FeatureCard.svelte";
+  import InstallApp from "../components/InstallApp.svelte";
   import InstallPanes from "../components/InstallPanes.svelte";
   import { fmtInt } from "../lib/core.js";
   import { D, gameRelease, name, RECIPES, REPO_URL } from "../lib/data.js";
+  import { install as installApp, pwa } from "../lib/pwa.svelte.js";
 
   const count = (domain) => D.recipes.filter((r) => r.domain === domain).length;
   const dishes = D.cooking.reduce((n, g) => n + g.dishes.length, 0);
@@ -85,6 +87,9 @@
   </p>
   <div class="hero-actions">
     <a class="primary" href="#/recipes">Open the recipes</a>
+    {#if pwa.canInstall && !pwa.standalone}
+      <button type="button" onclick={installApp}>Install app</button>
+    {/if}
     <a href="#/home" onclick={toInstall}>Run it locally</a>
     <a href="pdf/nms-cheatsheet-dark.pdf">Cheat sheet (PDF)</a>
     <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>
@@ -110,6 +115,9 @@
 
   <h2 class="section">Other ways in</h2>
   <div class="features">
+    {#if !pwa.standalone}
+      <FeatureCard href="#/home" onclick={toInstall} title="As an app" icon="app">Install this site from the browser, or <b>Share → Add to Home Screen</b> on an iPhone, and it opens in its own window and works with no signal, data included.</FeatureCard>
+    {/if}
     <FeatureCard href="#/home" onclick={toInstall} title="In a terminal" icon="terminal"><code>nms</code> has the same screens with vim keys, a command palette and themes, and saves portal addresses to a file you can share. <code>uv run nms</code> in a checkout, or <code>podman compose run --rm tui</code> with nothing else installed.</FeatureCard>
     <FeatureCard href="{REPO_URL}#for-ai-assistants-mcp" title="For AI assistants" icon="ai"><code>nms mcp</code> serves the chain planner, inventory matching, storage rules and portal arithmetic over MCP, so an assistant looks them up instead of guessing from a wiki. <code>mise run mcp:install-claude</code>, or Codex, pi, opencode, goose.</FeatureCard>
     <FeatureCard href="llms.txt" title="As markdown" icon="markdown">Every section and every item as plain markdown, for crawlers and language models: <code>llms.txt</code>, <code>llms-full.txt</code>, and a page per item. Each page's footer links its own twin.</FeatureCard>
@@ -119,6 +127,7 @@
   <p class="lede muted">The terminal app has the same screens with vim keys, a command palette and themes, and
     saves portal addresses to a file you can share. It works offline once installed.</p>
   <InstallPanes />
+  <InstallApp />
 
   <h2 class="section">Good to know</h2>
   <div class="features">
@@ -191,14 +200,15 @@
   .lede.muted { font-size: 1rem; color: var(--p-faint); }
 
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
-  .hero-actions a {
+  .hero-actions a, .hero-actions button {
     font-family: var(--p-mono);
     padding: 10px 22px;
     text-decoration: none;
     color: var(--p-text);
     box-shadow: inset 0 0 0 1px var(--p-outline);
   }
-  .hero-actions a:hover { color: var(--p-accent); box-shadow: inset 0 0 0 1px var(--p-accent); }
+  .hero-actions button { background: none; border: 0; border-radius: 0; cursor: pointer; font-size: inherit; }
+  .hero-actions a:hover, .hero-actions button:hover { color: var(--p-accent); box-shadow: inset 0 0 0 1px var(--p-accent); }
   .hero-actions a.primary { background: var(--p-accent); color: var(--p-on-accent); font-weight: 700; box-shadow: none; }
   .hero-actions a.primary::before { content: "[ "; }
   .hero-actions a.primary::after { content: " ]"; }

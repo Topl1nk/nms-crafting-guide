@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="The web checks only: the export, and site/src/lib/core.js against the Python (needs node)"
+#MISE description="The web checks only: the export, site/src/lib/core.js against the Python, and a built dist/ as an installable offline app (needs node)"
 #MISE alias="test-web"
 set -euo pipefail
 

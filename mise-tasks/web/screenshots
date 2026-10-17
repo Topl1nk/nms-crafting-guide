@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#MISE description="Retake the install screenshots in web/screenshots/ (manifest.webmanifest's richer install sheet) with headless chromium"
+#MISE depends=["web:build"]
+set -euo pipefail
+
+# The recipe list, dark, at a phone's width and a desktop's: the sizes
+# web/manifest.webmanifest states, so a new size is a change there too. Served
+# by `vite preview`, the built page as Pages serves it. Needs chromium (pacman).
+# The outputs are committed, like the favicons; retake them when the page's
+# look changes.
+
+out=web/screenshots
+mkdir -p "$out"
+npm run --silent preview >/dev/null 2>&1 &
+server=$!
+profile=$(mktemp -d)
+trap 'kill "$server" 2>/dev/null; rm -rf "$profile"' EXIT
+for _ in $(seq 50); do curl -sf http://127.0.0.1:8791/ >/dev/null && break; sleep 0.2; done
+
+shoot() { # name width height
+  chromium --headless=new --user-data-dir="$profile" --hide-scrollbars \
+    --force-dark-mode --blink-settings=preferredColorScheme=0 \
+    --window-size="$2,$3" --virtual-time-budget=8000 \
+    --screenshot="$PWD/$out/$1.webp" "http://127.0.0.1:8791/#/recipes" 2>/dev/null
+}
+shoot recipes-narrow 390 844
+shoot recipes-wide 1400 900
+ls -l "$out"

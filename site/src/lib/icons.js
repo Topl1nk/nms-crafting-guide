@@ -15,5 +15,6 @@ export const ICONS = {
   keys: '<rect x="2.5" y="6" width="19" height="12" rx="1"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7.5 14h9"/>',
   ai: '<path d="M4 4h16v12h-9l-4.5 4v-4H4z"/><path d="M12 7.2l.9 2 2 .9-2 .9-.9 2-.9-2-2-.9 2-.9z"/>',
   markdown: '<rect x="2.5" y="6" width="19" height="12"/><path d="M6 15V9l2.5 3L11 9v6M16.5 9v6M14 12.5l2.5 2.5 2.5-2.5"/>',
+  app: '<rect x="6" y="2.5" width="12" height="19" rx="1.5"/><path d="M12 6.5v7M9 10.5l3 3 3-3M10.5 18h3"/>',
   terminal: '<rect x="3" y="4" width="18" height="16"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/>',
 };

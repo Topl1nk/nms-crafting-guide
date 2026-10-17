@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "postbuild": "node scripts/check_pwa.mjs dist",
     "preview": "vite preview",
     "check": "svelte-check --workspace site --fail-on-warnings"
   },

@@ -22,6 +22,7 @@ of the recipes worth memorising.
 | | |
 | --- | --- |
 | 🌐 **Web** | **[nmsii.dlu.one](https://nmsii.dlu.one)** — nothing to install, works on a phone next to the game. [On the web](#on-the-web) |
+| 📲 **App** | Install it as an app: *Install app* on the site (or the browser's menu; Share → Add to Home Screen on iOS). Its own window, works offline. [Install it as an app](#install-it-as-an-app) |
 | ⌨️ **Terminal** | `uv run nms` in a checkout, or `mise run tui`: the same screens with vim keys and a command palette. [In the terminal](#in-the-terminal) |
 | 📦 **Container** | `podman compose run --rm tui` for the app, `podman compose up site` for the site offline. [In a container](#in-a-container) |
 | 🤖 **AI / MCP** | `nms mcp`, registered by `mise run mcp:install-claude` (or `install-codex`, `-pi`, `-opencode`, `-goose`). [For AI assistants](#for-ai-assistants-mcp) |
@@ -78,6 +79,35 @@ text, 0xProto for code, numbers and navigation (both self-hosted in
 headings. The accent is the game's HUD gold, with Dracula's colours kept for
 what carries meaning; neutral greys in the dark, a warmed Alucard in the light,
 and a Light / Dark / System menu that follows the OS by default.
+
+### Install it as an app
+
+The site is a Progressive Web App. *Install app* on the start page or in Help
+(where the browser offers it: Chrome, Edge, Android), the browser's own menu,
+or Share → Add to Home Screen in Safari on iOS puts it on the home screen or in
+the app list, with its own window and shortcuts to Recipes, Nanites, Cooking
+and Portals. Once installed it works with no signal at all, which is the point
+for a phone propped up next to the game.
+
+`site/sw.js` is the service worker, and `vite.config.js` writes it into
+`dist/sw.js` after each build, with the list of files to store and a version
+hashed from them:
+
+| What | How it is cached |
+| --- | --- |
+| the page, the hashed bundle, fonts, icons, the manifest | stored at install, served from the cache |
+| `data.json` | stored at install, served from the cache and refreshed behind it, so new data shows on the next visit |
+| `md/`, `pdf/`, `img/` | kept as they are opened, network first, capped |
+| any page load | the stored `index.html`: every route is a `#` fragment |
+
+A new deploy makes a new worker, which waits: the page shows *New data/version
+available — reload* and switches only when asked. Old caches are deleted when
+the new one takes over. `vite dev` never registers a worker. The footer says
+when the page is offline, and which game data it is using. The manifest is
+`web/manifest.webmanifest`; its icons come from `mise run web:favicon`, its
+screenshots from `mise run web:screenshots`, and every `npm run build` ends
+with `scripts/check_pwa.mjs`, which fails the build if the manifest or the
+worker's file list does not match what is in `dist/`.
 
 What lives in the browser stays there: the inventory and any portal addresses
 you save are kept in `localStorage`. *Export mine* on the portals page downloads
@@ -706,7 +736,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | Task | Does |
 | --- | --- |
 | `mise run test:fast` | the full suite in parallel (pytest-xdist, `-n auto --dist worksteal`); serial is `uv run pytest -n0` |
-| `mise run test:web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys |
+| `mise run test:web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys, and a built `dist/` as an installable offline app |
 | `mise run test:md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
 | `mise run test:mcp` | only the MCP checks: each tool against its module, the server in-process and over stdio, the install tasks |
 
@@ -721,7 +751,8 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | `mise run web:check` | svelte-check over the site's components; warnings fail it |
 | `mise run web:build` | export, then build the deployable site into `dist/` |
 | `mise run web:site` | build, then serve `dist/` on `:8791` as Pages will |
-| `mise run web:favicon` | redraw the site icon from the Atlas glyph |
+| `mise run web:favicon` | redraw the site icon from the Atlas glyph, and the app icons the manifest names |
+| `mise run web:screenshots` | retake the install screenshots in `web/screenshots/` with headless chromium |
 
 **`pages:*`** — GitHub Pages
 
@@ -890,12 +921,13 @@ src/nms_items/
 scripts/       extract from the game (or fetch), normalise, diff, pick cheat-sheet rows, trace glyphs, screenshots, web export
 site/          the web page's source (Svelte 5 + Vite), built into dist/
   index.html   the shell, and the theme script that runs before first paint
+  sw.js        the service worker; vite.config.js writes it into dist/ with its file list
   src/App.svelte  header, view, footer; picks the view from the #/route
   src/views/   one component per screen: Recipes, Chain, Nanites, Cooking, Portals, ...
   src/components/  List (the vim-keyed table), GlyphStrip, Header, Palette, ThemeMenu, ...
-  src/lib/     core.js (the logic test_web.py checks), data, router, keys, storage
+  src/lib/     core.js (the logic test_web.py checks), data, router, keys, storage, pwa (install, updates)
   src/global.css  the skin's tokens, fonts and base; each component styles itself
-web/           served as it is: fonts/, favicons, and what build_web.py exports
+web/           served as it is: fonts/, favicons and app icons, the manifest, and what build_web.py exports
 package.json, vite.config.js  the site's build, pinned by package-lock.json
 scripts/pages.py  GitHub Pages settings for nmsii.dlu.one, via gh
 scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
