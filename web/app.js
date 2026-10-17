@@ -1092,6 +1092,23 @@ const PRIMER = `
 
 // Home -------------------------------------------------------------------------
 
+// Line icons for the section cards, in the 24px / 1.5-stroke outline style of
+// the plugii and dotfiles start pages. Drawn here, not taken from a set.
+const ICONS = {
+  recipes: '<path d="M9 3h6M10 3v6l-5.2 9.2A1.9 1.9 0 0 0 6.5 21h11a1.9 1.9 0 0 0 1.7-2.8L14 9V3"/><path d="M7.4 15h9.2"/>',
+  chain: '<rect x="9" y="3" width="6" height="4"/><rect x="3" y="17" width="6" height="4"/><rect x="15" y="17" width="6" height="4"/><path d="M12 7v7.5M6 17v-2.5h12V17"/>',
+  nanites: '<path d="M12 3l7.8 4.5v9L12 21l-7.8-4.5v-9z"/><path d="M4.2 7.5L12 12l7.8-4.5M12 12v9"/>',
+  cooking: '<path d="M4 11h16v2.5A6.5 6.5 0 0 1 13.5 20h-3A6.5 6.5 0 0 1 4 13.5z"/><path d="M2 11h20M9 7.5c0-1.6 1.2-1.6 1.2-3.5M14 7.5c0-1.6 1.2-1.6 1.2-3.5"/>',
+  multitools: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.5"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/>',
+  portals: '<path d="M5 21V11a7 7 0 0 1 14 0v10"/><path d="M8.5 21v-9.5a3.5 3.5 0 0 1 7 0V21M3 21h18"/>',
+  storage: '<rect x="3" y="4" width="18" height="5"/><path d="M5 9v11h14V9M10 13h4"/>',
+  inventory: '<path d="M6 10a6 6 0 0 1 12 0v10H6z"/><path d="M9.5 5V3h5v2M9 14h6v3H9z"/>',
+  sheet: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+  data: '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',
+  keys: '<rect x="2.5" y="6" width="19" height="12" rx="1"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7.5 14h9"/>',
+  terminal: '<rect x="3" y="4" width="18" height="16"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/>',
+};
+
 // What the project is, and a card per section -- the same shape as the plugii
 // and dotfiles start pages. Every count on it is read off data.json, so the
 // page cannot claim a number the data no longer has.
@@ -1107,9 +1124,9 @@ VIEWS.home = () => {
     .sort((a, b) => (D.items[b]?.value ?? 0) - (D.items[a]?.value ?? 0))[0];
   const n = (x) => `<b>${fmtInt(x)}</b>`;
 
-  const card = (key, href, title, body) => `
+  const card = (key, href, title, body, icon) => `
     <a class="feature" href="${href}">
-      <h3><span>${esc(title)}</span>${key ? `<kbd>${key}</kbd>` : ""}</h3>
+      <h3>${ICONS[icon] ? `<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[icon]}</svg>` : ""}<span>${esc(title)}</span>${key ? `<kbd>${key}</kbd>` : ""}</h3>
       <p>${body}</p>
     </a>`;
 
@@ -1140,22 +1157,22 @@ VIEWS.home = () => {
 
       <h2 class="section">What's inside</h2>
       <div class="features">
-        ${card("1", "#/recipes", "Recipes", `${n(count("refine"))} refining and ${n(count("cook"))} cooking recipes, searchable by output, ingredient or operation. Sort by multiplier, speed, profit or how gettable the inputs are; ${loops} recipes are loops that grow a stack from a seed.`)}
-        ${card("c", `#/chain/${encodeURIComponent(showcase)}`, "Chain planner", `Works backwards from any item to what you can pick up on any planet, off asteroids, or from an atmosphere harvester, minimising refiner time. Try it on ${esc(name(showcase))}, the most valuable thing the bare planet surface refines into.`)}
-        ${card("2", "#/nanites", "Nanite ladder", `All ${n(D.nanites.length)} routes to nanites, ranked by nanites per hour per refiner, with where each input drops. The best is ${esc(bestNanite?.inputs ?? "")} at ${n(bestNanite?.rate ?? 0)}/h.`)}
-        ${card("3", "#/cooking", "Cooking buffs", `${n(dishes)} dishes across ${n(D.cooking.length)} buffs: what each one does when you eat it, how strongly, and what it sells for. Cook the batch, eat one, sell the rest.`)}
-        ${card("4", "#/multitools", "Multi-tools", `The ${n(D.multitools.types.length)} types side by side, the weapons measured, where the free S-class ones come from, and the adjacency and supercharged-slot rules.`)}
-        ${card("5", "#/portals", "Portal addresses", `Convert between portal glyphs and galactic coordinates as you type, dial an address symbol by symbol, and browse ${n(D.portals.locations.length)} saved places worth going.`)}
-        ${card("6", "#/storage", "Where does it go?", `Every one of ${n(Object.keys(D.items).length)} items gets a home: one of the ${containers} storage containers, Cold Storage, or sell, junk, use it now. Type "sell" to list everything to sell.`)}
-        ${card("7", "#/inventory", "Inventory", "Type what you are carrying, and see what you can make right now and what you are one ingredient short of. Kept in this browser.")}
-        ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.")}
+        ${card("1", "#/recipes", "Recipes", `${n(count("refine"))} refining and ${n(count("cook"))} cooking recipes, searchable by output, ingredient or operation. Sort by multiplier, speed, profit or how gettable the inputs are; ${loops} recipes are loops that grow a stack from a seed.`, "recipes")}
+        ${card("c", `#/chain/${encodeURIComponent(showcase)}`, "Chain planner", `Works backwards from any item to what you can pick up on any planet, off asteroids, or from an atmosphere harvester, minimising refiner time. Try it on ${esc(name(showcase))}, the most valuable thing the bare planet surface refines into.`, "chain")}
+        ${card("2", "#/nanites", "Nanite ladder", `All ${n(D.nanites.length)} routes to nanites, ranked by nanites per hour per refiner, with where each input drops. The best is ${esc(bestNanite?.inputs ?? "")} at ${n(bestNanite?.rate ?? 0)}/h.`, "nanites")}
+        ${card("3", "#/cooking", "Cooking buffs", `${n(dishes)} dishes across ${n(D.cooking.length)} buffs: what each one does when you eat it, how strongly, and what it sells for. Cook the batch, eat one, sell the rest.`, "cooking")}
+        ${card("4", "#/multitools", "Multi-tools", `The ${n(D.multitools.types.length)} types side by side, the weapons measured, where the free S-class ones come from, and the adjacency and supercharged-slot rules.`, "multitools")}
+        ${card("5", "#/portals", "Portal addresses", `Convert between portal glyphs and galactic coordinates as you type, dial an address symbol by symbol, and browse ${n(D.portals.locations.length)} saved places worth going.`, "portals")}
+        ${card("6", "#/storage", "Where does it go?", `Every one of ${n(Object.keys(D.items).length)} items gets a home: one of the ${containers} storage containers, Cold Storage, or sell, junk, use it now. Type "sell" to list everything to sell.`, "storage")}
+        ${card("7", "#/inventory", "Inventory", "Type what you are carrying, and see what you can make right now and what you are one ingredient short of. Kept in this browser.", "inventory")}
+        ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.", "sheet")}
       </div>
 
       <h2 class="section">Good to know</h2>
       <div class="features">
-        ${card("", "https://github.com/ApexFatality93/NMS-Handbook", "Straight from the game files", "Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.")}
-        ${card("?", "#/help", "Keys and columns", "<kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.")}
-        ${card("", "https://github.com/rdlu/nms-items#using-it", "Run it in a terminal", "The same screens as a Textual TUI with vim keys, a command palette and themes. <code>mise run tui</code> from the repo.")}
+        ${card("", "https://github.com/ApexFatality93/NMS-Handbook", "Straight from the game files", "Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.", "data")}
+        ${card("?", "#/help", "Keys and columns", "<kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.", "keys")}
+        ${card("", "https://github.com/rdlu/nms-items#using-it", "Run it in a terminal", "The same screens as a Textual TUI with vim keys, a command palette and themes. <code>mise run tui</code> from the repo.", "terminal")}
       </div>
     </section>`;
 };
@@ -1204,7 +1221,7 @@ VIEWS.help = () => {
 const NAV = [
   ["recipes", "Recipes"], ["nanites", "Nanites"], ["cooking", "Cooking"],
   ["multitools", "Multi-tools"], ["portals", "Portals"], ["storage", "Storage"],
-  ["inventory", "Inventory"], ["help", "?"],
+  ["inventory", "Inventory"], ["help", "Help"],
 ];
 
 function route() {
@@ -1214,7 +1231,9 @@ function route() {
   const params = new URLSearchParams(query);
   const render = VIEWS[section] || VIEWS.home;
   document.querySelectorAll("#nav a").forEach((a) => {
-    a.classList.toggle("on", a.dataset.view === section || (section === "chain" && a.dataset.view === "recipes"));
+    const on = a.dataset.view === section || (section === "chain" && a.dataset.view === "recipes");
+    a.classList.toggle("on", on);
+    if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
   // A fresh element per visit, so listeners a view hangs on it leave with it.
   const fresh = view().cloneNode(false);
@@ -1228,6 +1247,11 @@ function route() {
 }
 
 function onKey(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+    e.preventDefault();
+    openPalette();
+    return;
+  }
   if (e.ctrlKey || e.metaKey || e.altKey) return;
   const typing = e.target.closest("input, select, textarea");
   if (typing) {
@@ -1263,9 +1287,124 @@ function onKey(e) {
   e.preventDefault();
 }
 
+// -- header: theme, menu, search palette --------------------------------------
+
+// Explicit choice wins and is remembered; otherwise the system decides.
+function currentTheme() {
+  return document.documentElement.dataset.theme
+    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+}
+
+function setupHeader() {
+  $("#theme").addEventListener("click", () => {
+    const next = currentTheme() === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    local.set("theme", next);
+  });
+  const menu = $("#menu");
+  const closeMenu = () => { document.body.classList.remove("menu-open"); menu.setAttribute("aria-expanded", "false"); };
+  menu.addEventListener("click", () => {
+    const open = document.body.classList.toggle("menu-open");
+    menu.setAttribute("aria-expanded", String(open));
+  });
+  $("#nav").addEventListener("click", closeMenu);
+  window.addEventListener("hashchange", closeMenu);
+  $("#search-open").addEventListener("click", openPalette);
+  $("#palette").addEventListener("click", (e) => { if (e.target.id === "palette") closePalette(); });
+  $("#palette-q").addEventListener("input", () => { palette.sel = 0; drawPalette(); });
+  $("#palette-q").addEventListener("keydown", (e) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      palette.sel = Math.max(0, Math.min(palette.rows.length - 1, palette.sel + (e.key === "ArrowDown" ? 1 : -1)));
+      drawPalette(false);
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      choose(palette.rows[palette.sel]);
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      e.stopPropagation();
+      closePalette();
+    }
+  });
+  $("#palette-list").addEventListener("click", (e) => {
+    const li = e.target.closest("li[data-i]");
+    if (li) choose(palette.rows[Number(li.dataset.i)]);
+  });
+}
+
+// The TUI's Ctrl+P palette, as the site's search: sections by name, items by
+// name (exact, then prefix, then substring, like Book.search_items), and a
+// pasted portal address straight into the converter.
+const palette = { rows: [], sel: 0 };
+
+function openPalette() {
+  if (!D) return;
+  $("#palette").hidden = false;
+  $("#palette-q").value = "";
+  palette.sel = 0;
+  drawPalette();
+  $("#palette-q").focus();
+}
+
+function closePalette() { $("#palette").hidden = true; }
+
+function choose(row) {
+  if (!row) return;
+  closePalette();
+  location.hash = row.href;
+}
+
+function paletteRows(q) {
+  const text = q.trim();
+  const lower = text.toLowerCase();
+  const rows = [];
+  const sections = [["home", "Home"], ...NAV];
+  for (const [key, label] of sections) {
+    if (!lower || label.toLowerCase().includes(lower)) {
+      rows.push({ kind: "section", label, href: `#/${key === "home" ? "" : key}` });
+    }
+  }
+  if (!lower) return rows;
+  try {
+    const a = Address.parse(text);
+    rows.unshift({ kind: "portal", label: a.code, note: a.galactic, href: `#/portals?code=${a.code}` });
+  } catch { /* not an address */ }
+  const starts = [];
+  const contains = [];
+  for (const [id, item] of Object.entries(D.items)) {
+    const n = item.name.toLowerCase();
+    if (n.startsWith(lower)) starts.push(id);
+    else if (n.includes(lower)) contains.push(id);
+  }
+  const byName = (a, b) =>
+    (name(a).toLowerCase() !== lower) - (name(b).toLowerCase() !== lower) || name(a).localeCompare(name(b));
+  for (const id of [...starts.sort(byName), ...contains.sort(byName)].slice(0, 30)) {
+    const recipes = PRODUCED[id] || CONSUMED[id];
+    rows.push({
+      kind: recipes ? "item" : "store",
+      label: name(id),
+      note: D.items[id].sub,
+      // Items no recipe touches still have a storage answer.
+      href: recipes ? `#/recipes?item=${encodeURIComponent(id)}` : `#/storage?q=${encodeURIComponent(name(id))}`,
+    });
+  }
+  return rows;
+}
+
+function drawPalette(rebuild = true) {
+  if (rebuild) palette.rows = paletteRows($("#palette-q").value);
+  const tag = { section: "go", item: "recipes", store: "storage", portal: "portal" };
+  $("#palette-list").innerHTML = palette.rows.length
+    ? palette.rows.map((r, i) => `<li data-i="${i}" role="option"${i === palette.sel ? ' class="sel" aria-selected="true"' : ""}>
+        <span class="pl">${esc(r.label)}</span>${r.note ? `<span class="pn">${esc(r.note)}</span>` : ""}<span class="pt">${tag[r.kind]}</span></li>`).join("")
+    : `<li class="empty">Nothing by that name.</li>`;
+  $("#palette-list .sel")?.scrollIntoView({ block: "nearest" });
+}
+
 async function main() {
   $("#nav").innerHTML = NAV.map(([k, label], i) =>
-    `<a href="#/${k}" data-view="${k}"${i < 7 ? ` title="${i + 1}"` : ` title="help"`}>${esc(label)}</a>`).join("");
+    `<a href="#/${k}" data-view="${k}" title="${i < 7 ? `key ${i + 1}` : "key ?"}">${esc(label)}</a>`).join("");
+  setupHeader();
   try {
     const res = await fetch("data.json");
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);

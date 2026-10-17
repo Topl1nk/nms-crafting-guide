@@ -21,8 +21,8 @@ PYTHONPATH = "{{config_root}}/src"
 # --- setup ------------------------------------------------------------------
 
 [tasks.setup]
-description = "System deps: the two fonts the PDF uses, and potrace for the glyphs"
-run = "paru -S --needed inter-font ttf-jetbrains-mono potrace"
+description = "System deps: the two fonts the PDF uses, potrace for the glyphs, resvg + imagemagick for the favicon"
+run = "paru -S --needed inter-font ttf-jetbrains-mono potrace resvg imagemagick"
 
 [tasks.sync]
 description = "Install / update Python dependencies (textual)"
@@ -46,15 +46,6 @@ run = "uv run textual console"
 [tasks.web]
 description = "Serve the TUI in a browser on localhost:8000"
 run = "uv run textual serve 'python -m nms_items'"
-
-[tasks.web-data]
-description = "Export the static site's data into web/data.json (plus the cheat-sheet PDFs)"
-run = "uv run python scripts/build_web.py"
-
-[tasks.site]
-description = "Serve the static web version on localhost:8001"
-depends = ["web-data"]
-run = "uv run python -m http.server 8001 --directory web --bind 127.0.0.1"
 
 # --- data -------------------------------------------------------------------
 
@@ -85,6 +76,54 @@ depends = ["fetch-glyphs", "build-glyphs"]
 [tasks.refresh]
 description = "Full data rebuild after a game patch: fetch → normalise → cheat sheet → PDF"
 depends = ["fetch", "build-data", "cheatsheet-data", "pdf"]
+
+# --- web site (nms.dlu.one) ------------------------------------------------
+
+[tasks.web-data]
+description = "Export the static site's data into web/data.json (plus the PDFs and screenshots)"
+run = "uv run python scripts/build_web.py"
+
+[tasks.site]
+description = "Export, then serve the static site on localhost:8001"
+depends = ["web-data"]
+run = "uv run python -m http.server 8001 --directory web --bind 127.0.0.1"
+
+[tasks.favicon]
+description = "Redraw the site icon from the Atlas glyph: favicon.svg/.ico, apple-touch-icon.png"
+run = "uv run python scripts/build_favicon.py"
+
+[tasks.test-web]
+description = "The web checks only: the export, and web/core.js against the Python (needs node)"
+run = "uv run pytest -q tests/test_web.py"
+
+# --- release -----------------------------------------------------------------
+
+[tasks.check]
+description = "Everything CI runs before a deploy: the full test suite and the web export"
+depends = ["test"]
+run = "uv run python scripts/build_web.py"
+
+[tasks.deploy]
+description = "Check, push main over SSH, and follow the Pages deploy it triggers"
+depends = ["check"]
+run = [
+  "test \"$(git branch --show-current)\" = main || { echo 'deploy pushes main - switch to it first'; exit 1; }",
+  "test -z \"$(git status --porcelain)\" || { echo 'uncommitted changes - commit or stash them first'; exit 1; }",
+  "git push origin main",
+  "sleep 5 && gh run watch -R rdlu/nms-items --exit-status $(gh run list -R rdlu/nms-items -w pages.yml -L 1 --json databaseId -q '.[0].databaseId')",
+]
+
+[tasks.pages-setup]
+description = "Turn GitHub Pages on (Actions source) with the nms.dlu.one domain - idempotent"
+run = "uv run python scripts/pages.py setup"
+
+[tasks.pages-https]
+description = "Enforce HTTPS on nms.dlu.one, once GitHub has issued the certificate"
+run = "uv run python scripts/pages.py https"
+
+[tasks.pages-status]
+description = "DNS, Pages settings, certificate and the last deploy, at a glance"
+run = "uv run python scripts/pages.py status"
 
 # --- pdf --------------------------------------------------------------------
 

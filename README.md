@@ -48,9 +48,11 @@ mise run site       # export data.json and serve web/ on localhost:8001
 It is live at **[nms.dlu.one](https://nms.dlu.one)**.
 `.github/workflows/pages.yml` runs the tests, exports the data and publishes
 `web/` to GitHub Pages on every push to `main`; the cheat-sheet PDFs are
-published with it. The custom domain is a repo setting (Settings → Pages), not
-a `CNAME` file -- an Actions deploy ignores one -- plus a Cloudflare `CNAME`
-record `nms → rdlu.github.io`.
+published with it. The custom domain is a repo setting, not a `CNAME` file --
+an Actions deploy ignores one -- so `scripts/pages.py` manages it through `gh`
+(`mise run pages-setup`, `pages-https`, `pages-status`). DNS is a Cloudflare
+`CNAME` record `nms → rdlu.github.io`, DNS only, so GitHub can issue the
+certificate. `mise run deploy` is the whole release: tests, push, watch.
 
 It wears the same skin as the dotfiles and plugii sites: iA Writer Duo for
 text, 0xProto for code, numbers and navigation (both self-hosted in
@@ -386,6 +388,13 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | `mise run web` | serve the TUI itself in a browser on `:8000` (textual serve) |
 | `mise run web-data` | export `web/data.json` for the static site |
 | `mise run site` | export, then serve the static site on `:8001` |
+| `mise run test-web` | only the web checks: the export, and `web/core.js` against the Python |
+| `mise run favicon` | redraw the site icon from the Atlas glyph |
+| `mise run check` | what CI runs: the full suite and the web export |
+| `mise run deploy` | check, push `main` over SSH, and follow the Pages deploy |
+| `mise run pages-status` | DNS, Pages settings, certificate and the last deploy |
+| `mise run pages-setup` | turn Pages on with the Actions source and the `nms.dlu.one` domain |
+| `mise run pages-https` | enforce HTTPS once the certificate is issued |
 | `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` |
 | `mise run pdf-watch` | rebuild the light PDF on every save |
 | `mise run refresh` | full data rebuild from upstream |
@@ -411,7 +420,8 @@ src/nms_items/
   screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
 scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots, web export
-web/           the static site: index.html, app.js (views), core.js (logic), style.css
+web/           the static site: index.html, app.js (views), core.js (logic), style.css, fonts/
+scripts/pages.py  GitHub Pages settings for nms.dlu.one, via gh
 cheatsheet.typ the PDF
 ```
 
