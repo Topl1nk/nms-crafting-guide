@@ -52,8 +52,8 @@ favicons, and everything the export writes — and the build copies it into
 always had, and what the browser remembers stays under the same `nms-items:`
 keys.
 
-It needs node (22.12 or newer) and npm from the system; `package-lock.json`
-pins the rest.
+It needs node, which `mise install` sets up at the version `mise.toml` pins
+(any node 22.12 or newer works too); `package-lock.json` pins the rest.
 
 ```fish
 mise run web-dev    # export, then a live-reloading dev server on localhost:8790
@@ -136,7 +136,7 @@ uv run nms
 **mise**, to work on it:
 
 ```fish
-mise install        # uv + typst
+mise install        # uv + typst + node
 mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
 mise run sync       # python deps
 mise run tui        # go
@@ -554,6 +554,21 @@ Every task, as `mise tasks` lists them; nothing here needs a raw `npm` or
 | `mise run setup` | system deps: the PDF fonts, potrace, resvg, imagemagick (paru) |
 | `mise run sync` | Python deps, including hgpaktool for the extract |
 | `mise run console` | Textual debug console, beside `mise run dev` |
+| `mise run deps-outdated` | what is behind: mise tools (node, uv, typst), npm packages, Python dependencies |
+
+### Keeping dependencies current
+
+- `mise run deps-outdated` lists everything that is behind, in one place, and
+  changes nothing.
+- **node** is set in one line, `node = "24"` in `mise.toml`'s `[tools]`. The
+  Pages workflow installs it through mise from that line, so bumping it there
+  bumps CI too. It tracks the newest LTS. The `Containerfile`'s
+  `node:24-slim` stage should follow it.
+- **Dependabot** (`.github/dependabot.yml`) opens weekly pull requests for the
+  npm packages, as one group, and for the GitHub Actions. That includes
+  `setup-uv`, which is pinned to an exact release because it publishes no
+  moving major tag.
+- **Python** is locked in `uv.lock`; `uv lock --upgrade` moves it.
 
 ---
 

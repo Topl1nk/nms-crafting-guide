@@ -31,7 +31,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       ISSUE: ${{ github.event.issue.number }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - id: check
         run: python3 scripts/portal_issue.py check --out reply.md
       - run: gh issue comment "$ISSUE" --edit-last --create-if-none --body-file reply.md
@@ -58,7 +58,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
       ISSUE: ${{ github.event.issue.number }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - id: apply
         run: python3 scripts/portal_issue.py apply --out reply.md
       - if: steps.apply.outputs.valid != 'true'
@@ -87,8 +87,8 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - run: python3 scripts/portal_issue.py validate
-      - uses: astral-sh/setup-uv@v6
+      - uses: astral-sh/setup-uv@v10.3.0
       - run: uv sync --extra dev
       - run: uv run pytest -q tests/test_portals.py tests/test_contrib.py
