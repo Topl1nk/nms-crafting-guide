@@ -151,7 +151,8 @@ class Book:
         if not items_path.exists() or not recipes_path.exists():
             raise FileNotFoundError(
                 f"No recipe data in {data_dir}.\n"
-                "Run:  mise run fetch  &&  mise run build-data"
+                "Run:  mise run extract:all\n"
+                "  or, without the game:  mise run data:fetch  &&  mise run data:build-handbook"
             )
 
         raw_items: dict = json.loads(items_path.read_text())

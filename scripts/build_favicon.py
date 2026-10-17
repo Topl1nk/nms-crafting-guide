@@ -9,7 +9,7 @@ same traced shape the portal pages draw, not a lookalike.
     web/apple-touch-icon.png  180 px, for an iOS home screen
 
 Needs resvg and ImageMagick (pacman: resvg imagemagick). Run via
-`mise run favicon`; the outputs are committed, since the glyph does not move.
+`mise run web:favicon`; the outputs are committed, since the glyph does not move.
 """
 
 from __future__ import annotations

@@ -5,10 +5,10 @@ own NMS_REALITY_GCRECIPETABLE.MXML into JSON, so these files are the recipe
 table as the game ships it -- not a wiki transcription. Only four of its tables
 are needed; the repo as a whole is ~7,000 files.
 
-Run via `mise run fetch`. The downloaded files stay in .cache/handbook/ (gitignored);
+Run via `mise run data:fetch`. The downloaded files stay in .cache/handbook/ (gitignored);
 `build_data.py --source handbook` turns them into the committed data/*.json.
 
-This is the fallback source now: `mise run extract` reads the same tables
+This is the fallback source now: `mise run extract:all` reads the same tables
 straight out of the installed game, and NMS-Handbook lags behind patches.
 """
 
@@ -52,7 +52,7 @@ def main() -> int:
         "summary": f"NMS-Handbook JSON ({RAW}), fetched {today}; game version not recorded upstream",
         "fetched": today,
     }, indent=1))
-    print(f"\nWrote to {CACHE}. Now run: mise run build-data-handbook")
+    print(f"\nWrote to {CACHE}. Now run: mise run data:build-handbook")
     return 0
 
 

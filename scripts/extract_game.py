@@ -424,7 +424,7 @@ def decompile(src: Path = MBIN_DIR, dest: Path = MXML_DIR) -> str:
         sys.exit(
             f"MBINCompiler {mbincompiler_version(exe)} could not read every table:\n  {detail}\n"
             "The game's struct layouts changed. Pin the MBINCompiler release made for "
-            "this patch in mise.toml (`mise run mbin-releases`), then `mise install`.")
+            "this patch in mise.toml (`mise run mbin:releases`), then `mise install`.")
     header = (dest / f"{RECIPES}.MXML").read_text(encoding="utf-8")[:300]
     found = MXML_HEADER.search(header)
     return found.group(1) if found else ""
@@ -511,7 +511,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"converted: {counts['substances']} substances, {counts['products']} products, "
               f"{counts['refining']} refining + {counts['cooking']} cooking recipes")
         print(f"source: {source['summary']}")
-        print(f"wrote {JSON_DIR.relative_to(ROOT)}. Now: mise run build-data")
+        print(f"wrote {JSON_DIR.relative_to(ROOT)}. Now: mise run data:build")
     return 0
 
 

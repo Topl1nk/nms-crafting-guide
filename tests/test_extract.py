@@ -87,7 +87,7 @@ def test_handbook_shape(tables: Path) -> None:
 
 
 def test_build_data_reads_it(tables: Path, monkeypatch) -> None:
-    """End to end through the normaliser, as `mise run extract` does it."""
+    """End to end through the normaliser, as `mise run extract:all` does it."""
     monkeypatch.setattr(build_data, "CACHE", tables)
     items = build_data.build_items(build_data.load("Substance_Table.json"),
                                    build_data.load("Product_Table.json"))
@@ -125,4 +125,4 @@ def test_decompile_refuses_unrecognised_files(tmp_path, monkeypatch) -> None:
     with pytest.raises(SystemExit) as exc:
         extract_game.decompile(tmp_path / "mbin", tmp_path / "mxml")
     assert "File not recognized" in str(exc.value)
-    assert "mbin-releases" in str(exc.value)
+    assert "mbin:releases" in str(exc.value)

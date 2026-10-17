@@ -19,7 +19,7 @@ version of what this app queries.
 | | |
 | --- | --- |
 | ⌨️ **`nms`** | The TUI: fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
-| 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf` |
+| 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf:build` |
 | 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
 | 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
 | 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
@@ -56,9 +56,9 @@ It needs node, which `mise install` sets up at the version `mise.toml` pins
 (any node 22.12 or newer works too); `package-lock.json` pins the rest.
 
 ```fish
-mise run web-dev    # export, then a live-reloading dev server on localhost:8790
+mise run web:dev    # export, then a live-reloading dev server on localhost:8790
 mise run site       # export, build dist/, and serve it on localhost:8791
-mise run web-check  # svelte-check over the components
+mise run web:check  # svelte-check over the components
 ```
 
 It is live at **[nmsii.dlu.one](https://nmsii.dlu.one)**.
@@ -66,7 +66,7 @@ It is live at **[nmsii.dlu.one](https://nmsii.dlu.one)**.
 site and publishes `dist/` to GitHub Pages on every push to `main`; the
 cheat-sheet PDFs are published with it. The custom domain is a repo setting, not a `CNAME` file --
 an Actions deploy ignores one -- so `scripts/pages.py` manages it through `gh`
-(`mise run pages-setup`, `pages-https`, `pages-status`). DNS is a Cloudflare
+(`mise run pages:setup`, `pages:https`, `pages:status`). DNS is a Cloudflare
 `CNAME` record `nms → rdlu.github.io`, DNS only, so GitHub can issue the
 certificate. `mise run deploy` is the whole release: tests, push, watch.
 
@@ -95,7 +95,7 @@ disagree:
 
 The chain on each item page is core.js's tree walk redone in Python over the
 same exported `via` maps; `tests/test_markdown.py` holds it to both
-`graph.plan` and the JS. `mise run web-md` rebuilds only these and prints their
+`graph.plan` and the JS. `mise run web:md` rebuilds only these and prints their
 sizes.
 
 Every page's footer says so too: *AI friendly* links that page's markdown twin
@@ -294,7 +294,7 @@ A hex code is only half an address: at the portal you are looking at sixteen
 pictures, not sixteen digits. So the actual shapes are in here too, once, in
 `data/glyphs.json` — outlines traced off the art
 [nmsportals](https://nmsportals.github.io/) draws its dial with, plus the same
-mask knocked down to braille for the terminal. `mise run glyphs` re-derives
+mask knocked down to braille for the terminal. `mise run data:glyphs` re-derives
 both; it needs `potrace`, and it is deliberately **not** part of
 `mise run refresh`, because the symbols do not change when the game patches.
 
@@ -328,7 +328,7 @@ does **not** have it, its Nerd Font build does, and so do most patched
 monospace fonts. With neither you get boxes where the glyphs should be, and
 nothing else on the screen changes.
 
-Because nothing at runtime re-derives that file, `mise run pdf` checks it
+Because nothing at runtime re-derives that file, `mise run pdf:build` checks it
 against `portals.py` before drawing: one position out and every address on the
 sheet would point at a different star, plausibly.
 
@@ -389,7 +389,7 @@ the list already filtered to tools.
 
 ### The cheat sheet
 
-`mise run pdf` writes `docs/pdf/nms-cheatsheet.pdf` (Latte, for print) and
+`mise run pdf:build` writes `docs/pdf/nms-cheatsheet.pdf` (Latte, for print) and
 `nms-cheatsheet-dark.pdf` (Mocha, for screens):
 
 1. **Money engine** — the ×6 loops, the precious-metal engine, best profit per
@@ -409,7 +409,7 @@ the list already filtered to tools.
 It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
 including its own prose: claims like "every row below is 5s in the Processor"
 are re-checked against the rows on each build and disappear if they stop being
-true. The portals page goes further: `mise run pdf` round-trips every address
+true. The portals page goes further: `mise run pdf:build` round-trips every address
 and re-checks the galaxy-centre invariant, so the build fails rather than
 printing a code you cannot dial.
 
@@ -430,11 +430,11 @@ use to convert an address.
 - **A pull request** editing the file. The same workflow validates the whole
   file strictly (fields, kinds, galaxies, dialable codes, duplicates) and runs
   the portal tests. The TUI's loader skips a broken row so a screen never
-  breaks; a PR is told instead. Locally: `mise run validate-locations`.
+  breaks; a PR is told instead. Locally: `mise run contrib:validate`.
 
 The issue body is never handed to a shell: the script reads it from the event
-file. `mise run contrib-setup` creates the labels and lets the workflow open
-pull requests, once per repo; `mise run contrib-pending` lists what is waiting.
+file. `mise run contrib:setup` creates the labels and lets the workflow open
+pull requests, once per repo; `mise run contrib:pending` lists what is waiting.
 
 ## Where the data comes from
 
@@ -457,13 +457,13 @@ files the app reads:
 | `data/storage.json` | **hand-written** — the storage layout from guide 24, section 10: what each of the ten containers holds, as ordered rules. The guide's named items first, then their families by the game's own subtitle and type; first match wins, no match means 9 - Inbox |
 | `data/multitools.json` | **hand-written** — the multi-tool reference. The game files carry nothing useful about multi-tools, so this comes wholesale from guides 05 and 21 |
 | `data/locations.json` | **hand-written** — portal addresses, from the Euclid shortlists in guides 14 and 21, plus whatever you find. The `s` key on the portal screen appends to it |
-| `data/glyphs.json` | the 16 symbols — outlines for the PDF and braille for the terminal, both traced from the [nmsportals](https://nmsportals.github.io/) dial art by `mise run glyphs`. Regenerated only if it is lost; the glyphs do not move |
+| `data/glyphs.json` | the 16 symbols — outlines for the PDF and braille for the terminal, both traced from the [nmsportals](https://nmsportals.github.io/) dial art by `mise run data:glyphs`. Regenerated only if it is lost; the glyphs do not move |
 
 The extractor writes the tables in the same JSON shape as
 [NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook), which publishes
 the same game tables and was this project's source until Cosmos (it lags behind
 patches). So `build_data.py` is the one normaliser for both, and Handbook stays
-as a fallback for a machine without the game: `mise run refresh-handbook`.
+as a fallback for a machine without the game: `mise run data:refresh-handbook`.
 Built from the same game version, the two give identical `data/`.
 
 The game is read from `~/Games/No Man's Sky` (the GOG install); set
@@ -473,22 +473,22 @@ The game is read from `~/Games/No Man's Sky` (the GOG install); set
 
 ### After a game patch
 
-1. **Pin the MBINCompiler release for the patch.** `mise run mbin-releases`
+1. **Pin the MBINCompiler release for the patch.** `mise run mbin:releases`
    lists the latest; set its tag as the `version` of
    `github:monkeyman192/MBINCompiler` in `mise.toml`.
 2. `mise install`
-3. `mise run game-version` — the game's version and build, the pinned
+3. `mise run game:version` — the game's version and build, the pinned
    MBINCompiler, and whether it still reads every table this build ships.
    If it says *MISMATCH*, back to step 1: MBINCompiler only warns on a struct
    it does not know, so the extract refuses to go on rather than misread.
-4. `mise run extract` — unpack → decompile → convert → `data/`. Each stage is
-   also its own task (`extract-unpack`, `extract-decompile`,
-   `extract-convert`, `build-data`) to re-run one alone.
-5. `mise run extract-diff` — what the patch changed against the last commit:
+4. `mise run extract:all` — unpack → decompile → convert → `data/`. Each stage is
+   also its own task (`extract:unpack`, `extract:decompile`,
+   `extract:convert`, `data:build`) to re-run one alone.
+5. `mise run extract:diff` — what the patch changed against the last commit:
    recipes added, removed or retuned, items, values, times. Markdown;
    `docs/cosmos-changes.md` is this report for Cosmos.
 6. `mise run test` — including the numbers the written guides assert.
-7. `mise run pdf` — re-pick the cheat sheet and rebuild both PDFs.
+7. `mise run pdf:build` — re-pick the cheat sheet and rebuild both PDFs.
 
 `mise run refresh` is steps 4 and 7 in one.
 
@@ -505,60 +505,138 @@ update the guide and the test together; Cosmos moved three (see
 ## Tasks
 
 Every task, as `mise tasks` lists them; nothing here needs a raw `npm` or
-`vite` command remembered.
+`vite` command remembered. The everyday ones sit in `mise.toml`; the rest are
+scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
+
+**Everyday**
 
 | Task | Does |
 | --- | --- |
-| `mise run tui` | the app |
+| `mise run tui` | the app (also `mise run run`) |
 | `mise run dev` | the app with live CSS reload, for editing `app.tcss` |
-| `mise run web` | serve the TUI itself in a browser on `:8000` (textual serve) |
-| `mise run web-install` | the site's npm packages, as `package-lock.json` pins them (skipped when current) |
-| `mise run web-data` | export `web/data.json` and its markdown version (`llms.txt`, `web/md/`) for the static site |
-| `mise run web-md` | only the markdown version, with the size of each file |
-| `mise run web-dev` | export, then the site's live-reloading dev server on `:8790` |
-| `mise run web-check` | svelte-check over the site's components; warnings fail it |
-| `mise run web-build` | export, then build the deployable site into `dist/` |
-| `mise run site` | build, then serve `dist/` on `:8791` as Pages will |
-| `mise run test-web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys |
-| `mise run test-md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
-| `mise run favicon` | redraw the site icon from the Atlas glyph |
-| `mise run check` | what CI runs: the full suite, the components and the site build |
-| `mise run deploy` | check, push `main` over SSH, and follow the Pages deploy |
-| `mise run pages-status` | DNS, Pages settings, certificate and the last deploy |
-| `mise run pages-setup` | turn Pages on with the Actions source and the `nmsii.dlu.one` domain |
-| `mise run pages-https` | enforce HTTPS once the certificate is issued |
-| `mise run validate-locations` | check `data/locations.json` the way a pull request is checked |
-| `mise run contrib-setup` | the bot's labels, and letting the workflow open PRs |
-| `mise run contrib-pending` | shared addresses waiting for review, with the bot's verdict |
-| `mise run box-tui` | the TUI in a container (podman) |
-| `mise run box-site` | the static site in a container on `:8001` |
-| `mise run box-build` | rebuild both images |
-| `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` (re-picks the cheat sheet first) |
-| `mise run pdf-watch` | rebuild the light PDF on every save |
-| `mise run cheatsheet-data` | re-pick the cheat-sheet rows into `data/cheatsheet.json` |
-| `mise run refresh` | full data rebuild from the installed game: extract → cheat sheet → PDFs |
-| `mise run refresh-handbook` | the same from NMS-Handbook, without the game: fetch → normalise → cheat sheet → PDFs |
-| `mise run game-version` | installed game version + build, the pinned MBINCompiler, and whether it reads this build |
-| `mise run mbin-releases` | the latest MBINCompiler releases, to pick the pin after a patch |
-| `mise run extract` | rebuild `data/` from the game: the four stages below in order |
-| `mise run extract-unpack` | unpack the needed tables from the game's `.pak` files into `.cache/game/mbin/` |
-| `mise run extract-decompile` | MBIN → MXML with the pinned MBINCompiler; fails on any table it does not recognise |
-| `mise run extract-convert` | MXML → NMS-Handbook-shaped JSON in `.cache/game/json/`, version recorded |
-| `mise run build-data` | normalise `.cache/game/json/` into `data/items.json`, `recipes.json`, `source.json` |
-| `mise run extract-diff` | what changed in `data/` against the last commit, as markdown |
-| `mise run fetch` | fallback: download NMS-Handbook's copy of the tables into `.cache/handbook/` |
-| `mise run build-data-handbook` | normalise `.cache/handbook/` into `data/` instead |
-| `mise run glyphs` | re-trace the 16 portal symbols into `data/glyphs.json` (`fetch-glyphs` + `build-glyphs`) |
 | `mise run test` | pytest — data integrity + a headless pass over the TUI |
-| `mise run screenshot` | regenerate the SVGs in this README |
+| `mise run check` | what CI runs: the full suite, the components, the shared addresses and the site build |
+| `mise run deploy` | refuses unless on a clean `main`; then check, push `main` over SSH, and follow the Pages deploy |
+| `mise run site` | build, then serve `dist/` on `:8791` as Pages will (alias of `web:site`) |
+| `mise run refresh` | full data rebuild from the installed game: `extract:all` → `pdf:build` |
 | `mise run setup` | system deps: the PDF fonts, potrace, resvg, imagemagick (paru) |
 | `mise run sync` | Python deps, including hgpaktool for the extract |
-| `mise run console` | Textual debug console, beside `mise run dev` |
-| `mise run deps-outdated` | what is behind: mise tools (node, uv, typst), npm packages, Python dependencies |
+
+**`tui:*`** — the app's side tools
+
+| Task | Does |
+| --- | --- |
+| `mise run tui:console` | Textual debug console, beside `mise run dev` |
+| `mise run tui:serve` | serve the TUI itself in a browser on `:8000` (textual serve) |
+| `mise run tui:screenshot` | regenerate the SVGs in this README |
+
+**`test:*`** — slices of the suite
+
+| Task | Does |
+| --- | --- |
+| `mise run test:web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys |
+| `mise run test:md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
+
+**`web:*`** — the static site
+
+| Task | Does |
+| --- | --- |
+| `mise run web:install` | the site's npm packages, as `package-lock.json` pins them (skipped when current) |
+| `mise run web:data` | export `web/data.json` and its markdown version (`llms.txt`, `web/md/`) for the static site |
+| `mise run web:md` | only the markdown version, with the size of each file |
+| `mise run web:dev` | export, then the site's live-reloading dev server on `:8790` |
+| `mise run web:check` | svelte-check over the site's components; warnings fail it |
+| `mise run web:build` | export, then build the deployable site into `dist/` |
+| `mise run web:site` | build, then serve `dist/` on `:8791` as Pages will |
+| `mise run web:favicon` | redraw the site icon from the Atlas glyph |
+
+**`pages:*`** — GitHub Pages
+
+| Task | Does |
+| --- | --- |
+| `mise run pages:status` | DNS, Pages settings, certificate and the last deploy |
+| `mise run pages:setup` | turn Pages on with the Actions source and the `nmsii.dlu.one` domain |
+| `mise run pages:https` | enforce HTTPS once the certificate is issued |
+
+**`contrib:*`** — shared portal addresses
+
+| Task | Does |
+| --- | --- |
+| `mise run contrib:validate` | check `data/locations.json` the way a pull request is checked |
+| `mise run contrib:setup` | the bot's labels, and letting the workflow open PRs |
+| `mise run contrib:pending` | shared addresses waiting for review, with the bot's verdict |
+
+**`box:*`** — containers (podman)
+
+| Task | Does |
+| --- | --- |
+| `mise run box:tui` | the TUI in a container |
+| `mise run box:site` | the static site in a container on `:8001` |
+| `mise run box:build` | rebuild both images |
+
+**`extract:*`, `game:*`, `mbin:*`** — the game's tables
+
+| Task | Does |
+| --- | --- |
+| `mise run game:version` | installed game version + build, the pinned MBINCompiler, and whether it reads this build |
+| `mise run mbin:releases` | the latest MBINCompiler releases, to pick the pin after a patch |
+| `mise run extract:all` | rebuild `data/` from the game: the four stages below in order |
+| `mise run extract:unpack` | unpack the needed tables from the game's `.pak` files into `.cache/game/mbin/` |
+| `mise run extract:decompile` | MBIN → MXML with the pinned MBINCompiler; fails on any table it does not recognise |
+| `mise run extract:convert` | MXML → NMS-Handbook-shaped JSON in `.cache/game/json/`, version recorded |
+| `mise run data:build` | normalise `.cache/game/json/` into `data/items.json`, `recipes.json`, `source.json` |
+| `mise run extract:diff` | what changed in `data/` against the last commit, as markdown |
+
+**`data:*`** — everything else under `data/`
+
+| Task | Does |
+| --- | --- |
+| `mise run data:cheatsheet` | re-pick the cheat-sheet rows into `data/cheatsheet.json` |
+| `mise run data:refresh-handbook` | the `refresh` rebuild from NMS-Handbook, without the game: fetch → normalise → cheat sheet → PDFs |
+| `mise run data:fetch` | fallback: download NMS-Handbook's copy of the tables into `.cache/handbook/` |
+| `mise run data:build-handbook` | normalise `.cache/handbook/` into `data/` instead |
+| `mise run data:glyphs` | re-trace the 16 portal symbols into `data/glyphs.json` (`data:fetch-glyphs`, then `data:build-glyphs`) |
+
+**`pdf:*`** — the cheat sheet
+
+| Task | Does |
+| --- | --- |
+| `mise run pdf:build` | both cheat-sheet PDFs into `docs/pdf/` (re-picks the cheat sheet first) |
+| `mise run pdf:watch` | rebuild the light PDF on every save |
+
+**`deps:*`**
+
+| Task | Does |
+| --- | --- |
+| `mise run deps:outdated` | what is behind: mise tools (node, uv, typst), npm packages, Python dependencies |
+
+### Renamed tasks
+
+The tasks used to be one flat list. The old names still run, as aliases of
+the new ones, except `web`, which is now `tui:serve` so it does not read as
+part of the site's `web:*`.
+
+| Was | Now |
+| --- | --- |
+| `web-install`, `web-data`, `web-md`, `web-dev`, `web-check`, `web-build` | `web:install`, `web:data`, `web:md`, `web:dev`, `web:check`, `web:build` |
+| `site`, `favicon` | `web:site` (`site` stays as the short name), `web:favicon` |
+| `web` (textual serve) | `tui:serve` — no alias |
+| `console`, `screenshot` | `tui:console`, `tui:screenshot` |
+| `test-web`, `test-md` | `test:web`, `test:md` |
+| `pages-setup`, `pages-https`, `pages-status` | `pages:setup`, `pages:https`, `pages:status` |
+| `validate-locations`, `contrib-setup`, `contrib-pending` | `contrib:validate`, `contrib:setup`, `contrib:pending` |
+| `box-tui`, `box-site`, `box-build` | `box:tui`, `box:site`, `box:build` |
+| `extract`, `extract-unpack`, `extract-decompile`, `extract-convert`, `extract-diff` | `extract:all`, `extract:unpack`, `extract:decompile`, `extract:convert`, `extract:diff` |
+| `game-version`, `mbin-releases` | `game:version`, `mbin:releases` |
+| `fetch`, `build-data`, `build-data-handbook`, `cheatsheet-data` | `data:fetch`, `data:build`, `data:build-handbook`, `data:cheatsheet` |
+| `glyphs`, `fetch-glyphs`, `build-glyphs` | `data:glyphs`, `data:fetch-glyphs`, `data:build-glyphs` |
+| `refresh-handbook` | `data:refresh-handbook` |
+| `pdf`, `pdf-watch` | `pdf:build`, `pdf:watch` |
+| `deps-outdated` | `deps:outdated` |
 
 ### Keeping dependencies current
 
-- `mise run deps-outdated` lists everything that is behind, in one place, and
+- `mise run deps:outdated` lists everything that is behind, in one place, and
   changes nothing.
 - **node** is set in one line, `node = "24"` in `mise.toml`'s `[tools]`. The
   Pages workflow installs it through mise from that line, so bumping it there

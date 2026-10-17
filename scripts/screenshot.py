@@ -2,7 +2,7 @@
 
 Textual can render a screen to SVG without a terminal, so the README images are
 generated rather than captured -- no cropping, no stale screenshots after a
-CSS change. Run via `mise run screenshot`.
+CSS change. Run via `mise run tui:screenshot`.
 """
 
 from __future__ import annotations

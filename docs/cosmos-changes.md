@@ -61,7 +61,7 @@ own description says they are processed to be sold.
 ## The full report
 
 Generated with `uv run python scripts/data_diff.py --base 75a52ba` (the last
-commit built from NMS-Handbook); `mise run extract-diff` gives the same report
+commit built from NMS-Handbook); `mise run extract:diff` gives the same report
 against the last commit after the next patch.
 
 ### Summary

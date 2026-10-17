@@ -19,7 +19,7 @@ TUI and the web page already use (nms_items.portals):
 The issue body is untrusted text. It is only ever read from the event file
 and parsed here, never interpolated into a shell command.
 
-Locally: `mise run validate-locations`, `mise run contrib-setup`.
+Locally: `mise run contrib:validate`, `mise run contrib:setup`.
 """
 
 from __future__ import annotations

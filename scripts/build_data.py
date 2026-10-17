@@ -21,8 +21,8 @@ every single recipe. This flattens all of that into two files:
 Everything the TUI needs is in those two files, so the app never touches the
 upstream JSON (10 MB) or the network.
 
-Run via `mise run build-data` after `mise run extract-convert` (or just
-`mise run extract`), or `mise run build-data-handbook` after `mise run fetch`.
+Run via `mise run data:build` after `mise run extract:convert` (or just
+`mise run extract:all`), or `mise run data:build-handbook` after `mise run data:fetch`.
 """
 
 from __future__ import annotations
@@ -35,8 +35,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 # source -> (directory, the task that fills it)
 SOURCES = {
-    "game": (ROOT / ".cache" / "game" / "json", "mise run extract"),
-    "handbook": (ROOT / ".cache" / "handbook", "mise run fetch"),
+    "game": (ROOT / ".cache" / "game" / "json", "mise run extract:all"),
+    "handbook": (ROOT / ".cache" / "handbook", "mise run data:fetch"),
 }
 CACHE = SOURCES["game"][0]
 DATA = ROOT / "data"
@@ -69,7 +69,7 @@ def _num(value: str | int | float | None, default: float = 0.0) -> float:
 def load(name: str) -> dict:
     path = CACHE / name
     if not path.exists():
-        hint = next((task for d, task in SOURCES.values() if d == CACHE), "mise run extract")
+        hint = next((task for d, task in SOURCES.values() if d == CACHE), "mise run extract:all")
         sys.exit(f"missing {path}\nRun `{hint}` first.")
     return json.loads(path.read_text())
 

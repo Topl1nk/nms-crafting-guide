@@ -1,6 +1,6 @@
 """The glyph art has to stay in step with the dial, or an address is wrong.
 
-data/glyphs.json is generated (`mise run glyphs`) and committed, so nothing at
+data/glyphs.json is generated (`mise run data:glyphs`) and committed, so nothing at
 runtime re-derives it -- which means these are the only checks that it still
 lines up with portals.py. The one that matters is the mapping: glyph `A` is the
 eleventh symbol, and if the file ever drifts by one position every address on

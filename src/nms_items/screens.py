@@ -2082,7 +2082,7 @@ HELP_TEXT = """\
 [b]Data[/]
   361 refining and 1,323 cooking recipes, extracted from the game's own
   tables (Cosmos 7.06; data/source.json says which build). After a
-  patch: mise run extract.
+  patch: mise run extract:all.
   Where loot comes from is the one thing the game files do not record;
   that lives in data/acquisition.json, written from the guides.
   Portal addresses are in data/locations.json - hand-editable, and

@@ -5,7 +5,7 @@
 // the "where" sentences on the nanite page come from the guide notes in the repo.
 // Themed with Catppuccin.
 //
-// Compile (see `mise run pdf`):
+// Compile (see `mise run pdf:build`):
 //   typst compile --input theme=latte cheatsheet.typ docs/pdf/nms-cheatsheet.pdf
 //   typst compile --input theme=mocha cheatsheet.typ docs/pdf/nms-cheatsheet-dark.pdf
 

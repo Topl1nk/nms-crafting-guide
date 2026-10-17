@@ -1,6 +1,6 @@
 """Report what changed in data/items.json + recipes.json against a git commit.
 
-After `mise run extract` (or any data rebuild) this answers "what did the
+After `mise run extract:all` (or any data rebuild) this answers "what did the
 patch actually change?": recipes added, removed or retuned, items added or
 removed, and changed values, names and food stats. Markdown, so it can go
 straight into a PR or docs/.
@@ -13,7 +13,7 @@ amounts) are paired up in order.
     uv run python scripts/data_diff.py [--base REF] [--out FILE]
 
 --base defaults to HEAD, so it compares the working tree's data/ with the
-last commit. Run via `mise run extract-diff`.
+last commit. Run via `mise run extract:diff`.
 """
 
 from __future__ import annotations

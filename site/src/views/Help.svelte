@@ -44,7 +44,7 @@
     and coordinates it got, or a list of what to fix. Edit the issue and it checks again. When a maintainer accepts it,
     the bot opens the pull request that adds it, crediting you.</p>
     <p>Comfortable with git? Edit <a href="{REPO_URL}/blob/main/data/locations.json">data/locations.json</a> in a pull
-    request instead; the same checks run on it. Locally, <code>mise run validate-locations</code>.</p></section>
+    request instead; the same checks run on it. Locally, <code>mise run contrib:validate</code>.</p></section>
   <section class="card"><h3>Where this comes from</h3>
     <p>Every number is read from the game's own files{#if release}: {release.name} ({release.build}), extracted {release.extracted}{/if}.
     Earlier builds read the same tables via

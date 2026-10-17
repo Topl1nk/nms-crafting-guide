@@ -11,8 +11,8 @@ something the page does not. The one computation redone is the chain tree walk,
 `plan()` below, which is core.js's `plan()` line for line; tests/test_markdown.py
 holds it to both graph.plan and the JS.
 
-Run by scripts/build_web.py, after data.json (`mise run web-data`), or alone
-with `mise run web-md`, which rebuilds the same bundle and prints the sizes.
+Run by scripts/build_web.py, after data.json (`mise run web:data`), or alone
+with `mise run web:md`, which rebuilds the same bundle and prints the sizes.
 """
 
 from __future__ import annotations

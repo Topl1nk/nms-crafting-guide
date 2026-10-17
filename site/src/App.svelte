@@ -55,7 +55,7 @@
 <Palette bind:this={palette} />
 <main>
   {#if failed}
-    <p class="pad err">Could not load data.json ({failed}). Run <code>mise run web-data</code>.</p>
+    <p class="pad err">Could not load data.json ({failed}). Run <code>mise run web:data</code>.</p>
   {:else if !ready}
     <p class="pad muted">Loading the recipe book…</p>
   {:else}
