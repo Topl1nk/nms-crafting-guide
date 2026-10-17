@@ -614,6 +614,45 @@ The game is read from `~/Games/No Man's Sky` (the GOG install); set
 
 ### After a game patch
 
+`mise run game:update` does the routine below. It compares the installed
+build with `data/source.json` and, when the game is newer, branches
+`data/game-<build>` from `origin/main`, runs `extract:all`, `pdf:build` and the
+suite (failing guide tests are reported, not fatal), and opens the PR *Update
+data to <label>* with the `extract:diff` report, the test result and the
+follow-up checklist. If the pinned MBINCompiler cannot read the build yet, it
+extracts nothing and opens one `game-update` issue instead, which the PR later
+closes. It refuses a dirty tree, never pushes `main`, and only reads the game.
+
+- `--check` only compares: exit **0** current, **10** update available,
+  **11** blocked on MBINCompiler, **2** no game found (also in every other
+  mode, so it is safe in CI)
+- `--dry-run` extracts and commits on a detached `origin/main`, prints the
+  issue or PR it would open, then goes back; no push, no GitHub writes
+- `--no-pr` extracts and commits on `data/game-<build>` locally, no push
+
+A daily check with a desktop notification, as a systemd user timer (not
+installed by anything here):
+
+```ini
+# ~/.config/systemd/user/nmsii-game-update.service
+[Service]
+Type=oneshot
+WorkingDirectory=%h/Projects/NMS-Items
+ExecStart=/bin/sh -c 'mise run game:update --check; case $? in 10) notify-send NMSii "Game updated: run mise run game:update";; 11) notify-send NMSii "Game updated, MBINCompiler not ready yet";; esac; exit 0'
+
+# ~/.config/systemd/user/nmsii-game-update.timer
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+`systemctl --user enable --now nmsii-game-update.timer` turns it on.
+
+By hand, step by step:
+
 1. **Pin the MBINCompiler release for the patch.** `mise run mbin:releases`
    lists the latest; set its tag as the `version` of
    `github:monkeyman192/MBINCompiler` in `mise.toml`.
@@ -799,6 +838,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 
 | Task | Does |
 | --- | --- |
+| `mise run game:update` | did the game update since `data/`? If so extract, test, diff and open the PR (or an issue while MBINCompiler lags); `--check`, `--dry-run`, `--no-pr` |
 | `mise run game:version` | installed game version + build, the pinned MBINCompiler, and whether it reads this build |
 | `mise run mbin:releases` | the latest MBINCompiler releases, to pick the pin after a patch |
 | `mise run extract:all` | rebuild `data/` from the game: the four stages below in order |
