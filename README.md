@@ -4,8 +4,9 @@ A **TUI** for the two lookups you actually make while playing: *what does this
 refine into*, and *how do I get that from what I'm carrying*. Plus a printable
 **cheat sheet** of the recipes worth memorising.
 
-Every number comes from the game's own recipe table — 357 refining and 1,323
-cooking recipes — not from a wiki transcription. It grew out of a set of
+Every number comes from the game's own recipe table — 361 refining and 1,323
+cooking recipes as of Cosmos 7.06 — extracted from the game files, not from a
+wiki transcription. It grew out of a set of
 written guides (the Suika Box notes); `20.refiner-recipes.md` is the prose
 version of what this app queries.
 
@@ -422,16 +423,20 @@ pull requests, once per repo; `mise run contrib-pending` lists what is waiting.
 
 ## Where the data comes from
 
-[NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook) parses
-`NMS_REALITY_GCRECIPETABLE.MXML` straight out of the game files into JSON.
-`scripts/fetch_source.py` pulls four of its tables into `.cache/` (gitignored)
-and `scripts/build_data.py` flattens them into the two committed files the app
-reads:
+Straight out of the installed game. `scripts/extract_game.py` unpacks the
+recipe, product and substance tables and the English language tables from the
+game's `.pak` archives with [hgpaktool](https://github.com/monkeyman192/HGPAKtool),
+decompiles them to MXML with
+[MBINCompiler](https://github.com/monkeyman192/MBINCompiler), and parses that
+into `.cache/game/` (gitignored, like everything extracted: no game file is
+ever committed). `scripts/build_data.py` then flattens it into the committed
+files the app reads:
 
 | | |
 | --- | --- |
-| `data/items.json` | 1,447 items — the 693 that recipes touch plus everything else that can sit in a cargo slot. Name, type, category, rarity, base value, and for cooked food the stat it buffs and how strongly |
-| `data/recipes.json` | 1,680 recipes — flat, with ratio, loop multiplier, batch time, profit and rate precomputed |
+| `data/items.json` | 1,498 items — the 697 that recipes touch plus everything else that can sit in a cargo slot. Name, type, category, rarity, base value, and for cooked food the stat it buffs and how strongly |
+| `data/recipes.json` | 1,684 recipes — flat, with ratio, loop multiplier, batch time, profit and rate precomputed |
+| `data/source.json` | provenance: game version and build, the tool versions, the extraction date. Currently *Cosmos 7.06, build 180836* (GOG build 60091801558572527), MBINCompiler v7.04.1-pre3, hgpaktool 1.1.3 |
 | `data/cheatsheet.json` | the subset the PDF prints |
 | `data/acquisition.json` | **hand-written** — where loot comes from, since the game files record what a recipe needs but never where to find it. Taken from the guides; where they say nothing, the app says "unknown" rather than guessing |
 | `data/storage.json` | **hand-written** — the storage layout from guide 24, section 10: what each of the ten containers holds, as ordered rules. The guide's named items first, then their families by the game's own subtitle and type; first match wins, no match means 9 - Inbox |
@@ -439,18 +444,46 @@ reads:
 | `data/locations.json` | **hand-written** — portal addresses, from the Euclid shortlists in guides 14 and 21, plus whatever you find. The `s` key on the portal screen appends to it |
 | `data/glyphs.json` | the 16 symbols — outlines for the PDF and braille for the terminal, both traced from the [nmsportals](https://nmsportals.github.io/) dial art by `mise run glyphs`. Regenerated only if it is lost; the glyphs do not move |
 
-After a game patch:
+The extractor writes the tables in the same JSON shape as
+[NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook), which publishes
+the same game tables and was this project's source until Cosmos (it lags behind
+patches). So `build_data.py` is the one normaliser for both, and Handbook stays
+as a fallback for a machine without the game: `mise run refresh-handbook`.
+Built from the same game version, the two give identical `data/`.
 
-```fish
-mise run refresh    # fetch → normalise → re-pick the cheat sheet → rebuild PDFs
-mise run test       # 13 checks, including the numbers the written guides assert
-```
+The game is read from `~/Games/No Man's Sky` (the GOG install); set
+`$NMS_GAME_DIR` for anywhere else, Steam included. Nothing is written there.
+`mise run sync` installs hgpaktool (the `extract` extra in `pyproject.toml`) and
+`mise install` the pinned MBINCompiler — a self-contained binary, no .NET needed.
 
-The test suite is the point of that second command: it asserts the claims the
-notes make — the three ×6 loops, Living Pearl → 100 Gold, Tier 0 reaching
-exactly 30 materials, the 25 items no recipe produces, Larval Cores at 3,000
-nanites/hour against Runaway Mould's 24 — so if upstream or the game moves a
-ratio, it fails loudly instead of quietly printing a wrong sheet.
+### After a game patch
+
+1. **Pin the MBINCompiler release for the patch.** `mise run mbin-releases`
+   lists the latest; set its tag as the `version` of
+   `github:monkeyman192/MBINCompiler` in `mise.toml`.
+2. `mise install`
+3. `mise run game-version` — the game's version and build, the pinned
+   MBINCompiler, and whether it still reads every table this build ships.
+   If it says *MISMATCH*, back to step 1: MBINCompiler only warns on a struct
+   it does not know, so the extract refuses to go on rather than misread.
+4. `mise run extract` — unpack → decompile → convert → `data/`. Each stage is
+   also its own task (`extract-unpack`, `extract-decompile`,
+   `extract-convert`, `build-data`) to re-run one alone.
+5. `mise run extract-diff` — what the patch changed against the last commit:
+   recipes added, removed or retuned, items, values, times. Markdown;
+   `docs/cosmos-changes.md` is this report for Cosmos.
+6. `mise run test` — including the numbers the written guides assert.
+7. `mise run pdf` — re-pick the cheat sheet and rebuild both PDFs.
+
+`mise run refresh` is steps 4 and 7 in one.
+
+The test suite is the point of step 6: it asserts the claims the notes make —
+the three ×6 loops, Living Pearl → 100 Gold, Tier 0 reaching exactly 30
+materials, the items no recipe produces, Larval Cores at 3,000 nanites/hour
+against Runaway Mould's 24 — so if the game moves a ratio, it fails loudly
+instead of quietly printing a wrong sheet. When a claim really did change, the
+test is marked `xfail` with the new number until the guide catches up; Cosmos
+moved three (see `docs/cosmos-changes.md`).
 
 ---
 
@@ -478,12 +511,27 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | `mise run box-tui` | the TUI in a container (podman) |
 | `mise run box-site` | the static site in a container on `:8001` |
 | `mise run box-build` | rebuild both images |
-| `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` |
+| `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` (re-picks the cheat sheet first) |
 | `mise run pdf-watch` | rebuild the light PDF on every save |
-| `mise run refresh` | full data rebuild from upstream |
-| `mise run glyphs` | re-trace the 16 portal symbols into `data/glyphs.json` |
+| `mise run cheatsheet-data` | re-pick the cheat-sheet rows into `data/cheatsheet.json` |
+| `mise run refresh` | full data rebuild from the installed game: extract → cheat sheet → PDFs |
+| `mise run refresh-handbook` | the same from NMS-Handbook, without the game: fetch → normalise → cheat sheet → PDFs |
+| `mise run game-version` | installed game version + build, the pinned MBINCompiler, and whether it reads this build |
+| `mise run mbin-releases` | the latest MBINCompiler releases, to pick the pin after a patch |
+| `mise run extract` | rebuild `data/` from the game: the four stages below in order |
+| `mise run extract-unpack` | unpack the needed tables from the game's `.pak` files into `.cache/game/mbin/` |
+| `mise run extract-decompile` | MBIN → MXML with the pinned MBINCompiler; fails on any table it does not recognise |
+| `mise run extract-convert` | MXML → NMS-Handbook-shaped JSON in `.cache/game/json/`, version recorded |
+| `mise run build-data` | normalise `.cache/game/json/` into `data/items.json`, `recipes.json`, `source.json` |
+| `mise run extract-diff` | what changed in `data/` against the last commit, as markdown |
+| `mise run fetch` | fallback: download NMS-Handbook's copy of the tables into `.cache/handbook/` |
+| `mise run build-data-handbook` | normalise `.cache/handbook/` into `data/` instead |
+| `mise run glyphs` | re-trace the 16 portal symbols into `data/glyphs.json` (`fetch-glyphs` + `build-glyphs`) |
 | `mise run test` | pytest — data integrity + a headless pass over the TUI |
 | `mise run screenshot` | regenerate the SVGs in this README |
+| `mise run setup` | system deps: the PDF fonts, potrace, resvg, imagemagick (paru) |
+| `mise run sync` | Python deps, including hgpaktool for the extract |
+| `mise run console` | Textual debug console, beside `mise run dev` |
 
 ---
 
@@ -502,7 +550,7 @@ src/nms_items/
   app.py       the recipe table + detail pane
   screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
-scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots, web export
+scripts/       extract from the game (or fetch), normalise, diff, pick cheat-sheet rows, trace glyphs, screenshots, web export
 web/           the static site: index.html, app.js (views), core.js (logic), style.css, fonts/
 scripts/pages.py  GitHub Pages settings for nmsii.dlu.one, via gh
 scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
@@ -515,7 +563,8 @@ cheatsheet.typ the PDF
 
 ## License
 
-[GPL-3.0](LICENSE). Recipe and item data are derived from
-[NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook) (GPL-3.0), which
-extracts them from the game files; No Man's Sky and its data belong to Hello
-Games. Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/).
+[GPL-3.0](LICENSE). Recipe and item data are extracted from the game files
+with hgpaktool (MIT) and MBINCompiler (LGPL-3.0), neither of which is
+redistributed here; until Cosmos they came from
+[NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook) (GPL-3.0), still
+the fallback source. No Man's Sky and its data belong to Hello Games. Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/).
