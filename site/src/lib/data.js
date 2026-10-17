@@ -60,14 +60,16 @@ export function placement(id) {
 // Which game release the data was read from, as build_web.py exports it from
 // data/source.json -- {game: {update, version, build}, extracted, tools}.
 // Every mention on the page is built from this, so a game patch needs no
-// frontend edit. Null when the export predates it.
+// frontend edit. Null unless data.json's `source` (null when
+// data/source.json is missing) says the data was read from the game; the
+// NMS-Handbook fallback records no game version.
 export function gameRelease() {
-  const game = D?.source?.game;
-  if (!game?.version) return null;
+  const s = D?.source;
+  if (s?.from !== "game" || !s.version) return null;
   return {
-    name: `${game.update ?? ""} ${game.version}`.trim(),
-    build: game.build ?? "",
-    extracted: D.source.extracted ?? "",
+    name: [s.game, s.version].filter(Boolean).join(" "),
+    build: s.build ? `build ${s.build}` : "",
+    extracted: s.extracted ?? "",
   };
 }
 

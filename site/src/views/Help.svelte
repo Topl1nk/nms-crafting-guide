@@ -46,9 +46,9 @@
     <p>Comfortable with git? Edit <a href="{REPO_URL}/blob/main/data/locations.json">data/locations.json</a> in a pull
     request instead; the same checks run on it. Locally, <code>mise run validate-locations</code>.</p></section>
   <section class="card"><h3>Where this comes from</h3>
-    <p>{#if release}Every number is read from the game's own files: {release.name}{#if release.build}, build {release.build}{/if}{#if release.extracted}, extracted {release.extracted}{/if}.
-    {:else}Every number comes from the game's own recipe table, via
-    <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>.{/if} This page is the web front end of a
+    <p>Every number is read from the game's own files{#if release}: {release.name} ({release.build}), extracted {release.extracted}{/if}.
+    Earlier builds read the same tables via
+    <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>, still the fallback source. This page is the web front end of a
     terminal app; the source, the cheat-sheet PDFs and the full README are on
     <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>. Portal glyphs are traced from
     <a href="https://nmsportals.github.io/">nmsportals</a>. No Man's Sky and its data belong to Hello Games.</p></section>

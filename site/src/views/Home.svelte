@@ -5,7 +5,7 @@
   import FeatureCard from "../components/FeatureCard.svelte";
   import InstallPanes from "../components/InstallPanes.svelte";
   import { fmtInt } from "../lib/core.js";
-  import { D, gameRelease, name, RECIPES } from "../lib/data.js";
+  import { D, gameRelease, name, RECIPES, REPO_URL } from "../lib/data.js";
 
   const count = (domain) => D.recipes.filter((r) => r.domain === domain).length;
   const dishes = D.cooking.reduce((n, g) => n + g.dishes.length, 0);
@@ -36,13 +36,13 @@
     address drawn in glyphs. All of it computed from the game's own recipe tables,
     not copied from a wiki.
   </p>
+  {#if release}
+    <p><a class="badge" href="{REPO_URL}/blob/main/docs/cosmos-changes.md"><i></i>Up to date with {release.name}<em>{` · ${release.build} · read from the game files`}</em> <span>→</span></a></p>
+  {/if}
   <p class="lede muted">
     This is the web version of a terminal app. It runs entirely in your browser,
     and works on a phone propped up next to the game.
   </p>
-  {#if release}
-    <p class="lede muted">Up to date with <b>{release.name}</b>{#if release.build}{" "}<span class="build">build {release.build}</span>{/if}.</p>
-  {/if}
   <div class="hero-actions">
     <a class="primary" href="#/recipes">Open the recipes</a>
     <a href="#/home" onclick={toInstall}>Run it locally</a>
@@ -65,7 +65,7 @@
     <FeatureCard key="5" href="#/portals" title="Portal addresses" icon="portals">Convert between portal glyphs and galactic coordinates as you type, dial an address symbol by symbol, and browse <b>{fmtInt(D.portals.locations.length)}</b> saved places worth going.</FeatureCard>
     <FeatureCard key="6" href="#/storage" title="Where does it go?" icon="storage">Every one of <b>{fmtInt(Object.keys(D.items).length)}</b> items gets a home: one of the {containers} storage containers, Cold Storage, or sell, junk, use it now. Type "sell" to list everything to sell.</FeatureCard>
     <FeatureCard key="7" href="#/inventory" title="Inventory" icon="inventory">Type what you are carrying, and see what you can make right now and what you are one ingredient short of. Kept in this browser.</FeatureCard>
-    <FeatureCard href="pdf/nms-cheatsheet.pdf" title="Cheat sheet" icon="sheet">The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.</FeatureCard>
+    <FeatureCard href="pdf/nms-cheatsheet.pdf" title="Cheat sheet" icon="sheet">The recipes worth memorising on six landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.</FeatureCard>
   </div>
 
   <h2 class="section" id="install" bind:this={install}>Run it on your machine</h2>
@@ -75,11 +75,7 @@
 
   <h2 class="section">Good to know</h2>
   <div class="features">
-    {#if release}
-      <FeatureCard href="https://github.com/rdlu/nms-items-interface#readme" title="Straight from the game files" icon="data">Recipes, batch times and values are read from the game's own files, <b>{release.name}</b>, re-extracted after each patch, and a test suite checks the claims the written guides make.</FeatureCard>
-    {:else}
-      <FeatureCard href="https://github.com/ApexFatality93/NMS-Handbook" title="Straight from the game files" icon="data">Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.</FeatureCard>
-    {/if}
+    <FeatureCard href="{REPO_URL}#where-the-data-comes-from" title="Straight from the game files" icon="data">Recipes, batch times and values are read from the game's own files{#if release}, currently {release.name} ({release.build}){/if}, re-extracted after each patch. NMS-Handbook, the original source, is the fallback. A test suite checks the claims the written guides make.</FeatureCard>
     <FeatureCard key="?" href="#/help" title="Keys and columns" icon="keys"><kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.</FeatureCard>
     <FeatureCard href="#/portals" title="Share an address" icon="portals">Found a ship, a tool or a base worth the trip? Convert it on the portals page and share it as a GitHub issue; a bot checks the glyphs, and accepted ones join the list.</FeatureCard>
   </div>
@@ -141,8 +137,6 @@
 
   .lede { font-size: 1.12rem; line-height: 1.7; max-width: 80ch; color: var(--p-muted); margin: 0 0 12px; }
   .lede.muted { font-size: 1rem; color: var(--p-faint); }
-  .lede b { color: var(--p-accent); font-weight: 400; }
-  .build { font-family: var(--p-mono); font-size: 0.88em; }
 
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
   .hero-actions a {
