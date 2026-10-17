@@ -1437,6 +1437,9 @@ function drawPalette(rebuild = true) {
 }
 
 async function main() {
+  // © 2026, or 2026-now once it is later: plugii's footer does the same.
+  const year = new Date().getFullYear();
+  if (year > 2026) $("#years").textContent = `2026–${year}`;
   $("#nav").innerHTML = NAV.map(([k, label], i) =>
     `<a href="#/${k}" data-view="${k}" title="${i < 7 ? `key ${i + 1}` : "key ?"}">${esc(label)}</a>`).join("");
   setupHeader();

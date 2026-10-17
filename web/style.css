@@ -368,17 +368,28 @@ h3::after {
 
 main { flex: 1; width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 
+/* Footer: plugii's `$ whoami`, and the credits as a second command, on the
+   page's own grid. */
 .foot {
-  font-family: var(--p-mono);
-  color: var(--p-faint);
-  font-size: 0.78rem;
-  padding: 14px var(--gutter);
   border-top: 1px solid var(--p-outline);
   background: var(--p-panel);
-  text-align: center;
+  padding-bottom: env(safe-area-inset-bottom);
 }
-.foot a { color: var(--p-faint); }
-.foot a:hover { color: var(--p-accent); }
+.foot-in {
+  max-width: var(--wrap);
+  margin: 0 auto;
+  padding: 2rem var(--gutter) 2.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 1.5rem 4rem;
+}
+@media (max-width: 900px) { .foot-in { grid-template-columns: minmax(0, 1fr); } }
+.whoami { font-family: var(--p-mono); font-size: 0.8125rem; line-height: 1.7; color: var(--p-muted); min-width: 0; }
+.whoami .prompt { color: var(--p-accent); }
+.whoami .me { color: var(--p-text); font-weight: 700; }
+.whoami .dim { color: var(--p-faint); }
+.whoami a { white-space: nowrap; color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.whoami a:hover { color: var(--p-accent); }
 
 /* ── Toolbars and controls ────────────────────────────────────────────── */
 
