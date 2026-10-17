@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Shared addresses waiting for review: the bot's verdict on each open issue"
+#MISE alias="contrib-pending"
+set -euo pipefail
+
+gh issue list -R rdlu/nms-items-interface -l portal-address --json number,title,labels \
+  -q '.[] | "#\(.number)  \([.labels[].name | select(. != "portal-address")] | join(","))  \(.title)"'

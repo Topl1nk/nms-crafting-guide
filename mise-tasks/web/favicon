@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Redraw the site icon from the Atlas glyph: favicon.svg/.ico, apple-touch-icon.png"
+#MISE alias="favicon"
+set -euo pipefail
+
+uv run python scripts/build_favicon.py

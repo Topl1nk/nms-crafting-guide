@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Installed game version + build, the pinned MBINCompiler, and whether it reads this build's tables"
+#MISE alias="game-version"
+set -euo pipefail
+
+uv run --extra extract python scripts/extract_game.py version

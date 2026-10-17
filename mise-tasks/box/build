@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Rebuild both container images, after a pull or a data refresh"
+#MISE alias="box-build"
+set -euo pipefail
+
+podman compose build tui site

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Re-derive the portal glyphs from upstream art (data:fetch-glyphs, then data:build-glyphs). Not part of refresh: the symbols do not change with a game patch, and data/glyphs.json is committed"
+#MISE alias="glyphs"
+set -euo pipefail
+
+# In order: the trace reads the images the fetch wrote.
+mise run data:fetch-glyphs
+mise run data:build-glyphs

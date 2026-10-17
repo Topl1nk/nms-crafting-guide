@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Export the static site's data into web/data.json, its markdown version (llms.txt, web/md/), plus the PDFs and screenshots"
+#MISE alias="web-data"
+set -euo pipefail
+
+uv run python scripts/build_web.py "$@"

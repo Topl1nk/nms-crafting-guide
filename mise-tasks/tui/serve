@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+#MISE description="Serve the TUI in a browser on localhost:8000 (textual serve)"
+set -euo pipefail
+
+uv run textual serve 'python -m nms_items'

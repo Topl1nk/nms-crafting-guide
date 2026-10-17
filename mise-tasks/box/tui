@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="The TUI in a container: no Python or uv needed, only podman"
+#MISE alias="box-tui"
+set -euo pipefail
+
+podman compose run --rm tui "$@"

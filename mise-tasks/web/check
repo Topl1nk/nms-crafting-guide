@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Check the Svelte components (svelte-check): template errors, a11y and unused-CSS warnings fail it"
+#MISE alias="web-check"
+#MISE depends=["web:install"]
+set -euo pipefail
+
+npm run check

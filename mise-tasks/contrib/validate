@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Check data/locations.json the way a pull request is checked"
+#MISE alias="validate-locations"
+set -euo pipefail
+
+uv run python scripts/portal_issue.py validate

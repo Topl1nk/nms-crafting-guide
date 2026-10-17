@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+#MISE description="The refresh rebuild from NMS-Handbook, for when the game is not installed: fetch → normalise → cheat sheet → PDF"
+#MISE alias="refresh-handbook"
+set -euo pipefail
+
+# In order: each step reads what the one before it wrote.
+mise run data:fetch
+mise run data:build-handbook
+mise run pdf:build

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="DNS, Pages settings, certificate and the last deploy, at a glance"
+#MISE alias="pages-status"
+set -euo pipefail
+
+uv run python scripts/pages.py status

@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="The latest MBINCompiler releases, to pick the pin in mise.toml after a patch"
+#MISE alias="mbin-releases"
+set -euo pipefail
+
+gh api repos/monkeyman192/MBINCompiler/releases -X GET -f per_page=8 \
+  --jq '.[] | "\(.tag_name)\t\(.published_at[:10])\t\(if .prerelease then "pre-release" else "release" end)"'

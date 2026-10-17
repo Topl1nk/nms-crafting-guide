@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="What changed in data/ against the last commit: recipes, items, values, times (markdown)"
+#MISE alias="extract-diff"
+set -euo pipefail
+
+uv run python scripts/data_diff.py "$@"

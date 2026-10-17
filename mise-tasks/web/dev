@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Work on the site: export, then Vite's dev server on localhost:8790, reloading as you save"
+#MISE alias="web-dev"
+#MISE depends=["web:install", "web:data"]
+set -euo pipefail
+
+npm run dev -- "$@"
