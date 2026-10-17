@@ -2080,9 +2080,9 @@ HELP_TEXT = """\
   column on the e screen is what one batch adds over its ingredients.
 
 [b]Data[/]
-  357 refining and 1,323 cooking recipes parsed from the game's own
-  recipe table by NMS-Handbook. Regenerate with: mise run fetch, then
-  mise run build-data.
+  361 refining and 1,323 cooking recipes, extracted from the game's own
+  tables (Cosmos 7.06; data/source.json says which build). After a
+  patch: mise run extract.
   Where loot comes from is the one thing the game files do not record;
   that lives in data/acquisition.json, written from the guides.
   Portal addresses are in data/locations.json - hand-editable, and

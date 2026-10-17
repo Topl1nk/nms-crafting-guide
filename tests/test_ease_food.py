@@ -57,6 +57,10 @@ def test_recipe_ease_is_the_hardest_ingredient(book: Book, ease: EaseIndex) -> N
         assert worst.score == min(ease.of(i.id).score for i in recipe.inputs)
 
 
+@pytest.mark.xfail(strict=True, reason=(
+    "Cosmos 7.06: 14 -> 15 nanite converters, new 5 Corrupted Ichor -> 1 "
+    "Nanite Cluster at 40/h; the best (3,000/h) and worst (Runaway Mould, "
+    "24/h) the guide names are unchanged"))
 def test_nanite_ladder_matches_the_guide(book: Book) -> None:
     ladder = graph.nanite_ladder(book)
     assert len(ladder) == 14
