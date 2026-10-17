@@ -13,6 +13,21 @@
 uv = "latest"
 typst = "latest"
 
+# Decompiles the game's .MBIN tables to readable MXML for `mise run extract`.
+# Pinned, not "latest": each release targets one game version's struct
+# layouts, so after a patch bump this to the release made for it (list them
+# with `mise run mbin-releases`) and check with `mise run game-version`. The
+# linux asset is a self-contained single-file binary, so no .NET is needed.
+#
+# v7.04.1-pre3 is the last full release before Cosmos 7.05 and 7.06, neither
+# of which needed a new one; on build 180836 (7.06) it decompiles every table
+# byte-for-byte the same as the v7.07.0-pre1 pre-release.
+[tools."github:monkeyman192/MBINCompiler"]
+version = "v7.04.1-pre3"
+asset_pattern = "MBINCompiler-linux"
+bin = "MBINCompiler"
+format = "raw"
+
 [env]
 # Keep uv's venv in-repo and importable without installing the package.
 UV_PROJECT_ENVIRONMENT = "{{config_root}}/.venv"
