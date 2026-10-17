@@ -122,3 +122,87 @@ def test_apply_appends_and_credits(tmp_path, monkeypatch) -> None:
     assert added["code"] == "0123456789AB" and added["source"] == "visited myself - @someone via #7"
     assert "valid=true" in (tmp_path / "out").read_text()
     assert bot.validate(data) == []
+
+
+# -- abuse protection ------------------------------------------------------------
+
+def issue(number: int = 9, association: str = "NONE") -> dict:
+    return {"number": number, "author_association": association,
+            "user": {"login": "someone"}, "body": body(**GOOD)}
+
+
+def test_the_cap_is_three_other_open_submissions() -> None:
+    assert bot.MAX_OPEN == 3
+
+
+def test_the_issue_itself_does_not_count_against_the_cap() -> None:
+    mine = [{"number": n} for n in (1, 2, 9)]
+    assert bot.open_elsewhere(issue(9), mine) == 2
+    assert bot.open_elsewhere(issue(9), []) == 0
+
+
+@pytest.mark.parametrize("others, held", [(0, False), (2, False), (3, True), (10, True)])
+def test_a_stranger_past_the_cap_is_held(others, held) -> None:
+    assert bot.on_hold(issue(), others) is held
+
+
+@pytest.mark.parametrize("association", sorted(bot.EXEMPT))
+def test_the_owner_and_collaborators_are_never_held(association) -> None:
+    assert not bot.on_hold(issue(association=association), 50)
+
+
+def test_the_hold_reply_is_polite_and_edits_in_place() -> None:
+    text = bot.hold_reply(4)
+    assert text.startswith("<!-- portal-address-bot -->")   # the same comment, edited
+    assert "4 other portal addresses" in text and "wait until your open submissions are reviewed" in text
+    assert "1 other portal address waiting" in bot.hold_reply(1)
+    assert "✓" not in text and "✗" not in text
+
+
+def test_the_on_hold_label_is_set_up() -> None:
+    assert "on-hold" in bot.LABELS and bot.LABELS["on-hold"][1]
+
+
+def run_check(tmp_path, monkeypatch, association: str, open_numbers: list[int]) -> tuple[str, str]:
+    event = tmp_path / "event.json"
+    event.write_text(json.dumps({"issue": issue(9, association)}))
+    mine = tmp_path / "open.json"
+    mine.write_text(json.dumps([{"number": n} for n in open_numbers]))
+    out = tmp_path / "out"
+    out.write_text("")
+    monkeypatch.setenv("GITHUB_OUTPUT", str(out))
+    monkeypatch.setattr(sys, "argv", ["portal_issue.py", "check", "--event", str(event),
+                                      "--open", str(mine), "--out", str(tmp_path / "r.md")])
+    bot.main()
+    return (tmp_path / "r.md").read_text(), out.read_text()
+
+
+def test_check_holds_instead_of_checking(tmp_path, monkeypatch) -> None:
+    reply, outputs = run_check(tmp_path, monkeypatch, "NONE", [1, 2, 3, 9])
+    assert "On hold" in reply and "held=true" in outputs and "valid=" not in outputs
+
+
+def test_check_runs_normally_once_the_count_drops(tmp_path, monkeypatch) -> None:
+    reply, outputs = run_check(tmp_path, monkeypatch, "NONE", [1, 2, 9])
+    assert "Looks good" in reply and "held=false" in outputs and "valid=true" in outputs
+
+
+def test_check_never_holds_a_collaborator(tmp_path, monkeypatch) -> None:
+    reply, outputs = run_check(tmp_path, monkeypatch, "COLLABORATOR", [1, 2, 3, 4, 9])
+    assert "held=false" in outputs and "valid=true" in outputs
+
+
+def test_setup_dry_run_asks_for_approval_of_every_outside_fork_pr(capsys) -> None:
+    bot.setup(dry_run=True)
+    calls = [line for line in capsys.readouterr().out.splitlines() if line.startswith("would run:")]
+    assert any("label create on-hold" in c for c in calls)
+    assert any("actions/permissions/fork-pr-contributor-approval" in c
+               and "approval_policy=all_external_contributors" in c and "-X PUT" in c for c in calls)
+
+
+def test_lockdown_and_unlock_dry_runs(capsys) -> None:
+    bot.lockdown("contributors_only", "one_week", dry_run=True)
+    bot.unlock(dry_run=True)
+    out = capsys.readouterr().out
+    assert f"gh api -X PUT repos/{bot.REPO}/interaction-limits -f limit=contributors_only -f expiry=one_week" in out
+    assert f"gh api -X DELETE repos/{bot.REPO}/interaction-limits" in out

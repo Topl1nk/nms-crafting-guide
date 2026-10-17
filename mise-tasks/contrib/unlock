@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Lift the emergency brake: remove the repo's interaction limits"
+#USAGE flag "--dry-run" help="Print the gh call instead of making it"
+set -euo pipefail
+
+args=()
+[[ "${usage_dry_run:-false}" == true ]] && args+=(--dry-run)
+uv run python scripts/portal_issue.py unlock "${args[@]}"

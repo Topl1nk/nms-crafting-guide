@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
-#MISE description="Create the labels the portal-address bot uses, and let it open PRs - idempotent"
+#MISE description="Create the bot's labels, let it open PRs, and hold every outside fork PR for approval - idempotent"
 #MISE alias="contrib-setup"
+#USAGE flag "--dry-run" help="Print the gh calls instead of making them"
 set -euo pipefail
 
-uv run python scripts/portal_issue.py setup
+args=()
+[[ "${usage_dry_run:-false}" == true ]] && args+=(--dry-run)
+uv run python scripts/portal_issue.py setup "${args[@]}"

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Emergency brake: limit who may open issues, PRs and comments (GitHub interaction limits)"
+#USAGE flag "--limit <limit>" default="existing_users" help="Who may still interact" {
+#USAGE   choices "existing_users" "contributors_only" "collaborators_only"
+#USAGE }
+#USAGE flag "--expiry <expiry>" default="one_day" help="How long the limit lasts" {
+#USAGE   choices "one_day" "three_days" "one_week" "one_month"
+#USAGE }
+#USAGE flag "--dry-run" help="Print the gh call instead of making it"
+set -euo pipefail
+
+args=(--limit "${usage_limit:-existing_users}" --expiry "${usage_expiry:-one_day}")
+[[ "${usage_dry_run:-false}" == true ]] && args+=(--dry-run)
+uv run python scripts/portal_issue.py lockdown "${args[@]}"

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="Abuse watch: interaction limits, fork PR approval, open submissions per author, bot runs in 24h"
+#USAGE flag "--dry-run" help="Print the gh calls instead of making them"
+set -euo pipefail
+
+args=()
+[[ "${usage_dry_run:-false}" == true ]] && args+=(--dry-run)
+uv run python scripts/portal_issue.py status "${args[@]}"

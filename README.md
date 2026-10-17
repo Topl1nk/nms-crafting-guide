@@ -542,6 +542,22 @@ The issue body is never handed to a shell: the script reads it from the event
 file. `mise run contrib:setup` creates the labels and lets the workflow open
 pull requests, once per repo; `mise run contrib:pending` lists what is waiting.
 
+**Abuse protection.** Only the repo owner's `accepted` label adds anything,
+and the checks need no secrets. Every job has a short timeout (3 minutes for
+the issue jobs, 10 for a PR), and a burst of edits to one issue cancels all
+but the newest check; an accept in progress is never cancelled. One person
+may have three other submissions waiting: past that, a new one is labelled
+`on-hold` with a single polite reply instead of being checked, and an edit
+after the others are reviewed checks it and drops the label (the owner,
+members and collaborators are exempt). `contrib:setup` also makes every
+outside contributor's fork PR wait for approval before any workflow runs on
+it. If it still gets out of hand, `mise run contrib:lockdown` turns on
+GitHub's interaction limits (`--limit existing_users|contributors_only|collaborators_only`,
+`--expiry one_day|three_days|one_week|one_month`), `contrib:unlock` lifts
+them, and `contrib:status` shows the limits, the fork approval policy, open
+submissions per author and the bot's runs in the last 24 hours. The tasks
+that write take `--dry-run`.
+
 ## Where the data comes from
 
 Straight out of the installed game. `scripts/extract_game.py` unpacks the
@@ -670,8 +686,11 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | Task | Does |
 | --- | --- |
 | `mise run contrib:validate` | check `data/locations.json` the way a pull request is checked |
-| `mise run contrib:setup` | the bot's labels, and letting the workflow open PRs |
+| `mise run contrib:setup` | the bot's labels, letting the workflow open PRs, and holding every outside fork PR for approval (`--dry-run` prints the calls) |
 | `mise run contrib:pending` | shared addresses waiting for review, with the bot's verdict |
+| `mise run contrib:status` | interaction limits, fork PR approval policy, open submissions per author, bot runs in the last 24h |
+| `mise run contrib:lockdown` | emergency brake: GitHub interaction limits, `existing_users` for `one_day` by default (`--limit`, `--expiry`, `--dry-run`) |
+| `mise run contrib:unlock` | lift the interaction limits (`--dry-run`) |
 
 **`box:*`** — containers (podman)
 
