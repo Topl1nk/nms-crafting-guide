@@ -65,6 +65,11 @@
     {/key}
   {/if}
 </main>
-<Footer {markdown} release={ready ? gameRelease() : null} />
+<!-- The footer waits for the page above it: drawn under the one-line
+     "Loading" it would be pushed down a screen when data.json lands, the
+     whole of Lighthouse's layout shift (CLS 0.25 desktop, 0.52 mobile). -->
+{#if ready || failed}
+  <Footer {markdown} release={ready ? gameRelease() : null} />
+{/if}
 <Toast />
 <UpdateToast />

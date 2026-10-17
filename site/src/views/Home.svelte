@@ -97,7 +97,7 @@
 
   <figure class="demo">
     <div class="bar"><span>mise run tui</span><b>the terminal app</b></div>
-    <img src="img/recipes.svg" alt="The NMSii terminal app: the recipe list searched for cobalt, with the detail pane showing the selected recipe, its ingredients and how gettable each one is." loading="lazy">
+    <img src="img/recipes.svg" width="1848" height="1075" alt="The NMSii terminal app: the recipe list searched for cobalt, with the detail pane showing the selected recipe, its ingredients and how gettable each one is." loading="lazy">
   </figure>
 
   <h2 class="section">What's inside</h2>
@@ -229,7 +229,9 @@
     border-bottom: 1px solid #3a3a3a;
   }
   .demo .bar b { color: #ffc857; font-weight: 400; }
-  .demo img { display: block; width: 100%; height: auto; }
+  /* width/height in the markup (the SVG's viewBox) and the ratio here keep
+     its box the right size before the lazy image arrives. */
+  .demo img { display: block; width: 100%; height: auto; aspect-ratio: 1848 / 1075; }
 
   /* Section titles: `┌─ What's inside ─────`, bigger than a pane's. */
   h2.section {

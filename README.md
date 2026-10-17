@@ -799,6 +799,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | `mise run web:site` | build, then serve `dist/` on `:8791` as Pages will |
 | `mise run web:favicon` | redraw the site icon from the Atlas glyph, and the app icons the manifest names |
 | `mise run web:screenshots` | retake the install screenshots in `web/screenshots/` with headless chromium |
+| `mise run web:lighthouse` | Lighthouse 13.5.0 scores, CLS/LCP/TBT and the worst layout shifts (`--url`, `--preset mobile\|desktop\|both`, `--local` audits a fresh build on `:8796`); reports in `.cache/lighthouse/` |
 
 **`pages:*`** — GitHub Pages
 

@@ -8,7 +8,7 @@
 <a class="feature" {href} {onclick}>
   <h3>
     <!-- The icons are our own constant markup, from lib/icons.js. -->
-    {#if ICONS[icon]}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">{@html ICONS[icon]}</svg>{/if}<span>{title}</span>{#if key}<kbd>{key}</kbd>{/if}
+    {#if ICONS[icon]}<svg class="ico" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">{@html ICONS[icon]}</svg>{/if}<span>{title}</span>{#if key}<kbd>{key}</kbd>{/if}
   </h3>
   <p>{@render children()}</p>
 </a>
