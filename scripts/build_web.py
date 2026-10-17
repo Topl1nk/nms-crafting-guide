@@ -12,6 +12,10 @@ search, the chain tree walk over the exported `via` maps, the inventory
 matching, and the portal arithmetic (four lines of modular addition, pinned on
 both sides by the galaxy-centre test).
 
+The same bundle is also written out as markdown -- llms.txt, a page per section
+and per item, a sitemap -- by build_markdown.py, for readers that do not run
+JavaScript.
+
 Run via `mise run web-data`; `mise run site` serves the result locally, and
 .github/workflows/pages.yml publishes it to GitHub Pages on every push to main.
 """
@@ -26,6 +30,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 
+import build_markdown  # noqa: E402
 from nms_items import food, graph, portals  # noqa: E402
 from nms_items.ease import TIER_ORDER, EaseIndex  # noqa: E402
 from nms_items.model import DATA_DIR, SOURCE_SETS, Book  # noqa: E402
@@ -178,6 +183,9 @@ def main() -> None:
     OUT.write_text(json.dumps(bundle, ensure_ascii=False, separators=(",", ":")),
                    encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KiB)")
+    # The same bundle as markdown, for whatever reads the site without running
+    # its JavaScript: llms.txt, a page per section and per item, a sitemap.
+    build_markdown.write(bundle, WEB, ROOT)
     # The cheat sheets and the README's TUI screenshots ride along, so the
     # site links and shows them without a second host.
     for src, dest, pattern in (("docs/pdf", "pdf", "*.pdf"), ("docs/img", "img", "*.svg")):

@@ -12,3 +12,9 @@ __pycache__/
 web/data.json
 web/pdf/
 web/img/
+# ...and the markdown version of the site, written beside it by the same export.
+web/md/
+web/llms.txt
+web/llms-full.txt
+web/sitemap.xml
+web/robots.txt
