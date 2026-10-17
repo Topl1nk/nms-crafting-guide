@@ -178,12 +178,13 @@ def main() -> None:
     OUT.write_text(json.dumps(bundle, ensure_ascii=False, separators=(",", ":")),
                    encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KiB)")
-    # The cheat sheets ride along, so the site links them without a second host.
-    pdfs = WEB / "pdf"
-    pdfs.mkdir(exist_ok=True)
-    for pdf in sorted((ROOT / "docs" / "pdf").glob("*.pdf")):
-        shutil.copy2(pdf, pdfs / pdf.name)
-        print(f"copied {(pdfs / pdf.name).relative_to(ROOT)}")
+    # The cheat sheets and the README's TUI screenshots ride along, so the
+    # site links and shows them without a second host.
+    for src, dest, pattern in (("docs/pdf", "pdf", "*.pdf"), ("docs/img", "img", "*.svg")):
+        (WEB / dest).mkdir(exist_ok=True)
+        for path in sorted((ROOT / src).glob(pattern)):
+            shutil.copy2(path, WEB / dest / path.name)
+            print(f"copied {(WEB / dest / path.name).relative_to(ROOT)}")
 
 
 if __name__ == "__main__":

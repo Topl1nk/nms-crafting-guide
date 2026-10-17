@@ -1090,6 +1090,76 @@ const PRIMER = `
   <h3>Sharing one</h3>
   <p>The same twelve glyphs point at a different star in each of the 256 galaxies, so an address alone is ambiguous. Saved ones carry their galaxy.</p>`;
 
+// Home -------------------------------------------------------------------------
+
+// What the project is, and a card per section -- the same shape as the plugii
+// and dotfiles start pages. Every count on it is read off data.json, so the
+// page cannot claim a number the data no longer has.
+VIEWS.home = () => {
+  active = { list: null, search: null };
+  const count = (domain) => D.recipes.filter((r) => r.domain === domain).length;
+  const dishes = D.cooking.reduce((n, g) => n + g.dishes.length, 0);
+  const containers = D.storage.homes.filter((h) => h.container).length;
+  const bestNanite = D.nanites.map((n) => RECIPES[n.recipe]).sort((a, b) => b.rate - a.rate)[0];
+  const loops = RECIPES.filter((r) => r.loop > 1).length;
+  // The chain card shows off a real plan: the most valuable thing Tier 0 reaches.
+  const showcase = Object.keys(D.tiers[0].via.refine)
+    .sort((a, b) => (D.items[b]?.value ?? 0) - (D.items[a]?.value ?? 0))[0];
+  const n = (x) => `<b>${fmtInt(x)}</b>`;
+
+  const card = (key, href, title, body) => `
+    <a class="feature" href="${href}">
+      <h3><span>${esc(title)}</span>${key ? `<kbd>${key}</kbd>` : ""}</h3>
+      <p>${body}</p>
+    </a>`;
+
+  view().innerHTML = `
+    <section class="home">
+      <a class="badge" href="https://github.com/rdlu/nms-items"><i></i>No Man's Sky · Python TUI · GPL-3.0 <span>→</span></a>
+      <h1 class="hero">The numbers No Man's Sky doesn't show you</h1>
+      <p class="lede">
+        What refines into what, the cheapest way to make it from what you can pick up,
+        which dish buffs what, where every item belongs in storage, and every portal
+        address drawn in glyphs. All of it computed from the game's own recipe tables,
+        not copied from a wiki.
+      </p>
+      <p class="lede muted">
+        This is the web version of a terminal app. It runs entirely in your browser,
+        and works on a phone propped up next to the game.
+      </p>
+      <div class="hero-actions">
+        <a class="primary" href="#/recipes">Open the recipes</a>
+        <a href="pdf/nms-cheatsheet-dark.pdf">Cheat sheet (PDF)</a>
+        <a href="https://github.com/rdlu/nms-items">GitHub</a>
+      </div>
+
+      <figure class="demo">
+        <div class="bar"><span>mise run tui</span><b>the terminal app</b></div>
+        <img src="img/recipes.svg" alt="The NMS Items terminal app: the recipe list searched for cobalt, with the detail pane showing the selected recipe, its ingredients and how gettable each one is." loading="lazy">
+      </figure>
+
+      <h2 class="section">What's inside</h2>
+      <div class="features">
+        ${card("1", "#/recipes", "Recipes", `${n(count("refine"))} refining and ${n(count("cook"))} cooking recipes, searchable by output, ingredient or operation. Sort by multiplier, speed, profit or how gettable the inputs are; ${loops} recipes are loops that grow a stack from a seed.`)}
+        ${card("c", `#/chain/${encodeURIComponent(showcase)}`, "Chain planner", `Works backwards from any item to what you can pick up on any planet, off asteroids, or from an atmosphere harvester, minimising refiner time. Try it on ${esc(name(showcase))}, the most valuable thing the bare planet surface refines into.`)}
+        ${card("2", "#/nanites", "Nanite ladder", `All ${n(D.nanites.length)} routes to nanites, ranked by nanites per hour per refiner, with where each input drops. The best is ${esc(bestNanite?.inputs ?? "")} at ${n(bestNanite?.rate ?? 0)}/h.`)}
+        ${card("3", "#/cooking", "Cooking buffs", `${n(dishes)} dishes across ${n(D.cooking.length)} buffs: what each one does when you eat it, how strongly, and what it sells for. Cook the batch, eat one, sell the rest.`)}
+        ${card("4", "#/multitools", "Multi-tools", `The ${n(D.multitools.types.length)} types side by side, the weapons measured, where the free S-class ones come from, and the adjacency and supercharged-slot rules.`)}
+        ${card("5", "#/portals", "Portal addresses", `Convert between portal glyphs and galactic coordinates as you type, dial an address symbol by symbol, and browse ${n(D.portals.locations.length)} saved places worth going.`)}
+        ${card("6", "#/storage", "Where does it go?", `Every one of ${n(Object.keys(D.items).length)} items gets a home: one of the ${containers} storage containers, Cold Storage, or sell, junk, use it now. Type "sell" to list everything to sell.`)}
+        ${card("7", "#/inventory", "Inventory", "Type what you are carrying, and see what you can make right now and what you are one ingredient short of. Kept in this browser.")}
+        ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.")}
+      </div>
+
+      <h2 class="section">Good to know</h2>
+      <div class="features">
+        ${card("", "https://github.com/ApexFatality93/NMS-Handbook", "Straight from the game files", "Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.")}
+        ${card("?", "#/help", "Keys and columns", "<kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.")}
+        ${card("", "https://github.com/rdlu/nms-items#using-it", "Run it in a terminal", "The same screens as a Textual TUI with vim keys, a command palette and themes. <code>mise run tui</code> from the repo.")}
+      </div>
+    </section>`;
+};
+
 // Help -------------------------------------------------------------------------
 
 VIEWS.help = () => {
@@ -1138,11 +1208,11 @@ const NAV = [
 ];
 
 function route() {
-  const hash = location.hash.replace(/^#\/?/, "") || "recipes";
+  const hash = location.hash.replace(/^#\/?/, "") || "home";
   const [path, query = ""] = hash.split("?");
   const [section, ...rest] = path.split("/");
   const params = new URLSearchParams(query);
-  const render = VIEWS[section] || VIEWS.recipes;
+  const render = VIEWS[section] || VIEWS.home;
   document.querySelectorAll("#nav a").forEach((a) => {
     a.classList.toggle("on", a.dataset.view === section || (section === "chain" && a.dataset.view === "recipes"));
   });
@@ -1152,8 +1222,8 @@ function route() {
   active = { list: null, search: null };
   window.scrollTo(0, 0);
   render(params, decodeURIComponent(rest.join("/")));
-  document.title = section === "recipes" || !VIEWS[section]
-    ? "NMS Items"
+  document.title = section === "home" || !VIEWS[section]
+    ? "NMS Items - No Man's Sky recipes, nanites, portals"
     : `${NAV.find(([k]) => k === section)?.[1] ?? "Chain"} · NMS Items`;
 }
 
@@ -1170,8 +1240,7 @@ function onKey(e) {
   }
   if (active.key?.(e)) { e.preventDefault(); return; }
   const list = active.list;
-  const id = location.hash.startsWith("#/recipes") || !location.hash.slice(2)
-    ? list?.current()?.out?.[0] : null;
+  const id = location.hash.startsWith("#/recipes") ? list?.current()?.out?.[0] : null;
   const go = (hash) => { location.hash = hash; };
   switch (e.key) {
     case "j": case "ArrowDown": list?.move(1); break;
