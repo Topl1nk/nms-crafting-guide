@@ -36,7 +36,7 @@
   const PHRASES = [
     { text: "NMSii: No Man's Sky Items Interface", hold: 4500 },
     { text: "The numbers No Man's Sky doesn't show you", hold: 5000 },
-    { text: "16 glyphs. 0 wiki tabs.", hold: 2500 },
+    { text: "The Atlas counts in 16. So do we.", hold: 2500 },
     { text: "Six-teen. Not six-seven. :x", hold: 2500 }, // the 6-7 meme: drop this line when it ages
   ];
   const HERO = PHRASES[1].text;
