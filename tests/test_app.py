@@ -7,6 +7,7 @@ import json
 
 import pytest
 
+from nms_items import graph
 from nms_items.app import SORTS, RecipeApp
 from nms_items.inventory import Inventory
 from nms_items.model import Book
@@ -31,7 +32,9 @@ def test_app_flows(book: Book, tmp_path_factory) -> None:
             await pilot.pause()
             main = app.screen
             table = main.query_one("#table")
-            assert table.row_count == 357  # refining is the default domain
+            # Every refining recipe, however many the current patch has: the count
+            # itself is pinned by test_data.test_recipe_counts, not by the UI.
+            assert table.row_count == len(book.search(domain="refine"))  # the default domain
 
             # search debounces, so give the timer a chance
             await pilot.press("slash")
@@ -39,7 +42,7 @@ def test_app_flows(book: Book, tmp_path_factory) -> None:
                 await pilot.press(char)
             await pilot.pause(0.3)
             await pilot.pause(0.3)
-            assert 0 < table.row_count < 357
+            assert 0 < table.row_count < len(book.search(domain="refine"))
             assert all("platinum" in r.search_key for r in main.rows)
 
             await pilot.press("enter")  # back to the table
@@ -133,7 +136,7 @@ def test_nanite_and_food_screens(book: Book, tmp_path) -> None:
             await pilot.pause(0.3)
             nanites = app.screen
             assert nanites.__class__.__name__ == "NaniteScreen"
-            assert nanites.query_one("#nanite-table").row_count == 14
+            assert nanites.query_one("#nanite-table").row_count == len(graph.nanite_ladder(book))
             await pilot.press("s")  # the screen's own sort, not the list's
             await pilot.pause(0.2)
             assert nanites.sort_index == 1
@@ -227,7 +230,7 @@ def test_vim_motions(book: Book, tmp_path) -> None:
             await pilot.press("escape")
             await pilot.pause(0.3)
             assert main.query_text == ""
-            assert table.row_count == 357
+            assert table.row_count == len(book.search(domain="refine"))
 
     run(scenario())
 

@@ -4,7 +4,7 @@
   "title": "NMSii data bundle",
   "description": "web/data.json: everything the site at nmsii.dlu.one shows, exported by scripts/build_web.py from the nms_items modules. Item IDs are the game's own. Recipe references are indexes into `recipes`; `store` is an index into `storage.outcomes`.",
   "type": "object",
-  "required": ["items", "ease", "recipes", "tiers", "nanite", "nanites", "cooking", "storage", "multitools", "glyphs", "portals"],
+  "required": ["source", "items", "ease", "recipes", "tiers", "nanite", "nanites", "cooking", "storage", "multitools", "glyphs", "portals"],
   "additionalProperties": false,
   "$defs": {
     "itemId": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" },
@@ -24,6 +24,21 @@
     "strings": { "type": "array", "items": { "type": "string" } }
   },
   "properties": {
+    "source": {
+      "description": "Where the recipe data came from, from data/source.json. Null when that file is missing.",
+      "type": ["object", "null"],
+      "required": ["from", "game", "version", "build", "extracted", "summary", "tools"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "enum": ["game", "handbook"], "description": "'game': extracted from the installed game's files. 'handbook': NMS-Handbook's JSON, the fallback, which records no game version." },
+        "game": { "type": "string", "description": "The game update's name, e.g. 'Cosmos'. Empty when not known." },
+        "version": { "type": "string", "description": "The game version, e.g. '7.06'. Empty when not known." },
+        "build": { "type": ["integer", "null"], "description": "The game's build number, e.g. 180836." },
+        "extracted": { "type": "string", "description": "ISO date the data was extracted (or, from NMS-Handbook, fetched)." },
+        "summary": { "type": "string", "description": "One line saying all of the above." },
+        "tools": { "type": "object", "description": "Tool name -> version used for the extract.", "additionalProperties": { "type": "string" } }
+      }
+    },
     "items": {
       "description": "Every item that can sit in a cargo slot, by ID.",
       "type": "object",

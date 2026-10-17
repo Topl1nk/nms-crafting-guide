@@ -19,9 +19,15 @@ def book() -> Book:
 
 
 def test_recipe_counts(book: Book) -> None:
+    """The guide's totals, as of Cosmos 7.06: 361 refining, 1,323 cooking.
+
+    Cosmos added four refiner recipes (357 before), one per new deep-space
+    material: Comet Dust, Contaminated Metal, Gelatinous Fibres and Corrupted
+    Ichor. Cooking did not change.
+    """
     refine = [r for r in book.recipes if r.domain == "refine"]
     cook = [r for r in book.recipes if r.domain == "cook"]
-    assert len(refine) == 357
+    assert len(refine) == 361
     assert len(cook) == 1323
 
 
@@ -87,13 +93,18 @@ def test_asteroids_add_nine(book: Book) -> None:
     assert len(added) == 9
 
 
-def test_twentyfive_items_cannot_be_refined_into_existence(book: Book) -> None:
+def test_twentynine_items_cannot_be_refined_into_existence(book: Book) -> None:
+    """The guide's must-find list: 29 refiner inputs no refiner recipe makes.
+
+    25 before Cosmos 7.06; its four new materials are only ever inputs.
+    """
     refine = [r for r in book.recipes if r.domain == "refine"]
     inputs = {ing.id for r in refine for ing in r.inputs}
     outputs = {r.output.id for r in refine}
     missing = {book.name(i) for i in inputs - outputs}
-    assert len(missing) == 25
+    assert len(missing) == 29
     assert {"Living Pearl", "Salvaged Data", "Tainted Metal", "Atlantideum"} <= missing
+    assert {"Comet Dust", "Contaminated Metal", "Gelatinous Fibres", "Corrupted Ichor"} <= missing
 
 
 def test_plan_from_tier0(book: Book) -> None:

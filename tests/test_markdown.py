@@ -198,11 +198,15 @@ def check(schema: dict, value: object, defs: dict, where: str = "$") -> None:
     if "$ref" in schema:
         schema = defs[schema["$ref"].removeprefix("#/$defs/")]
     kinds = {"object": dict, "array": list, "string": str, "boolean": bool,
-             "integer": int, "number": (int, float)}
+             "integer": int, "number": (int, float), "null": type(None)}
     if "type" in schema:
-        assert isinstance(value, kinds[schema["type"]]), where
-        if schema["type"] in ("integer", "number"):
-            assert not isinstance(value, bool), where
+        # "type" is one name or a list of them, e.g. ["object", "null"].
+        types = schema["type"] if isinstance(schema["type"], list) else [schema["type"]]
+        assert any(isinstance(value, kinds[t]) for t in types), where
+        if value is None:
+            return
+        if isinstance(value, bool):
+            assert "boolean" in types, where
     if "enum" in schema:
         assert value in schema["enum"], where
     if "pattern" in schema:
@@ -237,6 +241,36 @@ def test_data_json_fits_schema(bundle: dict) -> None:
     schema = json.loads((ROOT / "web" / "data.schema.json").read_text(encoding="utf-8"))
     # Round-trip so the check sees what data.json holds, not Python objects.
     check(schema, json.loads(json.dumps(bundle)), schema["$defs"])
+
+
+def test_bundle_says_which_game_build(bundle: dict) -> None:
+    """data.json carries data/source.json, so the site can say what it is
+    up to date with instead of a date guessed from git."""
+    source = json.loads((ROOT / "data" / "source.json").read_text(encoding="utf-8"))
+    s = bundle["source"]
+    assert s["from"] == source["source"]
+    if s["from"] == "game":
+        assert s["version"] == source["game"]["version"]
+        assert s["build"] == int(source["game"]["build"])
+        assert s["extracted"] == source["extracted"]
+
+
+def test_llms_txt_states_the_game_version(bundle: dict, pages: dict[str, str]) -> None:
+    s = bundle["source"]
+    if not s or s["from"] != "game":
+        pytest.skip("data built from NMS-Handbook, which records no version")
+    label = f"No Man's Sky {s['game']} {s['version']} (build {s['build']})"
+    assert f"Data: {label}, extracted from the game files on {s['extracted']}" in pages["llms.txt"]
+    assert label in pages["md/recipes.md"].split("\n\n")[1]  # the page header
+
+
+def test_source_falls_back_without_a_version(bundle: dict) -> None:
+    for source in (None, {"from": "handbook", "game": "", "version": "", "build": None,
+                          "extracted": "2026-02-01", "summary": "", "tools": {}}):
+        md = build_markdown.Markdown({**bundle, "source": source}, "2026-01-01", "2026-01-02")
+        assert md.data_label() == ""
+        assert "NMS-Handbook" in md.source_line()
+        assert "2026-01-01" in md.llms_txt()
 
 
 def test_app_markdown_links_exist(pages: dict[str, str]) -> None:

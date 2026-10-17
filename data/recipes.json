@@ -293,6 +293,26 @@
  },
  {
   "domain": "refine",
+  "operation": "Devitrification",
+  "output": {
+   "id": "TECHFRAG",
+   "n": 1
+  },
+  "inputs": [
+   {
+    "id": "SWARMDUST",
+    "n": 5
+   }
+  ],
+  "time": 90.0,
+  "machine": "Portable / Personal Refiner",
+  "ratio": 0.2,
+  "loop": 0.0,
+  "profit": -8060,
+  "rate": 40.0
+ },
+ {
+  "domain": "refine",
   "operation": "Calcite Transmutation",
   "output": {
    "id": "ASTEROID2",
@@ -1781,6 +1801,26 @@
  },
  {
   "domain": "refine",
+  "operation": "Toxin Extraction",
+  "output": {
+   "id": "PLANT_POOP",
+   "n": 1
+  },
+  "inputs": [
+   {
+    "id": "SLIMEPOST1",
+    "n": 5
+   }
+  ],
+  "time": 90.0,
+  "machine": "Portable / Personal Refiner",
+  "ratio": 0.2,
+  "loop": 0.0,
+  "profit": -1145,
+  "rate": 40.0
+ },
+ {
+  "domain": "refine",
   "operation": "Inefficient Burn",
   "output": {
    "id": "FUEL1",
@@ -2846,6 +2886,26 @@
   "loop": 0.0,
   "profit": 182,
   "rate": 160.0
+ },
+ {
+  "domain": "refine",
+  "operation": "Metal Decontamination",
+  "output": {
+   "id": "LAND3",
+   "n": 1
+  },
+  "inputs": [
+   {
+    "id": "HULK1",
+    "n": 5
+   }
+  ],
+  "time": 90.0,
+  "machine": "Portable / Personal Refiner",
+  "ratio": 0.2,
+  "loop": 0.0,
+  "profit": -1118,
+  "rate": 40.0
  },
  {
   "domain": "refine",
@@ -4538,6 +4598,26 @@
   "loop": 0.0,
   "profit": 21500,
   "rate": 3600.0
+ },
+ {
+  "domain": "refine",
+  "operation": "Crystal Processing",
+  "output": {
+   "id": "ASTEROID1",
+   "n": 1
+  },
+  "inputs": [
+   {
+    "id": "ASTBELT1",
+    "n": 5
+   }
+  ],
+  "time": 90.0,
+  "machine": "Portable / Personal Refiner",
+  "ratio": 0.2,
+  "loop": 0.0,
+  "profit": -764,
+  "rate": 40.0
  },
  {
   "domain": "refine",

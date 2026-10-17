@@ -142,7 +142,8 @@
   },
   footer: align(center, text(size: 6.5pt, fill: pal.subtext,
     [#num(data.counts.refine) refiner recipes · #num(data.counts.cook) cook
-      recipes · #num(data.counts.items) items · times read from the game files ·
+      recipes · #num(data.counts.items) items · times read from the game files
+      #if data.at("game", default: "") != "" [(#data.game)] ·
       generated #datetime.today().display() ·
       page #context counter(page).display("1 / 1", both: true)])),
 )

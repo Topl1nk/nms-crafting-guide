@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--File created using MBINCompiler version (9.99.0.0)-->
+<!-- Hand-written test fixture in MBINCompiler's MXML layout. Invented recipes, not game data. -->
+<Data template="cGcRecipeTable">
+	<Property name="Table">
+		<Property name="Table" value="GcRefinerRecipe" _id="RECIPE_T1">
+			<Property name="Id" value="RECIPE_T1" />
+			<Property name="RecipeType" value="T_SMELT" />
+			<Property name="RecipeName" value="T_SMELT_R" />
+			<Property name="TimeToMake" value="30.000000" />
+			<Property name="Cooking" value="false" />
+			<Property name="Result" value="GcRefinerRecipeElement">
+				<Property name="Id" value="T_BAR" />
+				<Property name="Type" value="GcInventoryType">
+					<Property name="InventoryType" value="Product" />
+				</Property>
+				<Property name="Amount" value="2" />
+			</Property>
+			<Property name="Ingredients">
+				<Property name="Ingredients" value="GcRefinerRecipeElement" _id="T_ORE">
+					<Property name="Id" value="T_ORE" />
+					<Property name="Type" value="GcInventoryType">
+						<Property name="InventoryType" value="Substance" />
+					</Property>
+					<Property name="Amount" value="5" />
+				</Property>
+			</Property>
+		</Property>
+		<Property name="Table" value="GcRefinerRecipe" _id="RECIPE_T2">
+			<Property name="Id" value="RECIPE_T2" />
+			<Property name="RecipeType" value="T_SMELT" />
+			<Property name="RecipeName" value="T_SMELT_R" />
+			<Property name="TimeToMake" value="60.000000" />
+			<Property name="Cooking" value="false" />
+			<Property name="Result" value="GcRefinerRecipeElement">
+				<Property name="Id" value="T_ORE" />
+				<Property name="Type" value="GcInventoryType">
+					<Property name="InventoryType" value="Substance" />
+				</Property>
+				<Property name="Amount" value="6" />
+			</Property>
+			<Property name="Ingredients">
+				<Property name="Ingredients" value="GcRefinerRecipeElement" _id="T_ORE">
+					<Property name="Id" value="T_ORE" />
+					<Property name="Type" value="GcInventoryType">
+						<Property name="InventoryType" value="Substance" />
+					</Property>
+					<Property name="Amount" value="1" />
+				</Property>
+				<Property name="Ingredients" value="GcRefinerRecipeElement" _id="T_BAR">
+					<Property name="Id" value="T_BAR" />
+					<Property name="Type" value="GcInventoryType">
+						<Property name="InventoryType" value="Product" />
+					</Property>
+					<Property name="Amount" value="2" />
+				</Property>
+			</Property>
+		</Property>
+		<Property name="Table" value="GcRefinerRecipe" _id="RECIPE_T3">
+			<Property name="Id" value="RECIPE_T3" />
+			<Property name="RecipeType" value="" />
+			<Property name="RecipeName" value="T_BAKE_R" />
+			<Property name="TimeToMake" value="5.000000" />
+			<Property name="Cooking" value="true" />
+			<Property name="Result" value="GcRefinerRecipeElement">
+				<Property name="Id" value="T_PIE" />
+				<Property name="Type" value="GcInventoryType">
+					<Property name="InventoryType" value="Product" />
+				</Property>
+				<Property name="Amount" value="1" />
+			</Property>
+			<Property name="Ingredients">
+				<Property name="Ingredients" value="GcRefinerRecipeElement" _id="T_BAR">
+					<Property name="Id" value="T_BAR" />
+					<Property name="Type" value="GcInventoryType">
+						<Property name="InventoryType" value="Product" />
+					</Property>
+					<Property name="Amount" value="1" />
+				</Property>
+			</Property>
+		</Property>
+	</Property>
+</Data>

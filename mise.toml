@@ -3,7 +3,7 @@
 #   mise install     # typst + uv, pinned below
 #   mise run setup   # fonts (paru) + Python deps
 #   mise run tui     # the app
-#   mise run refresh # re-pull the game recipe table and rebuild everything
+#   mise run refresh # re-extract the game's tables and rebuild everything
 #
 # Same shape as the minecraft-tui project: uv owns the Python side, typst owns
 # the PDF side, and every routine action is a task here so nothing has to be
@@ -12,6 +12,21 @@
 [tools]
 uv = "latest"
 typst = "latest"
+
+# Decompiles the game's .MBIN tables to readable MXML for `mise run extract`.
+# Pinned, not "latest": each release targets one game version's struct
+# layouts, so after a patch bump this to the release made for it (list them
+# with `mise run mbin-releases`) and check with `mise run game-version`. The
+# linux asset is a self-contained single-file binary, so no .NET is needed.
+#
+# v7.04.1-pre3 is the last full release before Cosmos 7.05 and 7.06, neither
+# of which needed a new one; on build 180836 (7.06) it decompiles every table
+# byte-for-byte the same as the v7.07.0-pre1 pre-release.
+[tools."github:monkeyman192/MBINCompiler"]
+version = "v7.04.1-pre3"
+asset_pattern = "MBINCompiler-linux"
+bin = "MBINCompiler"
+format = "raw"
 
 [env]
 # Keep uv's venv in-repo and importable without installing the package.
@@ -25,8 +40,8 @@ description = "System deps: the two fonts the PDF uses, potrace for the glyphs, 
 run = "paru -S --needed inter-font ttf-jetbrains-mono potrace resvg imagemagick"
 
 [tasks.sync]
-description = "Install / update Python dependencies (textual)"
-run = "uv sync --extra dev"
+description = "Install / update Python dependencies (textual, plus hgpaktool for the game extract)"
+run = "uv sync --extra dev --extra extract"
 
 # --- the app ----------------------------------------------------------------
 
@@ -49,13 +64,56 @@ run = "uv run textual serve 'python -m nms_items'"
 
 # --- data -------------------------------------------------------------------
 
+# The data comes out of the installed game: unpack -> decompile -> convert ->
+# normalise. Each stage is its own task so a failing one can be re-run alone;
+# `extract` runs them in order. The game path defaults to the GOG install in
+# ~/Games; point $NMS_GAME_DIR elsewhere for Steam. See "After a game patch"
+# in the README for the whole routine.
+
+[tasks.game-version]
+description = "Installed game version + build, the pinned MBINCompiler, and whether it reads this build's tables"
+run = "uv run --extra extract python scripts/extract_game.py version"
+
+[tasks.mbin-releases]
+description = "The latest MBINCompiler releases, to pick the pin in mise.toml after a patch"
+run = "gh api repos/monkeyman192/MBINCompiler/releases -X GET -f per_page=8 --jq '.[] | \"\\(.tag_name)\\t\\(.published_at[:10])\\t\\(if .prerelease then \"pre-release\" else \"release\" end)\"'"
+
+[tasks.extract-unpack]
+description = "Unpack the recipe, product, substance and English language tables from the game's .pak files into .cache/game/mbin/"
+run = "uv run --extra extract python scripts/extract_game.py unpack"
+
+[tasks.extract-decompile]
+description = "Decompile .cache/game/mbin/ to MXML with the pinned MBINCompiler; fails if it does not recognise every table"
+run = "uv run --extra extract python scripts/extract_game.py decompile"
+
+[tasks.extract-convert]
+description = "Parse the MXML into NMS-Handbook-shaped JSON in .cache/game/json/, with the game version recorded"
+run = "uv run --extra extract python scripts/extract_game.py convert"
+
+[tasks.extract]
+description = "Rebuild data/ from the installed game: unpack → decompile → convert → build-data"
+run = [
+  { task = "extract-unpack" },
+  { task = "extract-decompile" },
+  { task = "extract-convert" },
+  { task = "build-data" },
+]
+
+[tasks.extract-diff]
+description = "What changed in data/ against the last commit: recipes, items, values, times (markdown)"
+run = "uv run python scripts/data_diff.py"
+
 [tasks.fetch]
-description = "Download the game's recipe tables from NMS-Handbook into .cache/"
+description = "Fallback source: download NMS-Handbook's copy of the tables into .cache/handbook/"
 run = "uv run python scripts/fetch_source.py"
 
 [tasks.build-data]
-description = "Normalise .cache/ into the committed data/items.json + recipes.json"
-run = "uv run python scripts/build_data.py"
+description = "Normalise .cache/game/json/ into the committed data/items.json + recipes.json + source.json"
+run = "uv run python scripts/build_data.py --source game"
+
+[tasks.build-data-handbook]
+description = "Normalise .cache/handbook/ (NMS-Handbook) into data/ instead of the game extract"
+run = "uv run python scripts/build_data.py --source handbook"
 
 [tasks.cheatsheet-data]
 description = "Pick the cheat-sheet recipes into data/cheatsheet.json"
@@ -73,9 +131,15 @@ run = "uv run python scripts/build_glyphs.py"
 description = "Re-derive the portal glyphs from upstream art. Not part of `refresh`: the symbols do not change with a game patch, and data/glyphs.json is committed"
 depends = ["fetch-glyphs", "build-glyphs"]
 
+# In order, not as `depends`: mise runs a task's dependencies in parallel, and
+# each step here reads what the one before it wrote.
 [tasks.refresh]
-description = "Full data rebuild after a game patch: fetch → normalise → cheat sheet → PDF"
-depends = ["fetch", "build-data", "cheatsheet-data", "pdf"]
+description = "Full data rebuild after a game patch, from the installed game: extract → cheat sheet → PDF"
+run = [{ task = "extract" }, { task = "pdf" }]
+
+[tasks.refresh-handbook]
+description = "The same rebuild from NMS-Handbook, for when the game is not installed: fetch → normalise → cheat sheet → PDF"
+run = [{ task = "fetch" }, { task = "build-data-handbook" }, { task = "pdf" }]
 
 # --- web site (nmsii.dlu.one) ------------------------------------------------
 

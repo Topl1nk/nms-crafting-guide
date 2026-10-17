@@ -62,6 +62,7 @@
   {"home": "7", "action": "sell", "why": "Trade goods: no other use", "subtitle_has": ["Trade Goods"]},
   {"home": "7", "action": "sell", "why": "Only good for selling", "subtitles": ["Smuggled Goods", "Starship Subcomponent", "Multi-Tool Subcomponent", "Trade commodity", "Medium value curiosity", "High value curiosity", "Compressed Mineral", "Semi-Conscious Gemstone", "Horrific Sample", "Valuable Mineral Deposit", "Concentrated Element Shard", "Energetic Fragment", "Valuable Ore", "Valuable Rock Sample", "Communion of Hirk", "Anomalous Data Unit", "Medicinal Substance"]},
   {"home": "7", "action": "sell", "why": "Loot from a creature or a machine; sells well", "subtitles": ["Anomalous Material", "Corrupted Aeronic Core", "Glorious Trophy", "Salvaged Identification Device", "Precious Material", "Battleship Core Remnant", "Burning Glassy Remnant", "Unblinking Eye", "Precious Spawn", "Fragile Medusoid"]},
+  {"home": "7", "action": "sell", "why": "Deep-space salvage (Cosmos): the game says it is processed at an outpost to be sold on the open market", "types": ["SpaceSalvage"]},
 
   {"home": "8", "why": "A companion egg", "types": ["CreatureEgg"]},
   {"home": "8", "why": "A keepsake: lore, eggs, Atlas pieces, expedition rewards", "types": ["Curiosity"]}

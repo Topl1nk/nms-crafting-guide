@@ -50,6 +50,18 @@ ESSENTIALS = [
 ]
 
 
+def game_label() -> str:
+    """"Cosmos 7.06, build 180836" from data/source.json, or "" if unknown."""
+    path = DATA / "source.json"
+    if not path.exists():
+        return ""
+    game = json.loads(path.read_text()).get("game") or {}
+    name = " ".join(x for x in (game.get("update"), game.get("version")) if x)
+    if game.get("build"):
+        name = f"{name}, build {game['build']}" if name else f"build {game['build']}"
+    return name
+
+
 def best_per_output(recipes: list[Recipe], limit: int) -> list[Recipe]:
     """Keep the best row per distinct output.
 
@@ -282,6 +294,9 @@ def main() -> int:
                 | {i.id for r in book.recipes for i in r.inputs}
             ),
         },
+        # Which game build the numbers are from, for the footer. Empty when
+        # the data came from NMS-Handbook, which does not record it.
+        "game": game_label(),
         "loops": [row(book, r) for r in loops],
         "nanites": nanite_rows,
         # Not deduped: the point of this section is that several different

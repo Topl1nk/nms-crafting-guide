@@ -1,9 +1,10 @@
 {
  "counts": {
-  "refine": 357,
+  "refine": 361,
   "cook": 1323,
-  "items": 693
+  "items": 697
  },
+ "game": "Cosmos 7.06, build 180836",
  "loops": [
   {
    "make": "6 Condensed Carbon",
@@ -486,6 +487,23 @@
    "gettable": "T1 raw",
    "band": "easy",
    "where": "Asteroids \u2014 shoot them in any system",
+   "note": ""
+  },
+  {
+   "make": "Nanite Cluster",
+   "from": "5 Corrupted Ichor",
+   "mult": "x0.20",
+   "time": "1.5m",
+   "machine": "Portable",
+   "rate": 40,
+   "profit": -8060,
+   "operation": "Devitrification",
+   "nanites": 1,
+   "per_hour": 40,
+   "per_input": 0.2,
+   "gettable": "loot (unknown)",
+   "band": "hard",
+   "where": "no recipe makes it, and the guides do not say where it drops",
    "note": ""
   },
   {
@@ -2391,11 +2409,50 @@
     "where": "As soon as you warp go to the space station, do not reload - the first set of ships in is it",
     "source": "Portal Repository / guide 14",
     "added": "2026-09-07"
+   },
+   {
+    "name": "Reforged-\u03b4",
+    "code": "63FFD9680467",
+    "grouped": "6 3FF D9 680 467",
+    "galactic": "0C66:0058:0E7F:03FF",
+    "kind": "starship",
+    "origin": "shared",
+    "galaxy": "1. Euclid",
+    "detail": "Black and yellow 'hornet' Sentinel interceptor. B-class as found, upgrades to S; 3+1 supercharged slots",
+    "where": "Landed at -29.54 / -152.69. Purple-star system (0x3FF): portals give an Atlas transport error until In Stellar Multitudes is finished",
+    "source": "The Game Hub, youtube.com/shorts/mItcfa613Jw (2026-08-19)",
+    "added": "2026-10-07"
+   },
+   {
+    "name": "\u03b4-Recovered",
+    "code": "217CDE686463",
+    "grouped": "2 17C DE 686 463",
+    "galactic": "0C62:005D:0E85:017C",
+    "kind": "starship",
+    "origin": "shared",
+    "galaxy": "1. Euclid",
+    "detail": "Black and grey 'bat-wing' Sentinel interceptor, S-class as found; 2 supercharged slots, stats above average",
+    "where": "Landed at -10.12 / -35.67, communication station placed beside it",
+    "source": "The Game Hub, youtube.com/shorts/6y1nQIfEIHM (2026-08-17)",
+    "added": "2026-10-07"
+   },
+   {
+    "name": "Orange S-class Fighter",
+    "code": "2413E47FF586",
+    "grouped": "2 413 E4 7FF 586",
+    "galactic": "0D85:0063:0FFE:0413",
+    "kind": "starship",
+    "origin": "shared",
+    "galaxy": "7. Budullangr",
+    "detail": "Orange and blue Fighter, natural S-class; 4 connected supercharged slots",
+    "where": "Lands at the space station; system and ship name not shown in the clip",
+    "source": "The Game Hub, youtube.com/shorts/mzRZu53WGoI (2026-07-27)",
+    "added": "2026-10-07"
    }
   ],
   "counts": {
    "mine": 0,
-   "shared": 15
+   "shared": 18
   }
  },
  "tier0": [
@@ -2447,10 +2504,14 @@
   "Activated Emeril",
   "Activated Indium",
   "Atlantideum",
+  "Comet Dust",
+  "Contaminated Metal",
+  "Corrupted Ichor",
   "Crystal Sulphide",
   "Cursed Dust",
   "Cyto-Phosphate",
   "Flesh Rope",
+  "Gelatinous Fibres",
   "Geodesite",
   "Hadal Core",
   "Hexite",

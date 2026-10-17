@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hand-written test fixture in MBINCompiler's MXML layout. Invented strings, not game data. -->
+<Data template="cTkLocalisationTable">
+	<Property name="Table">
+		<Property name="Table" value="TkLocalisationEntry" _id="T_ORE_NAME">
+			<Property name="Id" value="T_ORE_NAME" />
+			<Property name="English" value="TESTITE" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_ORE_NAME_L">
+			<Property name="Id" value="T_ORE_NAME_L" />
+			<Property name="English" value="Testite" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_ORE_SUB">
+			<Property name="Id" value="T_ORE_SUB" />
+			<Property name="English" value="Imaginary Mineral" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_ORE_DESC">
+			<Property name="Id" value="T_ORE_DESC" />
+			<Property name="English" value="Found only in &lt;TECHNOLOGY&gt;unit tests&lt;&gt;." />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_BAR_NAME_L">
+			<Property name="Id" value="T_BAR_NAME_L" />
+			<Property name="English" value="Testite Bar" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_PIE_NAME_L">
+			<Property name="Id" value="T_PIE_NAME_L" />
+			<Property name="English" value="Fixture Pie" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_SMELT">
+			<Property name="Id" value="T_SMELT" />
+			<Property name="English" value="Requested Operation: Test Smelting" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_SMELT_R">
+			<Property name="Id" value="T_SMELT_R" />
+			<Property name="English" value="Test Smelting" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="T_BAKE_R">
+			<Property name="Id" value="T_BAKE_R" />
+			<Property name="English" value="Test Baking" />
+			<Property name="USEnglish" value="" />
+		</Property>
+		<Property name="Table" value="TkLocalisationEntry" _id="SUIT_ENERGY">
+			<Property name="Id" value="SUIT_ENERGY" />
+			<Property name="English" value="Pretend Stamina" />
+			<Property name="USEnglish" value="" />
+		</Property>
+	</Property>
+</Data>

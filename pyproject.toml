@@ -17,6 +17,11 @@ dev = [
     "textual-dev>=1.7",  # `textual console` / `textual run --dev` for live CSS
     "pytest>=8.0",
 ]
+# Only for `mise run extract`: unpacks the game's HGPAK archives so the data
+# can come from the installed game instead of a third-party JSON dump.
+extract = [
+    "hgpaktool==1.1.3",
+]
 
 [build-system]
 requires = ["hatchling"]

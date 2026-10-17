@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Hand-written test fixture in MBINCompiler's MXML layout. Invented item, not game data. -->
+<Data template="cGcSubstanceTable">
+	<Property name="Table">
+		<Property name="Table" value="GcRealitySubstanceData" _id="T_ORE">
+			<Property name="Name" value="T_ORE_NAME" />
+			<Property name="NameLower" value="T_ORE_NAME_L" />
+			<Property name="ID" value="T_ORE" />
+			<Property name="Icon" value="TkTextureResource">
+				<Property name="Filename" value="TEXTURES/TEST/ORE.DDS" />
+			</Property>
+			<Property name="Subtitle" value="T_ORE_SUB" />
+			<Property name="Description" value="T_ORE_DESC" />
+			<Property name="Colour">
+				<Property name="R" value="1.000000" />
+				<Property name="G" value="0.500000" />
+				<Property name="B" value="0.000000" />
+				<Property name="A" value="1.000000" />
+			</Property>
+			<Property name="BaseValue" value="7" />
+			<Property name="Category" value="GcRealitySubstanceCategory">
+				<Property name="SubstanceCategory" value="Earth" />
+			</Property>
+			<Property name="Rarity" value="GcRarity">
+				<Property name="Rarity" value="Common" />
+			</Property>
+			<Property name="Legality" value="GcLegality">
+				<Property name="Legality" value="Legal" />
+			</Property>
+			<Property name="CookingIngredient" value="true" />
+		</Property>
+	</Property>
+</Data>
