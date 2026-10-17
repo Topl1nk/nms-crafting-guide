@@ -654,6 +654,24 @@ that write take `--dry-run`.
 
 ---
 
+## Roadmap
+
+What's planned, roughly in order. Each item is an issue with the
+[`roadmap`](https://github.com/rdlu/nms-items-interface/issues?q=is%3Aissue+label%3Aroadmap)
+label; comment there before starting on one, so two people don't build the
+same thing.
+
+| | |
+|---|---|
+| [#13](https://github.com/rdlu/nms-items-interface/issues/13) Installable web app | the site as a PWA that works offline next to the game (in progress) |
+| [#14](https://github.com/rdlu/nms-items-interface/issues/14) Desktop app | the site wrapped with Tauri v2, for people who don't want Python or podman |
+| [#15](https://github.com/rdlu/nms-items-interface/issues/15) Rust + ratatui? | a serious evaluation of moving the CLI, TUI and MCP server to Rust, for single-binary installs. Not decided yet |
+| [#16](https://github.com/rdlu/nms-items-interface/issues/16) Cheaper CI | split one slow test so a full CI run bills one minute (a good first issue) |
+
+Portal addresses are always welcome without asking first; see above.
+
+---
+
 ## Tasks
 
 Every task, as `mise tasks` lists them; nothing here needs a raw `npm` or
