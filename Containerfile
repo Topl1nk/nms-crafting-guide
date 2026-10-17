@@ -27,14 +27,27 @@ FROM app AS tui
 VOLUME /state
 CMD ["nms"]
 
-# The same export the Pages workflow runs, then a plain file server.
-FROM app AS site-build
-COPY scripts/build_web.py ./scripts/
+# The same two steps the Pages workflow runs -- the Python export into web/,
+# then the Svelte build around it into dist/ -- and a plain file server.
+# All of scripts/, as the export may call on its neighbours.
+FROM app AS site-data
+COPY scripts ./scripts
 COPY web ./web
 COPY docs ./docs
 RUN python scripts/build_web.py
 
+# The node major here follows `node` in mise.toml's [tools].
+FROM docker.io/library/node:24-slim AS site-build
+WORKDIR /site
+# Packages first, so editing a component does not re-download them.
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY vite.config.js ./
+COPY site ./site
+COPY --from=site-data /app/web ./web
+RUN npm run build
+
 FROM docker.io/library/python:3.13-slim AS site
-COPY --from=site-build /app/web /srv
+COPY --from=site-build /site/dist /srv
 EXPOSE 8001
 CMD ["python", "-m", "http.server", "8001", "--directory", "/srv"]

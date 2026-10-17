@@ -32,24 +32,39 @@ version of what this app queries.
 
 ## On the web
 
-`web/` is a static version of the same screens — recipes, chain planner,
+The site is a static version of the same screens — recipes, chain planner,
 nanites, cooking, multi-tools, portal addresses with the glyphs drawn, storage,
 inventory — for a phone next to the game or anyone without a terminal. No
 server, no Python at runtime: `scripts/build_web.py` runs the same modules the
 TUI uses and exports their answers into `web/data.json` (about 75 KB gzipped),
 and the page only searches, sorts and draws. The chain tree walk, the inventory
 matching and the portal arithmetic are the only logic redone in JavaScript
-(`web/core.js`), and `tests/test_web.py` runs them under node against the
-Python so the two cannot drift.
+(`site/src/lib/core.js`), and `tests/test_web.py` runs them under node against
+the Python so the two cannot drift.
+
+The page is [Svelte 5](https://svelte.dev) built by [Vite](https://vite.dev),
+with no router or UI library on top: one component per screen in
+`site/src/views/`, the shared pieces (the list with its vim keys, the glyph
+strip, the header, the search palette) in `site/src/components/`, and each
+component's own CSS beside it. `web/` holds what is served as it is — fonts,
+favicons, and everything the export writes — and the build copies it into
+`dist/` next to the bundle. Links keep the `#/recipes?item=…` shape they have
+always had, and what the browser remembers stays under the same `nms-items:`
+keys.
+
+It needs node, which `mise install` sets up at the version `mise.toml` pins
+(any node 22.12 or newer works too); `package-lock.json` pins the rest.
 
 ```fish
-mise run site       # export data.json and serve web/ on localhost:8001
+mise run web-dev    # export, then a live-reloading dev server on localhost:8790
+mise run site       # export, build dist/, and serve it on localhost:8791
+mise run web-check  # svelte-check over the components
 ```
 
 It is live at **[nmsii.dlu.one](https://nmsii.dlu.one)**.
-`.github/workflows/pages.yml` runs the tests, exports the data and publishes
-`web/` to GitHub Pages on every push to `main`; the cheat-sheet PDFs are
-published with it. The custom domain is a repo setting, not a `CNAME` file --
+`.github/workflows/pages.yml` runs the tests, exports the data, builds the
+site and publishes `dist/` to GitHub Pages on every push to `main`; the
+cheat-sheet PDFs are published with it. The custom domain is a repo setting, not a `CNAME` file --
 an Actions deploy ignores one -- so `scripts/pages.py` manages it through `gh`
 (`mise run pages-setup`, `pages-https`, `pages-status`). DNS is a Cloudflare
 `CNAME` record `nms → rdlu.github.io`, DNS only, so GitHub can issue the
@@ -121,7 +136,7 @@ uv run nms
 **mise**, to work on it:
 
 ```fish
-mise install        # uv + typst
+mise install        # uv + typst + node
 mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
 mise run sync       # python deps
 mise run tui        # go
@@ -489,18 +504,25 @@ update the guide and the test together; Cosmos moved three (see
 
 ## Tasks
 
+Every task, as `mise tasks` lists them; nothing here needs a raw `npm` or
+`vite` command remembered.
+
 | Task | Does |
 | --- | --- |
 | `mise run tui` | the app |
 | `mise run dev` | the app with live CSS reload, for editing `app.tcss` |
 | `mise run web` | serve the TUI itself in a browser on `:8000` (textual serve) |
+| `mise run web-install` | the site's npm packages, as `package-lock.json` pins them (skipped when current) |
 | `mise run web-data` | export `web/data.json` and its markdown version (`llms.txt`, `web/md/`) for the static site |
 | `mise run web-md` | only the markdown version, with the size of each file |
-| `mise run site` | export, then serve the static site on `:8001` |
-| `mise run test-web` | only the web checks: the export, and `web/core.js` against the Python |
+| `mise run web-dev` | export, then the site's live-reloading dev server on `:8790` |
+| `mise run web-check` | svelte-check over the site's components; warnings fail it |
+| `mise run web-build` | export, then build the deployable site into `dist/` |
+| `mise run site` | build, then serve `dist/` on `:8791` as Pages will |
+| `mise run test-web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys |
 | `mise run test-md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
 | `mise run favicon` | redraw the site icon from the Atlas glyph |
-| `mise run check` | what CI runs: the full suite and the web export |
+| `mise run check` | what CI runs: the full suite, the components and the site build |
 | `mise run deploy` | check, push `main` over SSH, and follow the Pages deploy |
 | `mise run pages-status` | DNS, Pages settings, certificate and the last deploy |
 | `mise run pages-setup` | turn Pages on with the Actions source and the `nmsii.dlu.one` domain |
@@ -532,6 +554,21 @@ update the guide and the test together; Cosmos moved three (see
 | `mise run setup` | system deps: the PDF fonts, potrace, resvg, imagemagick (paru) |
 | `mise run sync` | Python deps, including hgpaktool for the extract |
 | `mise run console` | Textual debug console, beside `mise run dev` |
+| `mise run deps-outdated` | what is behind: mise tools (node, uv, typst), npm packages, Python dependencies |
+
+### Keeping dependencies current
+
+- `mise run deps-outdated` lists everything that is behind, in one place, and
+  changes nothing.
+- **node** is set in one line, `node = "24"` in `mise.toml`'s `[tools]`. The
+  Pages workflow installs it through mise from that line, so bumping it there
+  bumps CI too. It tracks the newest LTS. The `Containerfile`'s
+  `node:24-slim` stage should follow it.
+- **Dependabot** (`.github/dependabot.yml`) opens weekly pull requests for the
+  npm packages, as one group, and for the GitHub Actions. That includes
+  `setup-uv`, which is pinned to an exact release because it publishes no
+  moving major tag.
+- **Python** is locked in `uv.lock`; `uv lock --upgrade` moves it.
 
 ---
 
@@ -551,7 +588,15 @@ src/nms_items/
   screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
 scripts/       extract from the game (or fetch), normalise, diff, pick cheat-sheet rows, trace glyphs, screenshots, web export
-web/           the static site: index.html, app.js (views), core.js (logic), style.css, fonts/
+site/          the web page's source (Svelte 5 + Vite), built into dist/
+  index.html   the shell, and the theme script that runs before first paint
+  src/App.svelte  header, view, footer; picks the view from the #/route
+  src/views/   one component per screen: Recipes, Chain, Nanites, Cooking, Portals, ...
+  src/components/  List (the vim-keyed table), GlyphStrip, Header, Palette, ThemeMenu, ...
+  src/lib/     core.js (the logic test_web.py checks), data, router, keys, storage
+  src/global.css  the skin's tokens, fonts and base; each component styles itself
+web/           served as it is: fonts/, favicons, and what build_web.py exports
+package.json, vite.config.js  the site's build, pinned by package-lock.json
 scripts/pages.py  GitHub Pages settings for nmsii.dlu.one, via gh
 scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
 .github/       the Pages deploy, the contributions bot, the issue form

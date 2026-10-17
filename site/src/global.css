@@ -1,0 +1,357 @@
+/* The dotfiles and plugii site skin, for a page instead of Hextra: iA Writer
+   Duo for text, 0xProto for code, numbers and navigation, square corners,
+   thin pane borders and `┌─ Title ───` headings. The accent is the game's HUD
+   gold, so this site is not the dotfiles one (purple) or plugii (cyan); the
+   colours that mean something -- address fields, ease bands, storage actions
+   -- stay Dracula's, as in the TUI. Dark surfaces are plugii's neutral greys,
+   not Dracula's #282a36, which reads blue. Light is Alucard, warmed to suit.
+
+   Only what several components share lives here: tokens, fonts, the base
+   skin, controls, the list-and-detail layout and the colour classes. What
+   one component draws is styled in that component's .svelte file.
+
+   Fonts are self-hosted in web/fonts/, each with its OFL license: the
+   official iA Writer Duo webfonts unmodified ("iA Writer" is a Reserved Font
+   Name, so no subsetting), and 0xProto subset to Latin, punctuation and box
+   drawing -- the same files the dotfiles and plugii sites ship. */
+
+@font-face { font-family: "iA Writer Duo"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/ia-writer-duo/iAWriterDuoS-Regular.woff2") format("woff2"); }
+@font-face { font-family: "iA Writer Duo"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/ia-writer-duo/iAWriterDuoS-Bold.woff2") format("woff2"); }
+@font-face { font-family: "iA Writer Duo"; font-style: italic; font-weight: 400; font-display: swap; src: url("/fonts/ia-writer-duo/iAWriterDuoS-Italic.woff2") format("woff2"); }
+@font-face { font-family: "0xProto"; font-style: normal; font-weight: 400; font-display: swap; src: url("/fonts/0xproto/0xProto-Regular.woff2") format("woff2"); }
+@font-face { font-family: "0xProto"; font-style: normal; font-weight: 700; font-display: swap; src: url("/fonts/0xproto/0xProto-Bold.woff2") format("woff2"); }
+
+/* ── Palette ──────────────────────────────────────────────────────────── */
+
+:root {
+  /* Dark: HUD gold, Dracula's semantic colours, plugii's neutral surfaces. */
+  --p-bg: #000000;
+  --p-panel: #131313;
+  --p-raised: #1f1f1f;
+  --p-text: #f8f8f2;
+  --p-muted: #c6c6c6;
+  --p-faint: #919191;
+  --p-outline: #3a3a3a;
+  /* The brand accent is the game's warm HUD gold, not Dracula purple: the
+     dotfiles site already wears that, plugii wears cyan. Dracula stays for
+     the colours that mean something -- fields, bands, storage actions. */
+  --p-accent: #ffc857; /* gold */
+  --p-on-accent: #1b1b1b;
+  --p-secondary: #e8a33d; /* amber: pane titles */
+  --p-tertiary: #ffe3a1; /* pale gold: link hover */
+  --p-purple: #bd93f9;
+  --p-red: #ff5555;
+  --p-orange: #ffb86c;
+  --p-yellow: #f1fa8c;
+  --p-green: #50fa7b;
+  --p-pink: #ff79c6;
+  --p-sel: #2b2413;
+
+  /* One container for header, page and footer, as Hextra's "wide" layout:
+     90rem across, a 1.5rem gutter, a 3.5rem navbar. Components add no side
+     padding of their own, so every left edge is the logo's. */
+  --wrap: 90rem;
+  --gutter: max(env(safe-area-inset-left), 1.5rem);
+  --nav-h: 3.5rem;
+
+  --p-sans: "iA Writer Duo", ui-sans-serif, system-ui, sans-serif;
+  --p-mono: "0xProto", ui-monospace, "DejaVu Sans Mono", "Noto Sans Mono", monospace;
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    /* Light: Alucard. */
+    --p-bg: #fffbeb;
+    --p-panel: #f6f1dc;
+    --p-raised: #efe9d0;
+    --p-text: #1f1f1f;
+    --p-muted: #463f33;
+    --p-faint: #6e6450;
+    --p-outline: #dccfa9;
+    --p-accent: #8a5a00;
+    --p-on-accent: #fffbeb;
+    --p-secondary: #9a4f0b;
+    --p-tertiary: #b5651d;
+    --p-purple: #644ac9;
+    --p-red: #cb3a2a;
+    --p-orange: #a34d14;
+    --p-yellow: #846e15;
+    --p-green: #14710a;
+    --p-pink: #a3144d;
+    --p-sel: #f6e6bd;
+    color-scheme: light;
+  }
+}
+/* ...and when chosen with the toggle, whatever the system says. */
+:root[data-theme="light"] {
+    /* Light: Alucard. */
+    --p-bg: #fffbeb;
+    --p-panel: #f6f1dc;
+    --p-raised: #efe9d0;
+    --p-text: #1f1f1f;
+    --p-muted: #463f33;
+    --p-faint: #6e6450;
+    --p-outline: #dccfa9;
+    --p-accent: #8a5a00;
+    --p-on-accent: #fffbeb;
+    --p-secondary: #9a4f0b;
+    --p-tertiary: #b5651d;
+    --p-purple: #644ac9;
+    --p-red: #cb3a2a;
+    --p-orange: #a34d14;
+    --p-yellow: #846e15;
+    --p-green: #14710a;
+    --p-pink: #a3144d;
+    --p-sel: #f6e6bd;
+    color-scheme: light;
+  }
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+
+body {
+  background: var(--p-bg);
+  color: var(--p-text);
+  font: 15px/1.6 var(--p-sans);
+}
+/* Svelte mounts into #app, so the header-page-footer column is laid out on
+   it rather than on body. */
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+::selection { background: var(--p-accent); color: var(--p-on-accent); }
+
+a {
+  color: var(--p-accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover { color: var(--p-tertiary); }
+
+code, kbd, .mono, .code-big { font-family: var(--p-mono); }
+code { font-size: 0.88em; }
+kbd {
+  font-family: var(--p-mono);
+  font-size: 0.85em;
+  line-height: 1;
+  padding: 0.1em 0.45em;
+  background: var(--p-raised);
+  border: 1px solid var(--p-outline);
+  border-bottom-width: 3px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+h1, h2, h3 { line-height: 1.25; margin: 0 0 0.4em; letter-spacing: -0.01em; }
+h2 { font-size: 1.15rem; color: var(--p-accent); }
+p { margin: 0.4em 0; }
+ul, ol { margin: 0.3em 0; padding-left: 1.3em; }
+
+/* h3 as a TUI pane title: `┌─ Title ─────────`. Every pane heading on the
+   site is one, so it is part of the skin; PaneHeading.svelte adds the
+   trailing note some of them carry. */
+h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6ch;
+  font-family: var(--p-mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--p-secondary);
+  margin: 1.2em 0 0.5em;
+}
+h3::before {
+  content: "";
+  flex: none;
+  align-self: center;
+  width: 0.6em;
+  height: 0.5em;
+  margin-top: 0.4em;
+  border-top: 2px solid var(--p-outline);
+  border-left: 2px solid var(--p-outline);
+}
+h3::after {
+  content: "";
+  flex: 1 1 1rem;
+  min-width: 1rem;
+  align-self: center;
+  border-top: 1px solid var(--p-outline);
+}
+
+.muted { color: var(--p-faint); }
+.small { font-size: 0.85em; }
+.strong { font-weight: 700; }
+.ok { color: var(--p-green); }
+.err { color: var(--p-red); }
+.warn { color: var(--p-yellow); }
+.hl { color: var(--p-accent); }
+.hl2 { color: var(--p-accent); }
+.pad { padding: 16px 0; }
+.pad-x { padding: 0; margin: 0 0 8px; }
+
+main { flex: 1; width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
+
+/* ── Toolbars and controls ────────────────────────────────────────────── */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 16px 0 6px;
+}
+.toolbar.sub { padding: 0 0 8px; }
+.view-title { font-family: var(--p-mono); font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--p-text); }
+.toolbar input[type="search"] { flex: 1 1 320px; min-width: 0; }
+.toolbar label { font-family: var(--p-mono); font-size: 0.85rem; color: var(--p-faint); display: flex; align-items: center; gap: 6px; }
+
+input, select, button { font: inherit; color: inherit; }
+input[type="search"], input[type="number"], input:not([type]), select {
+  background: var(--p-panel);
+  border: 1px solid var(--p-outline);
+  border-radius: 0;
+  padding: 5px 9px;
+  color: var(--p-text);
+}
+input[type="search"] { font-family: var(--p-mono); font-size: 0.9rem; }
+input[type="number"] { width: 6em; font-family: var(--p-mono); }
+input::placeholder { color: var(--p-faint); }
+input[type="checkbox"] { accent-color: var(--p-accent); }
+input:focus, select:focus, button:focus-visible, a:focus-visible {
+  outline: 1px solid var(--p-accent);
+  outline-offset: 0;
+  border-color: var(--p-accent);
+}
+
+.btn {
+  display: inline-block;
+  font-family: var(--p-mono);
+  font-size: 0.85rem;
+  background: var(--p-panel);
+  border: 1px solid var(--p-outline);
+  border-radius: 0;
+  padding: 4px 11px;
+  cursor: pointer;
+  color: var(--p-text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:hover { border-color: var(--p-accent); color: var(--p-accent); }
+.btn.danger:hover { border-color: var(--p-red); color: var(--p-red); }
+.link { background: none; border: 0; color: var(--p-accent); cursor: pointer; padding: 0 4px; font-family: var(--p-mono); font-size: 0.8em; }
+.link:hover { color: var(--p-tertiary); text-decoration: underline; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+
+.note { padding: 2px 0 10px; color: var(--p-faint); font-family: var(--p-mono); font-size: 0.82rem; }
+.note b { color: var(--p-text); }
+.note b.hl { color: var(--p-accent); }
+.chip { border: 1px solid var(--p-outline); padding: 0 6px; text-decoration: none; }
+
+/* ── List + detail panes ──────────────────────────────────────────────── */
+
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 34%);
+  gap: 16px;
+  padding: 0 0 24px;
+  align-items: start;
+}
+
+/* The list pane itself; List.svelte draws the table inside it. */
+.list {
+  overflow: auto;
+  max-height: calc(100vh - 170px);
+  border: 1px solid var(--p-outline);
+  background: var(--p-panel);
+}
+.list.short { max-height: 45vh; }
+
+.detail, .readout, .card {
+  background: var(--p-panel);
+  border: 1px solid var(--p-outline);
+  padding: 14px 16px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.detail {
+  position: sticky;
+  top: calc(var(--nav-h) + 8px);
+  max-height: calc(100vh - var(--nav-h) - 24px);
+  overflow: auto;
+}
+.detail-below { position: static; max-height: none; margin-top: 12px; }
+.detail:empty { display: none; }
+.detail > h3:first-child, .card > h3:first-child, .readout > h3:first-child { margin-top: 0; }
+
+dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 3px 14px; margin: 8px 0; }
+dt { color: var(--p-accent); font-family: var(--p-mono); font-size: 0.85em; padding-top: 0.15em; }
+dd { margin: 0; }
+dl.rows { display: block; }
+dl.rows dt { color: var(--p-text); font-family: var(--p-sans); font-size: 1em; padding-top: 0; }
+dl.rows dd { margin: 0 0 10px 1.2em; }
+ul.plain { list-style: none; padding: 0; }
+ul.plain a { text-decoration: none; }
+.big { font-size: 1.1em; font-weight: 700; }
+
+/* What an item's ease band and storage action look like, wherever they show. */
+.band, .act { font-family: var(--p-mono); font-size: 0.88em; font-weight: 700; white-space: nowrap; }
+.band-easy { color: var(--p-green); }
+.band-ok { color: var(--p-yellow); }
+.band-work { color: var(--p-orange); }
+.band-hard { color: var(--p-red); }
+.act-keep { color: var(--p-green); }
+.act-store { color: var(--p-purple); }
+.act-sell { color: var(--p-yellow); }
+.act-discard { color: var(--p-red); }
+.act-use { color: var(--p-pink); }
+
+.tag {
+  font-family: var(--p-mono);
+  font-size: 0.72em;
+  border: 1px solid var(--p-outline);
+  padding: 0 5px;
+  color: var(--p-faint);
+}
+.tag-gather { color: var(--p-green); border-color: currentColor; }
+.tag-find { color: var(--p-orange); border-color: currentColor; }
+.pill {
+  display: inline-block;
+  font-family: var(--p-mono);
+  font-size: 0.88em;
+  background: var(--p-raised);
+  border: 1px solid var(--p-outline);
+  padding: 0 8px;
+  margin: 2px 0;
+}
+
+/* Cards in a flowing grid: multi-tools' text tabs and Help. */
+.prose { padding: 8px 0 24px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); align-items: start; }
+.card li { margin-bottom: 4px; }
+.card.span { grid-column: 1 / -1; }
+
+/* The five portal address fields, one colour each, everywhere they appear. */
+.f0 { color: var(--p-red); }
+.f1 { color: var(--p-purple); }
+.f2 { color: var(--p-green); }
+.f3 { color: var(--p-yellow); }
+.f4 { color: var(--p-pink); }
+
+.code-big { font-size: 1.5rem; font-weight: 700; letter-spacing: 0.06em; margin: 0 0 8px; }
+
+/* ── Narrow screens ───────────────────────────────────────────────────── */
+
+@media (max-width: 1000px) {
+  .split { grid-template-columns: minmax(0, 1fr); }
+  .detail { position: static; max-height: none; }
+  .list { max-height: 60vh; }
+}
+
+@media (max-width: 640px) {
+  .wide-only { display: none; }
+}

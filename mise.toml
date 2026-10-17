@@ -1,6 +1,6 @@
 # mise (https://mise.jdx.dev) — tools + tasks for NMSii.
 #
-#   mise install     # typst + uv, pinned below
+#   mise install     # typst + uv + node, pinned below
 #   mise run setup   # fonts (paru) + Python deps
 #   mise run tui     # the app
 #   mise run refresh # re-extract the game's tables and rebuild everything
@@ -12,6 +12,10 @@
 [tools]
 uv = "latest"
 typst = "latest"
+# The site's build. The one place its version is set: the Pages workflow
+# installs node through mise from this line, so a bump is this line only.
+# Tracks the newest LTS; `mise run deps-outdated` shows when there is one.
+node = "24"
 
 # Decompiles the game's .MBIN tables to readable MXML for `mise run extract`.
 # Pinned, not "latest": each release targets one game version's struct
@@ -143,6 +147,18 @@ run = [{ task = "fetch" }, { task = "build-data-handbook" }, { task = "pdf" }]
 
 # --- web site (nmsii.dlu.one) ------------------------------------------------
 
+#
+# Two halves: the Python export writes the data into web/ (data.json, PDFs,
+# screenshots), and Vite builds the Svelte page in site/ around it into dist/,
+# which is what gets deployed. node is pinned in [tools] above, the npm side by
+# package-lock.json.
+
+[tasks.web-install]
+description = "Install the site's npm packages exactly as package-lock.json pins them (skipped when already current)"
+run = "npm ci"
+sources = ["package.json", "package-lock.json"]
+outputs = ["node_modules/.package-lock.json"]
+
 [tasks.web-data]
 description = "Export the static site's data into web/data.json, its markdown version (llms.txt, web/md/), plus the PDFs and screenshots"
 run = "uv run python scripts/build_web.py"
@@ -151,17 +167,32 @@ run = "uv run python scripts/build_web.py"
 description = "Export only the markdown version of the site (llms.txt, web/md/, sitemap) and print the file sizes"
 run = "uv run python scripts/build_markdown.py"
 
+[tasks.web-dev]
+description = "Work on the site: export, then Vite's dev server on localhost:8790, reloading as you save"
+depends = ["web-install", "web-data"]
+run = "npm run dev"
+
+[tasks.web-check]
+description = "Check the Svelte components (svelte-check): template errors, a11y and unused-CSS warnings fail it"
+depends = ["web-install"]
+run = "npm run check"
+
+[tasks.web-build]
+description = "Export, then build the deployable site into dist/ (what the Pages workflow uploads)"
+depends = ["web-install", "web-data"]
+run = "npm run build"
+
 [tasks.site]
-description = "Export, then serve the static site on localhost:8001"
-depends = ["web-data"]
-run = "uv run python -m http.server 8001 --directory web --bind 127.0.0.1"
+description = "Build the site, then serve dist/ on localhost:8791 the way Pages will"
+depends = ["web-build"]
+run = "npm run preview"
 
 [tasks.favicon]
 description = "Redraw the site icon from the Atlas glyph: favicon.svg/.ico, apple-touch-icon.png"
 run = "uv run python scripts/build_favicon.py"
 
 [tasks.test-web]
-description = "The web checks only: the export, and web/core.js against the Python (needs node)"
+description = "The web checks only: the export, and site/src/lib/core.js against the Python (needs node)"
 run = "uv run pytest -q tests/test_web.py"
 
 [tasks.test-md]
@@ -171,9 +202,9 @@ run = "uv run pytest -q tests/test_markdown.py"
 # --- release -----------------------------------------------------------------
 
 [tasks.check]
-description = "Everything CI runs before a deploy: the full test suite and the web export"
-depends = ["test"]
-run = ["uv run python scripts/portal_issue.py validate", "uv run python scripts/build_web.py"]
+description = "Everything CI runs before a deploy: the full test suite, the components and the site build"
+depends = ["test", "web-check"]
+run = ["uv run python scripts/portal_issue.py validate", "mise run web-build"]
 
 [tasks.deploy]
 description = "Check, push main over SSH, and follow the Pages deploy it triggers"
@@ -249,3 +280,15 @@ run = "uv run pytest -q"
 [tasks.screenshot]
 description = "Refresh the SVG screenshots in docs/img/"
 run = "uv run python scripts/screenshot.py"
+
+# --- dependencies -------------------------------------------------------------
+
+# Read-only: says what is behind, changes nothing. npm outdated exits 1 when
+# anything is, which is an answer here, not a failure.
+[tasks.deps-outdated]
+description = "What is behind, in one place: mise tools (node, uv, typst), npm packages, and the direct Python dependencies"
+run = [
+  "echo '== mise tools (node: move to the newest LTS, not just the newest)' && mise outdated --bump --local",
+  "echo '== npm packages' && (npm outdated || true)",
+  "echo '== python (direct dependencies)' && (uv tree --outdated --depth 1 | grep -F '(latest' || echo 'all current')",
+]

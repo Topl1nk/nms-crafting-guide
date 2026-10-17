@@ -1,15 +1,16 @@
 """The static site against the Python it mirrors.
 
-scripts/build_web.py exports the answers; web/core.js redoes the cheap parts in
-the browser -- the chain tree walk, inventory matching, portal arithmetic.
-These run that JS under node and hold it to the Python, so the web page and the
-TUI cannot quietly disagree. Without node the cross-checks skip; the export
-checks still run.
+scripts/build_web.py exports the answers; site/src/lib/core.js redoes the cheap
+parts in the browser -- the chain tree walk, inventory matching, portal
+arithmetic. These run that JS under node and hold it to the Python, so the web
+page and the TUI cannot quietly disagree. Without node the cross-checks skip;
+the export checks, and the ones that only read the site's source, still run.
 """
 
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -27,7 +28,14 @@ sys.path.insert(0, str(ROOT / "scripts"))
 import build_web  # noqa: E402
 
 NODE = shutil.which("node")
-CORE = (ROOT / "web" / "core.js").as_uri()
+SITE = ROOT / "site"
+# A plain ES module with no Svelte in it, so node runs it as it is.
+CORE = (SITE / "src" / "lib" / "core.js").as_uri()
+
+# What the site keeps in localStorage, under `nms-items:`. Visitors have these
+# saved from the hand-written page that came before the Svelte one; a renamed
+# key would quietly forget their inventory or their portal addresses.
+STORAGE_KEYS = {"inventory", "inv-cook", "locations", "theme"}
 
 # Deep chains, shallow ones, a loop, a cooked dish and something unreachable.
 TARGETS = ["TECHFRAG", "ANTIMATTER", "HYPERFUEL1", "STELLAR2", "MICROCHIP", "FOOD_R_FLOUR",
@@ -140,3 +148,28 @@ console.log(JSON.stringify(JSON.parse(raw).texts.map((t) => {{
         py = Address.parse(text, 3)
         assert js == {"code": py.portal_code, "galactic": py.galactic,
                       "voxel": list(py.voxel)}, text
+
+
+def test_storage_keys_unchanged() -> None:
+    used = set()
+    for path in (SITE / "src").rglob("*"):
+        if path.suffix in {".js", ".svelte"}:
+            text = path.read_text(encoding="utf-8")
+            used |= set(re.findall(r'local\.(?:get|set)\("([^"]+)"', text))
+    assert used == STORAGE_KEYS
+    local = (SITE / "src" / "lib" / "local.js").read_text(encoding="utf-8")
+    assert 'PREFIX = "nms-items:"' in local
+    # The pre-paint theme script reads the same key, before any module loads.
+    index = (SITE / "index.html").read_text(encoding="utf-8")
+    assert 'localStorage.getItem("nms-items:theme")' in index
+
+
+def test_every_route_has_a_view() -> None:
+    # Shared links name these sections; a section without a view falls back to
+    # the start page, and the link quietly stops meaning anything.
+    app = (SITE / "src" / "App.svelte").read_text(encoding="utf-8")
+    table = re.search(r"const VIEWS = \{(.*?)\};", app, re.S).group(1)
+    assert set(re.findall(r"(\w+): \w+", table)) == {
+        "home", "recipes", "chain", "nanites", "cooking", "multitools", "portals",
+        "storage", "inventory", "help",
+    }

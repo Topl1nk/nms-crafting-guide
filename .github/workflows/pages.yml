@@ -1,7 +1,7 @@
-# Publish web/ to GitHub Pages at nmsii.dlu.one: test, export data.json from the
-# Python side, upload. Needs Settings -> Pages -> Source set to "GitHub
-# Actions", and the custom domain set there too: a CNAME file in web/ is
-# ignored by Actions deploys.
+# Publish the site to GitHub Pages at nmsii.dlu.one: test, export data.json from
+# the Python side into web/, build the Svelte page around it into dist/,
+# upload dist/. Needs Settings -> Pages -> Source set to "GitHub Actions", and
+# the custom domain set there too: a CNAME file is ignored by Actions deploys.
 name: Pages
 
 on:
@@ -22,20 +22,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           # Full history: llms.txt dates the recipe data by data/'s last commit,
           # which a shallow clone cannot see.
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v6
-      - run: uv sync --extra dev
-      # The runner ships node, so the web cross-checks in test_web.py run too.
-      - run: uv run pytest -q
-      - run: uv run python scripts/build_web.py
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+      - uses: astral-sh/setup-uv@v10.3.0
+      # node through mise, so CI runs the version mise.toml names and a bump
+      # there is the only edit. Only node: typst and the rest are not needed
+      # here. The same node runs the web cross-checks in test_web.py.
+      - uses: jdx/mise-action@v5
         with:
-          path: web
+          install_args: node
+      - run: uv sync --extra dev
+      - run: npm ci
+      - run: uv run pytest -q
+      - run: npm run check
+      # The export first: it writes into web/, which the build copies into dist/.
+      - run: uv run python scripts/build_web.py
+      - run: npm run build
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
 
   deploy:
     needs: build
@@ -45,4 +54,4 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NMSii - No Man's Sky recipes, nanites, portals</title>
+  <meta name="description" content="NMSii, the No Man's Sky Items Interface: refining, cooking, nanites, multi-tools, portal addresses and storage - from the game's own recipe tables.">
+  <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="/favicon.ico" sizes="32x32">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <!-- The markdown version of the page in view; App.svelte keeps it current. -->
+  <link rel="alternate" type="text/markdown" href="llms.txt" title="NMSii as markdown" id="md-alt">
+  <meta name="theme-color" content="#000000">
+  <script>
+    // The saved theme, before first paint, so a choice never flashes the other
+    // one. "system" (the default) sets nothing and lets prefers-color-scheme
+    // decide, live -- the same three options as the plugii and dotfiles sites.
+    // Inline on purpose: the app bundle loads after the first paint.
+    try {
+      const t = JSON.parse(localStorage.getItem("nms-items:theme"));
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch {}
+  </script>
+  <link rel="preload" href="/fonts/ia-writer-duo/iAWriterDuoS-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/0xproto/0xProto-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <script type="module" src="/src/main.js"></script>
+</head>
+<body>
+  <!-- Svelte mounts the header, the view and the footer here; the line below
+       is what shows until it does. -->
+  <div id="app"><main><p class="pad muted">Loading the recipe book…</p></main></div>
+  <noscript><p class="pad">This page needs JavaScript. Everything it shows is also plain markdown:
+    start at <a href="llms.txt">llms.txt</a>, or <a href="md/items/index.md">every item</a>,
+    <a href="md/recipes.md">every recipe</a> and <a href="md/guide.md">how to read them</a>.</p></noscript>
+</body>
+</html>

@@ -169,7 +169,7 @@ class Markdown:
                 self.consumed.setdefault(item_id, []).append(index)
         self.cooking_use = {c["effect"]: c["use"] for c in bundle["cooking"]}
 
-    # -- lookups, as app.js does them
+    # -- lookups, as site/src/lib/data.js does them
 
     def name(self, item_id: str) -> str:
         item = self.items.get(item_id)

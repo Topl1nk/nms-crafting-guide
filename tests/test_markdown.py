@@ -29,7 +29,7 @@ import build_markdown  # noqa: E402
 import build_web  # noqa: E402
 
 NODE = shutil.which("node")
-CORE = (ROOT / "web" / "core.js").as_uri()
+CORE = (ROOT / "site" / "src" / "lib" / "core.js").as_uri()
 
 # Raw, one step, deep, a loop, cooked, a nanite route, loot, needs-a-seed.
 SAMPLE = ["OXYGEN", "FUEL2", "TECHFRAG", "WATER2", "FOOD_R_FLOUR", "AF_METAL", "STELLAR2",
@@ -274,10 +274,11 @@ def test_source_falls_back_without_a_version(bundle: dict) -> None:
 
 
 def test_app_markdown_links_exist(pages: dict[str, str]) -> None:
-    # app.js points each page's footer link and <link rel=alternate> at its
-    # markdown twin; every file it can name has to be one the export writes.
-    app = (ROOT / "web" / "app.js").read_text(encoding="utf-8")
-    table = re.search(r"const MD_PAGES = \{(.*?)\};", app, re.S).group(1)
+    # site/src/lib/markdown.js points each page's footer link and <link
+    # rel=alternate> at its markdown twin; every file it can name has to be
+    # one the export writes.
+    app = (ROOT / "site" / "src" / "lib" / "markdown.js").read_text(encoding="utf-8")
+    table = re.search(r"(?:export )?const MD_PAGES = \{(.*?)\};", app, re.S).group(1)
     targets = re.findall(r'"([^"]+\.md)"', table)
     assert len(targets) >= 8
     for path in [*targets, "llms.txt", "md/items/index.md"]:
