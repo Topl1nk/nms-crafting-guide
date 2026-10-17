@@ -1941,7 +1941,7 @@ class PortalScreen(Screen):
 
 
 HELP_TEXT = """\
-[b $primary]NMSii[/], the NMS Items Interface - refining, cooking and chain lookup
+[b $primary]NMSii[/], the No Man's Sky Items Interface - refining, cooking and chain lookup
 
 [b]Ctrl+P - the command palette[/]
   Every mode this app has, by name, with a [b]●[/] on the one you are in.

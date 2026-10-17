@@ -718,6 +718,8 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
 .badge { white-space: nowrap; max-width: 100%; }
 @media (max-width: 640px) { .badge { font-size: 0.72rem; gap: 6px; } }
 .badge:hover { border-color: var(--p-accent); color: var(--p-accent); }
+.badge em { font-style: normal; }
+@media (max-width: 640px) { .badge em { display: none; } }
 
 .hero {
   font-family: var(--p-mono);

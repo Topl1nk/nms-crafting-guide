@@ -1,4 +1,4 @@
-# NMSii — the NMS Items Interface for No Man's Sky
+# NMSii — the No Man's Sky Items Interface
 
 A **TUI** for the two lookups you actually make while playing: *what does this
 refine into*, and *how do I get that from what I'm carrying*. Plus a printable

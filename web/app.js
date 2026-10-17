@@ -1190,7 +1190,7 @@ VIEWS.home = () => {
 
   view().innerHTML = `
     <section class="home">
-      <a class="badge" href="https://github.com/rdlu/nms-items-interface"><i></i>NMS Items Interface · Python TUI · GPL-3.0 <span>→</span></a>
+      <a class="badge" href="https://github.com/rdlu/nms-items-interface"><i></i>No Man's Sky Items Interface (NMSii)<em> · Python TUI · GPL-3.0</em> <span>→</span></a>
       <h1 class="hero">The numbers No Man's Sky doesn't show you</h1>
       <p class="lede">
         What refines into what, the cheapest way to make it from what you can pick up,

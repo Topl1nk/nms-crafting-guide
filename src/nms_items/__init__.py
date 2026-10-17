@@ -1,3 +1,3 @@
-"""NMSii, the NMS Items Interface - refining, cooking and chain lookup for No Man's Sky."""
+"""NMSii, the No Man's Sky Items Interface: refining, cooking and chain lookup."""
 
 __version__ = "0.1.0"
