@@ -1,6 +1,6 @@
 <script module>
-  // The hero types itself once per page load; coming back to the start page
-  // shows it already typed.
+  // The intro (from the project's name) plays once per page load; coming back
+  // to the start page picks the rotation up at the tagline, already typed.
   let typed = false;
 </script>
 
@@ -14,6 +14,7 @@
   import { fmtInt } from "../lib/core.js";
   import { D, gameRelease, name, RECIPES, REPO_URL } from "../lib/data.js";
   import { install as installApp, pwa } from "../lib/pwa.svelte.js";
+  import { untrack } from "svelte";
 
   const count = (domain) => D.recipes.filter((r) => r.domain === domain).length;
   const dishes = D.cooking.reduce((n, g) => n + g.dishes.length, 0);
@@ -27,33 +28,91 @@
 
   let install;
 
-  // The hero, typed like a prompt: the name, held, backspaced, then the line
-  // that stays. Screen readers get the h1's aria-label, never the typing, and
-  // reduced motion gets the last line straight away.
-  const HERO = "The numbers No Man's Sky doesn't show you";
-  const FIRST = "NMSii: No Man's Sky Items Interface";
-  const animate = !typed && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // The hero, typed like a prompt, round and round: each line typed, held,
+  // backspaced, then the next. A new line is one more entry here, with how
+  // long it stays up (ms): the name and the tagline longer than the jokes.
+  // Screen readers get the h1's aria-label (the tagline), never the typing,
+  // and reduced motion gets the tagline alone, still.
+  const PHRASES = [
+    { text: "NMSii: No Man's Sky Items Interface", hold: 4500 },
+    { text: "The numbers No Man's Sky doesn't show you", hold: 5000 },
+    { text: "The Atlas counts in 16. So do we.", hold: 2500 },
+    { text: "Six-teen. Not six-seven. :x", hold: 2500 }, // the 6-7 meme: drop this line when it ages
+  ];
+  const HERO = PHRASES[1].text;
+  const animate = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fresh = !typed;
   typed = true;
-  let shown = $state(animate ? "" : HERO);
-  let busy = $state(animate);
+
+  let h1;
+  let shown = $state(animate && fresh ? "" : HERO);
+  let busy = $state(animate && fresh);
+  // The toggle's state. The rest of what stops the clock -- a mouse over the
+  // line, keyboard focus on the toggle, a hidden tab, the hero scrolled away
+  // -- is plain flags, read by sync().
+  let paused = $state(false);
+  let held = false, hovered = false, hidden = false, away = false;
+
+  // The phrase on screen, how much of it, typing/holding/erasing, and the ms
+  // until the next key.
+  let p = fresh ? 0 : 1;
+  let len = fresh ? 0 : HERO.length;
+  let phase = fresh ? "type" : "hold";
+  let wait = fresh ? 500 : PHRASES[1].hold;
+  let timer = null;
+  const key = () => 35 + Math.random() * 35; // a human's 35-70 ms a key
+
+  function act() {
+    const { text, hold } = PHRASES[p];
+    if (phase === "type") {
+      shown = text.slice(0, ++len);
+      if (len < text.length) wait = key();
+      else { phase = "hold"; wait = hold; }
+    } else {
+      phase = "erase";
+      shown = text.slice(0, --len);
+      wait = 18; // a quick backspace
+      if (len === 0) { p = (p + 1) % PHRASES.length; phase = "type"; wait = 350; }
+    }
+  }
+
+  // Start or stop the clock to match the flags. A pause keeps its place in
+  // the line; the cursor blinks whenever it is not moving.
+  function sync() {
+    const run = animate && !paused && !held && !hovered && !hidden && !away;
+    busy = run && phase !== "hold";
+    if (run && timer === null) {
+      timer = setTimeout(() => { timer = null; act(); sync(); }, wait);
+    } else if (!run && timer !== null) {
+      clearTimeout(timer);
+      timer = null;
+    }
+  }
+
+  // The pause control (WCAG 2.2.2). Resuming also lifts the focus hold, or
+  // it would only move again once focus left the button.
+  function toggle() {
+    paused = !paused;
+    if (!paused) held = false;
+    sync();
+  }
+  const hover = (on) => (e) => { if (e.pointerType === "mouse") { hovered = on; sync(); } };
+  function focus(e) { held = e.currentTarget.matches(":focus-visible"); sync(); }
+  function blur() { held = false; sync(); }
 
   $effect(() => {
     if (!animate) return;
-    // [text, ms before it shows]: a human's 35-70 ms a key, a quick backspace.
-    const key = () => 35 + Math.random() * 35;
-    const steps = [];
-    for (let i = 1; i <= FIRST.length; i++) steps.push([FIRST.slice(0, i), i === 1 ? 500 : key()]);
-    for (let i = FIRST.length - 1; i >= 0; i--) steps.push([FIRST.slice(0, i), i === FIRST.length - 1 ? 1200 : 18]);
-    for (let i = 1; i <= HERO.length; i++) steps.push([HERO.slice(0, i), i === 1 ? 350 : key()]);
-    let n = 0;
-    let timer;
-    const next = () => {
-      if (n === steps.length) { busy = false; return; }
-      const [text, ms] = steps[n++];
-      timer = setTimeout(() => { shown = text; next(); }, ms);
+    const io = new IntersectionObserver(([e]) => { away = !e.isIntersecting; sync(); });
+    io.observe(h1);
+    const vis = () => { hidden = document.hidden; sync(); };
+    document.addEventListener("visibilitychange", vis);
+    untrack(vis);
+    return () => {
+      clearTimeout(timer);
+      timer = null;
+      io.disconnect();
+      document.removeEventListener("visibilitychange", vis);
     };
-    next();
-    return () => clearTimeout(timer);
   });
 
   // A scroll, not a #fragment: the hash is the router's.
@@ -66,11 +125,22 @@
 
 <section class="home">
   <a class="badge" href="https://github.com/rdlu/nms-items-interface"><i></i>No Man's Sky Items Interface (NMSii)<em>{" · web · terminal · MCP · GPL-3.0"}</em> <span>→</span></a>
-  <!-- The sizer holds the final line's height, so the typing never moves the page. -->
-  <h1 class="hero" class:busy aria-label={HERO}>
-    <span class="sizer" aria-hidden="true">{HERO}</span>
-    <span class="typed" aria-hidden="true">{shown}</span>
-  </h1>
+  <!-- Every line sits invisibly in the same grid cell, so the box is the
+       tallest one's height and the typing never moves the page. -->
+  <div class="hero-box">
+    <h1 class="hero" class:busy aria-label={HERO} bind:this={h1}
+        onpointerenter={hover(true)} onpointerleave={hover(false)}>
+      {#each animate ? PHRASES.map((l) => l.text) : [HERO] as line}
+        <span class="sizer" aria-hidden="true">{line}</span>
+      {/each}
+      <span class="typed" aria-hidden="true">{shown}</span>
+    </h1>
+    {#if animate}
+      <button type="button" class="hero-pause" onclick={toggle} onfocus={focus} onblur={blur}
+              aria-label={paused ? "Resume the title animation" : "Pause the title animation"}
+        ><span aria-hidden="true">{paused ? "▶" : "‖"}</span> {paused ? "resume" : "pause"}</button>
+    {/if}
+  </div>
   <p class="lede">
     What refines into what, the cheapest way to make it from what you can pick up,
     which dish buffs what, where every item belongs in storage, and every portal
@@ -194,6 +264,26 @@
   }
   @keyframes blink { 50% { opacity: 0; } }
   .hero.busy > span::after { animation: none; }
+  /* The pause toggle hangs in the h1's bottom margin, out of the flow, so it
+     takes no room and never shifts anything. 24px tall: the minimum target. */
+  .hero-box { position: relative; }
+  .hero-pause {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    height: 24px;
+    padding: 0 6px;
+    font-family: var(--p-mono);
+    font-size: 0.75rem;
+    line-height: 1;
+    color: var(--p-faint);
+    background: none;
+    border: 0;
+    border-radius: 0;
+    cursor: pointer;
+  }
+  .hero-pause span { display: inline-block; width: 1ch; color: var(--p-accent); }
+  .hero-pause:hover { color: var(--p-accent); }
   @media (prefers-reduced-motion: reduce) { .hero > span::after { animation: none; } }
 
   .lede { font-size: 1.12rem; line-height: 1.7; max-width: 80ch; color: var(--p-muted); margin: 0 0 12px; }

@@ -32,6 +32,10 @@ export function onKey(e, openPalette) {
     }
     return;
   }
+  // Enter on a focused link or button is the browser's: it follows or
+  // presses it. Taking it for the view's pivot left keyboard users unable to
+  // activate anything.
+  if (e.key === "Enter" && e.target.closest?.("a[href], button, summary")) return;
   if (active.key?.(e)) { e.preventDefault(); return; }
   const list = active.list;
   const id = location.hash.startsWith("#/recipes") ? list?.current()?.out?.[0] : null;
