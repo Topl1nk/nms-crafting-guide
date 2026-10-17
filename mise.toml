@@ -47,6 +47,15 @@ run = "uv run textual console"
 description = "Serve the TUI in a browser on localhost:8000"
 run = "uv run textual serve 'python -m nms_items'"
 
+[tasks.web-data]
+description = "Export the static site's data into web/data.json (plus the cheat-sheet PDFs)"
+run = "uv run python scripts/build_web.py"
+
+[tasks.site]
+description = "Serve the static web version on localhost:8001"
+depends = ["web-data"]
+run = "uv run python -m http.server 8001 --directory web --bind 127.0.0.1"
+
 # --- data -------------------------------------------------------------------
 
 [tasks.fetch]

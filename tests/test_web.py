@@ -1,0 +1,142 @@
+"""The static site against the Python it mirrors.
+
+scripts/build_web.py exports the answers; web/core.js redoes the cheap parts in
+the browser -- the chain tree walk, inventory matching, portal arithmetic.
+These run that JS under node and hold it to the Python, so the web page and the
+TUI cannot quietly disagree. Without node the cross-checks skip; the export
+checks still run.
+"""
+
+from __future__ import annotations
+
+import json
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+
+from nms_items import graph
+from nms_items.model import SOURCE_SETS, Book
+from nms_items.portals import Address
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+
+import build_web  # noqa: E402
+
+NODE = shutil.which("node")
+CORE = (ROOT / "web" / "core.js").as_uri()
+
+# Deep chains, shallow ones, a loop, a cooked dish and something unreachable.
+TARGETS = ["TECHFRAG", "ANTIMATTER", "HYPERFUEL1", "STELLAR2", "MICROCHIP", "FOOD_R_FLOUR",
+           "BLUE2", "AF_METAL"]
+QTYS = [1, 7]
+
+
+@pytest.fixture(scope="module")
+def book() -> Book:
+    return Book()
+
+
+@pytest.fixture(scope="module")
+def bundle(book: Book) -> dict:
+    return build_web.build(book)
+
+
+def run_node(script: str, payload: dict) -> object:
+    result = subprocess.run(
+        [NODE, "--input-type=module", "-e", script],
+        input=json.dumps(payload), capture_output=True, text=True, check=True,
+    )
+    return json.loads(result.stdout)
+
+
+def test_bundle_is_consistent(bundle: dict) -> None:
+    n = len(bundle["recipes"])
+    for tier in bundle["tiers"]:
+        for via in tier["via"].values():
+            assert all(0 <= index < n for index in via.values())
+            assert all(bundle["recipes"][i]["out"][0] == item for item, i in via.items())
+    for recipe in bundle["recipes"]:
+        for item_id, _ in recipe["in"]:
+            assert item_id in bundle["ease"]
+    assert len(bundle["glyphs"]) == 16
+    assert [g["hex"] for g in bundle["glyphs"]] == list("0123456789ABCDEF")
+    stores = len(bundle["storage"]["outcomes"])
+    assert all(0 <= item["store"] < stores for item in bundle["items"].values())
+
+
+@pytest.mark.skipif(NODE is None, reason="node not installed")
+def test_chain_plans_match_python(book: Book, bundle: dict) -> None:
+    cases = []
+    for t, name in enumerate(SOURCE_SETS):
+        for cook in (False, True):
+            for target in TARGETS:
+                for qty in QTYS:
+                    cases.append({"tier": t, "cook": cook, "target": target, "qty": qty})
+
+    script = f"""
+import {{ plan }} from "{CORE}";
+let raw = ""; for await (const c of process.stdin) raw += c;
+const {{ bundle, cases }} = JSON.parse(raw);
+const out = cases.map((c) => {{
+  const t = bundle.tiers[c.tier];
+  const p = plan(bundle.recipes, t.via[c.cook ? "all" : "refine"], new Set(t.sources), c.target, c.qty);
+  return {{ raw: p.raw, steps: p.steps, seconds: p.seconds, ok: p.ok }};
+}});
+console.log(JSON.stringify(out));
+"""
+    results = run_node(script, {"bundle": bundle, "cases": cases})
+
+    names = list(SOURCE_SETS)
+    for case, js in zip(cases, results):
+        domains = ("refine", "cook") if case["cook"] else ("refine",)
+        py = graph.plan(book, case["target"], set(SOURCE_SETS[names[case["tier"]]]),
+                        case["qty"], domains)
+        assert js["ok"] == py.ok, case
+        assert js["raw"] == py.raw_totals, case
+        assert js["steps"] == py.steps, case
+        assert js["seconds"] == pytest.approx(py.total_seconds), case
+
+
+@pytest.mark.skipif(NODE is None, reason="node not installed")
+def test_inventory_matches_python(book: Book, bundle: dict) -> None:
+    have = {"OXYGEN": 50, "FUEL1": 120, "LAND1": 40, "CATALYST1": 9, "ASTEROID1": 300, "GAS3": 2}
+    script = f"""
+import {{ craftableNow, oneHopAway }} from "{CORE}";
+let raw = ""; for await (const c of process.stdin) raw += c;
+const {{ recipes, have }} = JSON.parse(raw);
+const d = ["refine", "cook"];
+console.log(JSON.stringify({{ can: craftableNow(recipes, have, d), near: oneHopAway(recipes, have, d) }}));
+"""
+    js = run_node(script, {"recipes": bundle["recipes"], "have": have})
+    assert js["can"] == [[r.index, b] for r, b in graph.craftable_now(book, have)]
+    assert js["near"] == [
+        [r.index, [list(m) for m in missing]] for r, missing in graph.one_hop_away(book, have)
+    ]
+
+
+@pytest.mark.skipif(NODE is None, reason="node not installed")
+def test_portal_conversion_matches_python(bundle: dict) -> None:
+    texts = [
+        "000000000000",
+        "40E907FF0D6B",
+        "6046FFAE4450",
+        "056A:0086:07EF:00E9",
+        "https://nmsportals.github.io/#21A3F8001234",
+        "0FFF:00FF:0000:0429",
+    ] + [loc["code"] for loc in bundle["portals"]["locations"]]
+    script = f"""
+import {{ Address }} from "{CORE}";
+let raw = ""; for await (const c of process.stdin) raw += c;
+console.log(JSON.stringify(JSON.parse(raw).texts.map((t) => {{
+  const a = Address.parse(t, 3);
+  return {{ code: a.code, galactic: a.galactic, voxel: a.voxel }};
+}})));
+"""
+    for text, js in zip(texts, run_node(script, {"texts": texts})):
+        py = Address.parse(text, 3)
+        assert js == {"code": py.portal_code, "galactic": py.galactic,
+                      "voxel": list(py.voxel)}, text

@@ -29,6 +29,40 @@ version of what this app queries.
 
 ---
 
+## On the web
+
+`web/` is a static version of the same screens — recipes, chain planner,
+nanites, cooking, multi-tools, portal addresses with the glyphs drawn, storage,
+inventory — for a phone next to the game or anyone without a terminal. No
+server, no Python at runtime: `scripts/build_web.py` runs the same modules the
+TUI uses and exports their answers into `web/data.json` (about 75 KB gzipped),
+and the page only searches, sorts and draws. The chain tree walk, the inventory
+matching and the portal arithmetic are the only logic redone in JavaScript
+(`web/core.js`), and `tests/test_web.py` runs them under node against the
+Python so the two cannot drift.
+
+```fish
+mise run site       # export data.json and serve web/ on localhost:8001
+```
+
+It is live at **[nms.dlu.one](https://nms.dlu.one)**.
+`.github/workflows/pages.yml` runs the tests, exports the data and publishes
+`web/` to GitHub Pages on every push to `main`; the cheat-sheet PDFs are
+published with it. The custom domain is a repo setting (Settings → Pages), not
+a `CNAME` file -- an Actions deploy ignores one -- plus a Cloudflare `CNAME`
+record `nms → rdlu.github.io`.
+
+It wears the same skin as the dotfiles and plugii sites: iA Writer Duo for
+text, 0xProto for code, numbers and navigation (both self-hosted in
+`web/fonts/` with their OFL licenses), square corners and `┌─ Title ───` pane
+headings. Dracula accents on neutral greys in the dark, Alucard in the light.
+
+What lives in the browser stays there: the inventory and any portal addresses
+you save are kept in `localStorage`. *Export mine* on the portals page downloads
+the saved addresses in `data/locations.json`'s shape, to merge into the file.
+
+---
+
 ## Using it
 
 ```fish
@@ -349,7 +383,9 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | --- | --- |
 | `mise run tui` | the app |
 | `mise run dev` | the app with live CSS reload, for editing `app.tcss` |
-| `mise run web` | serve it in a browser on `:8000` |
+| `mise run web` | serve the TUI itself in a browser on `:8000` (textual serve) |
+| `mise run web-data` | export `web/data.json` for the static site |
+| `mise run site` | export, then serve the static site on `:8001` |
 | `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` |
 | `mise run pdf-watch` | rebuild the light PDF on every save |
 | `mise run refresh` | full data rebuild from upstream |
@@ -374,7 +410,8 @@ src/nms_items/
   app.py       the recipe table + detail pane
   screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
-scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots
+scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots, web export
+web/           the static site: index.html, app.js (views), core.js (logic), style.css
 cheatsheet.typ the PDF
 ```
 
