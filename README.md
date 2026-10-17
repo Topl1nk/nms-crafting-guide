@@ -666,8 +666,9 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | --- | --- |
 | `mise run tui` | the app (also `mise run run`) |
 | `mise run dev` | the app with live CSS reload, for editing `app.tcss` |
-| `mise run test` | pytest — data integrity + a headless pass over the TUI |
+| `mise run test` | pytest — data integrity + a headless pass over the TUI, across every core (`test:fast`) |
 | `mise run check` | what CI runs: the full suite, the components, the shared addresses and the site build |
+| `mise run ci:local` | what pull-request CI runs: `check`, plus `lint:shell` |
 | `mise run deploy` | refuses unless on a clean `main`; then check, push `main` over SSH, and follow the Pages deploy |
 | `mise run site` | build, then serve `dist/` on `:8791` as Pages will (alias of `web:site`) |
 | `mise run refresh` | full data rebuild from the installed game: `extract:all` → `pdf:build` |
@@ -686,6 +687,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 
 | Task | Does |
 | --- | --- |
+| `mise run test:fast` | the full suite in parallel (pytest-xdist, `-n auto --dist worksteal`); serial is `uv run pytest -n0` |
 | `mise run test:web` | only the web checks: the export, `site/src/lib/core.js` against the Python, the storage keys |
 | `mise run test:md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
 | `mise run test:mcp` | only the MCP checks: each tool against its module, the server in-process and over stdio, the install tasks |
@@ -774,6 +776,16 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | `mise run pdf:build` | both cheat-sheet PDFs into `docs/pdf/` (re-picks the cheat sheet first) |
 | `mise run pdf:watch` | rebuild the light PDF on every save |
 
+**`hooks:*`, `lint:*`** — local checks (see [Git hooks](#git-hooks))
+
+| Task | Does |
+| --- | --- |
+| `mise run hooks:install` | turn on the pre-commit and pre-push hooks, beside any global ones |
+| `mise run hooks:uninstall` | turn them off again |
+| `mise run hooks:run` | run both hooks now, on the whole tree |
+| `mise run hooks:status` | the hooks git will run per event, local and global |
+| `mise run lint:shell` | `bash -n` and shellcheck over `mise-tasks/`, `.githooks/`, `scripts/*.sh` |
+
 **`deps:*`**
 
 | Task | Does |
@@ -804,6 +816,25 @@ part of the site's `web:*`.
 | `pdf`, `pdf-watch` | `pdf:build`, `pdf:watch` |
 | `deps-outdated` | `deps:outdated` |
 
+### Git hooks
+
+`mise run hooks:install` turns on two hooks, so most of what CI checks fails
+on your machine first and costs no Actions minutes. They are git's
+config-based hooks (`hook.<name>.event`/`.command` in the repo's local
+config), not `core.hooksPath`, so global hooks keep running beside them.
+
+- **pre-commit**, on the staged files only: actionlint on workflows, `bash -n`
+  and shellcheck on the shell scripts, a JSON parse of `data/*.json`,
+  `contrib:validate` when `data/locations.json` is staged, svelte-check when
+  `site/` is.
+- **pre-push**, on what the push changes: the suite in parallel, and the
+  export plus the site build, each only when the change can affect it
+  (`scripts/changes.sh`, the same filter CI uses).
+
+Skip them once with `NMSII_SKIP_HOOKS=1` or `--no-verify`. CI
+(`.github/workflows/ci.yml`) still checks every pull request, for Dependabot,
+forks and anyone without the hooks.
+
 ### Keeping dependencies current
 
 - `mise run deps:outdated` lists everything that is behind, in one place, and
@@ -815,7 +846,9 @@ part of the site's `web:*`.
 - **Dependabot** (`.github/dependabot.yml`) opens weekly pull requests for the
   npm packages, as one group, and for the GitHub Actions. That includes
   `setup-uv`, which is pinned to an exact release because it publishes no
-  moving major tag.
+  moving major tag. Those pull requests now get CI (`ci.yml`: the suite,
+  svelte-check, the export and site build, the shell lint), so a green check
+  means the bump builds.
 - **Python** is locked in `uv.lock`; `uv lock --upgrade` moves it.
 
 ---

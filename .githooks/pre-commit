@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+# The quick checks, on what is staged only, so CI rarely has to say it first.
+# Installed by `mise run hooks:install`; skip once with NMSII_SKIP_HOOKS=1 or
+# `git commit --no-verify`. `mise run hooks:run` runs it on the whole tree.
+#
+#   NMSII_HOOK_ALL=1   check every tracked file instead of the staged ones
+set -euo pipefail
+
+[[ ${NMSII_SKIP_HOOKS:-} == 1 ]] && exit 0
+cd "$(git rev-parse --show-toplevel)"
+
+if [[ ${NMSII_HOOK_ALL:-} == 1 ]]; then
+  mapfile -t files < <(git ls-files)
+else
+  mapfile -t files < <(git diff --cached --name-only --diff-filter=ACMR)
+fi
+((${#files[@]})) || exit 0
+
+workflows=() scripts=() json=()
+locations=false site=false
+for f in "${files[@]}"; do
+  case $f in
+    .github/workflows/*.yml | .github/workflows/*.yaml) workflows+=("$f") ;;
+    mise-tasks/* | .githooks/* | scripts/*.sh) scripts+=("$f") ;;
+  esac
+  case $f in
+    data/*.json) json+=("$f") ;;
+  esac
+  [[ $f == data/locations.json ]] && locations=true
+  [[ $f == site/* ]] && site=true
+done
+
+# The checks read the working tree, so a partly staged file is checked as it
+# is on disk; good enough for a hook, and CI checks the commit itself.
+if ((${#workflows[@]})); then
+  if command -v actionlint >/dev/null; then
+    echo "pre-commit: actionlint (${#workflows[@]})"
+    actionlint "${workflows[@]}"
+  else
+    echo 'pre-commit: actionlint not installed, skipped (pacman -S actionlint)' >&2
+  fi
+fi
+
+if ((${#scripts[@]})); then
+  echo "pre-commit: bash -n (${#scripts[@]})"
+  for f in "${scripts[@]}"; do bash -n "$f"; done
+  if command -v shellcheck >/dev/null; then
+    shellcheck "${scripts[@]}"
+  else
+    echo 'pre-commit: shellcheck not installed, skipped (pacman -S shellcheck)' >&2
+  fi
+fi
+
+if ((${#json[@]})); then
+  echo "pre-commit: JSON parse (${#json[@]})"
+  for f in "${json[@]}"; do
+    python3 -c 'import json, sys; json.load(open(sys.argv[1], encoding="utf-8"))' "$f" ||
+      { echo "pre-commit: $f is not valid JSON" >&2; exit 1; }
+  done
+fi
+
+if $locations; then
+  echo 'pre-commit: contrib:validate'
+  uv run python scripts/portal_issue.py validate
+fi
+
+if $site; then
+  echo 'pre-commit: svelte-check'
+  npm run --silent check
+fi

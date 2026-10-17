@@ -21,6 +21,7 @@ nms = "nms_items.__main__:main"
 dev = [
     "textual-dev>=1.7",  # `textual console` / `textual run --dev` for live CSS
     "pytest>=8.0",
+    "pytest-xdist>=3.6",  # `pytest -n auto`: the TUI tests spread over the cores
 ]
 # Only for `mise run extract`: unpacks the game's HGPAK archives so the data
 # can come from the installed game instead of a third-party JSON dump.

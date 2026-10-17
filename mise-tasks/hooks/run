@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="Run both git hooks now, on the whole working tree rather than what is staged or pushed"
+set -euo pipefail
+
+NMSII_HOOK_ALL=1 .githooks/pre-commit
+NMSII_HOOK_ALL=1 .githooks/pre-push </dev/null

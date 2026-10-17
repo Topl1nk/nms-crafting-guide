@@ -1,6 +1,6 @@
-# Publish the site to GitHub Pages at nmsii.dlu.one: test, export data.json from
-# the Python side into web/, build the Svelte page around it into dist/,
-# upload dist/. Needs Settings -> Pages -> Source set to "GitHub Actions", and
+# Publish the site to GitHub Pages at nmsii.dlu.one: export data.json from the
+# Python side into web/, build the Svelte page around it into dist/, upload
+# dist/. Needs Settings -> Pages -> Source set to "GitHub Actions", and
 # the custom domain set there too: a CNAME file is ignored by Actions deploys.
 name: Pages
 
@@ -19,24 +19,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  # No test suite here, deliberately: it was most of this job's time, and every
+  # change reaches main through a pull request that ci.yml has tested, or
+  # through `mise run deploy`, which runs `check` before it pushes. The type
+  # check stays, as a last guard before a broken page goes live.
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
         with:
           # Full history: llms.txt dates the recipe data by data/'s last commit,
           # which a shallow clone cannot see.
           fetch-depth: 0
-      - uses: astral-sh/setup-uv@v10.3.0
-      # node through mise, so CI runs the version mise.toml names and a bump
-      # there is the only edit. Only node: typst and the rest are not needed
-      # here. The same node runs the web cross-checks in test_web.py.
-      - uses: jdx/mise-action@v5
-        with:
-          install_args: node
-      - run: uv sync --extra dev
-      - run: npm ci
-      - run: uv run pytest -q
+      # uv, node from mise.toml, uv sync, npm ci: shared with ci.yml.
+      - uses: ./.github/actions/setup
       - run: npm run check
       # The export first: it writes into web/, which the build copies into dist/.
       - run: uv run python scripts/build_web.py
@@ -49,6 +46,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

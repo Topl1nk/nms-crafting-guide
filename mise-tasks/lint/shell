@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+#MISE description="Lint the shell scripts (mise-tasks/, .githooks/, scripts/*.sh): bash -n on each, then shellcheck; CI and the pre-commit hook run the same"
+set -euo pipefail
+
+# Run from the repo root wherever it is called from: CI calls this file
+# directly, without mise.
+cd "$(dirname "${BASH_SOURCE[0]}")/../.."
+
+mapfile -d '' scripts < <(find mise-tasks .githooks scripts -type f \( -path 'scripts/*' -name '*.sh' -o ! -path 'scripts/*' \) -print0 | sort -z)
+
+failed=0
+for f in "${scripts[@]}"; do
+  bash -n "$f" || { echo "bash -n: $f" >&2; failed=1; }
+done
+echo "bash -n: ${#scripts[@]} scripts"
+
+# GitHub's ubuntu runners ship shellcheck, so CI requires it; locally a missing
+# one is a warning, not a failure (pacman -S shellcheck).
+if command -v shellcheck >/dev/null; then
+  shellcheck "${scripts[@]}" || failed=1
+  echo "shellcheck: done"
+elif [[ ${CI:-} == true ]]; then
+  echo 'shellcheck: not installed on this runner' >&2
+  failed=1
+else
+  echo 'shellcheck: not installed, skipped (pacman -S shellcheck)' >&2
+fi
+
+exit "$failed"

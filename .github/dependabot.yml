@@ -24,7 +24,9 @@ updates:
       - dependency-name: typescript
         update-types: ["version-update:semver-major"]
 
+  # The workflows, and the shared setup steps in .github/actions/setup, which
+  # hold the setup-uv and mise-action pins.
   - package-ecosystem: github-actions
-    directory: /
+    directories: ["/", "/.github/actions/*"]
     schedule:
       interval: weekly

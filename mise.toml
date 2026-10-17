@@ -51,7 +51,7 @@ PYTHONPATH = "{{config_root}}/src"
 #   contrib:*  shared portal addresses: validate, setup, pending
 #   box:*      containers (podman): tui, site, build
 #   tui:*      the app's side tools: console, serve, screenshot
-#   test:*     slices of the suite: web, md, mcp
+#   test:*     the suite in parallel (fast), and slices of it: web, md, mcp
 #   mcp:*      the MCP server for AI assistants: serve, inspect, config,
 #              install-claude|codex|opencode|goose|pi, uninstall
 #   extract:*  the game's tables: unpack, decompile, convert, all, diff
@@ -59,6 +59,9 @@ PYTHONPATH = "{{config_root}}/src"
 #   data:*     normalise into data/: fetch, build, cheatsheet, glyphs, refresh-handbook
 #   pdf:*      the cheat sheet: build, watch
 #   deps:*     outdated
+#   ci:local   check + lint:shell, what pull-request CI runs
+#   lint:shell bash -n and shellcheck over the shell scripts
+#   hooks:*    the git hooks in .githooks/: install, uninstall, run, status
 #   deploy     check, push main over SSH, follow the Pages run
 #
 # Most of the old flat names (web-build, pdf, extract, validate-locations, ...)
@@ -82,8 +85,8 @@ description = "Run the TUI with live CSS reload (edit app.tcss and watch it appl
 run = "uv run textual run --dev nms_items.app:RecipeApp"
 
 [tasks.test]
-description = "Run the test suite (data integrity + a headless pass over the TUI)"
-run = "uv run pytest -q"
+description = "Run the test suite (data integrity + a headless pass over the TUI), in parallel as test:fast"
+run = [{ task = "test:fast" }]
 
 [tasks.check]
 description = "Everything CI runs before a deploy: the full test suite, the components, the shared addresses and the site build"

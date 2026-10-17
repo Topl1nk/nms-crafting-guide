@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#MISE description="List the git hooks that will run, local and global, per event"
+set -euo pipefail
+
+for event in pre-commit pre-push commit-msg; do
+  echo "$event:"
+  git hook list --show-scope "$event" 2>/dev/null | sed 's/^/  /' || echo '  (none)'
+done

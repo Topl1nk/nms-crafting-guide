@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#MISE description="Turn on the repo's git hooks (.githooks/pre-commit, pre-push) as config-based hooks, beside any global ones"
+set -euo pipefail
+
+# Config-based hooks (git 2.54+), not core.hooksPath: that would hide the hooks
+# set globally, such as a commit-msg one. --local is the repo's shared config,
+# so every worktree gets them; the command is relative because git runs hooks
+# from the root of the worktree doing the commit, and it does nothing in a
+# checkout that predates .githooks/. Running this twice changes nothing.
+for event in pre-commit pre-push; do
+  git config --local "hook.nmsii-$event.event" "$event"
+  git config --local "hook.nmsii-$event.command" "[ ! -x .githooks/$event ] || exec .githooks/$event"
+done
+echo 'installed: nmsii-pre-commit, nmsii-pre-push (skip once with NMSII_SKIP_HOOKS=1 or --no-verify)'

@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#MISE description="What the pull-request CI runs, locally: check (suite, components, shared addresses, site build) plus the task-script lint"
+#MISE depends=["check", "lint:shell"]
+set -euo pipefail
+
+echo 'ci:local: all checks passed'
