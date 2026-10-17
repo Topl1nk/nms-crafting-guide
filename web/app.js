@@ -834,7 +834,7 @@ const portalState = { text: "", planet: 0, kind: "", origin: "" };
 // A GitHub issue on the "Share a portal address" form, pre-filled. The form's
 // field ids are the query keys (.github/ISSUE_TEMPLATE/portal-address.yml); a
 // bot checks what arrives with the same rules as this page and the TUI.
-const REPO_URL = "https://github.com/rdlu/nms-items";
+const REPO_URL = "https://github.com/rdlu/nms-items-interface";
 function shareIssueUrl(l = {}) {
   const q = new URLSearchParams({ template: "portal-address.yml", title: `Portal: ${l.name || ""}`.trim() });
   for (const key of ["name", "code", "galaxy", "kind", "detail", "where"]) {
@@ -1144,16 +1144,16 @@ const INSTALL = `
     <section class="pane">
       <h3><span>podman / docker</span><em>nothing else to install</em></h3>
       <p>The app and its Python live in a container. Saved addresses still land in the checkout.</p>
-      <pre><code>git clone https://github.com/rdlu/nms-items
-cd nms-items
+      <pre><code>git clone https://github.com/rdlu/nms-items-interface
+cd nms-items-interface
 podman compose run --rm tui</code></pre>
       <p class="muted small">This site, offline: <code>podman compose up site</code>, then <code>localhost:8001</code>. Docker reads the same <code>compose.yaml</code>.</p>
     </section>
     <section class="pane">
       <h3><span>uv</span><em>one tool, it fetches Python</em></h3>
       <p><a href="https://docs.astral.sh/uv/">uv</a> downloads the right Python and the one dependency, Textual, on the first run.</p>
-      <pre><code>git clone https://github.com/rdlu/nms-items
-cd nms-items
+      <pre><code>git clone https://github.com/rdlu/nms-items-interface
+cd nms-items-interface
 uv run nms</code></pre>
       <p class="muted small">Python 3.11 or newer. Any terminal with 256 colours; truecolor looks best.</p>
     </section>
@@ -1190,7 +1190,7 @@ VIEWS.home = () => {
 
   view().innerHTML = `
     <section class="home">
-      <a class="badge" href="https://github.com/rdlu/nms-items"><i></i>No Man's Sky · Python TUI · GPL-3.0 <span>→</span></a>
+      <a class="badge" href="https://github.com/rdlu/nms-items-interface"><i></i>NMS Items Interface · Python TUI · GPL-3.0 <span>→</span></a>
       <h1 class="hero">The numbers No Man's Sky doesn't show you</h1>
       <p class="lede">
         What refines into what, the cheapest way to make it from what you can pick up,
@@ -1206,7 +1206,7 @@ VIEWS.home = () => {
         <a class="primary" href="#/recipes">Open the recipes</a>
         <a href="#/home" id="to-install">Run it locally</a>
         <a href="pdf/nms-cheatsheet-dark.pdf">Cheat sheet (PDF)</a>
-        <a href="https://github.com/rdlu/nms-items">GitHub</a>
+        <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>
       </div>
 
       <figure class="demo">
@@ -1294,7 +1294,7 @@ VIEWS.help = () => {
       <p>Every number comes from the game's own recipe table, via
       <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>. This page is the web front end of a
       terminal app; the source, the cheat-sheet PDFs and the full README are on
-      <a href="https://github.com/rdlu/nms-items">GitHub</a>. Portal glyphs are traced from
+      <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>. Portal glyphs are traced from
       <a href="https://nmsportals.github.io/">nmsportals</a>. No Man's Sky and its data belong to Hello Games.</p></section>
   </div>`;
 };

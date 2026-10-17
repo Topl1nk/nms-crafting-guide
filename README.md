@@ -1,4 +1,4 @@
-# NMSii — No Man's Sky refining & cooking, in the terminal
+# NMSii — the NMS Items Interface for No Man's Sky
 
 A **TUI** for the two lookups you actually make while playing: *what does this
 refine into*, and *how do I get that from what I'm carrying*. Plus a printable
@@ -75,7 +75,7 @@ and one library, Textual, and any terminal with 256 colours.
 **podman or docker**, nothing else on the machine:
 
 ```fish
-git clone https://github.com/rdlu/nms-items; cd nms-items
+git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
 podman compose run --rm tui     # the TUI, in this terminal
 podman compose up site          # the web version on http://localhost:8001
 podman compose build            # after a git pull
@@ -88,7 +88,7 @@ request would share. `docker compose` reads the same `compose.yaml`.
 **uv**, which fetches Python itself:
 
 ```fish
-git clone https://github.com/rdlu/nms-items; cd nms-items
+git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
 uv run nms
 ```
 

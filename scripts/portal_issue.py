@@ -43,7 +43,7 @@ from nms_items.portals import (  # noqa: E402
 
 LOCATIONS = ROOT / "data" / "locations.json"
 FORM = ROOT / ".github" / "ISSUE_TEMPLATE" / "portal-address.yml"
-REPO = "rdlu/nms-items"
+REPO = "rdlu/nms-items-interface"
 LABELS = {
     "portal-address": ("f5c451", "Shared through the portal address form"),
     "valid": ("3fb950", "The bot read the address cleanly"),

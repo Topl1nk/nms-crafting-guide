@@ -110,7 +110,7 @@ run = [
   "test \"$(git branch --show-current)\" = main || { echo 'deploy pushes main - switch to it first'; exit 1; }",
   "test -z \"$(git status --porcelain)\" || { echo 'uncommitted changes - commit or stash them first'; exit 1; }",
   "git push origin main",
-  "sleep 5 && gh run watch -R rdlu/nms-items --exit-status $(gh run list -R rdlu/nms-items -w pages.yml -L 1 --json databaseId -q '.[0].databaseId')",
+  "sleep 5 && gh run watch -R rdlu/nms-items-interface --exit-status $(gh run list -R rdlu/nms-items-interface -w pages.yml -L 1 --json databaseId -q '.[0].databaseId')",
 ]
 
 [tasks.pages-setup]
@@ -137,7 +137,7 @@ run = "uv run python scripts/portal_issue.py setup"
 
 [tasks.contrib-pending]
 description = "Shared addresses waiting for review: the bot's verdict on each open issue"
-run = "gh issue list -R rdlu/nms-items -l portal-address --json number,title,labels -q '.[] | \"#\\(.number)  \\([.labels[].name | select(. != \"portal-address\")] | join(\",\"))  \\(.title)\"'"
+run = "gh issue list -R rdlu/nms-items-interface -l portal-address --json number,title,labels -q '.[] | \"#\\(.number)  \\([.labels[].name | select(. != \"portal-address\")] | join(\",\"))  \\(.title)\"'"
 
 # --- containers (podman, or docker) -------------------------------------------
 

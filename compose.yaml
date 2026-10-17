@@ -11,7 +11,7 @@ services:
     build:
       context: .
       target: tui
-    image: localhost/nms-items:latest
+    image: localhost/nmsii:latest
     stdin_open: true
     tty: true
     environment:
@@ -28,7 +28,7 @@ services:
     build:
       context: .
       target: site
-    image: localhost/nms-items-site:latest
+    image: localhost/nmsii-site:latest
     ports:
       - "127.0.0.1:8001:8001"
 

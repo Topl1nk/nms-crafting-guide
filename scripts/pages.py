@@ -23,7 +23,7 @@ import socket
 import subprocess
 import sys
 
-REPO = "rdlu/nms-items"
+REPO = "rdlu/nms-items-interface"
 DOMAIN = "nmsii.dlu.one"
 TARGET = "rdlu.github.io"
 WORKFLOW = "pages.yml"
