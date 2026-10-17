@@ -34,36 +34,15 @@ import build_markdown  # noqa: E402
 from nms_items import food, graph, portals  # noqa: E402
 from nms_items.ease import TIER_ORDER, EaseIndex  # noqa: E402
 from nms_items.model import DATA_DIR, SOURCE_SETS, Book  # noqa: E402
+# Where the data came from. It lives in the package because the MCP server
+# answers the same question; the name stays, since tests and the bundle use it.
+from nms_items.model import data_source as source  # noqa: E402
 from nms_items.storage import StorageGuide  # noqa: E402
 
 WEB = ROOT / "web"
 OUT = WEB / "data.json"
 
 DOMAIN_SETS = {"refine": ("refine",), "all": ("refine", "cook")}
-
-
-def source(data_dir: Path = DATA_DIR) -> dict | None:
-    """Where the recipe data came from, from data/source.json, for the site to say.
-
-    `from` is "game" (extracted from the game files) or "handbook" (the
-    NMS-Handbook fallback, which records no game version). None when the file
-    is missing, so the pages fall back to saying the version is unknown.
-    """
-    path = data_dir / "source.json"
-    if not path.exists():
-        return None
-    raw = json.loads(path.read_text(encoding="utf-8"))
-    game = raw.get("game") or {}
-    build = str(game.get("build") or "")
-    return {
-        "from": raw.get("source", ""),
-        "game": game.get("update", ""),
-        "version": game.get("version", ""),
-        "build": int(build) if build.isdigit() else None,
-        "extracted": raw.get("extracted") or raw.get("fetched") or "",
-        "summary": raw.get("summary", ""),
-        "tools": raw.get("tools", {}),
-    }
 
 
 def build(book: Book) -> dict:
