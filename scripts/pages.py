@@ -75,9 +75,13 @@ def https() -> None:
 
 
 def status() -> None:
+    # getaddrinfo, not gethostbyname_ex: that one is IPv4 only, and some
+    # resolvers answer this name with GitHub's IPv6 addresses alone.
     try:
-        name, _, addresses = socket.gethostbyname_ex(DOMAIN)
-        print(f"DNS       {DOMAIN} -> {name} {', '.join(addresses)}")
+        found = socket.getaddrinfo(DOMAIN, 443, proto=socket.IPPROTO_TCP, flags=socket.AI_CANONNAME)
+        name = next((info[3] for info in found if info[3]), DOMAIN)
+        addresses = sorted({info[4][0] for info in found})
+        print(f"DNS       {DOMAIN} -> {name} {', '.join(addresses[:4])}")
         if name != TARGET:
             print(f"          expected a CNAME to {TARGET}: is the Cloudflare proxy on?")
     except OSError as exc:

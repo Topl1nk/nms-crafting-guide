@@ -57,7 +57,9 @@ certificate. `mise run deploy` is the whole release: tests, push, watch.
 It wears the same skin as the dotfiles and plugii sites: iA Writer Duo for
 text, 0xProto for code, numbers and navigation (both self-hosted in
 `web/fonts/` with their OFL licenses), square corners and `┌─ Title ───` pane
-headings. Dracula accents on neutral greys in the dark, Alucard in the light.
+headings. The accent is the game's HUD gold, with Dracula's colours kept for
+what carries meaning; neutral greys in the dark, a warmed Alucard in the light,
+and a Light / Dark / System menu that follows the OS by default.
 
 What lives in the browser stays there: the inventory and any portal addresses
 you save are kept in `localStorage`. *Export mine* on the portals page downloads

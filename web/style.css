@@ -1,9 +1,10 @@
 /* The dotfiles and plugii site skin, for a page instead of Hextra: iA Writer
    Duo for text, 0xProto for code, numbers and navigation, square corners,
-   thin pane borders and `┌─ Title ───` headings. Dracula accents as in the
-   TUI; the dark surfaces are plugii's neutral greys rather than Dracula's
-   #282a36, which reads blue -- the same call the TUI's dracula-neutral makes.
-   Light is Alucard, as on the dotfiles site.
+   thin pane borders and `┌─ Title ───` headings. The accent is the game's HUD
+   gold, so this site is not the dotfiles one (purple) or plugii (cyan); the
+   colours that mean something -- address fields, ease bands, storage actions
+   -- stay Dracula's, as in the TUI. Dark surfaces are plugii's neutral greys,
+   not Dracula's #282a36, which reads blue. Light is Alucard, warmed to suit.
 
    Fonts are self-hosted in fonts/, each with its OFL license: the official
    iA Writer Duo webfonts unmodified ("iA Writer" is a Reserved Font Name, so
@@ -19,7 +20,7 @@
 /* ── Palette ──────────────────────────────────────────────────────────── */
 
 :root {
-  /* Dark: Dracula accents on plugii's neutral surfaces. */
+  /* Dark: HUD gold, Dracula's semantic colours, plugii's neutral surfaces. */
   --p-bg: #000000;
   --p-panel: #131313;
   --p-raised: #1f1f1f;
@@ -27,16 +28,27 @@
   --p-muted: #c6c6c6;
   --p-faint: #919191;
   --p-outline: #3a3a3a;
-  --p-accent: #bd93f9; /* purple */
+  /* The brand accent is the game's warm HUD gold, not Dracula purple: the
+     dotfiles site already wears that, plugii wears cyan. Dracula stays for
+     the colours that mean something -- fields, bands, storage actions. */
+  --p-accent: #ffc857; /* gold */
   --p-on-accent: #1b1b1b;
-  --p-secondary: #8be9fd; /* cyan: pane titles */
-  --p-tertiary: #ff79c6; /* pink: link hover */
+  --p-secondary: #e8a33d; /* amber: pane titles */
+  --p-tertiary: #ffe3a1; /* pale gold: link hover */
+  --p-purple: #bd93f9;
   --p-red: #ff5555;
   --p-orange: #ffb86c;
   --p-yellow: #f1fa8c;
   --p-green: #50fa7b;
   --p-pink: #ff79c6;
-  --p-sel: #2a2438;
+  --p-sel: #2b2413;
+
+  /* One container for header, page and footer, as Hextra's "wide" layout:
+     90rem across, a 1.5rem gutter, a 3.5rem navbar. Components add no side
+     padding of their own, so every left edge is the logo's. */
+  --wrap: 90rem;
+  --gutter: max(env(safe-area-inset-left), 1.5rem);
+  --nav-h: 3.5rem;
 
   --p-sans: "iA Writer Duo", ui-sans-serif, system-ui, sans-serif;
   --p-mono: "0xProto", ui-monospace, "DejaVu Sans Mono", "Noto Sans Mono", monospace;
@@ -50,19 +62,20 @@
     --p-panel: #f6f1dc;
     --p-raised: #efe9d0;
     --p-text: #1f1f1f;
-    --p-muted: #3d3d4a;
-    --p-faint: #635d97;
-    --p-outline: #cfcfde;
-    --p-accent: #644ac9;
+    --p-muted: #463f33;
+    --p-faint: #6e6450;
+    --p-outline: #dccfa9;
+    --p-accent: #8a5a00;
     --p-on-accent: #fffbeb;
-    --p-secondary: #036a96;
-    --p-tertiary: #a3144d;
+    --p-secondary: #9a4f0b;
+    --p-tertiary: #b5651d;
+    --p-purple: #644ac9;
     --p-red: #cb3a2a;
     --p-orange: #a34d14;
     --p-yellow: #846e15;
     --p-green: #14710a;
     --p-pink: #a3144d;
-    --p-sel: #e9e1f7;
+    --p-sel: #f6e6bd;
     color-scheme: light;
   }
 }
@@ -73,19 +86,20 @@
     --p-panel: #f6f1dc;
     --p-raised: #efe9d0;
     --p-text: #1f1f1f;
-    --p-muted: #3d3d4a;
-    --p-faint: #635d97;
-    --p-outline: #cfcfde;
-    --p-accent: #644ac9;
+    --p-muted: #463f33;
+    --p-faint: #6e6450;
+    --p-outline: #dccfa9;
+    --p-accent: #8a5a00;
     --p-on-accent: #fffbeb;
-    --p-secondary: #036a96;
-    --p-tertiary: #a3144d;
+    --p-secondary: #9a4f0b;
+    --p-tertiary: #b5651d;
+    --p-purple: #644ac9;
     --p-red: #cb3a2a;
     --p-orange: #a34d14;
     --p-yellow: #846e15;
     --p-green: #14710a;
     --p-pink: #a3144d;
-    --p-sel: #e9e1f7;
+    --p-sel: #f6e6bd;
     color-scheme: light;
   }
 
@@ -127,7 +141,7 @@ kbd {
 }
 
 h1, h2, h3 { line-height: 1.25; margin: 0 0 0.4em; letter-spacing: -0.01em; }
-h2 { font-size: 1.15rem; color: var(--p-yellow); }
+h2 { font-size: 1.15rem; color: var(--p-accent); }
 p { margin: 0.4em 0; }
 ul, ol { margin: 0.3em 0; padding-left: 1.3em; }
 
@@ -166,10 +180,10 @@ h3::after {
 .ok { color: var(--p-green); }
 .err { color: var(--p-red); }
 .warn { color: var(--p-yellow); }
-.hl { color: var(--p-yellow); }
+.hl { color: var(--p-accent); }
 .hl2 { color: var(--p-accent); }
-.pad { padding: 16px; }
-.pad-x { padding: 0 16px; margin: 0 0 8px; }
+.pad { padding: 16px 0; }
+.pad-x { padding: 0; margin: 0 0 8px; }
 
 /* ── Chrome: plugii's navbar -- logo and name left, links, search, theme
    and GitHub right, all in mono; the links fold into a menu on a phone ── */
@@ -186,9 +200,9 @@ h3::after {
   display: flex;
   align-items: center;
   gap: 4px;
-  height: 56px;
-  padding: 0 24px;
-  max-width: 1500px;
+  height: var(--nav-h);
+  padding: 0 var(--gutter);
+  max-width: var(--wrap);
   margin: 0 auto;
 }
 .brand {
@@ -246,7 +260,7 @@ h3::after {
   cursor: pointer;
 }
 .icon-btn:hover { color: var(--p-accent); }
-/* The icon shows what you would switch to. */
+/* The icon shows the theme in effect, whoever chose it. */
 #theme .sun, :root[data-theme="light"] #theme .moon { display: none; }
 :root[data-theme="light"] #theme .sun { display: block; }
 @media (prefers-color-scheme: light) {
@@ -255,12 +269,45 @@ h3::after {
 }
 .menu-btn { display: none; }
 
+.theme-wrap { position: relative; }
+.theme-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 6;
+  min-width: 9rem;
+  padding: 4px 0;
+  background: var(--p-panel);
+  border: 1px solid var(--p-outline);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+}
+.theme-menu[hidden] { display: none; }
+.theme-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 12px;
+  background: none;
+  border: 0;
+  color: var(--p-muted);
+  font-family: var(--p-mono);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+.theme-menu button::before { content: " "; width: 1ch; color: var(--p-accent); }
+.theme-menu button[aria-checked="true"] { color: var(--p-text); }
+.theme-menu button[aria-checked="true"]::before { content: "●"; }
+.theme-menu button:hover, .theme-menu button:focus-visible { background: var(--p-accent); color: var(--p-on-accent); outline: none; }
+.theme-menu button:hover::before, .theme-menu button:focus-visible::before { color: var(--p-on-accent); }
+
 @media (max-width: 1180px) {
   .menu-btn { display: grid; }
   .nav {
     display: none;
     position: absolute;
-    top: 56px;
+    top: var(--nav-h);
     left: 0;
     right: 0;
     flex-direction: column;
@@ -271,15 +318,14 @@ h3::after {
     box-shadow: inset 0 -1px 0 var(--p-outline);
   }
   .menu-open .nav { display: flex; }
-  .nav a { padding: 9px 24px; font-size: 0.95rem; }
+  .nav a { padding: 9px var(--gutter); font-size: 0.95rem; }
   .nav a.on { background: var(--p-accent); color: var(--p-on-accent); font-weight: 700; }
 }
 @media (max-width: 640px) {
-  .top-in { padding: 0 12px; gap: 0; }
+  .top-in { gap: 0; }
   .search-btn { min-width: 0; margin: 0; padding: 0; width: 36px; height: 36px; justify-content: center; background: none; color: var(--p-muted); }
   .search-btn span, .search-btn kbd { display: none; }
   .search-btn svg { width: 20px; height: 20px; }
-  .nav a { padding: 9px 16px; }
 }
 
 /* The search palette: a pane over the page. */
@@ -320,13 +366,13 @@ h3::after {
 #palette-list .pt { margin-left: auto; color: var(--p-faint); font-size: 0.75em; }
 .palette-foot { margin: 0; padding: 6px 14px; border-top: 1px solid var(--p-outline); color: var(--p-faint); font-size: 0.75rem; }
 
-main { flex: 1; width: 100%; max-width: 1500px; margin: 0 auto; }
+main { flex: 1; width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 
 .foot {
   font-family: var(--p-mono);
   color: var(--p-faint);
   font-size: 0.78rem;
-  padding: 14px 16px;
+  padding: 14px var(--gutter);
   border-top: 1px solid var(--p-outline);
   background: var(--p-panel);
   text-align: center;
@@ -341,7 +387,7 @@ main { flex: 1; width: 100%; max-width: 1500px; margin: 0 auto; }
   flex-wrap: wrap;
   align-items: center;
   gap: 8px 14px;
-  padding: 14px 16px 6px;
+  padding: 16px 0 6px;
 }
 .toolbar.sub { padding: 0 0 8px; }
 .view-title { font-family: var(--p-mono); font-size: 1.1rem; font-weight: 700; margin: 0; color: var(--p-text); }
@@ -386,9 +432,9 @@ input:focus, select:focus, button:focus-visible, a:focus-visible {
 .actions { display: flex; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
 form.inline { display: flex; gap: 6px; flex: 1 1 380px; min-width: 0; }
 
-.note { padding: 2px 16px 10px; color: var(--p-faint); font-family: var(--p-mono); font-size: 0.82rem; }
+.note { padding: 2px 0 10px; color: var(--p-faint); font-family: var(--p-mono); font-size: 0.82rem; }
 .note b { color: var(--p-text); }
-.note b.hl { color: var(--p-yellow); }
+.note b.hl { color: var(--p-accent); }
 .chip { border: 1px solid var(--p-outline); padding: 0 6px; text-decoration: none; }
 
 /* ── List + detail panes ──────────────────────────────────────────────── */
@@ -397,7 +443,7 @@ form.inline { display: flex; gap: 6px; flex: 1 1 380px; min-width: 0; }
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(300px, 34%);
   gap: 16px;
-  padding: 0 16px 16px;
+  padding: 0 0 24px;
   align-items: start;
 }
 .split-food { grid-template-columns: minmax(260px, 30%) minmax(0, 1fr); }
@@ -412,7 +458,7 @@ form.inline { display: flex; gap: 6px; flex: 1 1 380px; min-width: 0; }
   background: var(--p-panel);
 }
 .list.short { max-height: 45vh; }
-#tab > .list { margin: 0 16px; }
+#tab > .list { margin: 0; }
 .grid3 .list { max-height: 60vh; }
 
 table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
@@ -449,12 +495,12 @@ td a:hover { text-decoration: underline; }
 }
 .detail {
   position: sticky;
-  top: 64px;
-  max-height: calc(100vh - 84px);
+  top: calc(var(--nav-h) + 8px);
+  max-height: calc(100vh - var(--nav-h) - 24px);
   overflow: auto;
 }
 .detail-below { position: static; max-height: none; margin-top: 12px; }
-#tab > .detail-below { margin: 12px 16px 16px; }
+#tab > .detail-below { margin: 12px 0 24px; }
 .detail:empty { display: none; }
 .detail > h3:first-child, .card > h3:first-child, .readout > h3:first-child { margin-top: 0; }
 
@@ -476,7 +522,7 @@ ul.plain a { text-decoration: none; }
 .band-work { color: var(--p-orange); }
 .band-hard { color: var(--p-red); }
 .act-keep { color: var(--p-green); }
-.act-store { color: var(--p-accent); }
+.act-store { color: var(--p-purple); }
 .act-sell { color: var(--p-yellow); }
 .act-discard { color: var(--p-red); }
 .act-use { color: var(--p-pink); }
@@ -502,7 +548,7 @@ ul.plain a { text-decoration: none; }
 
 /* ── Chain tree: the TUI Tree's ├─ └─ branches, drawn as borders ───── */
 
-.chain { padding: 0 16px 16px; }
+.chain { padding: 0 0 24px; }
 .tree, .tree ul { list-style: none; padding-left: 0; margin: 0; }
 .tree { font-size: 0.95rem; --mid: calc(3px + 0.8em); }
 .tree ul { margin-left: 0.5em; }
@@ -532,16 +578,16 @@ ul.plain a { text-decoration: none; }
 
 /* ── Prose pages ──────────────────────────────────────────────────────── */
 
-.headline { padding: 0 16px; color: var(--p-green); font-weight: 700; }
-.tabs { display: flex; gap: 2px; padding: 6px 16px 12px; flex-wrap: wrap; font-family: var(--p-mono); }
-.prose { padding: 8px 16px 16px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); align-items: start; }
+.headline { padding: 0; color: var(--p-green); font-weight: 700; }
+.tabs { display: flex; gap: 2px; padding: 6px 0 12px; flex-wrap: wrap; font-family: var(--p-mono); }
+.prose { padding: 8px 0 24px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); align-items: start; }
 .card li { margin-bottom: 4px; }
 
 .grid3 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: 16px;
-  padding: 0 16px 16px;
+  padding: 0 0 24px;
 }
 .grid3 h3 { margin-top: 0; }
 
@@ -549,7 +595,7 @@ ul.plain a { text-decoration: none; }
 
 /* The five address fields, one colour each, everywhere they appear. */
 .f0 { color: var(--p-red); }
-.f1 { color: var(--p-accent); }
+.f1 { color: var(--p-purple); }
 .f2 { color: var(--p-green); }
 .f3 { color: var(--p-yellow); }
 .f4 { color: var(--p-pink); }
@@ -568,7 +614,7 @@ ul.plain a { text-decoration: none; }
 .glyphs figcaption span { display: block; color: var(--p-faint); }
 .glyph { width: 100%; height: auto; fill: currentColor; display: block; aspect-ratio: 1; }
 
-.dial { margin: 0 16px 12px; }
+.dial { margin: 0 0 12px; }
 .dial-head { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; font-family: var(--p-mono); }
 .dial-head .link { margin-left: auto; }
 .dial-code { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 4px; max-width: 600px; margin: 10px 0 4px; }
@@ -635,7 +681,10 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
 
 /* ── Home: the plugii start page, as a page ───────────────────────────── */
 
-.home { max-width: 1100px; margin: 0 auto; padding: 40px 16px 32px; }
+/* Hextra's home: 2rem under the navbar, 3rem from 768px, on the page's own
+   edges -- the hero is narrowed by its line length, not by a second box. */
+.home { padding: 2rem 0 3rem; }
+@media (min-width: 768px) { .home { padding-top: 3rem; } }
 
 .badge {
   display: inline-flex;
@@ -649,7 +698,9 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
   background: var(--p-panel);
   padding: 3px 10px;
 }
-.badge i { width: 8px; height: 8px; background: var(--p-accent); }
+.badge i { flex: none; width: 8px; height: 8px; background: var(--p-accent); }
+.badge { white-space: nowrap; max-width: 100%; }
+@media (max-width: 640px) { .badge { font-size: 0.72rem; gap: 6px; } }
 .badge:hover { border-color: var(--p-accent); color: var(--p-accent); }
 
 .hero {
@@ -658,8 +709,8 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.02em;
-  margin: 24px 0 20px;
-  max-width: 22ch;
+  margin: 1.5rem 0 1.5rem;
+  max-width: 24ch;
   display: block;
   color: var(--p-text);
 }
@@ -678,7 +729,7 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
 @keyframes blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .hero::after { animation: none; } }
 
-.lede { font-size: 1.12rem; line-height: 1.7; max-width: 62ch; color: var(--p-muted); margin: 0 0 12px; }
+.lede { font-size: 1.12rem; line-height: 1.7; max-width: 80ch; color: var(--p-muted); margin: 0 0 12px; }
 .lede.muted { font-size: 1rem; color: var(--p-faint); }
 
 .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
@@ -709,7 +760,7 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
   background: #131313;
   border-bottom: 1px solid #3a3a3a;
 }
-.demo .bar b { color: #bd93f9; font-weight: 400; }
+.demo .bar b { color: #ffc857; font-weight: 400; }
 .demo img { display: block; width: 100%; height: auto; }
 
 /* Section titles: `┌─ What's inside ─────`, bigger than a pane's. */
@@ -739,7 +790,9 @@ h2.section::after {
   border-top: 1px solid var(--p-outline);
 }
 
-.features { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 12px; }
+.features { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 1000px) { .features { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .features { grid-template-columns: minmax(0, 1fr); } }
 .feature {
   display: block;
   background: var(--p-panel);

@@ -1289,18 +1289,53 @@ function onKey(e) {
 
 // -- header: theme, menu, search palette --------------------------------------
 
-// Explicit choice wins and is remembered; otherwise the system decides.
-function currentTheme() {
-  return document.documentElement.dataset.theme
-    || (matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+// Light, dark, or the system's -- Hextra's three, "system" by default. An
+// explicit choice sets data-theme; "system" removes it and the CSS media
+// query decides, so an OS switch recolours an open page with no code here.
+const themeChoice = () => {
+  const t = local.get("theme", "system");
+  return t === "light" || t === "dark" ? t : "system";
+};
+
+function applyTheme(choice) {
+  if (choice === "system") delete document.documentElement.dataset.theme;
+  else document.documentElement.dataset.theme = choice;
+  local.set("theme", choice);
+  document.querySelectorAll("[data-theme-choice]").forEach((b) =>
+    b.setAttribute("aria-checked", String(b.dataset.themeChoice === choice)));
 }
 
 function setupHeader() {
-  $("#theme").addEventListener("click", () => {
-    const next = currentTheme() === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    local.set("theme", next);
+  const themeBtn = $("#theme");
+  const themeMenu = $("#theme-menu");
+  const closeTheme = () => { themeMenu.hidden = true; themeBtn.setAttribute("aria-expanded", "false"); };
+  applyTheme(themeChoice());
+  themeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    themeMenu.hidden = !themeMenu.hidden;
+    themeBtn.setAttribute("aria-expanded", String(!themeMenu.hidden));
+    if (!themeMenu.hidden) themeMenu.querySelector('[aria-checked="true"]')?.focus();
   });
+  themeMenu.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-theme-choice]");
+    if (!b) return;
+    applyTheme(b.dataset.themeChoice);
+    closeTheme();
+    themeBtn.focus();
+  });
+  themeMenu.addEventListener("keydown", (e) => {
+    const items = [...themeMenu.querySelectorAll("button")];
+    const i = items.indexOf(document.activeElement);
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      items[(i + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
+    } else if (e.key === "Escape") {
+      e.stopPropagation();
+      closeTheme();
+      themeBtn.focus();
+    }
+  });
+  document.addEventListener("click", (e) => { if (!e.target.closest(".theme-wrap")) closeTheme(); });
   const menu = $("#menu");
   const closeMenu = () => { document.body.classList.remove("menu-open"); menu.setAttribute("aria-expanded", "false"); };
   menu.addEventListener("click", () => {

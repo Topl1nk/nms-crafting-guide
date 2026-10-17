@@ -1,7 +1,7 @@
 """Draw the site icon from the Atlas portal glyph, in every form browsers ask for.
 
 The mark is plugii's icon frame -- a black square, a thin grey outline -- with
-the `atlas` glyph from data/glyphs.json in Dracula purple, so the icon is the
+the `atlas` glyph from data/glyphs.json in the site's HUD gold, so the icon is the
 same traced shape the portal pages draw, not a lookalike.
 
     web/favicon.svg           modern browsers, and the header logo
@@ -22,7 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 WEB = ROOT / "web"
 GLYPH = "atlas"
-INK = "#bd93f9"
+INK = "#ffc857"
 
 
 def svg() -> str:
