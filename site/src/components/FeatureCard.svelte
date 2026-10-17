@@ -2,10 +2,10 @@
   // A card on the start page: icon, title, the key that jumps there, a line.
   import { ICONS } from "../lib/icons.js";
 
-  let { href, title, key = "", icon = "", children } = $props();
+  let { href, title, key = "", icon = "", onclick = undefined, children } = $props();
 </script>
 
-<a class="feature" {href}>
+<a class="feature" {href} {onclick}>
   <h3>
     <!-- The icons are our own constant markup, from lib/icons.js. -->
     {#if ICONS[icon]}<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">{@html ICONS[icon]}</svg>{/if}<span>{title}</span>{#if key}<kbd>{key}</kbd>{/if}

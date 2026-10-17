@@ -1,3 +1,9 @@
+<script module>
+  // The hero types itself once per page load; coming back to the start page
+  // shows it already typed.
+  let typed = false;
+</script>
+
 <script>
   // What the project is, and a card per section -- the same shape as the
   // plugii and dotfiles start pages. Every count on it is read off data.json,
@@ -19,6 +25,35 @@
 
   let install;
 
+  // The hero, typed like a prompt: the name, held, backspaced, then the line
+  // that stays. Screen readers get the h1's aria-label, never the typing, and
+  // reduced motion gets the last line straight away.
+  const HERO = "The numbers No Man's Sky doesn't show you";
+  const FIRST = "NMSii: No Man's Sky Items Interface";
+  const animate = !typed && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+  typed = true;
+  let shown = $state(animate ? "" : HERO);
+  let busy = $state(animate);
+
+  $effect(() => {
+    if (!animate) return;
+    // [text, ms before it shows]: a human's 35-70 ms a key, a quick backspace.
+    const key = () => 35 + Math.random() * 35;
+    const steps = [];
+    for (let i = 1; i <= FIRST.length; i++) steps.push([FIRST.slice(0, i), i === 1 ? 500 : key()]);
+    for (let i = FIRST.length - 1; i >= 0; i--) steps.push([FIRST.slice(0, i), i === FIRST.length - 1 ? 1200 : 18]);
+    for (let i = 1; i <= HERO.length; i++) steps.push([HERO.slice(0, i), i === 1 ? 350 : key()]);
+    let n = 0;
+    let timer;
+    const next = () => {
+      if (n === steps.length) { busy = false; return; }
+      const [text, ms] = steps[n++];
+      timer = setTimeout(() => { shown = text; next(); }, ms);
+    };
+    next();
+    return () => clearTimeout(timer);
+  });
+
   // A scroll, not a #fragment: the hash is the router's.
   function toInstall(e) {
     e.preventDefault();
@@ -28,8 +63,12 @@
 </script>
 
 <section class="home">
-  <a class="badge" href="https://github.com/rdlu/nms-items-interface"><i></i>No Man's Sky Items Interface (NMSii)<em>{" · Python TUI · GPL-3.0"}</em> <span>→</span></a>
-  <h1 class="hero">The numbers No Man's Sky doesn't show you</h1>
+  <a class="badge" href="https://github.com/rdlu/nms-items-interface"><i></i>No Man's Sky Items Interface (NMSii)<em>{" · web · terminal · MCP · GPL-3.0"}</em> <span>→</span></a>
+  <!-- The sizer holds the final line's height, so the typing never moves the page. -->
+  <h1 class="hero" class:busy aria-label={HERO}>
+    <span class="sizer" aria-hidden="true">{HERO}</span>
+    <span class="typed" aria-hidden="true">{shown}</span>
+  </h1>
   <p class="lede">
     What refines into what, the cheapest way to make it from what you can pick up,
     which dish buffs what, where every item belongs in storage, and every portal
@@ -40,8 +79,9 @@
     <p><a class="badge" href="{REPO_URL}/blob/main/docs/cosmos-changes.md"><i></i>Up to date with {release.name}<em>{` · ${release.build} · read from the game files`}</em> <span>→</span></a></p>
   {/if}
   <p class="lede muted">
-    This is the web version of a terminal app. It runs entirely in your browser,
-    and works on a phone propped up next to the game.
+    The same data is this site, a terminal app, an MCP server for AI assistants,
+    and plain markdown. The site runs entirely in your browser, and works on a
+    phone propped up next to the game.
   </p>
   <div class="hero-actions">
     <a class="primary" href="#/recipes">Open the recipes</a>
@@ -66,6 +106,13 @@
     <FeatureCard key="6" href="#/storage" title="Where does it go?" icon="storage">Every one of <b>{fmtInt(Object.keys(D.items).length)}</b> items gets a home: one of the {containers} storage containers, Cold Storage, or sell, junk, use it now. Type "sell" to list everything to sell.</FeatureCard>
     <FeatureCard key="7" href="#/inventory" title="Inventory" icon="inventory">Type what you are carrying, and see what you can make right now and what you are one ingredient short of. Kept in this browser.</FeatureCard>
     <FeatureCard href="pdf/nms-cheatsheet.pdf" title="Cheat sheet" icon="sheet">The recipes worth memorising on six landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.</FeatureCard>
+  </div>
+
+  <h2 class="section">Other ways in</h2>
+  <div class="features">
+    <FeatureCard href="#/home" onclick={toInstall} title="In a terminal" icon="terminal"><code>nms</code> has the same screens with vim keys, a command palette and themes, and saves portal addresses to a file you can share. <code>uv run nms</code> in a checkout, or <code>podman compose run --rm tui</code> with nothing else installed.</FeatureCard>
+    <FeatureCard href="{REPO_URL}#for-ai-assistants-mcp" title="For AI assistants" icon="ai"><code>nms mcp</code> serves the chain planner, inventory matching, storage rules and portal arithmetic over MCP, so an assistant looks them up instead of guessing from a wiki. <code>mise run mcp:install-claude</code>, or Codex, pi, opencode, goose.</FeatureCard>
+    <FeatureCard href="llms.txt" title="As markdown" icon="markdown">Every section and every item as plain markdown, for crawlers and language models: <code>llms.txt</code>, <code>llms-full.txt</code>, and a page per item. Each page's footer links its own twin.</FeatureCard>
   </div>
 
   <h2 class="section" id="install" bind:this={install}>Run it on your machine</h2>
@@ -117,12 +164,16 @@
     letter-spacing: -0.02em;
     margin: 1.5rem 0 1.5rem;
     max-width: 24ch;
-    display: block;
+    display: grid;
     color: var(--p-text);
   }
-  .hero::before { content: "> "; color: var(--p-accent); }
-  /* The block cursor. */
-  .hero::after {
+  /* Both lines in one grid cell: the hidden sizer sets the height, the typed
+     one is drawn over it. */
+  .hero > span { grid-area: 1 / 1; }
+  .hero .sizer { visibility: hidden; }
+  .hero > span::before { content: "> "; color: var(--p-accent); }
+  /* The block cursor, steady while it types and blinking once it rests. */
+  .hero > span::after {
     content: "";
     display: inline-block;
     width: 0.55em;
@@ -133,7 +184,8 @@
     animation: blink 1.1s steps(1, end) infinite;
   }
   @keyframes blink { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .hero::after { animation: none; } }
+  .hero.busy > span::after { animation: none; }
+  @media (prefers-reduced-motion: reduce) { .hero > span::after { animation: none; } }
 
   .lede { font-size: 1.12rem; line-height: 1.7; max-width: 80ch; color: var(--p-muted); margin: 0 0 12px; }
   .lede.muted { font-size: 1rem; color: var(--p-faint); }

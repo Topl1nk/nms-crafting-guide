@@ -1,8 +1,11 @@
 # NMSii — the No Man's Sky Items Interface
 
-A **TUI** for the two lookups you actually make while playing: *what does this
-refine into*, and *how do I get that from what I'm carrying*. Plus a printable
-**cheat sheet** of the recipes worth memorising.
+The numbers No Man's Sky doesn't show you, for the two lookups you actually
+make while playing: *what does this refine into*, and *how do I get that from
+what I'm carrying*. Then the rest: which dish buffs what, where every item
+belongs in storage, every route to nanites, and every portal address drawn in
+glyphs. For players who want the real figures rather than a wiki's memory of
+them.
 
 Every number comes from the game's own recipe table — 361 refining and 1,323
 cooking recipes as of Cosmos 7.06 — extracted from the game files, not from a
@@ -10,24 +13,22 @@ wiki transcription. It grew out of a set of
 written guides (the Suika Box notes); `20.refiner-recipes.md` is the prose
 version of what this app queries.
 
-![the recipe list](docs/img/recipes.svg)
+It is one dataset with several ways in: a website, a terminal app, an MCP
+server for AI assistants, and plain markdown. Plus a printable **cheat sheet**
+of the recipes worth memorising.
 
----
-
-## What's inside
+## Pick your way in
 
 | | |
 | --- | --- |
-| ⌨️ **`nms`** | The TUI: fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
-| 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf:build` |
-| 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
-| 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
-| 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
-| 🔫 **Multi-tools** | The 8 types compared, the 5 weapons measured, and how to get the free S-class ones |
-| 🌀 **Portal addresses** | Glyphs ↔ galactic coordinates, offline, plus the addresses from the guides — where the good tools and Exotics are |
-| 🗄️ **Where does it go?** | Every item's home in the storage guide's layout — one of the ten Storage Containers, the Nutrient Processor, Cold Storage — or *sell*, *junk*, *use it now*. Type a home ("sell", "cold") to list everything that goes there |
-| 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
-| 🤖 **`nms mcp`** | The same answers for AI assistants, as an [MCP](https://modelcontextprotocol.io) server — see [For AI assistants](#for-ai-assistants-mcp) |
+| 🌐 **Web** | **[nmsii.dlu.one](https://nmsii.dlu.one)** — nothing to install, works on a phone next to the game. [On the web](#on-the-web) |
+| ⌨️ **Terminal** | `uv run nms` in a checkout, or `mise run tui`: the same screens with vim keys and a command palette. [In the terminal](#in-the-terminal) |
+| 📦 **Container** | `podman compose run --rm tui` for the app, `podman compose up site` for the site offline. [In a container](#in-a-container) |
+| 🤖 **AI / MCP** | `nms mcp`, registered by `mise run mcp:install-claude` (or `install-codex`, `-pi`, `-opencode`, `-goose`). [For AI assistants](#for-ai-assistants-mcp) |
+| 📝 **Markdown** | [`llms.txt`](https://nmsii.dlu.one/llms.txt), `llms-full.txt` and `md/`, one page per item. [As markdown](#as-markdown-for-bots-and-ai) |
+| 🖨️ **Print** | the cheat sheet, [Latte for paper](https://nmsii.dlu.one/pdf/nms-cheatsheet.pdf) and [Mocha for screens](https://nmsii.dlu.one/pdf/nms-cheatsheet-dark.pdf). [The cheat sheet](#the-cheat-sheet) |
+
+![the recipe list](docs/img/recipes.svg)
 
 ---
 
@@ -78,9 +79,158 @@ headings. The accent is the game's HUD gold, with Dracula's colours kept for
 what carries meaning; neutral greys in the dark, a warmed Alucard in the light,
 and a Light / Dark / System menu that follows the OS by default.
 
+What lives in the browser stays there: the inventory and any portal addresses
+you save are kept in `localStorage`. *Export mine* on the portals page downloads
+the saved addresses in `data/locations.json`'s shape, to merge into the file.
+
+---
+
+## In the terminal
+
+`nms` is where it started: a [Textual](https://textual.textualize.io) TUI with
+the same screens as the site, plus vim keys, a command palette, themes, and
+saving portal addresses to `data/locations.json`. It works offline once
+installed. The app needs Python 3.11+ and Textual (plus the MCP SDK, for `nms mcp`), and
+any terminal with 256 colours. Two ways to run it from a checkout; the
+container route below needs neither.
+
+**uv**, which fetches Python itself:
+
+```fish
+git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
+uv run nms
+```
+
+**mise**, to work on it:
+
+```fish
+mise install        # uv + typst + node
+mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
+mise run sync       # python deps
+mise run tui        # go
+```
+
+## In a container
+
+**podman or docker**, nothing else on the machine:
+
+```fish
+git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
+podman compose run --rm tui     # the TUI, in this terminal
+podman compose up site          # the web version on http://localhost:8001
+podman compose build            # after a git pull
+```
+
+The inventory is kept in a named volume, and `data/locations.json` is mounted
+from the checkout, so addresses saved in the container are the ones a pull
+request would share. `docker compose` reads the same `compose.yaml`.
+
+---
+
+## For AI assistants (MCP)
+
+Ask a chat assistant how to make Antimatter and it answers from whatever wiki
+text it remembers, from whichever patch. `nms mcp` serves NMSii's own answers
+over the [Model Context Protocol](https://modelcontextprotocol.io) instead, on
+stdio, so an assistant can look them up: the same `Book`, chain planner,
+gettable scores, storage rules, dishes and portal arithmetic the TUI and the
+site use, computed by the same code. It is read-only: it never touches your
+inventory or `data/locations.json`.
+
+**Tools.** Every one takes item names or game IDs (`"Chromatic Metal"` or
+`STELLAR2`); a name that matches several items comes back as an error listing
+them, rather than a guess.
+
+| Tool | Answers |
+| --- | --- |
+| `search_items(query)` | items by name or ID, tolerating partial words and typos |
+| `item_info(item)` | value, category, description, storage home, buff, how gettable it is, and the recipes that make it and use it |
+| `search_recipes(query, domain, sort, item, role)` | the recipe table filtered and sorted as on the main screen: multiplier, fastest, output/hour, profit, gettable, name |
+| `plan_chain(item, qty, tier, allow_cooking)` | the cheapest tree from a source tier (0, 1, 2), the raw materials to gather or find, total machine time |
+| `nanite_routes()` | every route to nanites, best nanites/hour first |
+| `cooking_by_buff(buff?)` | dishes per stat boosted, strongest first, with their quickest recipe |
+| `where_to_store(item)` | its home in the storage layout, or sell / junk / use it, and why |
+| `craftable_from(inventory)` | given `{"Carbon": 200, "Oxygen": 50}`: what you can make now, and what you are one ingredient short of |
+| `convert_portal_address(text, planet?)` | portal code ↔ galactic address, glyph names in dialling order, voxel position |
+| `saved_locations(kind?, query?, origin?)` | the addresses in `data/locations.json`, with both forms and the glyphs |
+
+**Resources:** `nmsii://source` (which game build the data was extracted
+from), `nmsii://guide/{page}` (the site's markdown pages: `guide`, `recipes`,
+`nanites`, `cooking`, `multitools`, `storage`, `portals`) and
+`nmsii://items/{ID}` (one item's page). **Prompt:** `plan_refining_chain`.
+
+**Quick setup**, from the checkout:
+
+```fish
+mise run mcp:install-claude                  # Claude Code, user scope
+mise run mcp:install-codex                   # OpenAI's Codex CLI
+mise run mcp:config                          # the JSON for anything else
+```
+
+Each install task registers `uv run --directory <this checkout> nms mcp`;
+running it again replaces the entry rather than adding a second.
+`--container` registers the podman route below instead, `--dry-run` prints the
+commands (or the config diff) and changes nothing, and
+`mcp:install-claude --scope user|project|local` picks where Claude Code keeps
+it. `mise run mcp:uninstall claude` (or `codex`, ..., `all`) takes it out again.
+
+| Client | Task | How it registers |
+| --- | --- | --- |
+| Claude Code | `mcp:install-claude` | `claude mcp add` |
+| Codex | `mcp:install-codex` | `codex mcp add` |
+| pi ([pi.dev](https://pi.dev)) | `mcp:install-pi` | `pi mcp add` |
+| opencode | `mcp:install-opencode` | the `mcp.nmsii` entry in `~/.config/opencode/opencode.json` |
+| goose | `mcp:install-goose` | the `extensions.nmsii` entry in `~/.config/goose/config.yaml` |
+
+opencode and goose have no command that adds a server without prompting, so
+their files are edited directly: backed up first (`*.bak-<time>`), and only the
+nmsii entry is touched. A commented `opencode.jsonc` is refused rather than
+rewritten, with the entry printed to paste in by hand. Each task fails with a
+plain message when its client is not installed.
+
+**By hand**, the same thing. Claude Code:
+
+```fish
+claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
+```
+
+**Claude Desktop, and other clients** that take a JSON config
+(`claude_desktop_config.json`, `.mcp.json`, Cursor, and so on);
+`mise run mcp:config` prints this with the path filled in:
+
+```json
+{
+  "mcpServers": {
+    "nmsii": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/nms-items-interface", "nms", "mcp"]
+    }
+  }
+}
+```
+
+**In a container**, with nothing but podman: `-T` turns off the tty the TUI
+needs, so stdin and stdout are a plain pipe.
+
+```fish
+claude mcp add nmsii -- podman compose -f /path/to/nms-items-interface/compose.yaml run --rm -T tui nms mcp
+```
+
+or `mise run mcp:config --container` for the JSON. Build the image once first
+(`mise run box:build`), so the first connection does not wait on it.
+`compose.yaml` sets `x-podman: in_pod: false` for this route: otherwise
+podman-compose creates a pod on the first `run` and prints its ID on stdout,
+into the JSON-RPC stream, and that first connection fails.
+
+`mise run mcp:inspect` opens the server in the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) to try the
+tools by hand (`npx` fetches it; needs node). `mise run test:mcp` checks every
+tool against the module it wraps, then the server in-process and as `nms mcp`
+over a real pipe, and the install tasks against stand-in clients.
+
 ### As markdown, for bots and AI
 
-The page is a JavaScript app, so a crawler or a language model that does not
+The site is a JavaScript app, so a crawler or a language model that does not
 run it would see an empty shell. The same export writes everything it shows as
 plain files, from the very bundle that becomes `data.json`, so the two cannot
 disagree:
@@ -107,45 +257,22 @@ An assistant that can run tools gets more than these files from the
 [MCP server](#for-ai-assistants-mcp): the chain planner for any quantity and
 tier, and the inventory matching, neither of which a static page can do.
 
-What lives in the browser stays there: the inventory and any portal addresses
-you save are kept in `localStorage`. *Export mine* on the portals page downloads
-the saved addresses in `data/locations.json`'s shape, to merge into the file.
-
 ---
 
-## Using it
+## What's inside
 
-Three ways in, from the least installed to the most. The app needs Python 3.11+
-and Textual (plus the MCP SDK, for `nms mcp`), and any terminal with 256 colours.
-
-**podman or docker**, nothing else on the machine:
-
-```fish
-git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
-podman compose run --rm tui     # the TUI, in this terminal
-podman compose up site          # the web version on http://localhost:8001
-podman compose build            # after a git pull
-```
-
-The inventory is kept in a named volume, and `data/locations.json` is mounted
-from the checkout, so addresses saved in the container are the ones a pull
-request would share. `docker compose` reads the same `compose.yaml`.
-
-**uv**, which fetches Python itself:
-
-```fish
-git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
-uv run nms
-```
-
-**mise**, to work on it:
-
-```fish
-mise install        # uv + typst + node
-mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
-mise run sync       # python deps
-mise run tui        # go
-```
+| | |
+| --- | --- |
+| ⌨️ **`nms`** | The TUI: fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
+| 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf:build` |
+| 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
+| 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
+| 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
+| 🔫 **Multi-tools** | The 8 types compared, the 5 weapons measured, and how to get the free S-class ones |
+| 🌀 **Portal addresses** | Glyphs ↔ galactic coordinates, offline, plus the addresses from the guides — where the good tools and Exotics are |
+| 🗄️ **Where does it go?** | Every item's home in the storage guide's layout — one of the ten Storage Containers, the Nutrient Processor, Cold Storage — or *sell*, *junk*, *use it now*. Type a home ("sell", "cold") to list everything that goes there |
+| 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
+| 🤖 **`nms mcp`** | The same answers for AI assistants, as an [MCP](https://modelcontextprotocol.io) server — see [For AI assistants](#for-ai-assistants-mcp) |
 
 ### Keys
 
@@ -418,145 +545,7 @@ true. The portals page goes further: `mise run pdf:build` round-trips every addr
 and re-checks the galaxy-centre invariant, so the build fails rather than
 printing a code you cannot dial.
 
-## For AI assistants (MCP)
-
-Ask a chat assistant how to make Antimatter and it answers from whatever wiki
-text it remembers, from whichever patch. `nms mcp` serves NMSii's own answers
-over the [Model Context Protocol](https://modelcontextprotocol.io) instead, on
-stdio, so an assistant can look them up: the same `Book`, chain planner,
-gettable scores, storage rules, dishes and portal arithmetic the TUI and the
-site use, computed by the same code. It is read-only: it never touches your
-inventory or `data/locations.json`.
-
-**Tools.** Every one takes item names or game IDs (`"Chromatic Metal"` or
-`STELLAR2`); a name that matches several items comes back as an error listing
-them, rather than a guess.
-
-| Tool | Answers |
-| --- | --- |
-| `search_items(query)` | items by name or ID, tolerating partial words and typos |
-| `item_info(item)` | value, category, description, storage home, buff, how gettable it is, and the recipes that make it and use it |
-| `search_recipes(query, domain, sort, item, role)` | the recipe table filtered and sorted as on the main screen: multiplier, fastest, output/hour, profit, gettable, name |
-| `plan_chain(item, qty, tier, allow_cooking)` | the cheapest tree from a source tier (0, 1, 2), the raw materials to gather or find, total machine time |
-| `nanite_routes()` | every route to nanites, best nanites/hour first |
-| `cooking_by_buff(buff?)` | dishes per stat boosted, strongest first, with their quickest recipe |
-| `where_to_store(item)` | its home in the storage layout, or sell / junk / use it, and why |
-| `craftable_from(inventory)` | given `{"Carbon": 200, "Oxygen": 50}`: what you can make now, and what you are one ingredient short of |
-| `convert_portal_address(text, planet?)` | portal code ↔ galactic address, glyph names in dialling order, voxel position |
-| `saved_locations(kind?, query?, origin?)` | the addresses in `data/locations.json`, with both forms and the glyphs |
-
-**Resources:** `nmsii://source` (which game build the data was extracted
-from), `nmsii://guide/{page}` (the site's markdown pages: `guide`, `recipes`,
-`nanites`, `cooking`, `multitools`, `storage`, `portals`) and
-`nmsii://items/{ID}` (one item's page). **Prompt:** `plan_refining_chain`.
-
-**Quick setup**, from the checkout:
-
-```fish
-mise run mcp:install-claude                  # Claude Code, user scope
-mise run mcp:install-codex                   # OpenAI's Codex CLI
-mise run mcp:config                          # the JSON for anything else
-```
-
-Each install task registers `uv run --directory <this checkout> nms mcp`;
-running it again replaces the entry rather than adding a second.
-`--container` registers the podman route below instead, `--dry-run` prints the
-commands (or the config diff) and changes nothing, and
-`mcp:install-claude --scope user|project|local` picks where Claude Code keeps
-it. `mise run mcp:uninstall claude` (or `codex`, ..., `all`) takes it out again.
-
-| Client | Task | How it registers |
-| --- | --- | --- |
-| Claude Code | `mcp:install-claude` | `claude mcp add` |
-| Codex | `mcp:install-codex` | `codex mcp add` |
-| pi ([pi.dev](https://pi.dev)) | `mcp:install-pi` | `pi mcp add` |
-| opencode | `mcp:install-opencode` | the `mcp.nmsii` entry in `~/.config/opencode/opencode.json` |
-| goose | `mcp:install-goose` | the `extensions.nmsii` entry in `~/.config/goose/config.yaml` |
-
-opencode and goose have no command that adds a server without prompting, so
-their files are edited directly: backed up first (`*.bak-<time>`), and only the
-nmsii entry is touched. A commented `opencode.jsonc` is refused rather than
-rewritten, with the entry printed to paste in by hand. Each task fails with a
-plain message when its client is not installed.
-
-**By hand**, the same thing. Claude Code:
-
-```fish
-claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
-```
-
-**Claude Desktop, and other clients** that take a JSON config
-(`claude_desktop_config.json`, `.mcp.json`, Cursor, and so on);
-`mise run mcp:config` prints this with the path filled in:
-
-```json
-{
-  "mcpServers": {
-    "nmsii": {
-      "command": "uv",
-      "args": ["run", "--directory", "/path/to/nms-items-interface", "nms", "mcp"]
-    }
-  }
-}
-```
-
-**In a container**, with nothing but podman: `-T` turns off the tty the TUI
-needs, so stdin and stdout are a plain pipe.
-
-```fish
-claude mcp add nmsii -- podman compose -f /path/to/nms-items-interface/compose.yaml run --rm -T tui nms mcp
-```
-
-or `mise run mcp:config --container` for the JSON. Build the image once first
-(`mise run box:build`), so the first connection does not wait on it.
-`compose.yaml` sets `x-podman: in_pod: false` for this route: otherwise
-podman-compose creates a pod on the first `run` and prints its ID on stdout,
-into the JSON-RPC stream, and that first connection fails.
-
-`mise run mcp:inspect` opens the server in the
-[MCP Inspector](https://github.com/modelcontextprotocol/inspector) to try the
-tools by hand (`npx` fetches it; needs node). `mise run test:mcp` checks every
-tool against the module it wraps, then the server in-process and as `nms mcp`
-over a real pipe, and the install tasks against stand-in clients.
-
-## Contributing a portal address
-
-The shared list in `data/locations.json` takes contributions two ways, both
-checked by `scripts/portal_issue.py` with the same rules the TUI and the site
-use to convert an address.
-
-- **An issue**, on the *Share a portal address* form. The portals page on
-  [nmsii.dlu.one](https://nmsii.dlu.one/#/portals) opens it pre-filled from its
-  save form. The `Contributions` workflow reads the issue, converts the
-  address, looks for duplicates, and replies in one comment it keeps updated:
-  the glyphs and coordinates it read, or what to fix. It labels the issue
-  `valid` or `needs-fix`, and checks again on every edit. When the repo owner
-  adds `accepted`, it appends the entry as `shared`, credited to the reporter
-  and the issue, and opens the pull request that closes it.
-- **A pull request** editing the file. The same workflow validates the whole
-  file strictly (fields, kinds, galaxies, dialable codes, duplicates) and runs
-  the portal tests. The TUI's loader skips a broken row so a screen never
-  breaks; a PR is told instead. Locally: `mise run contrib:validate`.
-
-The issue body is never handed to a shell: the script reads it from the event
-file. `mise run contrib:setup` creates the labels and lets the workflow open
-pull requests, once per repo; `mise run contrib:pending` lists what is waiting.
-
-**Abuse protection.** Only the repo owner's `accepted` label adds anything,
-and the checks need no secrets. Every job has a short timeout (3 minutes for
-the issue jobs, 10 for a PR), and a burst of edits to one issue cancels all
-but the newest check; an accept in progress is never cancelled. One person
-may have three other submissions waiting: past that, a new one is labelled
-`on-hold` with a single polite reply instead of being checked, and an edit
-after the others are reviewed checks it and drops the label (the owner,
-members and collaborators are exempt). `contrib:setup` also makes every
-outside contributor's fork PR wait for approval before any workflow runs on
-it. If it still gets out of hand, `mise run contrib:lockdown` turns on
-GitHub's interaction limits (`--limit existing_users|contributors_only|collaborators_only`,
-`--expiry one_day|three_days|one_week|one_month`), `contrib:unlock` lifts
-them, and `contrib:status` shows the limits, the fork approval policy, open
-submissions per author and the bot's runs in the last 24 hours. The tasks
-that write take `--dry-run`.
+---
 
 ## Where the data comes from
 
@@ -621,6 +610,47 @@ against Runaway Mould's 24 — so if the game moves a ratio, it fails loudly
 instead of quietly printing a wrong sheet. When a claim really did change,
 update the guide and the test together; Cosmos moved three (see
 `docs/cosmos-changes.md`).
+
+---
+
+## Contributing a portal address
+
+The shared list in `data/locations.json` takes contributions two ways, both
+checked by `scripts/portal_issue.py` with the same rules the TUI and the site
+use to convert an address.
+
+- **An issue**, on the *Share a portal address* form. The portals page on
+  [nmsii.dlu.one](https://nmsii.dlu.one/#/portals) opens it pre-filled from its
+  save form. The `Contributions` workflow reads the issue, converts the
+  address, looks for duplicates, and replies in one comment it keeps updated:
+  the glyphs and coordinates it read, or what to fix. It labels the issue
+  `valid` or `needs-fix`, and checks again on every edit. When the repo owner
+  adds `accepted`, it appends the entry as `shared`, credited to the reporter
+  and the issue, and opens the pull request that closes it.
+- **A pull request** editing the file. The same workflow validates the whole
+  file strictly (fields, kinds, galaxies, dialable codes, duplicates) and runs
+  the portal tests. The TUI's loader skips a broken row so a screen never
+  breaks; a PR is told instead. Locally: `mise run contrib:validate`.
+
+The issue body is never handed to a shell: the script reads it from the event
+file. `mise run contrib:setup` creates the labels and lets the workflow open
+pull requests, once per repo; `mise run contrib:pending` lists what is waiting.
+
+**Abuse protection.** Only the repo owner's `accepted` label adds anything,
+and the checks need no secrets. Every job has a short timeout (3 minutes for
+the issue jobs, 10 for a PR), and a burst of edits to one issue cancels all
+but the newest check; an accept in progress is never cancelled. One person
+may have three other submissions waiting: past that, a new one is labelled
+`on-hold` with a single polite reply instead of being checked, and an edit
+after the others are reviewed checks it and drops the label (the owner,
+members and collaborators are exempt). `contrib:setup` also makes every
+outside contributor's fork PR wait for approval before any workflow runs on
+it. If it still gets out of hand, `mise run contrib:lockdown` turns on
+GitHub's interaction limits (`--limit existing_users|contributors_only|collaborators_only`,
+`--expiry one_day|three_days|one_week|one_month`), `contrib:unlock` lifts
+them, and `contrib:status` shows the limits, the fork approval policy, open
+submissions per author and the bot's runs in the last 24 hours. The tasks
+that write take `--dry-run`.
 
 ---
 

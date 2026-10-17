@@ -233,8 +233,9 @@ class Markdown:
             for t in self.b["tiers"])
         return f"""{self.header("How to read NMSii", self.source_line())}
 
-NMSii, the No Man's Sky Items Interface, is a terminal app with a web front
-end. Both read the same data: every recipe, batch time and base value comes
+NMSii, the No Man's Sky Items Interface, is one dataset with several ways in:
+the website, a terminal app, an MCP server for AI assistants, and markdown.
+All of them read the same data: every recipe, batch time and base value comes
 from the game's own recipe table, not a wiki. These markdown pages are the
 site's content as text; item IDs are the game's own, and every item has a page
 at `md/items/<ID>.md`.

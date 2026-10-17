@@ -1,7 +1,7 @@
 [project]
 name = "nms-items-interface"
 version = "0.1.0"
-description = "NMSii, the No Man's Sky Items Interface: a TUI for refining, cooking and crafting recipes"
+description = "NMSii, the No Man's Sky Items Interface: refining, cooking, crafting and portal data read from the game files, as a website, a terminal app, an MCP server for AI assistants and markdown"
 requires-python = ">=3.11"
 license = "GPL-3.0-only"
 dependencies = [
