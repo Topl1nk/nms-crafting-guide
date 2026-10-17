@@ -1,4 +1,4 @@
-# mise (https://mise.jdx.dev) — tools + tasks for NMS Items.
+# mise (https://mise.jdx.dev) — tools + tasks for NMSii.
 #
 #   mise install     # typst + uv, pinned below
 #   mise run setup   # fonts (paru) + Python deps
@@ -77,7 +77,7 @@ depends = ["fetch-glyphs", "build-glyphs"]
 description = "Full data rebuild after a game patch: fetch → normalise → cheat sheet → PDF"
 depends = ["fetch", "build-data", "cheatsheet-data", "pdf"]
 
-# --- web site (nms.dlu.one) ------------------------------------------------
+# --- web site (nmsii.dlu.one) ------------------------------------------------
 
 [tasks.web-data]
 description = "Export the static site's data into web/data.json (plus the PDFs and screenshots)"
@@ -114,11 +114,11 @@ run = [
 ]
 
 [tasks.pages-setup]
-description = "Turn GitHub Pages on (Actions source) with the nms.dlu.one domain - idempotent"
+description = "Turn GitHub Pages on (Actions source) with the nmsii.dlu.one domain - idempotent"
 run = "uv run python scripts/pages.py setup"
 
 [tasks.pages-https]
-description = "Enforce HTTPS on nms.dlu.one, once GitHub has issued the certificate"
+description = "Enforce HTTPS on nmsii.dlu.one, once GitHub has issued the certificate"
 run = "uv run python scripts/pages.py https"
 
 [tasks.pages-status]

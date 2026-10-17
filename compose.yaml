@@ -1,4 +1,4 @@
-# Run NMS Items with podman (or docker) instead of installing Python and uv.
+# Run NMSii with podman (or docker) instead of installing Python and uv.
 #
 #   podman compose run --rm tui     the terminal app, in this terminal
 #   podman compose up site          the web version on http://localhost:8001

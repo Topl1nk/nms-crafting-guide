@@ -1,4 +1,4 @@
-# NMS Items — No Man's Sky refining & cooking, in the terminal
+# NMSii — No Man's Sky refining & cooking, in the terminal
 
 A **TUI** for the two lookups you actually make while playing: *what does this
 refine into*, and *how do I get that from what I'm carrying*. Plus a printable
@@ -45,7 +45,7 @@ Python so the two cannot drift.
 mise run site       # export data.json and serve web/ on localhost:8001
 ```
 
-It is live at **[nms.dlu.one](https://nms.dlu.one)**.
+It is live at **[nmsii.dlu.one](https://nmsii.dlu.one)**.
 `.github/workflows/pages.yml` runs the tests, exports the data and publishes
 `web/` to GitHub Pages on every push to `main`; the cheat-sheet PDFs are
 published with it. The custom domain is a repo setting, not a `CNAME` file --
@@ -379,7 +379,7 @@ checked by `scripts/portal_issue.py` with the same rules the TUI and the site
 use to convert an address.
 
 - **An issue**, on the *Share a portal address* form. The portals page on
-  [nms.dlu.one](https://nms.dlu.one/#/portals) opens it pre-filled from its
+  [nmsii.dlu.one](https://nmsii.dlu.one/#/portals) opens it pre-filled from its
   save form. The `Contributions` workflow reads the issue, converts the
   address, looks for duplicates, and replies in one comment it keeps updated:
   the glyphs and coordinates it read, or what to fix. It labels the issue
@@ -443,7 +443,7 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | `mise run check` | what CI runs: the full suite and the web export |
 | `mise run deploy` | check, push `main` over SSH, and follow the Pages deploy |
 | `mise run pages-status` | DNS, Pages settings, certificate and the last deploy |
-| `mise run pages-setup` | turn Pages on with the Actions source and the `nms.dlu.one` domain |
+| `mise run pages-setup` | turn Pages on with the Actions source and the `nmsii.dlu.one` domain |
 | `mise run pages-https` | enforce HTTPS once the certificate is issued |
 | `mise run validate-locations` | check `data/locations.json` the way a pull request is checked |
 | `mise run contrib-setup` | the bot's labels, and letting the workflow open PRs |
@@ -477,7 +477,7 @@ src/nms_items/
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
 scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots, web export
 web/           the static site: index.html, app.js (views), core.js (logic), style.css, fonts/
-scripts/pages.py  GitHub Pages settings for nms.dlu.one, via gh
+scripts/pages.py  GitHub Pages settings for nmsii.dlu.one, via gh
 scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
 .github/       the Pages deploy, the contributions bot, the issue form
 Containerfile, compose.yaml  the TUI and the site without a local Python

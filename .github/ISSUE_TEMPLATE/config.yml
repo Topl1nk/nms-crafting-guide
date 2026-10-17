@@ -1,5 +1,5 @@
 blank_issues_enabled: true
 contact_links:
   - name: Convert an address first
-    url: https://nms.dlu.one/#/portals
+    url: https://nmsii.dlu.one/#/portals
     about: The portal page converts and draws an address, and can pre-fill this form for you.

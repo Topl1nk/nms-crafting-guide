@@ -1,4 +1,4 @@
-# NMS Items without installing Python: the TUI, and the static site.
+# NMSii without installing Python: the TUI, and the static site.
 #
 #   podman compose run --rm tui     the terminal app
 #   podman compose up site          the web version on http://localhost:8001

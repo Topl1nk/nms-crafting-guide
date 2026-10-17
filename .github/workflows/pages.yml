@@ -1,4 +1,4 @@
-# Publish web/ to GitHub Pages at nms.dlu.one: test, export data.json from the
+# Publish web/ to GitHub Pages at nmsii.dlu.one: test, export data.json from the
 # Python side, upload. Needs Settings -> Pages -> Source set to "GitHub
 # Actions", and the custom domain set there too: a CNAME file in web/ is
 # ignored by Actions deploys.

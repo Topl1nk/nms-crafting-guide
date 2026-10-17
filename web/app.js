@@ -1,4 +1,4 @@
-// NMS Items on the web: the TUI's screens as pages over data.json.
+// NMSii on the web: the TUI's screens as pages over data.json.
 //
 // One module, one view per hash route. Each view draws a toolbar, a list and
 // a detail pane; the keyboard mirrors the TUI where it makes sense on a page
@@ -1211,7 +1211,7 @@ VIEWS.home = () => {
 
       <figure class="demo">
         <div class="bar"><span>mise run tui</span><b>the terminal app</b></div>
-        <img src="img/recipes.svg" alt="The NMS Items terminal app: the recipe list searched for cobalt, with the detail pane showing the selected recipe, its ingredients and how gettable each one is." loading="lazy">
+        <img src="img/recipes.svg" alt="The NMSii terminal app: the recipe list searched for cobalt, with the detail pane showing the selected recipe, its ingredients and how gettable each one is." loading="lazy">
       </figure>
 
       <h2 class="section">What's inside</h2>
@@ -1325,8 +1325,8 @@ function route() {
   window.scrollTo(0, 0);
   render(params, decodeURIComponent(rest.join("/")));
   document.title = section === "home" || !VIEWS[section]
-    ? "NMS Items - No Man's Sky recipes, nanites, portals"
-    : `${NAV.find(([k]) => k === section)?.[1] ?? "Chain"} · NMS Items`;
+    ? "NMSii - No Man's Sky recipes, nanites, portals"
+    : `${NAV.find(([k]) => k === section)?.[1] ?? "Chain"} · NMSii`;
 }
 
 function onKey(e) {

@@ -442,7 +442,7 @@ class RecipeApp(App):
     """Holds the data and the two keys that make sense everywhere."""
 
     CSS_PATH = "app.tcss"
-    TITLE = "NMS Items"
+    TITLE = "NMSii"
 
     BINDINGS = [
         Binding("question_mark", "help", "help"),

@@ -1,4 +1,4 @@
-"""Manage the GitHub Pages site at nms.dlu.one.
+"""Manage the GitHub Pages site at nmsii.dlu.one.
 
 The site is built and deployed by .github/workflows/pages.yml on every push to
 main. What the workflow cannot do is configure Pages itself -- turn it on, point
@@ -24,7 +24,7 @@ import subprocess
 import sys
 
 REPO = "rdlu/nms-items"
-DOMAIN = "nms.dlu.one"
+DOMAIN = "nmsii.dlu.one"
 TARGET = "rdlu.github.io"
 WORKFLOW = "pages.yml"
 

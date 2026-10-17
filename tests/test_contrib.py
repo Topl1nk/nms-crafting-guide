@@ -51,7 +51,7 @@ def test_a_good_issue_passes_and_says_what_it_read() -> None:
     assert (loc.code, loc.kind, loc.origin, loc.galaxy) == ("0123456789AB", "starship", "shared", 1)
     assert loc.where == ""
     text = bot.reply(loc, errors, [])
-    assert "✓" in text and "nms.dlu.one/#/portals?code=0123456789AB" in text
+    assert "✓" in text and "nmsii.dlu.one/#/portals?code=0123456789AB" in text
 
 
 def test_a_galactic_address_converts_with_a_warning() -> None:

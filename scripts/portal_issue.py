@@ -177,7 +177,7 @@ def reply(loc: Location | None, errors: list[str], warnings: list[str]) -> str:
             f"| Galaxy | {loc.galaxy}. {galaxy_name(loc.galaxy)} |",
             f"| Kind | {loc.kind} |",
             f"| Glyphs | {names} |",
-            "", f"[Open it on nms.dlu.one](https://nms.dlu.one/#/portals?code={a.portal_code})",
+            "", f"[Open it on nmsii.dlu.one](https://nmsii.dlu.one/#/portals?code={a.portal_code})",
             "", "A maintainer adds the `accepted` label to merge it into the shared list.",
         ]
     if warnings:
