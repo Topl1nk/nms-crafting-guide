@@ -19,10 +19,14 @@ COPY pyproject.toml uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 COPY src ./src
 COPY data ./data
+# The site export and its markdown renderer, which `nms mcp` renders its
+# markdown guide pages with. (site-data copies the rest of scripts/.)
+COPY scripts/build_web.py scripts/build_markdown.py ./scripts/
 RUN uv sync --frozen --no-dev
 
 # The TUI. The inventory lives in XDG state, kept in a volume; saved portal
 # addresses are data/locations.json, which compose mounts from the checkout.
+# `nms mcp` in the same image is the MCP server (compose run -T, no tty).
 FROM app AS tui
 VOLUME /state
 CMD ["nms"]

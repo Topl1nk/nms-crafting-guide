@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#MISE description="Register NMSii with Claude Code (claude mcp add); re-running replaces the entry"
+#USAGE flag "--scope <scope>" default="user" help="Where Claude Code keeps it: user (every project), project (.mcp.json here), local (you, this project)" {
+#USAGE   choices "user" "project" "local"
+#USAGE }
+#USAGE flag "--container" help="Register the podman route (podman compose run --rm -T tui nms mcp) instead of uv"
+#USAGE flag "--dry-run" help="Print the commands, or the config diff, and change nothing"
+set -euo pipefail
+
+exec uv run python scripts/mcp_clients.py install claude "$@"

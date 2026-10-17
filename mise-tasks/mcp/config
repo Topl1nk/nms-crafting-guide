@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#MISE description="Print the JSON config for any other MCP client (Claude Desktop, Cursor, ...) with this checkout's path filled in"
+#USAGE flag "--container" help="The podman route instead of uv"
+#USAGE flag "--dry-run" help="Accepted for symmetry: this task only prints"
+set -euo pipefail
+
+exec uv run python scripts/mcp_clients.py config "$@"

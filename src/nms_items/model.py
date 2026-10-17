@@ -34,6 +34,31 @@ def find_data_dir() -> Path:
 
 DATA_DIR = find_data_dir()
 
+
+def data_source(data_dir: Path | None = None) -> dict | None:
+    """Where the recipe data came from, from data/source.json.
+
+    `from` is "game" (extracted from the game files) or "handbook" (the
+    NMS-Handbook fallback, which records no game version). None when the file
+    is missing, so callers fall back to saying the version is unknown. The site
+    export and the MCP server both report it, so it is read here, once.
+    """
+    path = (data_dir or DATA_DIR) / "source.json"
+    if not path.exists():
+        return None
+    raw = json.loads(path.read_text(encoding="utf-8"))
+    game = raw.get("game") or {}
+    build = str(game.get("build") or "")
+    return {
+        "from": raw.get("source", ""),
+        "game": game.get("update", ""),
+        "version": game.get("version", ""),
+        "build": int(build) if build.isdigit() else None,
+        "extracted": raw.get("extracted") or raw.get("fetched") or "",
+        "summary": raw.get("summary", ""),
+        "tools": raw.get("tools", {}),
+    }
+
 # The five things the guides say you can pick up on the surface of essentially
 # any planet -- the default starting set for chain planning.
 TIER0 = ["OXYGEN", "FUEL1", "LAND1", "LAUNCHSUB", "CATALYST1"]

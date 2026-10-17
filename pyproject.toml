@@ -7,6 +7,11 @@ license = "GPL-3.0-only"
 dependencies = [
     # The TUI itself. DataTable + Tree + TabbedContent carry the whole UI.
     "textual>=1.0",
+    # `nms mcp`, the server for AI assistants. A plain dependency, not an
+    # extra, so the one-line configs work as written: `uv run nms mcp` and the
+    # container's `nms mcp` would otherwise both need `--extra mcp`. Capped
+    # below 3 because 2.0 already renamed FastMCP to MCPServer once.
+    "mcp>=2.3,<3",
 ]
 
 [project.scripts]
