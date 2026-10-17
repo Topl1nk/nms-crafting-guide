@@ -3,6 +3,9 @@
 #   podman compose run --rm tui     the terminal app, in this terminal
 #   podman compose up site          the web version on http://localhost:8001
 #   podman compose build            after a `git pull`
+#   podman compose run --rm -T tui nms mcp
+#                                   the MCP server for AI assistants, on stdio:
+#                                   -T drops the tty, stdin_open keeps the pipe
 #
 # Name the service: the TUI wants this terminal, so it is started with `run`,
 # not `up`. (No profile for it: podman-compose's `run` ignores profiles.)

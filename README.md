@@ -27,6 +27,7 @@ version of what this app queries.
 | 🌀 **Portal addresses** | Glyphs ↔ galactic coordinates, offline, plus the addresses from the guides — where the good tools and Exotics are |
 | 🗄️ **Where does it go?** | Every item's home in the storage guide's layout — one of the ten Storage Containers, the Nutrient Processor, Cold Storage — or *sell*, *junk*, *use it now*. Type a home ("sell", "cold") to list everything that goes there |
 | 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
+| 🤖 **`nms mcp`** | The same answers for AI assistants, as an [MCP](https://modelcontextprotocol.io) server — see [For AI assistants](#for-ai-assistants-mcp) |
 
 ---
 
@@ -102,6 +103,10 @@ Every page's footer says so too: *AI friendly* links that page's markdown twin
 (an item's own page from its recipes or chain view), llms.txt and the item index,
 and the head's `<link rel="alternate" type="text/markdown">` follows it.
 
+An assistant that can run tools gets more than these files from the
+[MCP server](#for-ai-assistants-mcp): the chain planner for any quantity and
+tier, and the inventory matching, neither of which a static page can do.
+
 What lives in the browser stays there: the inventory and any portal addresses
 you save are kept in `localStorage`. *Export mine* on the portals page downloads
 the saved addresses in `data/locations.json`'s shape, to merge into the file.
@@ -111,7 +116,7 @@ the saved addresses in `data/locations.json`'s shape, to merge into the file.
 ## Using it
 
 Three ways in, from the least installed to the most. The app needs Python 3.11+
-and one library, Textual, and any terminal with 256 colours.
+and Textual (plus the MCP SDK, for `nms mcp`), and any terminal with 256 colours.
 
 **podman or docker**, nothing else on the machine:
 
@@ -413,6 +418,76 @@ true. The portals page goes further: `mise run pdf:build` round-trips every addr
 and re-checks the galaxy-centre invariant, so the build fails rather than
 printing a code you cannot dial.
 
+## For AI assistants (MCP)
+
+Ask a chat assistant how to make Antimatter and it answers from whatever wiki
+text it remembers, from whichever patch. `nms mcp` serves NMSii's own answers
+over the [Model Context Protocol](https://modelcontextprotocol.io) instead, on
+stdio, so an assistant can look them up: the same `Book`, chain planner,
+gettable scores, storage rules, dishes and portal arithmetic the TUI and the
+site use, computed by the same code. It is read-only: it never touches your
+inventory or `data/locations.json`.
+
+**Tools.** Every one takes item names or game IDs (`"Chromatic Metal"` or
+`STELLAR2`); a name that matches several items comes back as an error listing
+them, rather than a guess.
+
+| Tool | Answers |
+| --- | --- |
+| `search_items(query)` | items by name or ID, tolerating partial words and typos |
+| `item_info(item)` | value, category, description, storage home, buff, how gettable it is, and the recipes that make it and use it |
+| `search_recipes(query, domain, sort, item, role)` | the recipe table filtered and sorted as on the main screen: multiplier, fastest, output/hour, profit, gettable, name |
+| `plan_chain(item, qty, tier, allow_cooking)` | the cheapest tree from a source tier (0, 1, 2), the raw materials to gather or find, total machine time |
+| `nanite_routes()` | every route to nanites, best nanites/hour first |
+| `cooking_by_buff(buff?)` | dishes per stat boosted, strongest first, with their quickest recipe |
+| `where_to_store(item)` | its home in the storage layout, or sell / junk / use it, and why |
+| `craftable_from(inventory)` | given `{"Carbon": 200, "Oxygen": 50}`: what you can make now, and what you are one ingredient short of |
+| `convert_portal_address(text, planet?)` | portal code ↔ galactic address, glyph names in dialling order, voxel position |
+| `saved_locations(kind?, query?, origin?)` | the addresses in `data/locations.json`, with both forms and the glyphs |
+
+**Resources:** `nmsii://source` (which game build the data was extracted
+from), `nmsii://guide/{page}` (the site's markdown pages: `guide`, `recipes`,
+`nanites`, `cooking`, `multitools`, `storage`, `portals`) and
+`nmsii://items/{ID}` (one item's page). **Prompt:** `plan_refining_chain`.
+
+**Claude Code:**
+
+```fish
+claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
+```
+
+**Claude Desktop, and other clients** that take a JSON config
+(`claude_desktop_config.json`, `.mcp.json`, Cursor, and so on):
+
+```json
+{
+  "mcpServers": {
+    "nmsii": {
+      "command": "uv",
+      "args": ["run", "--directory", "/path/to/nms-items-interface", "nms", "mcp"]
+    }
+  }
+}
+```
+
+**In a container**, with nothing but podman: `-T` turns off the tty the TUI
+needs, so stdin and stdout are a plain pipe.
+
+```fish
+claude mcp add nmsii -- podman compose -f /path/to/nms-items-interface/compose.yaml run --rm -T tui nms mcp
+```
+
+or, as JSON, `"command": "podman"` with `"args": ["compose", "-f",
+"/path/to/nms-items-interface/compose.yaml", "run", "--rm", "-T", "tui", "nms",
+"mcp"]`. Build the image once first (`podman compose build tui`), so the first
+connection does not wait on it.
+
+`mise run mcp-inspect` opens the server in the
+[MCP Inspector](https://github.com/modelcontextprotocol/inspector) to try the
+tools by hand (`npx` fetches it; needs node). `mise run test-mcp` checks every
+tool against the module it wraps, then the server in-process and as `nms mcp`
+over a real pipe.
+
 ## Contributing a portal address
 
 The shared list in `data/locations.json` takes contributions two ways, both
@@ -662,6 +737,7 @@ src/nms_items/
   portals.py   glyphs <-> galactic coordinates, and the saved addresses
   glyphart.py  the 16 symbols as braille, for drawing a code in a terminal
   inventory.py what you're carrying, persisted to XDG state
+  mcp_server.py  `nms mcp`: the answers above as MCP tools, for AI assistants
   app.py       the recipe table + detail pane
   screens.py   chain, nanites, cooking, multi-tools, portals, inventory, help
   widgets.py   the vim-keyed DataTable, Tree, scroll pane and search box
