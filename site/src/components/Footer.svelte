@@ -2,7 +2,8 @@
   // Who made it, as plugii's and the dotfiles' footers say it; then what it
   // stands on, as a second command -- and where the page in view is as
   // markdown (`markdown`, from lib/markdown.js).
-  let { markdown = "llms.txt" } = $props();
+  // `release` is lib/data.js's gameRelease(), once data.json is in.
+  let { markdown = "llms.txt", release = null } = $props();
 
   // © 2026, or 2026-now once it is later: plugii's footer does the same.
   const year = new Date().getFullYear();
@@ -24,7 +25,11 @@
     </section>
     <section class="whoami">
       <div class="prompt">$ cat CREDITS</div>
-      <div>Recipes and items from the game's tables via <a href="https://github.com/ApexFatality93/NMS-Handbook" target="_blank" rel="noopener">NMS-Handbook</a></div>
+      {#if release}
+        <div>Recipes and items read from the game files, {release.name}{#if release.build}{" "}(build {release.build}){/if}</div>
+      {:else}
+        <div>Recipes and items from the game's tables via <a href="https://github.com/ApexFatality93/NMS-Handbook" target="_blank" rel="noopener">NMS-Handbook</a></div>
+      {/if}
       <div>Portal glyphs traced from <a href="https://nmsportals.github.io/" target="_blank" rel="noopener">nmsportals</a></div>
       <div>Cheat sheet for <a href="pdf/nms-cheatsheet.pdf">print</a><span class="dim">{" · "}</span><a href="pdf/nms-cheatsheet-dark.pdf">screen</a><span class="dim">{" · "}</span><a href="https://github.com/rdlu/nms-items-interface" target="_blank" rel="noopener">source</a></div>
       <div>AI friendly: <a id="md-page" href={markdown}>this page as markdown</a><span class="dim">{" · "}</span><a href="llms.txt">llms.txt</a><span class="dim">{" · "}</span><a href="md/items/index.md">every item</a></div>

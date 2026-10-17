@@ -5,13 +5,14 @@
   import FeatureCard from "../components/FeatureCard.svelte";
   import InstallPanes from "../components/InstallPanes.svelte";
   import { fmtInt } from "../lib/core.js";
-  import { D, name, RECIPES } from "../lib/data.js";
+  import { D, gameRelease, name, RECIPES } from "../lib/data.js";
 
   const count = (domain) => D.recipes.filter((r) => r.domain === domain).length;
   const dishes = D.cooking.reduce((n, g) => n + g.dishes.length, 0);
   const containers = D.storage.homes.filter((h) => h.container).length;
   const bestNanite = D.nanites.map((n) => RECIPES[n.recipe]).sort((a, b) => b.rate - a.rate)[0];
   const loops = RECIPES.filter((r) => r.loop > 1).length;
+  const release = gameRelease();
   // The chain card shows off a real plan: the most valuable thing Tier 0 reaches.
   const showcase = Object.keys(D.tiers[0].via.refine)
     .sort((a, b) => (D.items[b]?.value ?? 0) - (D.items[a]?.value ?? 0))[0];
@@ -39,6 +40,9 @@
     This is the web version of a terminal app. It runs entirely in your browser,
     and works on a phone propped up next to the game.
   </p>
+  {#if release}
+    <p class="lede muted">Up to date with <b>{release.name}</b>{#if release.build}{" "}<span class="build">build {release.build}</span>{/if}.</p>
+  {/if}
   <div class="hero-actions">
     <a class="primary" href="#/recipes">Open the recipes</a>
     <a href="#/home" onclick={toInstall}>Run it locally</a>
@@ -71,7 +75,11 @@
 
   <h2 class="section">Good to know</h2>
   <div class="features">
-    <FeatureCard href="https://github.com/ApexFatality93/NMS-Handbook" title="Straight from the game files" icon="data">Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.</FeatureCard>
+    {#if release}
+      <FeatureCard href="https://github.com/rdlu/nms-items-interface#readme" title="Straight from the game files" icon="data">Recipes, batch times and values are read from the game's own files, <b>{release.name}</b>, re-extracted after each patch, and a test suite checks the claims the written guides make.</FeatureCard>
+    {:else}
+      <FeatureCard href="https://github.com/ApexFatality93/NMS-Handbook" title="Straight from the game files" icon="data">Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.</FeatureCard>
+    {/if}
     <FeatureCard key="?" href="#/help" title="Keys and columns" icon="keys"><kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.</FeatureCard>
     <FeatureCard href="#/portals" title="Share an address" icon="portals">Found a ship, a tool or a base worth the trip? Convert it on the portals page and share it as a GitHub issue; a bot checks the glyphs, and accepted ones join the list.</FeatureCard>
   </div>
@@ -133,6 +141,8 @@
 
   .lede { font-size: 1.12rem; line-height: 1.7; max-width: 80ch; color: var(--p-muted); margin: 0 0 12px; }
   .lede.muted { font-size: 1rem; color: var(--p-faint); }
+  .lede b { color: var(--p-accent); font-weight: 400; }
+  .build { font-family: var(--p-mono); font-size: 0.88em; }
 
   .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 8px; }
   .hero-actions a {

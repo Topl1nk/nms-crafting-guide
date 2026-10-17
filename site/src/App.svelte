@@ -4,7 +4,7 @@
   import Header from "./components/Header.svelte";
   import Palette from "./components/Palette.svelte";
   import Toast from "./components/Toast.svelte";
-  import { load, NAV } from "./lib/data.js";
+  import { gameRelease, load, NAV } from "./lib/data.js";
   import { onKey } from "./lib/keys.js";
   import { markdownFor } from "./lib/markdown.js";
   import { route } from "./lib/router.svelte.js";
@@ -64,5 +64,5 @@
     {/key}
   {/if}
 </main>
-<Footer {markdown} />
+<Footer {markdown} release={ready ? gameRelease() : null} />
 <Toast />

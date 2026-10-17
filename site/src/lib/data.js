@@ -57,7 +57,21 @@ export function placement(id) {
   return item ? D.storage.outcomes[item.store] : null;
 }
 
-export const galaxyName = (n) => D.portals.galaxies[n - 1] ?? `Galaxy ${n}`;
+// Which game release the data was read from, as build_web.py exports it from
+// data/source.json -- {game: {update, version, build}, extracted, tools}.
+// Every mention on the page is built from this, so a game patch needs no
+// frontend edit. Null when the export predates it.
+export function gameRelease() {
+  const game = D?.source?.game;
+  if (!game?.version) return null;
+  return {
+    name: `${game.update ?? ""} ${game.version}`.trim(),
+    build: game.build ?? "",
+    extracted: D.source.extracted ?? "",
+  };
+}
+
+export const galaxyName =(n) => D.portals.galaxies[n - 1] ?? `Galaxy ${n}`;
 
 export const REPO_URL = "https://github.com/rdlu/nms-items-interface";
 
