@@ -652,6 +652,11 @@ details.save summary { cursor: pointer; color: var(--p-accent); font-family: var
 .form label.wide { grid-column: 1 / -1; }
 .form input, .form select { width: 100%; font-family: var(--p-sans); font-size: 1rem; }
 .form .btn { justify-self: start; }
+.form .form-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* Under the saved list: the standing invitation to add to it. */
+.invite { margin: 10px 0 0; color: var(--p-faint); font-size: 0.85rem; line-height: 1.6; }
+.invite a { color: var(--p-accent); }
 
 /* ── Toast ────────────────────────────────────────────────────────────── */
 
@@ -822,3 +827,29 @@ h2.section::after {
 .feature p { margin: 0; font-size: 0.92rem; line-height: 1.6; color: var(--p-muted); }
 .feature p b { color: var(--p-text); }
 .feature code { color: var(--p-text); }
+
+/* Run it on your machine: three panes, the commands in each. */
+.install { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 12px; }
+@media (max-width: 1000px) { .install { grid-template-columns: minmax(0, 1fr); } }
+.pane { background: var(--p-panel); border: 1px solid var(--p-outline); padding: 4px 18px 14px; min-width: 0; }
+.pane h3 em { order: 3; flex: none; font-style: normal; font-weight: 400; color: var(--p-faint); font-size: 0.8rem; }
+.pane h3::after { order: 2; }
+.pane h3 { flex-wrap: wrap; row-gap: 2px; }
+.pane h3 span { flex: none; }
+.pane p { font-size: 0.92rem; line-height: 1.6; color: var(--p-muted); }
+.pane pre {
+  margin: 10px 0;
+  padding: 10px 12px;
+  overflow-x: auto;
+  background: var(--p-bg);
+  border: 1px solid var(--p-outline);
+  border-left: 2px solid var(--p-accent);
+  font-family: var(--p-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--p-text);
+}
+.pane pre code { font-size: inherit; }
+.card.span { grid-column: 1 / -1; }
+.card .install .pane { background: var(--p-bg); }
+.card .install .pane pre { background: var(--p-panel); }

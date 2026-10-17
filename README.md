@@ -69,6 +69,31 @@ the saved addresses in `data/locations.json`'s shape, to merge into the file.
 
 ## Using it
 
+Three ways in, from the least installed to the most. The app needs Python 3.11+
+and one library, Textual, and any terminal with 256 colours.
+
+**podman or docker**, nothing else on the machine:
+
+```fish
+git clone https://github.com/rdlu/nms-items; cd nms-items
+podman compose run --rm tui     # the TUI, in this terminal
+podman compose up site          # the web version on http://localhost:8001
+podman compose build            # after a git pull
+```
+
+The inventory is kept in a named volume, and `data/locations.json` is mounted
+from the checkout, so addresses saved in the container are the ones a pull
+request would share. `docker compose` reads the same `compose.yaml`.
+
+**uv**, which fetches Python itself:
+
+```fish
+git clone https://github.com/rdlu/nms-items; cd nms-items
+uv run nms
+```
+
+**mise**, to work on it:
+
 ```fish
 mise install        # uv + typst
 mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
@@ -347,6 +372,29 @@ true. The portals page goes further: `mise run pdf` round-trips every address
 and re-checks the galaxy-centre invariant, so the build fails rather than
 printing a code you cannot dial.
 
+## Contributing a portal address
+
+The shared list in `data/locations.json` takes contributions two ways, both
+checked by `scripts/portal_issue.py` with the same rules the TUI and the site
+use to convert an address.
+
+- **An issue**, on the *Share a portal address* form. The portals page on
+  [nms.dlu.one](https://nms.dlu.one/#/portals) opens it pre-filled from its
+  save form. The `Contributions` workflow reads the issue, converts the
+  address, looks for duplicates, and replies in one comment it keeps updated:
+  the glyphs and coordinates it read, or what to fix. It labels the issue
+  `valid` or `needs-fix`, and checks again on every edit. When the repo owner
+  adds `accepted`, it appends the entry as `shared`, credited to the reporter
+  and the issue, and opens the pull request that closes it.
+- **A pull request** editing the file. The same workflow validates the whole
+  file strictly (fields, kinds, galaxies, dialable codes, duplicates) and runs
+  the portal tests. The TUI's loader skips a broken row so a screen never
+  breaks; a PR is told instead. Locally: `mise run validate-locations`.
+
+The issue body is never handed to a shell: the script reads it from the event
+file. `mise run contrib-setup` creates the labels and lets the workflow open
+pull requests, once per repo; `mise run contrib-pending` lists what is waiting.
+
 ## Where the data comes from
 
 [NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook) parses
@@ -397,6 +445,12 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | `mise run pages-status` | DNS, Pages settings, certificate and the last deploy |
 | `mise run pages-setup` | turn Pages on with the Actions source and the `nms.dlu.one` domain |
 | `mise run pages-https` | enforce HTTPS once the certificate is issued |
+| `mise run validate-locations` | check `data/locations.json` the way a pull request is checked |
+| `mise run contrib-setup` | the bot's labels, and letting the workflow open PRs |
+| `mise run contrib-pending` | shared addresses waiting for review, with the bot's verdict |
+| `mise run box-tui` | the TUI in a container (podman) |
+| `mise run box-site` | the static site in a container on `:8001` |
+| `mise run box-build` | rebuild both images |
 | `mise run pdf` | both cheat-sheet PDFs into `docs/pdf/` |
 | `mise run pdf-watch` | rebuild the light PDF on every save |
 | `mise run refresh` | full data rebuild from upstream |
@@ -424,6 +478,9 @@ src/nms_items/
 scripts/       fetch, normalise, pick cheat-sheet rows, trace glyphs, screenshots, web export
 web/           the static site: index.html, app.js (views), core.js (logic), style.css, fonts/
 scripts/pages.py  GitHub Pages settings for nms.dlu.one, via gh
+scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
+.github/       the Pages deploy, the contributions bot, the issue form
+Containerfile, compose.yaml  the TUI and the site without a local Python
 cheatsheet.typ the PDF
 ```
 

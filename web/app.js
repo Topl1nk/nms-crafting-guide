@@ -831,6 +831,18 @@ function allLocations() {
 
 const portalState = { text: "", planet: 0, kind: "", origin: "" };
 
+// A GitHub issue on the "Share a portal address" form, pre-filled. The form's
+// field ids are the query keys (.github/ISSUE_TEMPLATE/portal-address.yml); a
+// bot checks what arrives with the same rules as this page and the TUI.
+const REPO_URL = "https://github.com/rdlu/nms-items";
+function shareIssueUrl(l = {}) {
+  const q = new URLSearchParams({ template: "portal-address.yml", title: `Portal: ${l.name || ""}`.trim() });
+  for (const key of ["name", "code", "galaxy", "kind", "detail", "where"]) {
+    if (l[key]) q.set(key, String(l[key]));
+  }
+  return `${REPO_URL}/issues/new?${q}`;
+}
+
 VIEWS.portals = (params) => {
   const st = portalState;
   if (params.has("kind")) st.kind = params.get("kind");
@@ -855,6 +867,9 @@ VIEWS.portals = (params) => {
           <button class="btn" id="export" title="Download the addresses saved in this browser, in data/locations.json's shape">Export mine</button>
         </div>
         <div class="list short" id="list"></div>
+        <p class="invite">Found somewhere worth the trip? <a href="${shareIssueUrl()}" target="_blank" rel="noopener">Share it on GitHub</a>:
+          a bot checks the address and replies, and accepted ones join this list for everyone.
+          Or edit <a href="${REPO_URL}/blob/main/data/locations.json" target="_blank" rel="noopener">data/locations.json</a> in a pull request.</p>
         <aside class="detail detail-below" id="detail"></aside>
       </section>
     </div>`;
@@ -891,6 +906,7 @@ VIEWS.portals = (params) => {
       <div class="actions">
         <button class="btn" data-load="${esc(l.code)}">Open in converter</button>
         <button class="btn" data-copy="${esc(l.code)}">Copy code</button>
+        ${l.local ? `<a class="btn" href="${esc(shareIssueUrl(l))}" target="_blank" rel="noopener">Share on GitHub</a>` : ""}
         ${l.local ? `<button class="btn danger" data-del="${l.localIndex}">Delete</button>` : ""}
       </div>`;
   }
@@ -938,9 +954,17 @@ VIEWS.portals = (params) => {
           <label class="wide">What is there <input name="detail" placeholder="class, type, slot count"></label>
           <label class="wide">Finding it <input name="where" placeholder="how to find it once you arrive"></label>
           <label class="wide">Source <input name="source" placeholder="who shared it, or where you found it"></label>
-          <button class="btn">Save in this browser</button>
+          <div class="wide form-actions">
+            <button class="btn">Save in this browser</button>
+            <button class="btn" type="button" id="share-gh" title="Open a GitHub issue with these fields filled in">Share on GitHub</button>
+          </div>
         </form>
       </details>`;
+    $("#share-gh").addEventListener("click", () => {
+      const f = new FormData($("#save"));
+      const row = Object.fromEntries([...f].map(([k, v]) => [k, String(v).trim()]));
+      window.open(shareIssueUrl({ ...row, code: a.code }), "_blank", "noopener");
+    });
     $("#save").addEventListener("submit", (e) => {
       e.preventDefault();
       const f = new FormData(e.target);
@@ -1088,7 +1112,11 @@ const PRIMER = `
   <p>The 16 glyphs sit on the portal dial in a fixed order, 0-9 then A-F, so the hex digit <i>is</i> the position:
   <b>A</b> is the 11th symbol, every time. You need all 16 unlocked, not twelve.</p>
   <h3>Sharing one</h3>
-  <p>The same twelve glyphs point at a different star in each of the 256 galaxies, so an address alone is ambiguous. Saved ones carry their galaxy.</p>`;
+  <p>The same twelve glyphs point at a different star in each of the 256 galaxies, so an address alone is ambiguous. Saved ones carry their galaxy.</p>
+  <h3>Adding yours to the list</h3>
+  <p>Convert it here, fill in the form, and press <b>Share on GitHub</b>: it opens an issue with the fields filled in.
+  A bot converts the address the same way this page does and replies with the glyphs it read, or what to fix.
+  Once accepted it is added to the shared list, credited to you.</p>`;
 
 // Home -------------------------------------------------------------------------
 
@@ -1108,6 +1136,36 @@ const ICONS = {
   keys: '<rect x="2.5" y="6" width="19" height="12" rx="1"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7.5 14h9"/>',
   terminal: '<rect x="3" y="4" width="18" height="16"/><path d="M7 9l3 3-3 3M12.5 15h4.5"/>',
 };
+
+// Three ways to run the terminal app, from the least installed to the most.
+// Shown on the start page and in Help; the README says the same at more length.
+const INSTALL = `
+  <div class="install">
+    <section class="pane">
+      <h3><span>podman / docker</span><em>nothing else to install</em></h3>
+      <p>The app and its Python live in a container. Saved addresses still land in the checkout.</p>
+      <pre><code>git clone https://github.com/rdlu/nms-items
+cd nms-items
+podman compose run --rm tui</code></pre>
+      <p class="muted small">This site, offline: <code>podman compose up site</code>, then <code>localhost:8001</code>. Docker reads the same <code>compose.yaml</code>.</p>
+    </section>
+    <section class="pane">
+      <h3><span>uv</span><em>one tool, it fetches Python</em></h3>
+      <p><a href="https://docs.astral.sh/uv/">uv</a> downloads the right Python and the one dependency, Textual, on the first run.</p>
+      <pre><code>git clone https://github.com/rdlu/nms-items
+cd nms-items
+uv run nms</code></pre>
+      <p class="muted small">Python 3.11 or newer. Any terminal with 256 colours; truecolor looks best.</p>
+    </section>
+    <section class="pane">
+      <h3><span>mise</span><em>to work on it</em></h3>
+      <p><a href="https://mise.jdx.dev/">mise</a> pins uv and Typst and carries every task: tests, the PDF, this site, a data refresh.</p>
+      <pre><code>mise install
+mise run sync
+mise run tui</code></pre>
+      <p class="muted small"><code>mise tasks</code> lists them all; the <a href="${REPO_URL}#tasks">README</a> explains each.</p>
+    </section>
+  </div>`;
 
 // What the project is, and a card per section -- the same shape as the plugii
 // and dotfiles start pages. Every count on it is read off data.json, so the
@@ -1168,11 +1226,16 @@ VIEWS.home = () => {
         ${card("", "pdf/nms-cheatsheet.pdf", "Cheat sheet", "The recipes worth memorising on five landscape A4 pages, for print. The dark version for screens is linked at the bottom of every page.", "sheet")}
       </div>
 
+      <h2 class="section">Run it on your machine</h2>
+      <p class="lede muted">The terminal app has the same screens with vim keys, a command palette and themes, and
+        saves portal addresses to a file you can share. It works offline once installed.</p>
+      ${INSTALL}
+
       <h2 class="section">Good to know</h2>
       <div class="features">
         ${card("", "https://github.com/ApexFatality93/NMS-Handbook", "Straight from the game files", "Recipes, batch times and values come from the game's recipe table via NMS-Handbook, rebuilt after each patch, and a test suite checks the claims the written guides make.", "data")}
         ${card("?", "#/help", "Keys and columns", "<kbd>j</kbd> <kbd>k</kbd> move, <kbd>/</kbd> searches, <kbd>Enter</kbd> pivots, <kbd>1</kbd>-<kbd>7</kbd> jump between sections. What Mult, Gettable and the rest mean.", "keys")}
-        ${card("", "https://github.com/rdlu/nms-items#using-it", "Run it in a terminal", "The same screens as a Textual TUI with vim keys, a command palette and themes. <code>mise run tui</code> from the repo.", "terminal")}
+        ${card("", "#/portals", "Share an address", "Found a ship, a tool or a base worth the trip? Convert it on the portals page and share it as a GitHub issue; a bot checks the glyphs, and accepted ones join the list.", "portals")}
       </div>
     </section>`;
 };
@@ -1207,6 +1270,19 @@ VIEWS.help = () => {
     <section class="card"><h3>The chain planner</h3>
       <p>It works backwards to a source set - by default the five things you can pick up on any planet - and minimises
       <b>refiner-seconds per unit</b>, so the plan is the one that ties up a machine for the least time.</p></section>
+    <section class="card span"><h3>Running it locally</h3>
+      <p>This site is the web front end of a terminal app. Both read the same data, and the app adds vim keys,
+      a command palette, themes, and saving portal addresses to <code>data/locations.json</code>.</p>
+      ${INSTALL}
+      <p class="muted small">On Windows, use WSL or the podman route. The app is a Textual program: any modern terminal draws it.</p></section>
+    <section class="card"><h3>Sharing a portal address</h3>
+      <p>Convert it on the <a href="#/portals">portals page</a>, fill in the form there, and press <b>Share on GitHub</b>.
+      It opens an issue on the <i>Share a portal address</i> form with the fields filled in.</p>
+      <p>A bot reads it within a minute, converts the address the same way this page does, and replies with the glyphs
+      and coordinates it got, or a list of what to fix. Edit the issue and it checks again. When a maintainer accepts it,
+      the bot opens the pull request that adds it, crediting you.</p>
+      <p>Comfortable with git? Edit <a href="${REPO_URL}/blob/main/data/locations.json">data/locations.json</a> in a pull
+      request instead; the same checks run on it. Locally, <code>mise run validate-locations</code>.</p></section>
     <section class="card"><h3>Where this comes from</h3>
       <p>Every number comes from the game's own recipe table, via
       <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>. This page is the web front end of a

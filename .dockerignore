@@ -1,0 +1,9 @@
+.git
+.venv
+.cache
+**/__pycache__
+*.egg-info
+web/data.json
+web/pdf
+web/img
+tests

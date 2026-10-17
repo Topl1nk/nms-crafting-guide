@@ -101,7 +101,7 @@ run = "uv run pytest -q tests/test_web.py"
 [tasks.check]
 description = "Everything CI runs before a deploy: the full test suite and the web export"
 depends = ["test"]
-run = "uv run python scripts/build_web.py"
+run = ["uv run python scripts/portal_issue.py validate", "uv run python scripts/build_web.py"]
 
 [tasks.deploy]
 description = "Check, push main over SSH, and follow the Pages deploy it triggers"
@@ -124,6 +124,34 @@ run = "uv run python scripts/pages.py https"
 [tasks.pages-status]
 description = "DNS, Pages settings, certificate and the last deploy, at a glance"
 run = "uv run python scripts/pages.py status"
+
+# --- contributions -----------------------------------------------------------
+
+[tasks.validate-locations]
+description = "Check data/locations.json the way a pull request is checked"
+run = "uv run python scripts/portal_issue.py validate"
+
+[tasks.contrib-setup]
+description = "Create the labels the portal-address bot uses, and let it open PRs - idempotent"
+run = "uv run python scripts/portal_issue.py setup"
+
+[tasks.contrib-pending]
+description = "Shared addresses waiting for review: the bot's verdict on each open issue"
+run = "gh issue list -R rdlu/nms-items -l portal-address --json number,title,labels -q '.[] | \"#\\(.number)  \\([.labels[].name | select(. != \"portal-address\")] | join(\",\"))  \\(.title)\"'"
+
+# --- containers (podman, or docker) -------------------------------------------
+
+[tasks.box-tui]
+description = "The TUI in a container: no Python or uv needed, only podman"
+run = "podman compose run --rm tui"
+
+[tasks.box-site]
+description = "The static site in a container on localhost:8001"
+run = "podman compose up site"
+
+[tasks.box-build]
+description = "Rebuild both container images, after a pull or a data refresh"
+run = "podman compose build tui site"
 
 # --- pdf --------------------------------------------------------------------
 

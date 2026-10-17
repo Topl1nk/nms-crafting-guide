@@ -1,0 +1,78 @@
+# Share a portal address for the shared list on nms.dlu.one.
+#
+# The labels below are what scripts/portal_issue.py reads back out of the
+# issue body; tests/test_contrib.py keeps the two in step. The ids are what
+# the website pre-fills through the URL (?code=...&name=...).
+name: Share a portal address
+description: A place worth going - a multi-tool, a ship, a base - for the shared list.
+title: "Portal: "
+labels: ["portal-address"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for sharing! A bot checks the address as soon as you submit, the
+        same way the site's converter does, and replies with what it read. Edit
+        the issue if it finds a problem; it checks again on every edit.
+
+        The address is what gets verified. Class, slots and damage are your
+        claim about your save, so say what you saw.
+  - type: input
+    id: name
+    attributes:
+      label: Name
+      description: What it is called in game - the planet, system or ship.
+      placeholder: Nazen 60/Z6
+    validations:
+      required: true
+  - type: input
+    id: code
+    attributes:
+      label: Portal address
+      description: |
+        The 12 glyphs as hex digits (0-9, A-F, in dial order), a galactic
+        address from a signal booster, or a nmsportals.github.io link.
+      placeholder: 6046FFAE4450
+    validations:
+      required: true
+  - type: input
+    id: galaxy
+    attributes:
+      label: Galaxy
+      description: The same glyphs point somewhere else in each galaxy. A number (1 is Euclid) or a name.
+      value: "1"
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - multi-tool
+        - starship
+        - freighter
+        - base
+        - planet
+        - system
+        - other
+    validations:
+      required: true
+  - type: input
+    id: detail
+    attributes:
+      label: What is there
+      description: Class, type, slot count - what makes it worth the trip.
+      placeholder: S-class Atlantid rifle, 24 slots
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Finding it
+      description: What to do once you arrive - which building, which station, what to unlock first.
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: Your own visit, a video, a catalogue entry. Your GitHub handle is credited either way.
+      placeholder: visited myself, game version 6.x

@@ -1,0 +1,94 @@
+# Contributed portal addresses: check issues filed with the "Share a portal
+# address" form, turn an accepted one into a pull request, and hold pull
+# requests that edit data/locations.json to the same rules.
+#
+# The issue body is untrusted. It never reaches a shell: scripts/portal_issue.py
+# reads it from the event file. Only numbers from the event are interpolated.
+name: Contributions
+
+on:
+  issues:
+    types: [opened, edited, labeled]
+  pull_request:
+    paths:
+      - data/locations.json
+      - scripts/portal_issue.py
+      - src/nms_items/portals.py
+
+permissions:
+  contents: read
+
+jobs:
+  check-issue:
+    if: >-
+      github.event_name == 'issues' && github.event.action != 'labeled' &&
+      contains(github.event.issue.labels.*.name, 'portal-address')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: check
+        run: python3 scripts/portal_issue.py check --out reply.md
+      - run: gh issue comment "$ISSUE" --edit-last --create-if-none --body-file reply.md
+      - if: steps.check.outputs.valid == 'true'
+        run: gh issue edit "$ISSUE" --add-label valid --remove-label needs-fix
+      - if: steps.check.outputs.valid != 'true'
+        run: gh issue edit "$ISSUE" --add-label needs-fix --remove-label valid
+
+  # The repo owner adds `accepted`; the bot writes the entry and opens a PR
+  # that closes the issue. PRs opened with this token do not trigger other
+  # workflows, so the whole file is validated here before it is pushed.
+  accept-issue:
+    if: >-
+      github.event_name == 'issues' && github.event.action == 'labeled' &&
+      github.event.label.name == 'accepted' &&
+      github.event.sender.login == github.repository_owner &&
+      contains(github.event.issue.labels.*.name, 'portal-address')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      ISSUE: ${{ github.event.issue.number }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: apply
+        run: python3 scripts/portal_issue.py apply --out reply.md
+      - if: steps.apply.outputs.valid != 'true'
+        run: |
+          gh issue comment "$ISSUE" --edit-last --create-if-none --body-file reply.md
+          gh issue edit "$ISSUE" --remove-label accepted --add-label needs-fix
+          exit 1
+      - run: python3 scripts/portal_issue.py validate
+      - run: |
+          branch="portal/issue-$ISSUE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add data/locations.json
+          git commit -m "Add the portal address from #$ISSUE"
+          git push --force origin "$branch"
+          if [ -z "$(gh pr list --head "$branch" --json number -q '.[0].number')" ]; then
+            gh pr create --head "$branch" --base main \
+              --title "Add the portal address from #$ISSUE" \
+              --body "Adds the address checked in #$ISSUE to data/locations.json as \`shared\`, crediting its author.
+
+          Closes #$ISSUE"
+          fi
+
+  validate-pr:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - run: python3 scripts/portal_issue.py validate
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --extra dev
+      - run: uv run pytest -q tests/test_portals.py tests/test_contrib.py
