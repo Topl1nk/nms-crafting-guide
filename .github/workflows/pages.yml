@@ -23,6 +23,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+        with:
+          # Full history: llms.txt dates the recipe data by data/'s last commit,
+          # which a shallow clone cannot see.
+          fetch-depth: 0
       - uses: astral-sh/setup-uv@v6
       - run: uv sync --extra dev
       # The runner ships node, so the web cross-checks in test_web.py run too.

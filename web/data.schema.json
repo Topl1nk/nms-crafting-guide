@@ -1,0 +1,238 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://nmsii.dlu.one/data.schema.json",
+  "title": "NMSii data bundle",
+  "description": "web/data.json: everything the site at nmsii.dlu.one shows, exported by scripts/build_web.py from the nms_items modules. Item IDs are the game's own. Recipe references are indexes into `recipes`; `store` is an index into `storage.outcomes`.",
+  "type": "object",
+  "required": ["items", "ease", "recipes", "tiers", "nanite", "nanites", "cooking", "storage", "multitools", "glyphs", "portals"],
+  "additionalProperties": false,
+  "$defs": {
+    "itemId": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" },
+    "recipeIndex": { "type": "integer", "minimum": 0 },
+    "stack": {
+      "description": "[item ID, count]",
+      "type": "array",
+      "prefixItems": [{ "$ref": "#/$defs/itemId" }, { "type": "integer", "minimum": 1 }],
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "via": {
+      "description": "Item ID -> index of the recipe that makes it cheapest (refiner-seconds per unit) from this tier's sources.",
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/recipeIndex" }
+    },
+    "strings": { "type": "array", "items": { "type": "string" } }
+  },
+  "properties": {
+    "items": {
+      "description": "Every item that can sit in a cargo slot, by ID.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["name", "sub", "cat", "value", "store"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "sub": { "type": "string", "description": "The game's subtitle, e.g. 'Crafted Technology Component'." },
+          "cat": { "type": "string", "description": "The game's category: Earth, Fuel, Metal, Catalyst, Stellar, Flora, Exotic, Special." },
+          "value": { "type": "integer", "description": "Base value in units." },
+          "store": { "type": "integer", "minimum": 0, "description": "Index into storage.outcomes." },
+          "effect": { "type": "string", "description": "Cooked food only: the stat eating it boosts." },
+          "potency": { "type": "number", "minimum": 0, "description": "The game's quality rating for that buff (CookingValue), mostly 0-1." }
+        }
+      }
+    },
+    "ease": {
+      "description": "How gettable each item a recipe reads or writes is. Items missing here are loot of unknown origin.",
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["label", "band", "score", "describe", "where", "note"],
+        "additionalProperties": false,
+        "properties": {
+          "label": { "type": "string", "description": "'T0 raw', 'T1 +3', 'needs seed', 'loot (medium)'..." },
+          "band": { "enum": ["easy", "ok", "work", "hard"] },
+          "score": { "type": "number", "description": "Higher is easier; a recipe is as gettable as its lowest-scoring ingredient." },
+          "describe": { "type": "string" },
+          "where": { "type": "string", "description": "Where loot drops, hand-written from the guides; empty when unknown." },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "recipes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["domain", "op", "out", "in", "time", "machine", "ratio", "loop", "profit", "rate"],
+        "additionalProperties": false,
+        "properties": {
+          "domain": { "enum": ["refine", "cook"] },
+          "op": { "type": "string", "description": "The game's operation name." },
+          "out": { "$ref": "#/$defs/stack" },
+          "in": { "type": "array", "items": { "$ref": "#/$defs/stack" }, "minItems": 1 },
+          "time": { "type": "number", "minimum": 0, "description": "Seconds per batch." },
+          "machine": { "type": "string" },
+          "ratio": { "type": "number", "description": "Units out per unit in." },
+          "loop": { "type": "number", "description": "Seed multiplier when the output is also an input, else 0." },
+          "profit": { "type": "number", "description": "Base-value difference across one batch, in units." },
+          "rate": { "type": "number", "description": "Units out per hour, one machine kept fed." }
+        }
+      }
+    },
+    "tiers": {
+      "description": "Source sets for the chain planner, narrowest first.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "sources", "via"],
+        "additionalProperties": false,
+        "properties": {
+          "name": { "type": "string" },
+          "sources": { "type": "array", "items": { "$ref": "#/$defs/itemId" } },
+          "via": {
+            "type": "object",
+            "required": ["refine", "all"],
+            "additionalProperties": false,
+            "properties": {
+              "refine": { "$ref": "#/$defs/via" },
+              "all": { "$ref": "#/$defs/via" }
+            }
+          }
+        }
+      }
+    },
+    "nanite": { "$ref": "#/$defs/itemId" },
+    "nanites": {
+      "description": "Every recipe that outputs nanites, best nanites/hour first.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["recipe", "per_input", "units_cost"],
+        "additionalProperties": false,
+        "properties": {
+          "recipe": { "$ref": "#/$defs/recipeIndex" },
+          "per_input": { "type": "number" },
+          "units_cost": { "type": "integer" }
+        }
+      }
+    },
+    "cooking": {
+      "description": "Cooked dishes grouped by the buff they give.",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["effect", "use", "dishes"],
+        "additionalProperties": false,
+        "properties": {
+          "effect": { "type": "string" },
+          "use": { "type": "string" },
+          "dishes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["item", "recipe", "ways"],
+              "additionalProperties": false,
+              "properties": {
+                "item": { "$ref": "#/$defs/itemId" },
+                "recipe": { "$ref": "#/$defs/recipeIndex" },
+                "ways": { "type": "integer", "minimum": 1 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "storage": {
+      "type": "object",
+      "required": ["homes", "outcomes"],
+      "additionalProperties": false,
+      "properties": {
+        "homes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["key", "name", "label", "note", "container"],
+            "additionalProperties": false,
+            "properties": {
+              "key": { "type": "string" },
+              "name": { "type": "string" },
+              "label": { "type": "string" },
+              "note": { "type": "string" },
+              "container": { "type": "boolean", "description": "One of the ten numbered Storage Containers." }
+            }
+          }
+        },
+        "outcomes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["home", "action", "label", "verdict", "advice", "why"],
+            "additionalProperties": false,
+            "properties": {
+              "home": { "type": "string", "description": "A homes[].key." },
+              "action": { "enum": ["keep", "store", "sell", "discard", "use"] },
+              "label": { "type": "string" },
+              "verdict": { "type": "string" },
+              "advice": { "type": "string" },
+              "why": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "multitools": {
+      "description": "data/multitools.json as committed: hand-written from the guides.",
+      "type": "object",
+      "required": ["_headline", "types", "weapons", "getting", "rules", "upgrade_sources", "upgrade_order"]
+    },
+    "glyphs": {
+      "description": "The 16 portal glyphs as SVG outlines, digit 0-F.",
+      "type": "array",
+      "minItems": 16,
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "required": ["hex", "name", "viewbox", "transform", "paths"],
+        "additionalProperties": false,
+        "properties": {
+          "hex": { "type": "string", "pattern": "^[0-9A-F]$" },
+          "name": { "type": "string" },
+          "viewbox": { "type": "string" },
+          "transform": { "type": "string" },
+          "paths": { "$ref": "#/$defs/strings" }
+        }
+      }
+    },
+    "portals": {
+      "type": "object",
+      "required": ["glyph_names", "galaxies", "kinds", "origins", "max_system", "locations"],
+      "additionalProperties": false,
+      "properties": {
+        "glyph_names": { "$ref": "#/$defs/strings" },
+        "galaxies": { "$ref": "#/$defs/strings" },
+        "kinds": { "$ref": "#/$defs/strings" },
+        "origins": { "$ref": "#/$defs/strings" },
+        "max_system": { "type": "integer" },
+        "locations": {
+          "description": "data/locations.json's saved places.",
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "code"],
+            "properties": {
+              "name": { "type": "string" },
+              "code": { "type": "string", "description": "Portal code, 12 hex digits." },
+              "kind": { "type": "string" },
+              "origin": { "type": "string" },
+              "galaxy": { "type": "integer", "minimum": 1, "maximum": 256 },
+              "detail": { "type": "string" },
+              "where": { "type": "string" },
+              "source": { "type": "string" },
+              "added": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

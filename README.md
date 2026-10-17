@@ -61,6 +61,31 @@ headings. The accent is the game's HUD gold, with Dracula's colours kept for
 what carries meaning; neutral greys in the dark, a warmed Alucard in the light,
 and a Light / Dark / System menu that follows the OS by default.
 
+### As markdown, for bots and AI
+
+The page is a JavaScript app, so a crawler or a language model that does not
+run it would see an empty shell. The same export writes everything it shows as
+plain files, from the very bundle that becomes `data.json`, so the two cannot
+disagree:
+
+| | |
+| --- | --- |
+| [`llms.txt`](https://nmsii.dlu.one/llms.txt) | the [llms.txt](https://llmstxt.org) index: what NMSii is, where the data comes from and how old it is, and a link to each page below |
+| `md/*.md` | one page per section — recipes, nanites, cooking, multi-tools, storage, portals — and `guide.md`, what the columns mean and how the chain planner chooses |
+| `md/items/<ID>.md` | one page per item (1,447): value, storage home, buff, every recipe making and using it, and its cheapest chain from Tier 0. `md/items/index.md` lists them by category |
+| `llms-full.txt` | the section pages and the item index in one file (~460 KB); the item pages stay out, since they are the recipe table again, cut per item |
+| `data.schema.json` | JSON Schema for `data.json` — hand-written, checked against the export by the tests |
+| `sitemap.xml`, `robots.txt` | so crawlers find all of it |
+
+The chain on each item page is core.js's tree walk redone in Python over the
+same exported `via` maps; `tests/test_markdown.py` holds it to both
+`graph.plan` and the JS. `mise run web-md` rebuilds only these and prints their
+sizes.
+
+Every page's footer says so too: *AI friendly* links that page's markdown twin
+(an item's own page from its recipes or chain view), llms.txt and the item index,
+and the head's `<link rel="alternate" type="text/markdown">` follows it.
+
 What lives in the browser stays there: the inventory and any portal addresses
 you save are kept in `localStorage`. *Export mine* on the portals page downloads
 the saved addresses in `data/locations.json`'s shape, to merge into the file.
@@ -436,9 +461,11 @@ ratio, it fails loudly instead of quietly printing a wrong sheet.
 | `mise run tui` | the app |
 | `mise run dev` | the app with live CSS reload, for editing `app.tcss` |
 | `mise run web` | serve the TUI itself in a browser on `:8000` (textual serve) |
-| `mise run web-data` | export `web/data.json` for the static site |
+| `mise run web-data` | export `web/data.json` and its markdown version (`llms.txt`, `web/md/`) for the static site |
+| `mise run web-md` | only the markdown version, with the size of each file |
 | `mise run site` | export, then serve the static site on `:8001` |
 | `mise run test-web` | only the web checks: the export, and `web/core.js` against the Python |
+| `mise run test-md` | only the markdown checks: a page per item, numbers against `data.json`, chains, links, the schema |
 | `mise run favicon` | redraw the site icon from the Atlas glyph |
 | `mise run check` | what CI runs: the full suite and the web export |
 | `mise run deploy` | check, push `main` over SSH, and follow the Pages deploy |
