@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+#MISE description="Audit the site with Lighthouse 13.5.0 (mobile and desktop): scores, CLS/LCP/TBT and the worst layout shifts"
+#USAGE flag "--url <url>" default="https://nmsii.dlu.one/" help="The page to audit"
+#USAGE flag "--preset <preset>" default="both" help="Which form factor to audit" {
+#USAGE   choices "mobile" "desktop" "both"
+#USAGE }
+#USAGE flag "--local" help="Build, serve dist/ on 127.0.0.1:8796 and audit that instead of --url"
+set -euo pipefail
+
+# Lighthouse is pinned and run through `mise x`, not kept in [tools]: it is
+# a check run now and then, and mise caches it after the first download.
+# Needs chromium or Chrome (pacman); CHROME_PATH overrides which.
+LH="npm:lighthouse@13.5.0"
+url=${usage_url:-https://nmsii.dlu.one/}
+preset=${usage_preset:-both}
+out=.cache/lighthouse
+mkdir -p "$out"
+
+export CHROME_PATH=${CHROME_PATH:-$(command -v chromium || command -v google-chrome-stable || true)}
+if [[ -z $CHROME_PATH ]]; then
+  echo "lighthouse: no chromium or google-chrome-stable; set CHROME_PATH" >&2
+  exit 1
+fi
+
+if [[ ${usage_local:-false} == true ]]; then
+  mise run web:build >/dev/null
+  python3 -m http.server 8796 --bind 127.0.0.1 --directory dist >/dev/null 2>&1 &
+  server=$!
+  trap 'kill "$server" 2>/dev/null' EXIT
+  url=http://127.0.0.1:8796/
+  for _ in $(seq 50); do curl -sf "$url" >/dev/null && break; sleep 0.2; done
+fi
+
+case $preset in
+  both) presets=(mobile desktop) ;;
+  mobile | desktop) presets=("$preset") ;;
+  *) echo "lighthouse: --preset is mobile, desktop or both" >&2; exit 2 ;;
+esac
+
+for p in "${presets[@]}"; do
+  report="$out/$p.json"
+  args=(--quiet --output=json --output-path="$report"
+    --chrome-flags="--headless=new --no-sandbox --disable-gpu")
+  # Mobile is lighthouse's default; desktop is a preset.
+  [[ $p == desktop ]] && args+=(--preset=desktop)
+  mise x "$LH" -- lighthouse "$url" "${args[@]}"
+  node - "$report" "$p" <<'JS'
+const [file, preset] = process.argv.slice(2);
+const r = JSON.parse(require("fs").readFileSync(file, "utf8"));
+const score = (k) => String(Math.round((r.categories[k]?.score ?? 0) * 100)).padStart(3);
+const a = r.audits;
+console.log(`${preset.padEnd(8)} perf ${score("performance")}  a11y ${score("accessibility")}  best ${score("best-practices")}  seo ${score("seo")}` +
+  `  | CLS ${a["cumulative-layout-shift"].displayValue}  LCP ${a["largest-contentful-paint"].displayValue}  TBT ${a["total-blocking-time"].displayValue}`);
+if (a["cumulative-layout-shift"].numericValue > 0.1) {
+  for (const s of (a["layout-shifts"]?.details?.items ?? []).slice(0, 5)) {
+    const causes = (s.subItems?.items ?? []).map((c) => `${c.cause}${c.extra?.value ? ` ${c.extra.value}` : ""}`).join("; ");
+    console.log(`  ${s.score.toFixed(3)}  ${s.node?.selector ?? "?"}${causes ? `  (${causes})` : ""}`);
+  }
+}
+JS
+done
+echo "reports: $out/"

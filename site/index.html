@@ -28,6 +28,11 @@
   </script>
   <link rel="preload" href="/fonts/ia-writer-duo/iAWriterDuoS-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="/fonts/0xproto/0xProto-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- The bold weights too: the hero is 0xProto Bold and the start page's
+       cards bold their numbers, so either arriving late reflows the page
+       (Lighthouse's CLS blamed both for moving the footer). -->
+  <link rel="preload" href="/fonts/0xproto/0xProto-Bold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/ia-writer-duo/iAWriterDuoS-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <script type="module" src="/src/main.js"></script>
 </head>
 <body>
