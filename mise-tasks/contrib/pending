@@ -3,5 +3,5 @@
 #MISE alias="contrib-pending"
 set -euo pipefail
 
-gh issue list -R rdlu/nms-items-interface -l portal-address --json number,title,labels \
+gh issue list -R Topl1nk/nms-crafting-guide -l portal-address --json number,title,labels \
   -q '.[] | "#\(.number)  \([.labels[].name | select(. != "portal-address")] | join(","))  \(.title)"'

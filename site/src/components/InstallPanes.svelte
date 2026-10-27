@@ -10,16 +10,16 @@
   <section class="pane">
     <PaneHeading title="podman / docker" note="nothing else to install" />
     <p>The app and its Python live in a container. Saved addresses still land in the checkout.</p>
-    <pre><code>git clone https://github.com/rdlu/nms-items-interface
-cd nms-items-interface
+    <pre><code>git clone https://github.com/Topl1nk/nms-crafting-guide
+cd nms-crafting-guide
 podman compose run --rm tui</code></pre>
     <p class="muted small">This site, offline: <code>podman compose up site</code>, then <code>localhost:8001</code>. Docker reads the same <code>compose.yaml</code>.</p>
   </section>
   <section class="pane">
     <PaneHeading title="uv" note="one tool, it fetches Python" />
     <p><a href="https://docs.astral.sh/uv/">uv</a> downloads the right Python and the one dependency, Textual, on the first run.</p>
-    <pre><code>git clone https://github.com/rdlu/nms-items-interface
-cd nms-items-interface
+    <pre><code>git clone https://github.com/Topl1nk/nms-crafting-guide
+cd nms-crafting-guide
 uv run nms</code></pre>
     <p class="muted small">Python 3.11 or newer. Any terminal with 256 colours; truecolor looks best.</p>
   </section>

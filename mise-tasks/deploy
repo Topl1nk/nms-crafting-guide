@@ -3,7 +3,7 @@
 #USAGE arg "[pr]" help="The pull request to merge; leave it out to re-deploy main as it is"
 #USAGE flag "--no-watch" help="Start the deploy and return, without following the Pages run"
 set -euo pipefail
-repo=rdlu/nms-items-interface
+repo=Topl1nk/nms-crafting-guide
 pr=${usage_pr:-}
 watch=true
 [[ ${usage_no_watch:-false} == true ]] && watch=false

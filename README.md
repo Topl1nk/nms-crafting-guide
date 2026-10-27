@@ -1,52 +1,74 @@
-# NMSii — the No Man's Sky Items Interface
+# NMSii — a No Man's Sky crafting guide
 
-The numbers No Man's Sky doesn't show you, for the two lookups you actually
-make while playing: *what does this refine into*, and *how do I get that from
-what I'm carrying*. Then the rest: which dish buffs what, where every item
-belongs in storage, every route to nanites, and every portal address drawn in
-glyphs. For players who want the real figures rather than a wiki's memory of
-them.
+The numbers No Man's Sky doesn't show you, for the two lookups you actually make while playing: *what does this refine
+into*, and *how do I get that from what I'm carrying*. Then the rest: every way to make an item laid out as a tree, which dish
+buffs what, where every item belongs in storage, every route to nanites, and every portal address drawn in glyphs. For players
+who want the real figures rather than a wiki's memory of them.
 
-Every number comes from the game's own recipe table — 361 refining and 1,323
-cooking recipes as of Cosmos 7.06 — extracted from the game files, not from a
-wiki transcription. It grew out of a set of
-written guides (the Suika Box notes); `20.refiner-recipes.md` is the prose
-version of what this app queries.
+Every number comes from the game's own tables — 361 refining and 1,323 cooking recipes as of Cosmos 7.06 — extracted from the
+game files, not from a wiki transcription, and every name and description is shown in any of the **17 languages the game ships**.
+It is a fork of [nms-items-interface](https://github.com/rdlu/nms-items-interface) that has grown far from it; see
+[Origin and changes](#origin-and-changes).
 
-It is one dataset with several ways in: a website, a terminal app, an MCP
-server for AI assistants, and plain markdown. Plus a printable **cheat sheet**
-of the recipes worth memorising.
+It is one dataset with several ways in: a website (the main one), a terminal app, an MCP server for AI assistants, and plain
+markdown. Plus a printable **cheat sheet** of the recipes worth memorising.
 
 ## Pick your way in
 
 | | |
 | --- | --- |
-| 🌐 **Web** | **[nmsii.dlu.one](https://nmsii.dlu.one)** — nothing to install, works on a phone next to the game. [On the web](#on-the-web) |
+| 🌐 **Web** | build it from this repository (the game's pictures come from your own install); works on a phone next to the game. [On the web](#on-the-web) |
 | 📲 **App** | Install it as an app: *Install app* on the site (or the browser's menu; Share → Add to Home Screen on iOS). Its own window, works offline. [Install it as an app](#install-it-as-an-app) |
 | ⌨️ **Terminal** | `uv run nms` in a checkout, or `mise run tui`: the same screens with vim keys and a command palette. [In the terminal](#in-the-terminal) |
 | 📦 **Container** | `podman compose run --rm tui` for the app, `podman compose up site` for the site offline. [In a container](#in-a-container) |
 | 🤖 **AI / MCP** | `nms mcp`, registered by `mise run mcp:install-claude` (or `install-codex`, `-pi`, `-opencode`, `-goose`). [For AI assistants](#for-ai-assistants-mcp) |
-| 📝 **Markdown** | [`llms.txt`](https://nmsii.dlu.one/llms.txt), `llms-full.txt` and `md/`, one page per item. [As markdown](#as-markdown-for-bots-and-ai) |
-| 🖨️ **Print** | the cheat sheet, [Latte for paper](https://nmsii.dlu.one/pdf/nms-cheatsheet.pdf) and [Mocha for screens](https://nmsii.dlu.one/pdf/nms-cheatsheet-dark.pdf). [The cheat sheet](#the-cheat-sheet) |
+| 📝 **Markdown** | `llms.txt`, `llms-full.txt` and `md/` (built by `mise run web:build`), one page per item. [As markdown](#as-markdown-for-bots-and-ai) |
+| 🖨️ **Print** | the cheat sheet, Latte for paper and Mocha for screens (`web/pdf/`, built with the site). [The cheat sheet](#the-cheat-sheet) |
 
-![the recipe list](docs/img/recipes.svg)
+![the Craft page: the recipe list and the card of one recipe](docs/img/site-recipes.webp)
+
+The same page in Russian and the Wiki in Japanese: one choice in the settings menu changes the game's own texts and the page's words together.
+
+| | |
+| --- | --- |
+| ![Craft in Russian](docs/img/site-recipes-ru.webp) | ![Wiki in Japanese](docs/img/site-wiki-ja.webp) |
 
 ---
 
 ## On the web
 
-The site is a static version of the same screens — recipes, chain planner,
-nanites, cooking, multi-tools, portal addresses with the glyphs drawn, storage,
-inventory — for a phone next to the game or anyone without a terminal. No
-server, no Python at runtime: `scripts/build_web.py` runs the same modules the
-TUI uses and exports their answers into `web/data.json` (about 75 KB gzipped),
-and the page only searches, sorts and draws. The chain tree walk, the inventory
-matching and the portal arithmetic are the only logic redone in JavaScript
-(`site/src/lib/core.js`), and `tests/test_web.py` runs them under node against
-the Python so the two cannot drift.
+The site is where the project lives: a static page for a phone next to the game or anyone without a terminal. Seven pages:
 
-The page is [Svelte 5](https://svelte.dev) built by [Vite](https://vite.dev),
-with no router or UI library on top: one component per screen in
+| Page | What it is |
+| --- | --- |
+| **My items** | What you carry, with the card of each item and a count. Typed in, or read from the game's save by a local launcher (the launcher is not in this repository yet, so on a plain static host the page is the typed list). Kept in this browser |
+| **Craft** | Every refining and cooking recipe in one table: filter by kind (refining, cooking, nanites, or all), refiner size, how easy the rarest ingredient is to get, and sort by yield, time, profit. Pick a row for its card: ingredients with their prices, other ways to make it, the machine, and buttons for the craft tree, the **short path** from what is easy to get, **how to make** it and **where it is needed**. A recipe that feeds itself is marked, with its full loop |
+| **Tree** | Pick any of the 403 items that can be made and see every way to make it, from the simplest to the hardest, as chains of tiles on a canvas you drag and zoom (**Fit height** fits the chain at the left edge). Filters by kind, type, rarity, effect, refiner and source; the number of batches multiplies every count |
+| **Wiki** | Everything in the game's tables (2,285 items): type, rarity, where it goes in storage, price, how many recipes make it and use it. The card pairs it with its storage home and the buttons above |
+| **Multi-tools** | The eight types compared, the five weapons measured, how to get the free S-class ones, and the tips that matter |
+| **Portals** | Portal code ↔ galactic address ↔ link, in either direction as you type, with the twelve glyphs drawn; the addresses you save are kept in the browser |
+| **Help** | The keys, what the words mean, the appearance and language settings, and where all this comes from |
+
+![The craft tree page: the item picker](docs/img/site-tree-picker.webp)
+
+![A craft tree: every way to make an item, as chains](docs/img/site-tree.webp)
+
+![The Wiki: every item of the game with its card](docs/img/site-wiki.webp)
+
+| | |
+| --- | --- |
+| ![Portals](docs/img/site-portals.webp) | ![Multi-tools](docs/img/site-multitools.webp) |
+
+On a phone the same pages stack into one column:
+
+![Craft on a phone](docs/img/site-recipes-narrow.webp)
+
+No server, no Python at runtime: `scripts/build_web.py` runs the same modules the TUI uses and exports their answers into
+`web/data.json`, and the page only searches, sorts and draws. The chain tree walk, the inventory matching and the portal
+arithmetic are the only logic redone in JavaScript (`site/src/lib/core.js`), and `tests/test_web.py` runs them under node
+against the Python so the two cannot drift.
+
+The page is [Svelte 5](https://svelte.dev) built by [Vite](https://vite.dev), with no router or UI library on top: one component per screen in
 `site/src/views/`, the shared pieces (the list with its vim keys, the glyph
 strip, the header, the search palette) in `site/src/components/`, and each
 component's own CSS beside it. `web/` holds what is served as it is — fonts,
@@ -64,23 +86,17 @@ mise run site       # export, build dist/, and serve it on localhost:8791
 mise run web:check  # svelte-check over the components
 ```
 
-It is live at **[nmsii.dlu.one](https://nmsii.dlu.one)**.
-`.github/workflows/pages.yml` runs the tests, exports the data, builds the
-site and publishes `dist/` to GitHub Pages on every push to `main`; the
-cheat-sheet PDFs are published with it. The custom domain is a repo setting, not a `CNAME` file --
-an Actions deploy ignores one -- so `scripts/pages.py` manages it through `gh`
-(`mise run pages:setup`, `pages:https`, `pages:status`). DNS is a Cloudflare
-`CNAME` record `nms → rdlu.github.io`, DNS only, so GitHub can issue the
-certificate. `main` only moves through a pull request whose required `check`
-passed; `mise run deploy <pr>` is the whole release: wait for that PR to be
-green, merge it on GitHub, fast-forward the local `main`, and watch Pages.
+It is not hosted anywhere yet: the site shows the game's own pictures, which are not in this repository, so it is built from a
+checkout with your game install at hand (`mise run extract`, then the commands above). `.github/workflows/pages.yml` is the
+publishing workflow of the project this one grew from, kept and run by hand only (Actions -> Pages -> Run workflow): it exports
+the data, builds the site and publishes `dist/` to GitHub Pages, without the pictures. `scripts/pages.py` turns Pages on through
+`gh` (`mise run pages:setup`, `pages:https`, `pages:status`) and can own a custom domain, if one is set in it. `mise run deploy <pr>` is
+the release of the original: wait for a PR to be green, merge it on GitHub, fast-forward the local `main`, and watch Pages.
 
-It wears the same skin as the dotfiles and plugii sites: iA Writer Duo for
-text, 0xProto for code, numbers and navigation (both self-hosted in
-`web/fonts/` with their OFL licenses), square corners and `┌─ Title ───` pane
-headings. The accent is the game's HUD gold, with Dracula's colours kept for
-what carries meaning; neutral greys in the dark, a warmed Alucard in the light,
-and a Light / Dark / System menu that follows the OS by default.
+It looks like this: a navy dark theme (and a light one), with the game's HUD gold as the accent, panes with soft edges and a little
+shading, the item pictures from the game on tiles, and pages that slide in as panes. The settings menu (the cog) picks Light /
+Dark / System, the accent, the language, glowing icons, chemical symbols on icons and the text size; nothing moves for visitors who ask their system for less motion.
+Fonts are self-hosted in `web/fonts/` with their OFL licenses.
 
 ### Languages
 
@@ -148,7 +164,7 @@ container route below needs neither.
 **uv**, which fetches Python itself:
 
 ```fish
-git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
+git clone https://github.com/Topl1nk/nms-crafting-guide; cd nms-crafting-guide
 uv run nms
 ```
 
@@ -166,7 +182,7 @@ mise run tui        # go
 **podman or docker**, nothing else on the machine:
 
 ```fish
-git clone https://github.com/rdlu/nms-items-interface; cd nms-items-interface
+git clone https://github.com/Topl1nk/nms-crafting-guide; cd nms-crafting-guide
 podman compose run --rm tui     # the TUI, in this terminal
 podman compose up site          # the web version on http://localhost:8001
 podman compose build            # after a git pull
@@ -242,7 +258,7 @@ plain message when its client is not installed.
 **By hand**, the same thing. Claude Code:
 
 ```fish
-claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
+claude mcp add nmsii -- uv run --directory /path/to/nms-crafting-guide nms mcp
 ```
 
 **Claude Desktop, and other clients** that take a JSON config
@@ -254,7 +270,7 @@ claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
   "mcpServers": {
     "nmsii": {
       "command": "uv",
-      "args": ["run", "--directory", "/path/to/nms-items-interface", "nms", "mcp"]
+      "args": ["run", "--directory", "/path/to/nms-crafting-guide", "nms", "mcp"]
     }
   }
 }
@@ -264,7 +280,7 @@ claude mcp add nmsii -- uv run --directory /path/to/nms-items-interface nms mcp
 needs, so stdin and stdout are a plain pipe.
 
 ```fish
-claude mcp add nmsii -- podman compose -f /path/to/nms-items-interface/compose.yaml run --rm -T tui nms mcp
+claude mcp add nmsii -- podman compose -f /path/to/nms-crafting-guide/compose.yaml run --rm -T tui nms mcp
 ```
 
 or `mise run mcp:config --container` for the JSON. Build the image once first
@@ -288,7 +304,7 @@ disagree:
 
 | | |
 | --- | --- |
-| [`llms.txt`](https://nmsii.dlu.one/llms.txt) | the [llms.txt](https://llmstxt.org) index: what NMSii is, where the data comes from and how old it is, and a link to each page below |
+| `llms.txt` | the [llms.txt](https://llmstxt.org) index: what NMSii is, where the data comes from and how old it is, and a link to each page below |
 | `md/*.md` | one page per section — recipes, nanites, cooking, multi-tools, storage, portals — and `guide.md`, what the columns mean and how the chain planner chooses |
 | `md/items/<ID>.md` | one page per item (1,447): value, storage home, buff, every recipe making and using it, and its cheapest chain from Tier 0. `md/items/index.md` lists them by category |
 | `llms-full.txt` | the section pages and the item index in one file (~460 KB); the item pages stay out, since they are the recipe table again, cut per item |
@@ -310,11 +326,14 @@ tier, and the inventory matching, neither of which a static page can do.
 
 ---
 
-## What's inside
+## What's inside, and the terminal app in detail
+
+The cheat sheet and the data work for every way in; the keys, columns and screens below are those of the terminal app (the pictures are
+of it). On the site the same answers are the Craft, Tree, Wiki, Multi-tools and Portals pages above.
 
 | | |
 | --- | --- |
-| ⌨️ **`nms`** | The TUI: fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
+| ⌨️ **`nms`** | The terminal app (English only): fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
 | 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf:build` |
 | 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
 | 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
@@ -601,7 +620,7 @@ printing a code you cannot dial.
 ## Where the data comes from
 
 Straight out of the installed game. `scripts/extract_game.py` unpacks the
-recipe, product and substance tables and the English language tables from the
+recipe, product and substance tables and the language tables from the
 game's `.pak` archives with [hgpaktool](https://github.com/monkeyman192/HGPAKtool),
 decompiles them to MXML with
 [MBINCompiler](https://github.com/monkeyman192/MBINCompiler), and parses that
@@ -612,6 +631,7 @@ files the app reads:
 | | |
 | --- | --- |
 | `data/items.json` | 1,498 items — the 697 that recipes touch plus everything else that can sit in a cargo slot. Name, type, category, rarity, base value, and for cooked food the stat it buffs and how strongly |
+| `data/wiki.json` | 2,285 items — every item of the game's tables with a name, for the Wiki page: type, rarity, price, storage home, what makes it and what uses it |
 | `data/recipes.json` | 1,684 recipes — flat, with ratio, loop multiplier, batch time, profit and rate precomputed |
 | `data/source.json` | provenance: game version and build, the tool versions, the extraction date. Currently *Cosmos 7.06, build 180836* (GOG build 60091801558572527), MBINCompiler v7.04.1-pre3, hgpaktool 1.1.3 |
 | `data/cheatsheet.json` | the subset the PDF prints |
@@ -710,7 +730,7 @@ checked by `scripts/portal_issue.py` with the same rules the TUI and the site
 use to convert an address.
 
 - **An issue**, on the *Share a portal address* form. The portals page on
-  [nmsii.dlu.one](https://nmsii.dlu.one/#/portals) opens it pre-filled from its
+  the site's Portals page opens it pre-filled from its
   save form. The `Contributions` workflow reads the issue, converts the
   address, looks for duplicates, and replies in one comment it keeps updated:
   the glyphs and coordinates it read, or what to fix. It labels the issue
@@ -750,10 +770,9 @@ that write take `--dry-run`.
 
 ## Roadmap
 
-What's planned, roughly in order. Each item is an issue with the
+What the original project planned, roughly in order (kept for reference). Each item is an issue with the
 [`roadmap`](https://github.com/rdlu/nms-items-interface/issues?q=is%3Aissue+label%3Aroadmap)
-label; comment there before starting on one, so two people don't build the
-same thing.
+label in [its repository](https://github.com/rdlu/nms-items-interface).
 
 | | |
 |---|---|
@@ -825,7 +844,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | Task | Does |
 | --- | --- |
 | `mise run pages:status` | DNS, Pages settings, certificate and the last deploy |
-| `mise run pages:setup` | turn Pages on with the Actions source and the `nmsii.dlu.one` domain |
+| `mise run pages:setup` | turn Pages on with the Actions source |
 | `mise run pages:https` | enforce HTTPS once the certificate is issued |
 
 **`contrib:*`** — shared portal addresses
@@ -992,15 +1011,15 @@ site/          the web page's source (Svelte 5 + Vite), built into dist/
   index.html   the shell, and the theme script that runs before first paint
   sw.js        the service worker; vite.config.js writes it into dist/ with its file list
   src/App.svelte  header, view, footer; picks the view from the #/route
-  src/views/   one component per screen: Recipes, Chain, Nanites, Cooking, Portals, ...
-  src/components/  List (the vim-keyed table), GlyphStrip, Header, Palette, ThemeMenu, ...
-  src/lib/     core.js (the logic test_web.py checks), data, router, keys, storage, pwa (install, updates),
+  src/views/   one component per page: Inventory, Recipes (Craft), Tree, Wiki, Multitools, Portals, Help, Home
+  src/components/  List (the vim-keyed table), RecipeCard, TreePicker, Pyramid and PanCanvas (the craft tree), Select and Check (the filters), Tile, GlyphStrip, Header, Palette, ThemeMenu, ...
+  src/lib/     core.js (the logic test_web.py checks), data, facets (the filters), tree and cycles (chains, loops), motion (page and tile motion), gamesave, router, keys, store, pwa (install, updates),
                i18n.js + words.js + language.svelte.js (the page's language)
   src/lang/    the page's words, one file per language (English is the key); lang/data/ the hand-written data texts
   src/global.css  the skin's tokens, fonts and base; each component styles itself
 web/           served as it is: fonts/, favicons and app icons, the manifest, and what build_web.py exports
 package.json, vite.config.js  the site's build, pinned by package-lock.json
-scripts/pages.py  GitHub Pages settings for nmsii.dlu.one, via gh
+scripts/pages.py  GitHub Pages settings, via gh
 scripts/portal_issue.py  checks contributed addresses: issue form, PRs, the accept step
 scripts/mcp_clients.py  registers `nms mcp` with AI clients (the mcp:install-* tasks)
 .github/       the Pages deploy, the contributions bot, the issue form

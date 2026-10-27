@@ -305,7 +305,7 @@ export default {
   "Keys": "キー",
   "What the words mean": "用語の意味",
   "Where all this comes from": "出典",
-  "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/rdlu/nms-items-interface.": "レシピ、名前、グリフ、画像は、インストール済みのゲームのファイル（Cosmos 7.06、ビルド 180836）から取り出しました。ポータル、保管、マルチツールの説明はプロジェクトの作者が手書きしました。No Man's Sky とそのデータは Hello Games のものです。プロジェクトはオープンソースです: github.com/rdlu/nms-items-interface。",
+  "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/Topl1nk/nms-crafting-guide.": "レシピ、名前、グリフ、画像は、インストール済みのゲームのファイル（Cosmos 7.06、ビルド 180836）から取り出しました。ポータル、保管、マルチツールの説明はプロジェクトの作者が手書きしました。No Man's Sky とそのデータは Hello Games のものです。プロジェクトはオープンソースです: github.com/Topl1nk/nms-crafting-guide。",
   "Refining, cooking and nanites: what turns into what, what a dish gives": "精製、調理、ナノマシン: 何が何になるか、料理の効果",
   "Every way to make an item, each as a pyramid of tiles": "アイテムを作るすべての方法を、タイルのピラミッドで",
   "Every item in the game: type, rarity, price and where it is needed": "ゲーム内のすべてのアイテム: タイプ、希少度、価格、使い道",

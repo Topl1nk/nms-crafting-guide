@@ -305,7 +305,7 @@ export default {
   "Keys": "按鍵",
   "What the words mean": "這些詞的含義",
   "Where all this comes from": "這一切從何而來",
-  "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/rdlu/nms-items-interface.": "配方、名稱、符文和圖片取自你已安裝遊戲的檔案（Cosmos 7.06，版本 180836）。關於傳送門、儲存和工具組的說明由專案作者手寫。No Man's Sky 及其資料屬於 Hello Games。本專案為開源專案：github.com/rdlu/nms-items-interface。",
+  "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/Topl1nk/nms-crafting-guide.": "配方、名稱、符文和圖片取自你已安裝遊戲的檔案（Cosmos 7.06，版本 180836）。關於傳送門、儲存和工具組的說明由專案作者手寫。No Man's Sky 及其資料屬於 Hello Games。本專案為開源專案：github.com/Topl1nk/nms-crafting-guide。",
   "Refining, cooking and nanites: what turns into what, what a dish gives": "煉製、烹飪和奈米：什麼變成什麼，料理有什麼效果",
   "Every way to make an item, each as a pyramid of tiles": "製作物品的所有方式，每種都是圖塊金字塔",
   "Every item in the game: type, rarity, price and where it is needed": "遊戲中的所有物品：型別、稀有度、價格以及用途",

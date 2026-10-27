@@ -59,7 +59,7 @@ from nms_items.portals import (  # noqa: E402
 
 LOCATIONS = ROOT / "data" / "locations.json"
 FORM = ROOT / ".github" / "ISSUE_TEMPLATE" / "portal-address.yml"
-REPO = "rdlu/nms-items-interface"
+REPO = "Topl1nk/nms-crafting-guide"
 LABELS = {
     "portal-address": ("f5c451", "Shared through the portal address form"),
     "valid": ("3fb950", "The bot read the address cleanly"),
@@ -202,7 +202,7 @@ def reply(loc: Location | None, errors: list[str], warnings: list[str]) -> str:
             f"| Galaxy | {loc.galaxy}. {galaxy_name(loc.galaxy)} |",
             f"| Kind | {loc.kind} |",
             f"| Glyphs | {names} |",
-            "", f"[Open it on nmsii.dlu.one](https://nmsii.dlu.one/#/portals?code={a.portal_code})",
+            "", f"[Open it on topl1nk.github.io/nms-crafting-guide](https://topl1nk.github.io/nms-crafting-guide/#/portals?code={a.portal_code})",
             "", "A maintainer adds the `accepted` label to merge it into the shared list.",
         ]
     if warnings:

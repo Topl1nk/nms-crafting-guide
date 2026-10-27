@@ -36,7 +36,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import extract_game  # noqa: E402
 
 ROOT = extract_game.ROOT
-REPO = "rdlu/nms-items-interface"
+REPO = "Topl1nk/nms-crafting-guide"
 LABEL = ("game-update", "0e8a16", "The installed game is newer than data/")
 BRANCH_PREFIX = "data/game-"
 

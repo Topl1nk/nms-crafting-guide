@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #MISE description="Audit the site with Lighthouse 13.5.0 (mobile and desktop): scores, CLS/LCP/TBT and the worst layout shifts"
-#USAGE flag "--url <url>" default="https://nmsii.dlu.one/" help="The page to audit"
+#USAGE flag "--url <url>" default="https://topl1nk.github.io/nms-crafting-guide/" help="The page to audit"
 #USAGE flag "--preset <preset>" default="both" help="Which form factor to audit" {
 #USAGE   choices "mobile" "desktop" "both"
 #USAGE }
@@ -11,7 +11,7 @@ set -euo pipefail
 # a check run now and then, and mise caches it after the first download.
 # Needs chromium or Chrome (pacman); CHROME_PATH overrides which.
 LH="npm:lighthouse@13.5.0"
-url=${usage_url:-https://nmsii.dlu.one/}
+url=${usage_url:-https://topl1nk.github.io/nms-crafting-guide/}
 preset=${usage_preset:-both}
 out=.cache/lighthouse
 mkdir -p "$out"

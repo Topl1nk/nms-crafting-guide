@@ -33,7 +33,7 @@ from .model import DATA_DIR, SOURCE_SETS, Book, Item, Recipe, data_source
 from .portals import KINDS, ORIGINS, AddressError, Address, LocationBook, resolve_choice
 from .storage import StorageGuide
 
-SITE = "https://nmsii.dlu.one"
+SITE = "https://topl1nk.github.io/nms-crafting-guide"
 
 Domain = Literal["refine", "cook", "all"]
 Sort = Literal["mult", "time", "rate", "profit", "ease", "name"]

@@ -1,4 +1,4 @@
-"""Manage the GitHub Pages site at nmsii.dlu.one.
+"""Manage the GitHub Pages site of the repository (https://topl1nk.github.io/nms-crafting-guide).
 
 The site is built and deployed by .github/workflows/pages.yml on every push to
 main. What the workflow cannot do is configure Pages itself -- turn it on, point
@@ -10,8 +10,8 @@ the `gh` CLI, idempotently:
     https    enforce HTTPS, once GitHub has issued the certificate
     status   DNS, the Pages settings, the certificate and the last deploy
 
-DNS lives in Cloudflare and is not touched here: `nms` is a CNAME to
-rdlu.github.io, DNS only (grey cloud), so GitHub can issue the certificate.
+A custom domain, when DOMAIN is set, is a CNAME to TARGET with DNS only (no proxy), so GitHub can issue the certificate;
+DNS itself is not touched here.
 
 Run via `mise run pages:setup`, `mise run pages:https`, `mise run pages:status`.
 """
@@ -23,9 +23,9 @@ import socket
 import subprocess
 import sys
 
-REPO = "rdlu/nms-items-interface"
-DOMAIN = "nmsii.dlu.one"
-TARGET = "rdlu.github.io"
+REPO = "Topl1nk/nms-crafting-guide"
+DOMAIN = ""  # a custom domain, when there is one (then also TARGET, the host its CNAME points to)
+TARGET = "topl1nk.github.io"
 WORKFLOW = "pages.yml"
 
 
@@ -50,10 +50,10 @@ def setup() -> None:
     else:
         print("Pages already on, deploying from GitHub Actions")
 
-    if (pages() or {}).get("cname") != DOMAIN:
+    if DOMAIN and (pages() or {}).get("cname") != DOMAIN:
         gh("api", "-X", "PUT", f"repos/{REPO}/pages", "-f", f"cname={DOMAIN}")
         print(f"Custom domain set to {DOMAIN}")
-    else:
+    elif DOMAIN:
         print(f"Custom domain already {DOMAIN}")
     print("Next: push to main to deploy, then `mise run pages:https` once the certificate is issued.")
 
@@ -71,13 +71,15 @@ def https() -> None:
         sys.exit("GitHub refused - the certificate is probably not issued yet.\n"
                  "Check `mise run pages:status` and try again in a few minutes.\n"
                  + result.stderr.strip())
-    print(f"HTTPS enforced on https://{DOMAIN}")
+    print(f"HTTPS enforced on {site.get('html_url')}")
 
 
 def status() -> None:
     # getaddrinfo, not gethostbyname_ex: that one is IPv4 only, and some
     # resolvers answer this name with GitHub's IPv6 addresses alone.
     try:
+        if not DOMAIN:
+            raise OSError("no custom domain")
         found = socket.getaddrinfo(DOMAIN, 443, proto=socket.IPPROTO_TCP, flags=socket.AI_CANONNAME)
         name = next((info[3] for info in found if info[3]), DOMAIN)
         addresses = sorted({info[4][0] for info in found})
@@ -85,7 +87,8 @@ def status() -> None:
         if name != TARGET:
             print(f"          expected a CNAME to {TARGET}: is the Cloudflare proxy on?")
     except OSError as exc:
-        print(f"DNS       {DOMAIN} does not resolve ({exc})")
+        if DOMAIN:
+            print(f"DNS       {DOMAIN} does not resolve ({exc})")
 
     site = pages()
     if site is None:

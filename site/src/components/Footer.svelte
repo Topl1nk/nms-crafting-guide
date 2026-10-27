@@ -6,7 +6,7 @@
 
 <footer class="foot">
   <span>{t("Data, names and icons come from the game files")}{#if release}: {release.name}, {t("build {build}", { build: release.build.replace("build ", "") })}{/if}. {t("No Man's Sky belongs to Hello Games.")}</span>
-  <span>{t("Project")} <a href="https://github.com/rdlu/nms-items-interface" target="_blank" rel="noopener">NMSii</a> · Rodrigo Dlugokenski</span>
+  <span>{t("Project")} <a href="https://github.com/Topl1nk/nms-crafting-guide" target="_blank" rel="noopener">NMSii</a> · Topl1nk · <a href="https://github.com/rdlu/nms-items-interface" target="_blank" rel="noopener">Rodrigo Dlugokenski</a></span>
 </footer>
 
 <style>

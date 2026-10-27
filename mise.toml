@@ -46,7 +46,7 @@ PYTHONPATH = "{{config_root}}/src"
 # mise-tasks/<group>/<name>, which mise names group:name; `mise tasks` lists
 # them all:
 #
-#   web:*      the static site (nmsii.dlu.one): data, md, dev, check, build, site
+#   web:*      the static site (topl1nk.github.io/nms-crafting-guide): data, md, dev, check, build, site
 #   pages:*    GitHub Pages settings: setup, https, status
 #   contrib:*  shared portal addresses: validate, setup, pending
 #   box:*      containers (podman): tui, site, build

@@ -126,7 +126,7 @@ export function gameRelease() {
 
 export const galaxyName = (n) => D.portals.galaxies[n - 1] ?? t("Galaxy {n}", { n });
 
-export const REPO_URL = "https://github.com/rdlu/nms-items-interface";
+export const REPO_URL = "https://github.com/Topl1nk/nms-crafting-guide";
 
 // The sections, in key order: 1-7 jump to the first seven, ? to Help. The names are English keys for t().
 export const NAV = [

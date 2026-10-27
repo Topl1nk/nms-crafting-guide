@@ -1,12 +1,12 @@
-# Publish the site to GitHub Pages at nmsii.dlu.one: export data.json from the
+# Publish the site to GitHub Pages at topl1nk.github.io/nms-crafting-guide: export data.json from the
 # Python side into web/, build the Svelte page around it into dist/, upload
 # dist/. Needs Settings -> Pages -> Source set to "GitHub Actions", and
 # the custom domain set there too: a CNAME file is ignored by Actions deploys.
 name: Pages
 
+# By hand only (Actions -> Pages -> Run workflow): the site shows the game's own pictures, which are not in the repository, so a
+# deploy of the repository alone would be a site without them.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:

@@ -153,7 +153,7 @@ console.log(JSON.stringify(cases.map((c) => {{
 def test_llms_txt_links_resolve(pages: dict[str, str]) -> None:
     text = pages["llms.txt"]
     assert text.startswith("# NMSii — No Man's Sky Items Interface\n\n> ")
-    links = re.findall(r"\]\((https://nmsii\.dlu\.one/[^)]+)\)", text)
+    links = re.findall(r"\]\((https://topl1nk\.github\.io/nms-crafting-guide/[^)]+)\)", text)
     assert len(links) >= len(build_markdown.SECTIONS) + 3
     # Files the export writes beside the markdown; the PDFs are copied in CI.
     elsewhere = {"data.json", "data.schema.json", "pdf/nms-cheatsheet.pdf",
@@ -181,7 +181,7 @@ def test_sitemap_lists_every_page(pages: dict[str, str]) -> None:
     paths = {loc.removeprefix(build_markdown.SITE + "/") for loc in locs}
     assert "" in paths and "llms.txt" in paths
     assert {p for p in pages if p.startswith("md/")} <= paths
-    assert "Sitemap: https://nmsii.dlu.one/sitemap.xml" in pages["robots.txt"]
+    assert "Sitemap: https://topl1nk.github.io/nms-crafting-guide/sitemap.xml" in pages["robots.txt"]
 
 
 def test_llms_full_stays_small(pages: dict[str, str]) -> None:

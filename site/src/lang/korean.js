@@ -305,7 +305,7 @@ export default {
   "Keys": "키",
   "What the words mean": "용어의 뜻",
   "Where all this comes from": "출처",
-  "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/rdlu/nms-items-interface.": "레시피, 이름, 상형문자, 그림은 설치된 게임의 파일(Cosmos 7.06, 빌드 180836)에서 추출했습니다. 포털, 보관, 멀티툴 설명은 프로젝트 작성자가 직접 썼습니다. No Man's Sky와 그 데이터는 Hello Games의 것입니다. 이 프로젝트는 오픈 소스입니다: github.com/rdlu/nms-items-interface.",
+  "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/Topl1nk/nms-crafting-guide.": "레시피, 이름, 상형문자, 그림은 설치된 게임의 파일(Cosmos 7.06, 빌드 180836)에서 추출했습니다. 포털, 보관, 멀티툴 설명은 프로젝트 작성자가 직접 썼습니다. No Man's Sky와 그 데이터는 Hello Games의 것입니다. 이 프로젝트는 오픈 소스입니다: github.com/Topl1nk/nms-crafting-guide.",
   "Refining, cooking and nanites: what turns into what, what a dish gives": "정제, 요리, 나노로봇: 무엇이 무엇으로 바뀌는지, 요리의 효과",
   "Every way to make an item, each as a pyramid of tiles": "아이템을 만드는 모든 방법을 타일 피라미드로",
   "Every item in the game: type, rarity, price and where it is needed": "게임의 모든 아이템: 종류, 희귀도, 가격, 사용처",

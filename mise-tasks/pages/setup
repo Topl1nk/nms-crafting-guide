@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#MISE description="Turn GitHub Pages on (Actions source) with the nmsii.dlu.one domain - idempotent"
+#MISE description="Turn GitHub Pages on (Actions source) (and a custom domain, if scripts/pages.py has one) - idempotent"
 #MISE alias="pages-setup"
 set -euo pipefail
 

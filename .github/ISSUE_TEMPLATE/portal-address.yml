@@ -1,4 +1,4 @@
-# Share a portal address for the shared list on nmsii.dlu.one.
+# Share a portal address for the shared list on topl1nk.github.io/nms-crafting-guide.
 #
 # The labels below are what scripts/portal_issue.py reads back out of the
 # issue body; tests/test_contrib.py keeps the two in step. The ids are what

@@ -1,8 +1,8 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://nmsii.dlu.one/data.schema.json",
+  "$id": "https://topl1nk.github.io/nms-crafting-guide/data.schema.json",
   "title": "NMSii data bundle",
-  "description": "web/data.json: everything the site at nmsii.dlu.one shows, exported by scripts/build_web.py from the nms_items modules. Item IDs are the game's own. Recipe references are indexes into `recipes`; `store` is an index into `storage.outcomes`.",
+  "description": "web/data.json: everything the site at topl1nk.github.io/nms-crafting-guide shows, exported by scripts/build_web.py from the nms_items modules. Item IDs are the game's own. Recipe references are indexes into `recipes`; `store` is an index into `storage.outcomes`.",
   "type": "object",
   "required": ["source", "items", "ease", "recipes", "tiers", "nanite", "nanites", "cooking", "storage", "multitools", "glyphs", "portals"],
   "additionalProperties": false,

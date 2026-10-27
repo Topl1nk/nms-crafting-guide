@@ -63,7 +63,7 @@ function serviceWorker() {
 export default defineConfig({
   root: "site",
   publicDir: "../web",
-  // Relative, so dist/ works from any path: nmsii.dlu.one, the container, or
+  // Relative, so dist/ works from any path: topl1nk.github.io/nms-crafting-guide, the container, or
   // a subdirectory on someone's own server.
   base: "./",
   plugins: [svelte(), serviceWorker()],

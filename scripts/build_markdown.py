@@ -1,6 +1,6 @@
 """The site as markdown, for crawlers and language models.
 
-The page at nmsii.dlu.one is a JavaScript app behind hash routes, so anything
+The page at topl1nk.github.io/nms-crafting-guide is a JavaScript app behind hash routes, so anything
 that reads HTML without running it sees an empty shell. This writes the same
 content as plain files -- llms.txt (https://llmstxt.org), one markdown page per
 section and per item, llms-full.txt, a sitemap and robots.txt.
@@ -31,8 +31,8 @@ sys.path.insert(0, str(ROOT / "src"))
 
 from nms_items.portals import Address  # noqa: E402
 
-SITE = "https://nmsii.dlu.one"
-REPO = "https://github.com/rdlu/nms-items-interface"
+SITE = "https://topl1nk.github.io/nms-crafting-guide"
+REPO = "https://github.com/Topl1nk/nms-crafting-guide"
 HANDBOOK = "https://github.com/ApexFatality93/NMS-Handbook"
 
 # The section pages, in the site's nav order, with the line llms.txt gives each.

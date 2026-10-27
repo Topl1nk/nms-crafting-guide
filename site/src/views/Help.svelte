@@ -63,7 +63,7 @@
         {#each WORDS as [term, text]}<dt>{term}</dt><dd>{text}</dd>{/each}
       </dl></section>
     <section class="card"><h3>{t("Where all this comes from")}</h3>
-      <p>{t("Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/rdlu/nms-items-interface.")}</p></section>
+      <p>{t("Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/Topl1nk/nms-crafting-guide.")}</p></section>
   </div>
 </div>
 
