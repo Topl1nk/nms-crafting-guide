@@ -93,7 +93,7 @@
 <section class="tiles">
   {#each TILES as [key, title, text, icon, count] (key)}
     <a class="tile" href="#/{key}">
-      <span class="top"><svg viewBox="0 0 24 24" aria-hidden="true">{@html ICONS[icon]}</svg><i>{count()}</i></span>
+      <span class="hd"><svg viewBox="0 0 24 24" aria-hidden="true">{@html ICONS[icon]}</svg><i>{count()}</i></span>
       <b>{title}</b>
       <span>{text}</span>
     </a>
@@ -132,8 +132,8 @@
   .now h3 a { margin-left: 8px; color: var(--p-accent-ink); text-transform: none; letter-spacing: 0; }
   .now .row { display: flex; flex-wrap: wrap; gap: 12px; }
   .tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; padding: 18px 0 24px; }
-  .tile .top { display: flex; align-items: center; justify-content: space-between; }
-  .tile .top i { font-style: normal; font-size: 0.78rem; color: var(--p-faint); padding: 3px 10px; border-radius: 999px; background: var(--p-raised); }
+  .tile .hd { display: flex; align-items: center; justify-content: space-between; } /* not "top": the header bar's shade (velvet.css) is not for this row */
+  .tile .hd i { font-style: normal; font-size: 0.78rem; color: var(--p-faint); padding: 3px 10px; border-radius: 999px; background: var(--p-raised); }
   .tile {
     display: flex; flex-direction: column; gap: 6px; padding: 20px;
     background: var(--p-panel); border: 1px solid var(--p-outline); border-radius: 20px;
