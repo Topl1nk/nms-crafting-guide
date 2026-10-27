@@ -152,6 +152,132 @@ the saved addresses in `data/locations.json`'s shape, to merge into the file.
 
 ---
 
+## What's inside
+
+One dataset, read by every way in. The pages of the site, in the order of the menu; the terminal app and the MCP server answer the same questions from the same code.
+
+### Craft: every recipe, and how to read it
+
+One table of every refining and cooking recipe. **Kind** picks refining, cooking, nanites or a type of item; **Effect** finds the dishes with the
+buff you need; **Refiner** and **Source** leave what your refiner and your reach allow; **My items** keeps only what your items are enough for. A
+column heading sorts the table. Click a row for its card: the scheme, time, gain and the other ways to make it.
+
+- **Yield** — how many times more you get than you put in. `1→6` is a recipe where one of the ingredients is also in the result:
+  `1 Chlorine + 2 Oxygen → 6 Chlorine` multiplies the seed six times, which is the only kind of recipe that grows a stack out of nothing. It is no
+  perpetual motion: every run also spends oxygen. Real loops — several recipes that feed one another and leave more after a turn than they took —
+  are found in the background and added to the table as rows "… per turn" (the **Loops** box keeps only those).
+- **Time** — one cycle, from the game files. The time the game itself shows is often wrong.
+- **Where** — a portable or personal refiner takes 1 ingredient, a medium one 2, a large one 3.
+- **Per hour, gain** — how many pieces an hour one machine that is never idle gives, and by how much the price grows per cycle. For nanites the
+  gain says nothing: their routes are under Kind → nanites.
+- **Source** — how reachable the rarest ingredient is. *Easy*: from what lies on any planet. *Fair* and *Takes work*: asteroids, the atmosphere
+  harvester or many steps. *Hard*: a rare item that can only be found, never made.
+
+The buttons of a card lead on: **Craft tree** (every way, as chains), **Short path** (the one way from raws that keeps a refiner busy the least,
+with a count of what to gather; *Available* is which raws you can reach: from the planet only, with asteroids, or with the atmosphere
+harvester), **How to make** and **Where it is needed**.
+
+### Nanites
+
+Nanites are the second currency, and a units column is actively misleading about them: one Salvaged Data is ~51,000 units *or* 15 nanites.
+Kind → nanites lists every route, and the per-hour figure is the one to read — which reproduces the guide's finding that Larval and Hadal Cores
+(3,000/h) beat the headline 230-nanite Hyaline Brain (259/h) twelvefold, and that Runaway Mould is the slowest converter in the game.
+
+![Craft, Kind: nanites](docs/img/site-nanites.webp)
+
+### Cooking
+
+Eat or sell? Both, in that order. Every cooked product grants a temporary buff *and* multiplies base value several times over, so the dish you eat is
+the dish you sell — cook the batch, eat one, sell the rest. Kind → cooking with an Effect picked lists the strongest dishes for it, with what they
+sell for and what one batch adds over its ingredients.
+
+![Craft, Kind: cooking](docs/img/site-cooking.webp)
+
+### Tree and Short path
+
+Pick an item in **Tree** to see every way to make it, each as a pyramid: the item on top, below it what it is made from, at the bottom what is
+only gathered. Hover a tile for its recipe, click it to open it in Craft; **Batches** multiplies every number. **Short path** works backwards to a
+source set — by default the five things you can pick up on any planet (Oxygen, Carbon, Ferrite Dust, Di-hydrogen, Sodium) — and the cost it minimises is
+**refiner-seconds per unit**, so the plan is the one that ties up a machine for the least time, not merely the shortest one.
+
+### Wiki
+
+Every item of the game's tables with its picture: type, rarity, price, how many ways there are to make it and where it is needed. The card beside it
+has the description, **Where to put it** (the container, or sell, junk, use now, and why) and the buttons to Craft, Tree and the short path.
+
+### Multi-tools
+
+The eight types side by side, the five primary weapons with their measured best hit, where each rare type comes from (three of them free — the Harmonic
+Camp puzzle, Sentinel Pillars, Korvax Monolith interfaces), and the tips that matter: adjacency is horizontal and vertical only, supercharged slots
+want a 2×2 block, and Damage Potential is not damage output. The rows open into a card under them.
+
+### Portal addresses
+
+One box does both jobs: paste a **portal code** (twelve hex digits, one per glyph), a **galactic address** (`0824:007F:00F3:01AC`, what a signal
+booster shows) or a [nmsportals](https://nmsportals.github.io/) link and the rest comes as you type, with the glyphs to dial drawn beside it — type
+anything else and it searches the addresses you have saved. On the site the saved addresses are kept in the browser; **Export mine** downloads them in
+the shape of `data/locations.json`, to merge into the file.
+
+The converter is [nmsportals.github.io](https://nmsportals.github.io/) offline, with the
+same constants:
+
+```
+galactic X = (portal X + 2047) % 4096      portal X = (galactic X + 2049) % 4096
+galactic Y = (portal Y +  127) %  256      portal Y = (galactic Y +  129) %  256
+galactic Z = (portal Z + 2047) % 4096      portal Z = (galactic Z + 2049) % 4096
+```
+
+The two frames disagree only about where zero is — portal coordinates count
+from the **centre** of the galaxy, galactic ones from a corner — which is the
+whole reason the same place has two unrecognisably different addresses. The
+test suite pins that on the one fact both agree about: portal `000000000000`
+is the galaxy centre, and galactic coordinates call it `07FF:007F:07FF`.
+
+An address reads `p SSS YY ZZZ XXX` — planet, system index, then the voxel as
+height, width, length. It colours each field in the code, in the glyph
+list and in the drawn symbols, so it is obvious which three glyphs are X.
+
+🔑 **The hex digit is the position on the dial.** The 16 glyphs sit in a fixed
+order, `0`–`9` then `A`–`F`, so `A` is the eleventh symbol, every time — and
+you need all 16 unlocked, not twelve.
+
+### My items
+
+What you carry: items read from the game's save (by the local launcher, which only reads and refreshes by itself; the launcher is not in this
+repository yet) or a list you type in by hand, kept in this browser. The card on the right is the item under the cursor: where to put it, and why. An item's
+name opens the Wiki, the Type and Rarity tags open the Wiki with that filter, and **Where it lies** leaves out places (containers, ships, exocraft) that
+should not be counted.
+
+![My items](docs/img/site-inventory.webp)
+
+### The cheat sheet
+
+`mise run pdf:build` writes `docs/pdf/nms-cheatsheet.pdf` (Latte, for print) and
+`nms-cheatsheet-dark.pdf` (Mocha, for screens):
+
+1. **Money engine** — the ×6 loops, the precious-metal engine, best profit per
+   batch and per machine-hour, the six refiner rules.
+2. **Nanites** — every converter with where its input drops, then the
+   essentials you should stop mining, and what Tier 0 / Tier 1 reach.
+3. **Kitchen** — top dishes by value, then all 19 buffs with their three best
+   dishes each.
+4. **Multi-tools** — the 8 types, the weapons measured, how to get the free
+   ones, and the adjacency and supercharged-slot rules.
+5. **Portals** — all 16 glyphs in dial order **drawn**, how to read an address,
+   the conversion both ways, and every saved address in two tables: the ones
+   you found and the ones you were told about. Every address carries its twelve
+   symbols beside the hex, coloured by field, so at the portal you dial off the
+   page without translating anything.
+
+It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
+including its own prose: claims like "every row below is 5s in the Processor"
+are re-checked against the rows on each build and disappear if they stop being
+true. The portals page goes further: `mise run pdf:build` round-trips every address
+and re-checks the galaxy-centre invariant, so the build fails rather than
+printing a code you cannot dial.
+
+---
+
 ## In the terminal
 
 `nms` is where it started: a [Textual](https://textual.textualize.io) TUI with
@@ -176,6 +302,192 @@ mise run setup      # fonts for the PDF, potrace for the glyphs (paru)
 mise run sync       # python deps
 mise run tui        # go
 ```
+
+### The terminal app in detail
+
+`mise run tui:screenshot` writes the pictures below from the app itself (Textual renders a screen to SVG), so they cannot go stale.
+
+![the recipe list in the terminal](docs/img/recipes.svg)
+
+#### Keys
+
+`Ctrl+P` opens the **command palette**, which lists every mode the app has by
+name and marks the one you are in:
+
+```
+● Recipes: Refining          ● Sort: multiplier        Nanite ladder
+· Recipes: Cooking           · Sort: fastest           Portal addresses
+· Recipes: All recipes       · Sort: units profit      Inventory
+```
+
+Type `profit` and press Enter to sort by profit; `shared` to filter saved
+addresses to the ones other people found. Cycle keys are faster once you know
+the order and opaque until you do — pressing `s` four times reaches "units
+profit", but nothing on screen ever said that was an option. The palette is
+also what lets the footer group its keys: nothing is hidden by being left out
+of the bar.
+
+**Themes.** The palette's *Theme* entry recolours the whole app, and the
+choice is remembered. The default, `dracula-clear`, is Dracula's accents with
+no background at all: your terminal's own shows through, transparency
+included. `dracula-neutral` is the same accents on solid greys, because stock
+Dracula's `#282A36` reads as blue next to a black terminal. Every Textual
+built-in works too.
+
+Vim motions work in every table, tree and scrollable pane:
+
+| | |
+| --- | --- |
+| `j` `k` | down / up · `h` `l` pan a wide table sideways |
+| `g g` `G` | top / bottom · `ctrl+d` `ctrl+u` half page |
+| `/` | search — **insert mode**: type freely, `Esc` or `Enter` returns to normal mode |
+| `Esc` | in normal mode, clears the search and any filter |
+
+Then the actions:
+
+| | |
+| --- | --- |
+| `f` `s` | cycle domain (refining / cooking / all) and sort — or pick either by name from `Ctrl+P` |
+| `p` `r` | recipes that **produce** the highlighted item / that **consume** it |
+| `Enter` | pivot to everything touching that item · `Backspace` clears the filter |
+| `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `C` allow cooking |
+| `n` | the **nanite ladder** — every route to nanites, ranked |
+| `e` | **cooking effects** — what each dish does when eaten |
+| `m` | **multi-tools** — types, weapons, getting one, tips |
+| `P` | **portal addresses** — convert glyphs, and the places worth going |
+| `a` `i` | add to inventory / open the inventory screen (`/` opens its add field) |
+| `w` | **where does it go?** — the storage container for an item, or whether to sell or junk it |
+| `d` | show/hide the detail pane — it hides itself below 100 columns |
+| `?` | full help |
+| `ctrl+p` | command palette — every mode by name |
+
+#### Reading the columns
+
+- **Mult** — units out per unit in. `x6 loop` means the recipe feeds itself:
+  `1 Chlorine + 2 Oxygen → 6 Chlorine` multiplies the seed six times, which is
+  the only kind of recipe that grows a stack out of nothing.
+- **Time** — one batch, from the game files. The in-game display is often wrong.
+- **Machine** — Portable/Personal (1 input), Medium (2), Large (3).
+- **Rate / Profit** — units per hour with one machine kept fed, and the
+  base-value difference across one batch. Profit is in units and says nothing
+  about nanites; those get their own screen.
+- **Gettable** — how reachable the hardest ingredient is. `T0/T1/T2 +n` means
+  refinable from surface materials / asteroids / an atmosphere harvester, `n`
+  refining steps away. `needs seed` means refinable but wanting a material none
+  of those tiers contain — a stellar metal, typically, of which you need two
+  units ever. `loot (...)` means no recipe makes it.
+
+#### The screens
+
+`c` plans a chain (the cost it minimises is refiner-seconds per unit, so the plan ties up a machine for the least time), `n` is the nanite
+ladder, `e` the cooking effects, `m` the multi-tools, `P` the portal addresses, `i` the inventory.
+
+![a production chain](docs/img/chain.svg)
+
+![the nanite ladder](docs/img/nanites.svg)
+
+![cooking buffs](docs/img/food.svg)
+
+![multi-tools](docs/img/multitools.svg)
+
+![portal addresses](docs/img/portals.svg)
+
+![inventory](docs/img/inventory.svg)
+
+#### Portal symbols in a terminal
+
+A hex code is only half an address: at the portal you are looking at sixteen
+pictures, not sixteen digits. So the actual shapes are in here too, once, in
+`data/glyphs.json` — outlines traced off the art
+[nmsportals](https://nmsportals.github.io/) draws its dial with, plus the same
+mask knocked down to braille for the terminal. `mise run data:glyphs` re-derives
+both; it needs `potrace`, and it is deliberately **not** part of
+`mise run refresh`, because the symbols do not change when the game patches.
+
+One source, two shapes, because the two places a glyph appears want opposite
+things. The cheat sheet wants **vectors**: the fill is left out of the traced
+path, so the same shape prints dark on Latte and light on Mocha — a PNG of
+white line art would simply vanish on paper. A terminal wants **characters**:
+it cannot show a PNG and no ordinary font has these symbols, so the same mask
+is also stored as braille, 2×4 dots per cell, which is the only resolution
+fine enough to keep `sunset` from collapsing into a blob.
+
+On the portal screen both the converter and the saved-address detail draw the
+twelve symbols, coloured by field the way the hex already is. The layout is
+whatever the pane can hold: twelve across at 8×4 cells wants 107 columns, at
+6×3 it wants 83, and below that it stacks six and six on the field boundary —
+planet, system and Y above, Z and X below. Under about 40 columns it gives up
+and leaves the hex, which is all it ever had.
+
+Whether that draws is up to the terminal, not the app. **Ghostty draws braille
+itself**, with its internal sprite renderer rather than the font — ask it:
+
+```fish
+ghostty +show-face --string="A⣿"
+# U+41 « A » found in face "JetBrains Mono".
+# U+28FF « ⣿ » is handled by Ghostty's internal sprites.
+```
+
+so it is cell-perfect there whatever `font-family` says. A terminal that asks
+the font instead needs one carrying `U+2800`–`U+28FF`: plain JetBrains Mono
+does **not** have it, its Nerd Font build does, and so do most patched
+monospace fonts. With neither you get boxes where the glyphs should be, and
+nothing else on the screen changes.
+
+Because nothing at runtime re-derives that file, `mise run pdf:build` checks it
+against `portals.py` before drawing: one position out and every address on the
+sheet would point at a different star, plausibly.
+
+| | |
+| --- | --- |
+| `D` | dial an address glyph by glyph — for when all you have is the symbols, off a video or a screenshot |
+| `y` `Y` | copy the portal code / the galactic address |
+| `s` `e` `d` | save what is converted, edit it, drop it to the trash |
+| `u` `T` | undo the last drop / show the trash |
+| `f` `o` | filter the saved list by kind / by who found it |
+| `p` | change the planet glyph — the one a galactic address cannot carry |
+| `Enter` | on a saved row, loads it back into the converter |
+
+#### Saved addresses: mine, shared, the trash
+
+Every saved address is one of two kinds, and `o` cycles between them:
+
+| | |
+| --- | --- |
+| **mine** | you stood there. Stamped with the date you saved it. The default when you press `s` |
+| **shared** | off a catalogue or from a friend |
+
+That split is worth more than it looks. What is verified in a catalogue entry
+is the **address** — the location is seeded to the coordinate and generally
+survives a patch. The class, the slot count and the headline damage figure are
+somebody else's claim about somebody else's save, and those rot. Your own finds
+are the ones you can vouch for.
+
+The save form takes a prefix for Kind and Found — `multi`, `s` — and refuses
+anything it cannot read rather than correcting it quietly: a kind that is not a
+kind used to become `other`, and a galaxy of `twelve` used to become Euclid,
+both without a word. The address itself needs no checking, since the form only
+opens on one that already parsed. Saving a code you already have is allowed —
+one system can hold a tool *and* a ship — but it says so.
+
+Nothing deletes outright. `d` moves an address to the trash, `u` takes the last
+one back, `T` lists what is in there — and inside the trash `u` restores the row
+you are on while `d` is the one that really deletes. The trash rides along in
+the same file under `_trash`, keeping the drop date and the row it came from, so
+undo puts an address back where it was rather than at the end, and something
+dropped in one session is still recoverable in the next.
+
+The saved addresses live in `data/locations.json`, committed alongside the
+guides they came from rather than hidden in XDG state, because they are
+findings: they diff, review and share like everything else here. Press `s` to
+add one through a form, or edit the file directly — it carries its own schema.
+It ships with the fifteen from the Euclid shortlists in guides
+21 (`21.multitool-damage.md`) and 14 (`14.starships-ranked.md`)
+— seven multi-tools and eight Exotic starships, read off the Portal Repository
+in September 2026, all marked `shared`. From the multi-tool screen, `P` opens
+the list already filtered to tools.
+
+---
 
 ## In a container
 
@@ -323,297 +635,6 @@ and the head's `<link rel="alternate" type="text/markdown">` follows it.
 An assistant that can run tools gets more than these files from the
 [MCP server](#for-ai-assistants-mcp): the chain planner for any quantity and
 tier, and the inventory matching, neither of which a static page can do.
-
----
-
-## What's inside, and the terminal app in detail
-
-The cheat sheet and the data work for every way in; the keys, columns and screens below are those of the terminal app (the pictures are
-of it). On the site the same answers are the Craft, Tree, Wiki, Multi-tools and Portals pages above.
-
-| | |
-| --- | --- |
-| ⌨️ **`nms`** | The terminal app (English only): fuzzy search, reverse lookup, chain planning, inventory. `mise run tui` |
-| 🖨️ **Cheat sheet** | Three-page landscape A4 ([Typst](https://typst.app)) — the money engine, the nanite ladder, the kitchen. Catppuccin **Latte** for print and **Mocha** for screens. `mise run pdf:build` |
-| 🧮 **Recipe graph** | Chain planner that answers "cheapest way to N of X from things I can pick up" — the same graph walk that produced the Tier 0/1/2 lists in the notes |
-| 💠 **Nanite ladder** | Every route to nanites ranked by nanites/hour, with how gettable each input is and where it drops |
-| 🍳 **Cooking buffs** | What each dish does when you eat it, per stat, with what it sells for |
-| 🔫 **Multi-tools** | The 8 types compared, the 5 weapons measured, and how to get the free S-class ones |
-| 🌀 **Portal addresses** | Glyphs ↔ galactic coordinates, offline, plus the addresses from the guides — where the good tools and Exotics are |
-| 🗄️ **Where does it go?** | Every item's home in the storage guide's layout — one of the ten Storage Containers, the Nutrient Processor, Cold Storage — or *sell*, *junk*, *use it now*. Type a home ("sell", "cold") to list everything that goes there |
-| 📦 **Inventory** | Type what you're carrying; see what refines right now and what you're one ingredient short of |
-| 🤖 **`nms mcp`** | The same answers for AI assistants, as an [MCP](https://modelcontextprotocol.io) server — see [For AI assistants](#for-ai-assistants-mcp) |
-
-### Keys
-
-`Ctrl+P` opens the **command palette**, which lists every mode the app has by
-name and marks the one you are in:
-
-```
-● Recipes: Refining          ● Sort: multiplier        Nanite ladder
-· Recipes: Cooking           · Sort: fastest           Portal addresses
-· Recipes: All recipes       · Sort: units profit      Inventory
-```
-
-Type `profit` and press Enter to sort by profit; `shared` to filter saved
-addresses to the ones other people found. Cycle keys are faster once you know
-the order and opaque until you do — pressing `s` four times reaches "units
-profit", but nothing on screen ever said that was an option. The palette is
-also what lets the footer group its keys: nothing is hidden by being left out
-of the bar.
-
-**Themes.** The palette's *Theme* entry recolours the whole app, and the
-choice is remembered. The default, `dracula-clear`, is Dracula's accents with
-no background at all: your terminal's own shows through, transparency
-included. `dracula-neutral` is the same accents on solid greys, because stock
-Dracula's `#282A36` reads as blue next to a black terminal. Every Textual
-built-in works too.
-
-Vim motions work in every table, tree and scrollable pane:
-
-| | |
-| --- | --- |
-| `j` `k` | down / up · `h` `l` pan a wide table sideways |
-| `g g` `G` | top / bottom · `ctrl+d` `ctrl+u` half page |
-| `/` | search — **insert mode**: type freely, `Esc` or `Enter` returns to normal mode |
-| `Esc` | in normal mode, clears the search and any filter |
-
-Then the actions:
-
-| | |
-| --- | --- |
-| `f` `s` | cycle domain (refining / cooking / all) and sort — or pick either by name from `Ctrl+P` |
-| `p` `r` | recipes that **produce** the highlighted item / that **consume** it |
-| `Enter` | pivot to everything touching that item · `Backspace` clears the filter |
-| `c` | **chain plan** it — inside: `t` source tier, `n` quantity, `C` allow cooking |
-| `n` | the **nanite ladder** — every route to nanites, ranked |
-| `e` | **cooking effects** — what each dish does when eaten |
-| `m` | **multi-tools** — types, weapons, getting one, tips |
-| `P` | **portal addresses** — convert glyphs, and the places worth going |
-| `a` `i` | add to inventory / open the inventory screen (`/` opens its add field) |
-| `w` | **where does it go?** — the storage container for an item, or whether to sell or junk it |
-| `d` | show/hide the detail pane — it hides itself below 100 columns |
-| `?` | full help |
-| `ctrl+p` | command palette — every mode by name |
-
-### Reading the columns
-
-- **Mult** — units out per unit in. `x6 loop` means the recipe feeds itself:
-  `1 Chlorine + 2 Oxygen → 6 Chlorine` multiplies the seed six times, which is
-  the only kind of recipe that grows a stack out of nothing.
-- **Time** — one batch, from the game files. The in-game display is often wrong.
-- **Machine** — Portable/Personal (1 input), Medium (2), Large (3).
-- **Rate / Profit** — units per hour with one machine kept fed, and the
-  base-value difference across one batch. Profit is in units and says nothing
-  about nanites; those get their own screen.
-- **Gettable** — how reachable the hardest ingredient is. `T0/T1/T2 +n` means
-  refinable from surface materials / asteroids / an atmosphere harvester, `n`
-  refining steps away. `needs seed` means refinable but wanting a material none
-  of those tiers contain — a stellar metal, typically, of which you need two
-  units ever. `loot (...)` means no recipe makes it.
-
-### The chain planner
-
-Pick any item, press `c`, and it works backwards to a source set — by default
-the five things you can pick up on any planet (Oxygen, Carbon, Ferrite Dust,
-Di-hydrogen, Sodium), `t` widens that to asteroids and then an atmosphere
-harvester. The cost it minimises is **refiner-seconds per unit**, so the plan is
-the one that ties up a machine for the least time, not merely the shortest one.
-
-![a production chain](docs/img/chain.svg)
-
-If nothing reaches the target it says so and lists what the item *is* made
-from — that is how you find out something has to be looted rather than refined.
-
-### Nanites
-
-Nanites are the second currency, and a units column is actively misleading
-about them: one Salvaged Data is ~51,000 units *or* 15 nanites. Press `n` for
-every route to nanites ranked by nanites/hour per refiner — which reproduces
-the guide's finding that Larval and Hadal Cores (3,000/h) beat the headline
-230-nanite Hyaline Brain (259/h) twelvefold, and that Runaway Mould is the
-slowest converter in the game at 24/h.
-
-Each row also carries how gettable the input is and where it drops.
-
-![the nanite ladder](docs/img/nanites.svg)
-
-### Cooking
-
-Eat or sell? Both, in that order. Every cooked product grants a temporary buff
-*and* multiplies base value several times over, so the dish you eat is the dish
-you sell — cook the batch, eat one, sell the rest. Press `e` for the 19 buffs
-and the strongest dishes for each, with what they sell for and what one batch
-adds over its ingredients.
-
-![cooking buffs](docs/img/food.svg)
-
-### Multi-tools
-
-Four tabs: the 8 types side by side, the 5 primary weapons with their measured
-best hit, where each rare type comes from (three of them free — the Harmonic
-Camp puzzle, Sentinel Pillars, Korvax Monolith interfaces), and the tips that
-matter: adjacency is horizontal and vertical only, supercharged slots want a
-2×2 block, and Damage Potential is not damage output.
-
-![multi-tools](docs/img/multitools.svg)
-
-### Portal addresses
-
-Press `P`. One box does both jobs: paste a **portal code** (twelve hex digits,
-one per glyph), a **galactic address** (`0824:007F:00F3:01AC`, what a signal
-booster shows) or a nmsportals.github.io link and it converts as you type —
-type anything else and it searches the addresses you have saved.
-
-![portal addresses](docs/img/portals.svg)
-
-It is [nmsportals.github.io](https://nmsportals.github.io/) offline, with the
-same constants:
-
-```
-galactic X = (portal X + 2047) % 4096      portal X = (galactic X + 2049) % 4096
-galactic Y = (portal Y +  127) %  256      portal Y = (galactic Y +  129) %  256
-galactic Z = (portal Z + 2047) % 4096      portal Z = (galactic Z + 2049) % 4096
-```
-
-The two frames disagree only about where zero is — portal coordinates count
-from the **centre** of the galaxy, galactic ones from a corner — which is the
-whole reason the same place has two unrecognisably different addresses. The
-test suite pins that on the one fact both agree about: portal `000000000000`
-is the galaxy centre, and galactic coordinates call it `07FF:007F:07FF`.
-
-An address reads `p SSS YY ZZZ XXX` — planet, system index, then the voxel as
-height, width, length. The screen colours each field in the code, in the glyph
-list and in the drawn symbols, so it is obvious which three glyphs are X.
-
-🔑 **The hex digit is the position on the dial.** The 16 glyphs sit in a fixed
-order, `0`–`9` then `A`–`F`, so `A` is the eleventh symbol, every time — and
-you need all 16 unlocked, not twelve.
-
-#### The symbols themselves
-
-A hex code is only half an address: at the portal you are looking at sixteen
-pictures, not sixteen digits. So the actual shapes are in here too, once, in
-`data/glyphs.json` — outlines traced off the art
-[nmsportals](https://nmsportals.github.io/) draws its dial with, plus the same
-mask knocked down to braille for the terminal. `mise run data:glyphs` re-derives
-both; it needs `potrace`, and it is deliberately **not** part of
-`mise run refresh`, because the symbols do not change when the game patches.
-
-One source, two shapes, because the two places a glyph appears want opposite
-things. The cheat sheet wants **vectors**: the fill is left out of the traced
-path, so the same shape prints dark on Latte and light on Mocha — a PNG of
-white line art would simply vanish on paper. A terminal wants **characters**:
-it cannot show a PNG and no ordinary font has these symbols, so the same mask
-is also stored as braille, 2×4 dots per cell, which is the only resolution
-fine enough to keep `sunset` from collapsing into a blob.
-
-On the portal screen both the converter and the saved-address detail draw the
-twelve symbols, coloured by field the way the hex already is. The layout is
-whatever the pane can hold: twelve across at 8×4 cells wants 107 columns, at
-6×3 it wants 83, and below that it stacks six and six on the field boundary —
-planet, system and Y above, Z and X below. Under about 40 columns it gives up
-and leaves the hex, which is all it ever had.
-
-Whether that draws is up to the terminal, not the app. **Ghostty draws braille
-itself**, with its internal sprite renderer rather than the font — ask it:
-
-```fish
-ghostty +show-face --string="A⣿"
-# U+41 « A » found in face "JetBrains Mono".
-# U+28FF « ⣿ » is handled by Ghostty's internal sprites.
-```
-
-so it is cell-perfect there whatever `font-family` says. A terminal that asks
-the font instead needs one carrying `U+2800`–`U+28FF`: plain JetBrains Mono
-does **not** have it, its Nerd Font build does, and so do most patched
-monospace fonts. With neither you get boxes where the glyphs should be, and
-nothing else on the screen changes.
-
-Because nothing at runtime re-derives that file, `mise run pdf:build` checks it
-against `portals.py` before drawing: one position out and every address on the
-sheet would point at a different star, plausibly.
-
-| | |
-| --- | --- |
-| `D` | dial an address glyph by glyph — for when all you have is the symbols, off a video or a screenshot |
-| `y` `Y` | copy the portal code / the galactic address |
-| `s` `e` `d` | save what is converted, edit it, drop it to the trash |
-| `u` `T` | undo the last drop / show the trash |
-| `f` `o` | filter the saved list by kind / by who found it |
-| `p` | change the planet glyph — the one a galactic address cannot carry |
-| `Enter` | on a saved row, loads it back into the converter |
-
-#### Mine, and shared
-
-Every saved address is one of two kinds, and `o` cycles between them:
-
-| | |
-| --- | --- |
-| **mine** | you stood there. Stamped with the date you saved it. The default when you press `s` |
-| **shared** | off a catalogue or from a friend |
-
-That split is worth more than it looks. What is verified in a catalogue entry
-is the **address** — the location is seeded to the coordinate and generally
-survives a patch. The class, the slot count and the headline damage figure are
-somebody else's claim about somebody else's save, and those rot. Your own finds
-are the ones you can vouch for.
-
-The save form takes a prefix for Kind and Found — `multi`, `s` — and refuses
-anything it cannot read rather than correcting it quietly: a kind that is not a
-kind used to become `other`, and a galaxy of `twelve` used to become Euclid,
-both without a word. The address itself needs no checking, since the form only
-opens on one that already parsed. Saving a code you already have is allowed —
-one system can hold a tool *and* a ship — but it says so.
-
-Nothing deletes outright. `d` moves an address to the trash, `u` takes the last
-one back, `T` lists what is in there — and inside the trash `u` restores the row
-you are on while `d` is the one that really deletes. The trash rides along in
-the same file under `_trash`, keeping the drop date and the row it came from, so
-undo puts an address back where it was rather than at the end, and something
-dropped in one session is still recoverable in the next.
-
-The saved addresses live in `data/locations.json`, committed alongside the
-guides they came from rather than hidden in XDG state, because they are
-findings: they diff, review and share like everything else here. Press `s` to
-add one through a form, or edit the file directly — it carries its own schema.
-It ships with the fifteen from the Euclid shortlists in guides
-21 (`21.multitool-damage.md`) and 14 (`14.starships-ranked.md`)
-— seven multi-tools and eight Exotic starships, read off the Portal Repository
-in September 2026, all marked `shared`. From the multi-tool screen, `P` opens
-the list already filtered to tools.
-
-### Inventory
-
-![inventory](docs/img/inventory.svg)
-
----
-
-### The cheat sheet
-
-`mise run pdf:build` writes `docs/pdf/nms-cheatsheet.pdf` (Latte, for print) and
-`nms-cheatsheet-dark.pdf` (Mocha, for screens):
-
-1. **Money engine** — the ×6 loops, the precious-metal engine, best profit per
-   batch and per machine-hour, the six refiner rules.
-2. **Nanites** — every converter with where its input drops, then the
-   essentials you should stop mining, and what Tier 0 / Tier 1 reach.
-3. **Kitchen** — top dishes by value, then all 19 buffs with their three best
-   dishes each.
-4. **Multi-tools** — the 8 types, the weapons measured, how to get the free
-   ones, and the adjacency and supercharged-slot rules.
-5. **Portals** — all 16 glyphs in dial order **drawn**, how to read an address,
-   the conversion both ways, and every saved address in two tables: the ones
-   you found and the ones you were told about. Every address carries its twelve
-   symbols beside the hex, coloured by field, so at the portal you dial off the
-   page without translating anything.
-
-It is generated from `data/cheatsheet.json`, so it cannot drift from the app —
-including its own prose: claims like "every row below is 5s in the Processor"
-are re-checked against the rows on each build and disappear if they stop being
-true. The portals page goes further: `mise run pdf:build` round-trips every address
-and re-checks the galaxy-centre invariant, so the build fails rather than
-printing a code you cannot dial.
 
 ---
 
