@@ -1,0 +1,156 @@
+﻿/* ── Velvet ────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   The design is flat: a plane with the play of light on it, never a relief. The cloth at the back is the lightest brown; each
+   surface in front of it is darker than what it lies on, and is cut out of the cloth by a dark edge. So:
+
+     edges      only dark, and only one tone darker than the surface they bound (its own colour, not black): an outline, and a
+                soft dark shadow UNDER a pane or a button (it falls on the lighter cloth behind, where it can be seen).
+                Nothing is lit along an edge, no surface is raised or sunk: no glow, no bevel. Inside a border there is one even shade (--inner), from
+                the edge in toward the middle of every surface;
+     the light  a few static gradients, very soft, across a pane: a plane lit from the side, its tone drifting from one end
+                to the other by a few hundredths. The angle differs from pane to pane;
+     the nap    a very fine grain (pile.webp, suede.webp) at a scale and a place of its own on each surface, so no two panes
+                carry the same pattern. The header and the footer are plain.
+
+   Nothing moves, nothing shines. Cost: images and shadows, painted once. Dark theme only. */
+
+:root[data-theme="dark"] {
+  --v-warm: 237 239 248; /* the light, a warm pink-beige, low */
+  --v-ink: 6 8 17; /* the shade: a reddish black, never grey and never olive */
+  --ts: 256px; /* the scale of the nap, set per surface */
+  --ox: 0px; --oy: 0px; /* where the nap starts, set per surface */
+  --ga: 150deg; /* the angle of the light across a surface, set per surface */
+  --inner: inset 0 0 22px 0 rgb(var(--v-ink) / 0.17); /* the even shade inside every surface, from its edge in toward its middle */
+}
+
+/* The cloth at the back: the lightest layer. High up, under the header, a shade (the light there is turned down); low on the right, a faint depth. */
+:root[data-theme="dark"] body {
+  --top: 56px; /* the header: what is lit or shaded on the cloth begins under it and does not reach it */
+  background-image:
+    var(--pile),
+    linear-gradient(180deg, rgb(var(--v-ink) / 0.46), transparent),
+    linear-gradient(90deg, rgb(var(--v-ink) / 0.34), transparent 14%, transparent 86%, rgb(var(--v-ink) / 0.34)),
+    radial-gradient(100% 70% at 106% 114%, rgb(var(--v-ink) / 0.34), transparent 66%);
+  background-size: var(--ts) var(--ts), 100% 46vh, 100% 100%, auto;
+  background-position: 0 0, 0 var(--top), 0 0, 0 0;
+  background-repeat: repeat, no-repeat, no-repeat, no-repeat;
+}
+
+/* The big panes: darker than the cloth. Flat; one soft gradient across, and a soft shadow under. */
+:root[data-theme="dark"] :is(.list, .detail, .readout, .card, .pyr, .ledger) {
+  background-image:
+    var(--pile),
+    linear-gradient(var(--ga), rgb(var(--v-warm) / 0.026) 0%, transparent 52%, rgb(var(--v-ink) / 0.07) 100%);
+  background-size: var(--ts) var(--ts), auto;
+  background-position: var(--ox) var(--oy), 0 0;
+  box-shadow: var(--inner), 0 2px 2px -1px rgb(var(--v-ink) / 0.6), 0 12px 14px -10px rgb(var(--v-ink) / 0.88);
+}
+/* The nap of a pane that scrolls goes with its content (it is part of the table, not of the window behind it); the light stays. */
+:root[data-theme="dark"] :is(.list, .detail) { background-attachment: local, scroll; }
+/* Each pane has its own place on the cloth, its own scale of nap and its own angle of light. */
+:root[data-theme="dark"] .list { --ox: 0px; --oy: 0px; --ts: 256px; --ga: 152deg; }
+:root[data-theme="dark"] .detail { --ox: 97px; --oy: 61px; --ts: 232px; --ga: 196deg; }
+:root[data-theme="dark"] .card { --ox: 41px; --oy: 143px; --ts: 244px; --ga: 170deg; }
+:root[data-theme="dark"] .readout { --ox: 151px; --oy: 17px; --ts: 268px; --ga: 148deg; }
+:root[data-theme="dark"] .pyr { --ox: 173px; --oy: 29px; --ts: 220px; --ga: 184deg; }
+:root[data-theme="dark"] .ledger { --ox: 23px; --oy: 199px; --ts: 240px; --ga: 206deg; }
+
+/* The header and the footer are plain: the colour, and a hint of light across it. */
+:root[data-theme="dark"] .top { background-image: linear-gradient(100deg, rgb(var(--v-warm) / 0.02), transparent 55%); box-shadow: var(--inner), 0 10px 14px -8px rgb(var(--v-ink) / 0.96); }
+
+/* What is pressed (every button): flat, and from the edge in toward the middle of its shape an even shade (--inner), which takes the bulge off; flat, a denser nap, a dark outline (the variables'), a short soft shadow under it. */
+:root[data-theme="dark"] :is(.btn, .fsel, .chk, .reset, .ic-add, .nav a.on, .mat, .stat, .recipe-box, .acts2 > a, .acts2 > button, .tabs a, .sum, .seg button) {
+  background-image:
+    var(--suede),
+    linear-gradient(105deg, rgb(var(--v-warm) / 0.022), transparent 58%);
+  background-size: 192px 192px, auto;
+  background-position: var(--ox) var(--oy), 0 0;
+  box-shadow: var(--inner), 0 2px 2px -1px rgb(var(--v-ink) / 0.65), 0 7px 8px -5px rgb(var(--v-ink) / 0.88);
+}
+:root[data-theme="dark"] :is(.stat, .recipe-box) { --ox: 57px; --oy: 33px; box-shadow: var(--inner); } /* these lie on a pane, not on the cloth: no shadow */
+:root[data-theme="dark"] :is(.btn, .chk, .fsel):hover { box-shadow: var(--inner), 0 2px 2px -1px rgb(var(--v-ink) / 0.7), 0 9px 10px -6px rgb(var(--v-ink) / 0.9); }
+:root[data-theme="dark"] .btn.primary { background-image: var(--suede), linear-gradient(105deg, rgb(255 255 255 / 0.07), transparent 60%); box-shadow: var(--inner), 0 6px 8px -5px rgb(var(--v-ink) / 0.9); }
+:root[data-theme="dark"] .reset.off { box-shadow: none; background-image: none; }
+
+/* A field: flat, a little darker than what it lies on. */
+:root[data-theme="dark"] :is(input[type="search"], input[type="number"], input:not([type])) {
+  background-image: var(--suede);
+  background-size: 192px 192px;
+  background-position: 83px 11px;
+  background-color: color-mix(in srgb, var(--p-panel) 78%, black);
+}
+
+/* An opened list: a pane like the others, with the softest and longest shadow, because it lies over everything. */
+:root[data-theme="dark"] .drop-pop {
+  background-image: var(--pile), linear-gradient(165deg, rgb(var(--v-warm) / 0.024), transparent 55%);
+  background-size: 240px 240px, auto;
+  background-position: 131px 77px, 0 0;
+  box-shadow: var(--inner), 0 14px 18px -10px rgb(var(--v-ink) / 0.9);
+}
+
+/* The edge of what is pointed at goes darker than it was, never lighter, and never to black. (A danger stays red; the apex of a
+   scheme keeps its accent.) */
+:root[data-theme="dark"] :is(.btn:not(.danger), .fsel, .chk, .ic-add, .acts2 a, .acts2 button, .tabs a, .mat, .itile:not(.apex), .sum, .reset:not(.off), .search-btn, .dial-key, button.fmt, input, select):hover,
+:root[data-theme="dark"] .fsel:focus-within,
+:root[data-theme="dark"] .drop[open] > summary { border-color: var(--p-outline-hover); }
+/* The canvas of the pyramids has no ground of its own: an edge and a shadow, the cloth behind it shows through. */
+:root[data-theme="dark"] .canvas { background: transparent; }
+
+
+
+/* Every letter carries the same shade, just above it, as if cut into the surface (the text colour is inherited, so this is one rule). */
+:root[data-theme="dark"] body { text-shadow: 0 -1px 1px rgb(var(--v-ink) / 0.45); }
+
+/* The edge of an accent fill and of a checked box is the dim brown, never a light line. */
+:root[data-theme="dark"] :is(input[type="checkbox"], .chk .cbx) { border-color: var(--p-outline); }
+:root[data-theme="dark"] :is(input[type="checkbox"]:checked, .chk.on .cbx, .chk.not .cbx) { border-color: var(--p-outline-hover); }
+
+
+/* Everything else a surface can be: the same even shade. */
+:root[data-theme="dark"] :is(.itile, .chip2, .canvas, .ic-chips > *, .lines li, .place, .row, .detail-below, .mat, .ings-card) { box-shadow: var(--inner); }
+:root[data-theme="dark"] :is(input[type="search"], input[type="number"], input:not([type])) { box-shadow: var(--inner); }
+
+
+/* A tile pointed at lifts: the shade inside stays, the shadow under it deepens (the tile's own rule would lose to the one above). */
+:root[data-theme="dark"] .itile:hover { box-shadow: var(--inner), 0 11px 12px -8px rgb(var(--v-ink) / 0.75); }
+
+/* ── Glass ─────────────────────────────────────────────────────────────────────────────────────────────────────────────
+   What carries a colour is glass: a tag, a badge, a figure of a card. Its colour runs through it in a gradient (more at the upper
+   left, less toward the lower right), its edge is the same colour one tone darker, one straight not strong glare crosses it with
+   a clean edge, and under it a soft shadow in its own colour. Every other surface stays flat cloth. */
+:root[data-theme="dark"] :is(.chip2, .band, .act, .stat) {
+  --g: var(--sc, currentColor);
+  position: relative;
+  background-color: transparent;
+  background-image: linear-gradient(160deg, color-mix(in srgb, var(--g) 56%, transparent), color-mix(in srgb, var(--g) 18%, transparent) 72%);
+  border-color: color-mix(in srgb, var(--g) 42%, #060912);
+  box-shadow: var(--inner), 0 5px 8px -5px color-mix(in srgb, var(--g) 55%, #000);
+}
+:root[data-theme="dark"] .chip2 { --g: var(--c); }
+:root[data-theme="dark"] :is(.chip2, .band, .act, .stat)::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(128deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 46%, rgb(255 255 255 / 0) 47%);
+}
+:root[data-theme="dark"] a.chip2 { transition: transform 0.5s var(--spring), box-shadow 0.3s ease; }
+:root[data-theme="dark"] a.chip2:hover { transform: translateY(-2px); box-shadow: var(--inner), 0 8px 10px -5px color-mix(in srgb, var(--g) 60%, #000); }
+
+/* The figures of a card, one colour each. */
+:root[data-theme="dark"] .stats > .stat:nth-child(4n + 1) { --sc: var(--p-cyan); }
+:root[data-theme="dark"] .stats > .stat:nth-child(4n + 2) { --sc: var(--p-green); }
+:root[data-theme="dark"] .stats > .stat:nth-child(4n + 3) { --sc: var(--p-purple); }
+:root[data-theme="dark"] .stats > .stat:nth-child(4n) { --sc: var(--p-orange); }
+:root[data-theme="dark"] .stat {
+  background-image: var(--suede), linear-gradient(160deg, color-mix(in srgb, var(--sc) 50%, transparent), color-mix(in srgb, var(--sc) 14%, transparent) 75%);
+  background-size: 192px 192px, auto;
+}
+:root[data-theme="dark"] .stat .ic { color: color-mix(in srgb, var(--sc) 85%, white); }
+@media (prefers-reduced-motion: reduce) { :root[data-theme="dark"] a.chip2 { transition: none; } :root[data-theme="dark"] a.chip2:hover { transform: none; } }
+
+
+/* The text has a scale of its own: a step lighter for a heading, a name, a figure; the text; what is secondary; what is only just there. */
+:root[data-theme="dark"] :is(h1, h2, h3, .brand, .list td.strong, .stat b, .ic-head h2, .fbar > h1) { color: var(--p-text-strong); }
+:root[data-theme="dark"] :is(.count, .muted, small, ::placeholder) { color: var(--p-faint); }
+:root[data-theme="dark"] :is(.stat small, th) { color: var(--p-muted); }
+
+/* The rows of a table: their text is #acbdd4; the name of the row (the strong column) stays the lightest. */
+:root[data-theme="dark"] .list td { color: var(--p-row); }
+:root[data-theme="dark"] .list td.strong { color: var(--p-text-strong); }

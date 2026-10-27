@@ -17,27 +17,28 @@ from dataclasses import dataclass
 from .model import Book, Item, Recipe
 
 # Roughly, what each buff is for -- the files give the stat name and nothing
-# else. Anything not listed falls back to the raw stat name.
+# else. Keyed by the game's stat id (Item.effect_id), which is the same in every
+# language; the stat's display name is not.
 EFFECT_USE = {
-    "Breathing Efficiency": "underwater exploration",
-    "Life Support Tanks": "long surface treks",
-    "Hazard Protection Battery": "extreme planets, storms",
-    "Heat Resistance": "scorched planets",
-    "Cold Resistance": "frozen planets",
-    "Toxic Resistance": "toxic planets",
-    "Radiation Resistance": "irradiated planets",
-    "Shield Strength": "combat, sentinels",
-    "Jetpack Tanks": "vertical caves, cliff bases",
-    "Sprint Distance": "crossing ground on foot",
-    "Sprint Recovery Time": "crossing ground on foot",
-    "Mining Speed": "mining runs",
-    "Resources Mined": "mining runs - more per rock",
-    "Recharge Time": "keeping tech topped up",
-    "Solar Panel Power": "exocraft and base power",
-    "Words Translated": "learning alien languages fast",
-    "Fauna Analysis Rewards": "scanning creatures for units",
-    "Flora Analysis Rewards": "scanning plants for units",
-    "Mineral Analysis Rewards": "scanning minerals for units",
+    "Suit_Protection_WaterDrain": "underwater exploration",
+    "Suit_Energy": "long surface treks",
+    "Suit_Protection": "extreme planets, storms",
+    "Suit_Protection_HeatDrain": "scorched planets",
+    "Suit_Protection_ColdDrain": "frozen planets",
+    "Suit_Protection_ToxDrain": "toxic planets",
+    "Suit_Protection_RadDrain": "irradiated planets",
+    "Suit_Armour_Shield_Strength": "combat, sentinels",
+    "Suit_Jetpack_Tank": "vertical caves, cliff bases",
+    "Suit_Stamina_Strength": "crossing ground on foot",
+    "Suit_Stamina_Recovery": "crossing ground on foot",
+    "Weapon_Laser_Mining_Speed": "mining runs",
+    "Weapon_Laser_MiningBonus": "mining runs - more per rock",
+    "Weapon_Scan_Recharge_Time": "keeping tech topped up",
+    "Suit_Energy_Regen": "exocraft and base power",
+    "Suit_AutoTranslator": "learning alien languages fast",
+    "Weapon_Scan_Discovery_Creature": "scanning creatures for units",
+    "Weapon_Scan_Discovery_Flora": "scanning plants for units",
+    "Weapon_Scan_Discovery_Mineral": "scanning minerals for units",
 }
 
 
@@ -66,7 +67,7 @@ class Dish:
 
     @property
     def use(self) -> str:
-        return EFFECT_USE.get(self.effect, "")
+        return EFFECT_USE.get(self.item.effect_id, "")
 
 
 def dishes(book: Book) -> list[Dish]:

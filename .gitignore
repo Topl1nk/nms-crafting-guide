@@ -25,3 +25,15 @@ web/robots.txt
 # The Svelte site: npm packages, and the build `mise run web-build` deploys.
 node_modules/
 dist/
+
+# Pictures and texts taken from the game: never committed (they are Hello Games', and mise run extract writes them from your own
+# install). web/icons/ holds the item pictures, web/lang/ + web/languages.json the game's texts in every language it ships,
+# web/wiki.json what the Wiki page reads.
+web/icons/
+web/lang/
+web/languages.json
+web/wiki.json
+
+# The Android build (apk/README.md): the APK is a build output, not source.
+apk/*.apk
+apk/node_modules/

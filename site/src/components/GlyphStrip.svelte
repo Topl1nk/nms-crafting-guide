@@ -3,6 +3,7 @@
   // with the hex digit under it -- and the glyph's name, when there is room.
   import { GLYPH_FIELD } from "../lib/core.js";
   import { D } from "../lib/data.js";
+  import { t } from "../lib/i18n.js";
   import Glyph from "./Glyph.svelte";
 
   let { code, names = false } = $props();
@@ -12,7 +13,7 @@
   {#each [...code] as digit, i (i)}
     <figure class="f{GLYPH_FIELD[i]}">
       <Glyph {digit} />
-      <figcaption><b>{digit}</b>{#if names}{" "}<span>{D.glyphs[parseInt(digit, 16)].name}</span>{/if}</figcaption>
+      <figcaption><b>{digit}</b>{#if names}{" "}<span>{t(D.glyphs[parseInt(digit, 16)].name)}</span>{/if}</figcaption>
     </figure>
   {/each}
 </div>

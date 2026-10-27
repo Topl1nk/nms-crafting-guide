@@ -1,0 +1,410 @@
+/* The skin of this local copy, over global.css. One rule set, one grid:
+   spacing in steps of 4px (--s1 .. --s6), every control 40px tall, radius 12
+   on controls and 16 on panels, one type scale. Loaded after global.css, so it
+   only says what is different. */
+
+:root {
+  --p-sans: "Segoe UI", system-ui, -apple-system, "Noto Sans", Roboto, sans-serif;
+  --p-mono: var(--p-sans);
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px;
+  --pile: none;        /* the velvet textures (web/pile.webp, web/suede.webp), set by main.js once the page stands */
+  --suede: none;
+  --item-tone: 62%; /* how much of an item's own colour its glow and tile keep; the rest is the site's grey */
+  --icon-gap: 0.34; /* how far the glow behind a picture keeps its lightness from the panel it lies on (lib/icontone.js) */
+  --spring: linear(0, 0.0515, 0.1789, 0.3458, 0.5237, 0.692, 0.8372, 0.9526, 1.0363, 1.0902, 1.1185, 1.1263, 1.1195, 1.1032, 1.082, 1.0595, 1.0383, 1.0201, 1.0056, 0.9952, 0.9885, 0.985, 0.984, 0.985, 0.987, 0.9897, 0.9926, 0.9952, 0.9975, 0.9993, 1.0006, 1.0015, 1.0019, 1.002, 1.0019, 1); /* the one spring of all motion: scripts/make_spring.py */
+  --tile: 108px;       /* the one size of every item tile: a square (components/Tile.svelte) */
+  --ctl: 40px;          /* height of every input, select and button */
+  --r-ctl: 12px;
+  --r-pane: 16px;
+  --fs-small: 0.875rem;
+  --fs-body: 1rem;
+  --fs-title: 1.5rem;
+}
+
+:root[data-theme="dark"] {
+  --p-bg: #0e152e;
+  --p-panel: #1c244b;
+  --p-raised: #242c58;
+  --p-text: #dce0ef;
+  --p-muted: #9db2cd;
+  --p-faint: #6d83b0;
+  --p-outline: #151d3e;
+  --p-sel: #2a3261;
+  --p-cyan: #5ccbf0; /* a signal colour (the clock, the first of the figures of a card) */
+  --p-edge-accent: color-mix(in srgb, var(--p-accent-ink) 20%, var(--p-outline)); /* the line of an accented thing: a dim warm brown, never a bright one */
+  --p-text-strong: #f7f8fc; /* headings, names, figures: the lightest, so they stand a step above the text */
+  --p-dim: #4f6297; /* what is only just there: hints, a disabled thing */
+  --p-head: #0f1732; /* the head of a table: darker than the table */
+  --p-outline-hover: #111a39; /* a pointed-at edge goes darker, not lighter, and still not black */ /* flat navy: the cloth at the back is the darkest, the panels in front of it lighter, and every edge a dark line */
+}
+
+html { font-size: var(--fs, 16px); }
+body { font: 1.0625rem/1.5 var(--p-sans); -webkit-font-smoothing: antialiased; }
+/* The accent is the visitor's pick (Appearance): one variable drives every highlight. */
+:root[data-theme="dark"] {
+  --p-accent: var(--accent, #070a14); --p-accent-ink: var(--accent-ink, #acbdd4); --p-on-accent: var(--on-accent, #e2e6f3); --p-tertiary: var(--p-accent-ink);
+  --p-sel: #2a3261; /* the selected row: a lighter blue */
+}
+:root[data-theme="light"] {
+  --p-accent: color-mix(in srgb, var(--accent, #90a6c6) 40%, #0d1429); --p-on-accent: #f0f2fa;
+  --p-accent-ink: var(--p-accent);
+  --p-sel: color-mix(in srgb, var(--p-accent) 14%, var(--p-raised));
+}
+
+/* ── One window, one scrolling place at a time ────────────────────────────
+   The window itself never scrolls: header on top, a slim footer below, and the
+   page between them. A text page (help, start, tabs) scrolls inside <main>;
+   a table page keeps its filters in place and each pane (list, card) scrolls
+   on its own, so there is never a scrollbar inside another scrollbar. */
+html, body { height: 100%; overflow: hidden; }
+#app { height: 100vh; min-height: 0; }
+.top { flex: none; }
+/* The page uses the whole window: a narrow margin, no centred column. */
+main {
+  flex: 1 1 0; min-height: 0; max-width: none; margin: 0; width: 100%;
+  padding: 0 var(--pad);
+  overflow-y: auto; display: flex; flex-direction: column;
+}
+:root { --pad: 16px; --gutter: 16px; --wrap: none; }
+.top-in { max-width: none; padding: 0 var(--pad); }
+/* Text pages stay readable: their cards do not stretch across a wide screen. */
+main > .prose, main > .hero, main > .tiles { max-width: 1280px; margin-inline: auto; width: 100%; }
+main > * { flex: none; }
+main:has(> .split), main:has(> .grid3), main:has(> .stage) { overflow: hidden; }
+main > .split, main > .grid3, main > .stage { flex: 1 1 0; min-height: 0; }
+main > .split, main > .grid3 { grid-template-rows: minmax(0, 1fr); }
+.stage .canvas { height: 100%; max-height: none; margin-bottom: 0; }
+/* A pane that fills its grid cell and scrolls by itself. */
+main > .split > .list, main > .split .stack > .list { height: 100%; max-height: none; }
+main > .split > .detail { position: static; height: 100%; max-height: none; overflow: auto; }
+main > .split > section { min-height: 0; overflow: auto; }
+main > .split > section .list { max-height: none; overflow: visible; }
+.split-food .stack { height: 100%; min-height: 0; }
+.split-food .stack > .list { flex: 1 1 0; min-height: 140px; height: auto; }
+.split-food .stack > .detail-below { flex: none; max-height: 45%; overflow: auto; margin-top: 0; }
+.grid3 > section, .stackcol > section { display: flex; flex-direction: column; min-height: 0; }
+.grid3 .list { flex: 1 1 0; min-height: 0; max-height: none; height: auto; }
+.stackcol { grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); min-height: 0; height: 100%; }
+/* A page of tabs (Multi-tools): the table takes the height the tab's card leaves. */
+main:has(> .tab) { overflow: hidden; }
+main > .tab { flex: 1 1 0; min-height: 0; display: flex; flex-direction: column; gap: 12px; overflow: auto; }
+main > .tab > * { flex: none; }
+main > .tab > .list { flex: 1 1 0; min-height: 140px; height: auto; max-height: none; overflow: auto; margin: 0; }
+main > .tab > .detail-below { margin: 0; max-height: 45%; overflow: auto; }
+/* The pages that fill the window end 12px above the footer, not 48. */
+main { padding-bottom: 12px; }
+main > .split, main > .grid3, main > .stage { padding-bottom: 0; }
+/* Short tables on text pages simply take their height. */
+main:not(:has(> .split, > .grid3, > .tab)) .list { max-height: none; overflow: visible; }
+main:not(:has(> .split, > .grid3, > .tab)) .list th { position: static; }
+.num, td.num, th.num { font-variant-numeric: tabular-nums; }
+
+/* ── Scrollbars: thin, rounded, quiet until pointed at ─────────────────── */
+::-webkit-scrollbar { width: 14px; height: 14px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--p-outline);
+  border: 4px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--p-faint); background-clip: padding-box; }
+::-webkit-scrollbar-thumb:active { background: var(--p-accent); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: transparent; }
+/* A table's head runs to the very edge of its pane: over the scrollbar too (the top of the track is the head's own colour). */
+.list::-webkit-scrollbar-button:vertical:start:decrement { display: block; height: 39px; background: var(--p-head); border-bottom: 1px solid var(--p-outline); border-top-right-radius: var(--r-pane, 16px); }
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-width: thin; scrollbar-color: var(--p-outline) transparent; }
+}
+
+/* ── Type ─────────────────────────────────────────────────────────────── */
+h1, h2, h3 { font-family: var(--p-sans); letter-spacing: 0; }
+h2 { font-size: 1.25rem; color: var(--p-text); margin: 0 0 var(--s1); }
+h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--p-text); margin: var(--s5) 0 var(--s2); }
+h3::before, h3::after { display: none; }
+.muted { color: var(--p-faint); }
+.small { font-size: var(--fs-small); }
+
+/* ── Controls: all 40px, all the same radius, same focus ring ──────────── */
+input[type="search"], input[type="number"], input:not([type]), select, .btn, button.btn {
+  height: var(--ctl); border-radius: var(--r-ctl);
+  font: inherit; font-family: var(--p-sans); font-size: var(--fs-body);
+}
+input[type="search"], input[type="number"], input:not([type]), select {
+  padding: 0 var(--s4); background: var(--p-panel); color: var(--p-text);
+  border: 1px solid var(--p-outline); transition: border-color 0.12s, box-shadow 0.12s;
+}
+input[type="number"] { width: 6.5em; }
+input:hover, select:hover { border-color: var(--p-outline-hover); }
+input:focus-visible, select:focus-visible, .btn:focus-visible, button:focus-visible, a:focus-visible, .th:focus-visible {
+  outline: none; border-color: var(--p-edge-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-accent-ink) 30%, transparent);
+}
+select {
+  appearance: none; padding-right: 36px; cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Ccircle cx='6' cy='6' r='3.5' fill='%238e98bd'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 12px center;
+}
+select option { background: var(--p-panel); color: var(--p-text); }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--s2);
+  padding: 0 var(--s4); background: var(--p-panel); color: var(--p-text);
+  border: 1px solid var(--p-outline); font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; white-space: nowrap; cursor: pointer; transition: border-color 0.12s, background 0.12s, color 0.12s;
+}
+.btn:hover { border-color: var(--p-edge-accent); color: var(--p-accent-ink); }
+.btn:disabled { opacity: 0.5; cursor: default; }
+.btn.primary { background: var(--p-accent); border-color: var(--p-edge-accent); color: var(--p-on-accent); }
+.btn.primary:hover { filter: brightness(1.08); color: var(--p-on-accent); }
+.btn.danger:hover { border-color: var(--p-red); color: var(--p-red); }
+.actions { display: flex; flex-wrap: wrap; gap: var(--s2); margin: var(--s4) 0; }
+
+/* Check boxes: a real box, same size everywhere. */
+input[type="checkbox"] {
+  appearance: none; flex: none; width: 20px; height: 20px; margin: 0; cursor: pointer;
+  border: 1.5px solid var(--p-outline); border-radius: 6px; background: color-mix(in srgb, var(--p-panel) 80%, black);
+  display: inline-grid; place-content: center; transition: background 0.12s, border-color 0.12s;
+}
+input[type="checkbox"]:hover { border-color: var(--p-edge-accent); }
+input[type="checkbox"]:checked { background: var(--p-accent); border-color: var(--p-edge-accent); }
+input[type="checkbox"]:checked::after {
+  content: ""; width: 10px; height: 5px; margin-top: -2px;
+  border-left: 2.5px solid var(--p-on-accent); border-bottom: 2.5px solid var(--p-on-accent); transform: rotate(-45deg);
+}
+
+/* ── The filter bar: the same on every page ──────────────────────────────
+   Title, then the search, then each filter as a small labelled chip, then the
+   switches, then "Reset" once something is set. Everything is 36px tall and
+   wraps as one row of chips; the line of numbers under it is `.count`. */
+.fbar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 0 6px; }
+.fbar > h1 { display: flex; align-items: center; gap: 10px; flex: none; margin: 0 8px 0 0; font-size: 1.2rem; font-weight: 700; min-width: 0; }
+.fbar > h1 span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; } /* the title in full; only a title wider than the bar itself is cut */
+.fbar input[type="search"], .fbar input[type="number"], .fbar input:not([type]), .fbar select, .fbar .btn { height: 36px; font-size: 0.9rem; border-radius: 10px; }
+.fbar input[type="search"], .fbar input:not([type]) { padding: 0 12px; }
+.fbar .search { flex: 1 1 220px; min-width: 180px; max-width: 380px; }
+.fbar .btn { padding: 0 14px; }
+/* A filter that is not offered leaves a marker (.gone): its two neighbours, and only they, stretch into the room it left.
+   The rest of the bar keeps its widths. */
+.fbar > .gone { display: block; flex: none; height: 0; margin-left: -8px; overflow: hidden; }
+.fbar > .gone, .fbar > :is(.fsel, .chk, .drop, .btn, .search) { transition: width 0.45s var(--spring), flex-grow 0.45s var(--spring); }
+@media (prefers-reduced-motion: reduce) { .fbar > .gone, .fbar > :is(.fsel, .chk, .drop, .btn, .search) { transition: none; } }
+.fbar > .gone + :is(.fsel, .chk, .drop, .btn, .search), .fbar > :is(.fsel, .chk, .drop, .btn, .search):has(+ .gone) { flex-grow: 1; }
+.fbar > .gone + .search, .fbar > .search:has(+ .gone) { max-width: none; }
+.fbar > .drop > summary { width: 100%; box-sizing: border-box; }
+.fbar input[type="checkbox"] { width: 20px; height: 20px; border-radius: 6px; }
+
+.fsel {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 4px 0 12px; flex: none;
+  border-radius: 10px; background: var(--p-panel); border: 1px solid var(--p-outline);
+  color: var(--p-faint); font-size: 0.8rem; white-space: nowrap; cursor: pointer;
+}
+.fsel:hover, .fsel:focus-within { border-color: var(--p-edge-accent); }
+.fsel.on { border-color: color-mix(in srgb, var(--p-accent) 60%, var(--p-outline)); } /* a filter that is set: the same line as a flag that is on */
+.fsel > select {
+  height: 32px; padding: 0 26px 0 4px; border: 0; border-radius: 8px; background-color: transparent;
+  background-position: right 6px center; color: var(--p-text); font-size: 0.9rem; max-width: 360px; box-shadow: none; field-sizing: content;
+}
+.fsel > select:hover, .fsel > select:focus-visible { border: 0; box-shadow: none; }
+.fsel > input { height: 32px; width: 84px; flex: 1 1 auto; min-width: 0; border: 0; background: transparent; padding: 0 8px 0 4px; box-shadow: none; }
+
+.chk {
+  display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px 0 8px; flex: none; cursor: pointer;
+  border-radius: 10px; background: var(--p-panel); border: 1px solid var(--p-outline);
+  font-size: 0.9rem; color: var(--p-muted); white-space: nowrap;
+}
+.chk:hover { border-color: var(--p-edge-accent); }
+.chk:has(input:checked) { border-color: color-mix(in srgb, var(--p-accent) 60%, var(--p-outline)); color: var(--p-text); }
+.chk:has(input:disabled) { opacity: 0.5; cursor: default; }
+button.chk { font: inherit; font-size: 0.9rem; color: var(--p-muted); }
+button.chk:disabled { opacity: 0.5; cursor: default; }
+/* The three states of a filter flag: empty, ✔ only these, − none of these. */
+.chk .cbx {
+  flex: none; width: 20px; height: 20px; display: inline-grid; place-items: center; border-radius: 6px; box-sizing: border-box;
+  border: 1.5px solid var(--p-outline); background: color-mix(in srgb, var(--p-panel) 80%, black); font-size: 0.8rem; font-weight: 900; line-height: 1;
+}
+.chk.on { border-color: color-mix(in srgb, var(--p-accent) 60%, var(--p-outline)); color: var(--p-text); }
+.chk.on .cbx { background: var(--p-accent); border-color: var(--p-edge-accent); color: var(--p-on-accent); }
+.chk.not { border-color: color-mix(in srgb, var(--p-accent) 60%, var(--p-outline)); color: var(--p-text); }
+.chk.not .cbx { background: var(--p-accent); border-color: var(--p-edge-accent); color: var(--p-on-accent); }
+.chk.not .cbx::before { content: ""; width: 10px; height: 2.5px; border-radius: 2px; background: currentColor; } /* the minus is drawn, so it sits exactly in the middle */
+.reset {
+  width: 36px; height: 36px; padding: 0; display: inline-grid; place-items: center; border-radius: 10px; flex: none; cursor: pointer;
+  background: none; color: var(--p-accent-ink); border: 1px solid var(--p-edge-accent);
+}
+.reset.off { color: color-mix(in srgb, var(--p-faint) 62%, var(--p-panel)); border-color: var(--p-outline); cursor: default; } /* dimmed, but still to be seen: the faint ink thinned by the panel */
+.reset:not(.off):hover { background: var(--p-accent); color: var(--p-on-accent); }
+.count { padding: 2px 2px 8px; font-size: 0.85rem; color: var(--p-faint); }
+.count b { color: var(--p-text); font-weight: 600; }
+.count a { color: inherit; }
+.count .warn { color: var(--p-yellow); }
+
+/* A dropdown panel opened from a button of the bar (a <details>). */
+.drop { position: relative; flex: none; }
+.drop > summary { list-style: none; cursor: pointer; }
+.drop > summary::-webkit-details-marker { display: none; }
+.drop[open] > summary { border-color: var(--p-edge-accent); }
+.drop-pop {
+  position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: min(560px, 90vw); padding: 14px;
+  background: var(--p-panel); border: 1px solid var(--p-outline); border-radius: 14px; box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
+}
+.drop-pop p { margin: 0 0 10px; }
+.drop-pop .boxes { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* ── The item card: a recipe's and a Wiki entry's, built the same way ──────
+   Header (picture, name, one small line), a row of chips, the numbers as
+   four tiles, what it is made in, four buttons, then the lists. */
+.ic-head { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; align-items: center; margin-bottom: 10px; }
+.ic-head h2 { margin: 0; font-size: 1.2rem; line-height: 1.2; overflow-wrap: anywhere; }
+.ic-head p { margin: 2px 0 0; font-size: 0.85rem; }
+.ic-add {
+  width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; cursor: pointer;
+  background: var(--p-raised); border: 1px solid var(--p-outline); color: var(--p-muted);
+}
+.ic-add:hover { border-color: var(--p-edge-accent); color: var(--p-accent-ink); }
+.ic-chips { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-bottom: 12px; }
+.ic-chips :is(.chip2, .band, .act) { margin: 0; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin: 12px 0; }
+.stat { display: flex; flex-direction: column; align-items: center; gap: 5px; padding: 12px 4px 10px; border-radius: 12px; background: var(--p-raised); min-width: 0; }
+/* The picture leads, the figure is read second, the label is soft but readable: the three weigh about the same. */
+.stat .ic, .stat .units { width: 26px; height: 26px; }
+.stat .ic { color: var(--p-accent-ink); }
+.stat b { font-size: 0.92rem; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.stat small { font-size: 0.7rem; letter-spacing: 0.05em; text-transform: uppercase; color: var(--p-muted); }.ic-meta { display: grid; gap: 4px; margin: 0 0 12px; font-size: 0.88rem; color: var(--p-muted); }
+.ic-meta div { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.ic-meta .ic { color: var(--p-faint); }
+.acts2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 12px 0 4px; }
+.acts2 a, .acts2 button {
+  display: flex; align-items: center; justify-content: center; gap: 8px; height: 38px; padding: 0 10px; border-radius: 10px;
+  background: color-mix(in srgb, var(--p-raised) 94%, var(--p-muted)); /* lighter than the card they lie on (--p-panel), so they are not lost in it */
+  border: 1px solid var(--p-outline); color: var(--p-text); font: inherit; font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; white-space: nowrap; cursor: pointer;
+}
+.acts2 a:hover, .acts2 button:hover { border-color: var(--p-edge-accent); color: var(--p-accent-ink); }
+.acts2 .primary:not(.half) { grid-column: 1 / -1; background: var(--p-accent); border-color: var(--p-edge-accent); color: var(--p-on-accent); }
+.acts2 .primary:not(.half):hover { filter: brightness(1.08); color: var(--p-on-accent); }
+.acts2 i { font-style: normal; font-weight: 400; color: var(--p-faint); }
+.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.rows li { display: flex; align-items: center; gap: 10px; min-height: 38px; padding: 0 6px; border-radius: 8px; }
+.rows li:hover { background: var(--p-raised); }
+.rows .n { min-width: 2.4em; text-align: right; color: var(--p-accent-ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+.rows .grow { flex: 1; min-width: 0; }
+.rows .val { color: var(--p-faint); font-size: 0.85rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.gold { /* a price: the units sign and the figure in a gold pill, as the quantity is in a green one */
+  display: inline-flex; align-items: center; gap: 5px; height: 24px; padding: 0 9px 0 6px; border-radius: 999px; font-weight: 700; font-variant-numeric: tabular-nums;
+  color: var(--p-yellow); background: color-mix(in srgb, var(--p-yellow) 14%, transparent); white-space: nowrap;
+}
+.gold .units { margin-right: 0; }
+.have {
+  display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 0.78rem; font-weight: 700;
+  color: var(--p-green); background: color-mix(in srgb, var(--p-green) 14%, transparent);
+}
+.detail h3 { margin: 16px 0 4px; }
+
+/* ── Panes ────────────────────────────────────────────────────────────── */
+.list, .detail, .readout, .card { border-radius: var(--r-pane); border: 1px solid var(--p-outline); background: var(--p-panel); }
+.detail { padding: 16px 18px; }
+.readout, .card { padding: var(--s5); }
+.list { overflow: auto; min-height: 120px; container-type: inline-size; }
+/* Secondary columns give way when the table itself (not the window) is narrow,
+   so a row never wraps and the table never needs a sideways scroll. */
+@container (max-width: 720px) { .wide-only { display: none; } }
+.split { gap: var(--s5); grid-template-columns: minmax(0, 1fr) minmax(340px, 400px); padding-bottom: var(--s5); }
+.detail { position: static; }
+.detail-below { margin-top: var(--s4); }
+dl { grid-template-columns: 148px minmax(0, 1fr); gap: var(--s2) var(--s4); margin: var(--s3) 0; }
+dl.rows { display: block; }
+dt { font-family: var(--p-sans); font-size: var(--fs-small); color: var(--p-faint); padding-top: 2px; }
+.head { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s3); }
+.head h2, .head p { margin: 0; }
+.detail, .card { --surface: var(--p-panel); }
+.recipe-box {
+  --surface: var(--p-raised);
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3);
+  padding: var(--s3) var(--s4); margin: var(--s3) 0 var(--s4);
+  background: var(--p-raised); border-radius: var(--r-ctl);
+}
+
+/* ── Small things that carry meaning ──────────────────────────────────── */
+.chip, .tag, .pill { border-radius: 999px; }
+.pill { padding: 2px var(--s3); }
+kbd { border-radius: 6px; font-family: var(--p-sans); }
+.band, .act {
+  display: inline-flex; align-items: center; height: 24px; padding: 0 var(--s3);
+  font-family: var(--p-sans); font-size: 0.8125rem; font-weight: 700; border-radius: 999px;
+  background: color-mix(in srgb, currentColor 14%, transparent);
+}
+.chips { margin: var(--s2) 0 0; line-height: 1; }
+.mk { display: flex; align-items: center; gap: var(--s3); min-width: 0; }
+.mk > .t, .list td .nm { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+/* A name is never shortened while there is room: the column is as wide as the name, up to 360px (the ellipsis is for longer ones). */
+.list td.strong { max-width: 360px; min-width: min(max-content, 360px); }
+/* A cell of ingredient pictures never wraps: it is as wide as its content up to a limit, then fades out at the edge (full list in the tooltip). */
+.cellclip { max-width: 480px; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); mask-image: linear-gradient(90deg, #000 calc(100% - 24px), transparent); }
+.list td.fill .cellclip { max-width: none; }
+.list td .ings { flex-wrap: nowrap; }
+
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; }
+.tabs a {
+  display: inline-flex; align-items: center; height: 36px; padding: 0 14px; font-size: 0.9rem;
+  border-radius: 999px; text-decoration: none; color: var(--p-muted);
+  background: var(--p-panel); border: 1px solid var(--p-outline); font-weight: 600;
+}
+.tabs a:hover { border-color: var(--p-edge-accent); color: var(--p-accent-ink); }
+.tabs a.on { background: var(--p-accent); color: var(--p-on-accent); border-color: var(--p-edge-accent); }
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.top, .top .nav a { font-family: var(--p-sans); }
+.top .nav a { font-size: 0.95rem; height: 36px; display: inline-flex; align-items: center; padding: 0 var(--s3); border-radius: 10px; }
+.top .nav a.on { background: var(--p-raised); color: var(--p-accent-ink); font-weight: 700; }
+.brand { font-size: 1.15rem !important; }
+
+/* ── Narrow windows ───────────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .split { grid-template-columns: minmax(0, 1fr); }
+  main:has(> .split), main:has(> .grid3) { overflow-y: auto; }
+  main > .split, main > .grid3 { flex: none; }
+  main > .split > .list { height: 60vh; }
+  main > .split > .detail { height: auto; }
+}
+
+/* One row of filters when the window is wide enough; narrower, they wrap as everywhere. */
+@media (min-width: 1280px) {
+  .fbar.one { flex-wrap: nowrap; }
+  .fbar.one .search { flex: 1 1 120px; min-width: 110px; }
+  .fbar.one .fsel { flex: none; }
+  .fbar.one .fsel > select { field-sizing: content; max-width: 240px; text-overflow: ellipsis; }
+}
+
+/* Headings inside cards read in the main text colour, not the faint one. */
+.detail h3, .card h3, .readout h3 { color: var(--p-text); }
+
+
+
+
+
+
+
+
+
+/* ── Motion (lib/motion.js) ──────────────────────────────────────────────────────────────────────────────────────────
+   Panes slide in from and out behind the edges of the screen; while they do, the page must not grow a scroll bar. */
+html.nms-moving { overflow-x: hidden; }
+/* The page that is being built stays out of sight until its first frame slides (lib/motion.js hold / enterView). */
+main[data-entering] > * { visibility: hidden; }
+.nms-ghosts { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; } /* under the header (5): what leaves upward goes behind it */
+@keyframes nms-drop { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
+.drop[open] > .drop-pop { animation: nms-drop 0.4s var(--spring); }
+@media (prefers-reduced-motion: reduce) { .drop[open] > .drop-pop { animation: none; } }
+
+
+
+
+
+
+
+
+
+
+
+

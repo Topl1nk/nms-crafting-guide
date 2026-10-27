@@ -82,6 +82,25 @@ headings. The accent is the game's HUD gold, with Dracula's colours kept for
 what carries meaning; neutral greys in the dark, a warmed Alucard in the light,
 and a Light / Dark / System menu that follows the OS by default.
 
+### Languages
+
+The page speaks every language the game ships. Choose it in the settings menu (the cog); the first visit follows the
+browser's language, and English when the game has none to match. One choice sets two things:
+
+- **the game's own texts**: item names and descriptions, what a recipe and a buff are called. They are read from the
+  game's language tables by `scripts/build_langs.py` into `web/lang/<language>.json`, so a new language in a patch needs
+  no code change;
+- **the page's own words**: labels, buttons, help, messages, and the hand-written guides (storage, multi-tools, where to
+  get things). English is the key itself, `t("Search")`, and `site/src/lang/<language>.js` maps each English text to
+  that language (`site/src/lang/data/<language>.js` holds the hand-written texts of `data/`). A text with no translation
+  shows in English, never a blank or a key. Counts use `tn(n, "{n} step|{n} steps")`, whose forms follow the language's
+  plural rules (`Intl.PluralRules`).
+
+`node --test tests/js/i18n.test.mjs` checks that every text the code asks for is translated in every language, with the
+same `{placeholders}` and the right number of plural forms (`I18N_REPORT=1` prints what is missing). To add or fix a
+translation, edit that language's file; `I18N_DUMP=keys.json node --test tests/js/i18n.test.mjs` lists the texts to
+translate. The terminal app, the MCP server and the markdown pages are English.
+
 ### Install it as an app
 
 The site is a Progressive Web App. *Install app* on the start page or in Help
@@ -975,7 +994,9 @@ site/          the web page's source (Svelte 5 + Vite), built into dist/
   src/App.svelte  header, view, footer; picks the view from the #/route
   src/views/   one component per screen: Recipes, Chain, Nanites, Cooking, Portals, ...
   src/components/  List (the vim-keyed table), GlyphStrip, Header, Palette, ThemeMenu, ...
-  src/lib/     core.js (the logic test_web.py checks), data, router, keys, storage, pwa (install, updates)
+  src/lib/     core.js (the logic test_web.py checks), data, router, keys, storage, pwa (install, updates),
+               i18n.js + words.js + language.svelte.js (the page's language)
+  src/lang/    the page's words, one file per language (English is the key); lang/data/ the hand-written data texts
   src/global.css  the skin's tokens, fonts and base; each component styles itself
 web/           served as it is: fonts/, favicons and app icons, the manifest, and what build_web.py exports
 package.json, vite.config.js  the site's build, pinned by package-lock.json
@@ -996,3 +1017,15 @@ with hgpaktool (MIT) and MBINCompiler (LGPL-3.0), neither of which is
 redistributed here; until Cosmos they came from
 [NMS-Handbook](https://github.com/ApexFatality93/NMS-Handbook) (GPL-3.0), still
 the fallback source. No Man's Sky and its data belong to Hello Games. Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/).
+
+### Origin and changes
+
+This is a fork of [nms-items-interface](https://github.com/rdlu/nms-items-interface) by Rodrigo Dlugokenski (rdlu), released under the
+same GPL-3.0, and it has been changed a great deal since (2026, by [Topl1nk](https://github.com/Topl1nk)): the site is translated into
+all 17 languages the game ships (site/src/lang/, scripts/build_langs.py), the data is rebuilt in English from the Cosmos game files,
+and the Wiki, the craft tree, the inventory card, the controls and the motion of the pages are redone. The full history, his commits
+included, is in this repository: git log shows who changed what and when. It is an independent branch: nothing here is endorsed by
+the original author, and the original lives at the link above.
+
+What comes from the game (item pictures in web/icons/, the game's texts in web/lang/) is not in the repository: mise run extract
+and scripts/build_langs.py write it from your own install.

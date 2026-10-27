@@ -59,9 +59,11 @@ SUBSTANCES = f"{TABLES}/nms_reality_gcsubstancetable"
 # Item names live in a dozen numbered language tables (one per content
 # update), and which table holds which string is not predictable, so all of
 # the English ones are read. "english" is UK English: Ionised, Faecium.
-LANGUAGE_GLOB = "language/nms_*_english.mbin"
+LANG = os.environ.get("NMS_LANG", "english").lower()
+LANGUAGE_GLOB = f"language/nms_*_{LANG}.mbin"
 
-PAK_FILTERS = [f"{RECIPES}.mbin", f"{PRODUCTS}.mbin", f"{SUBSTANCES}.mbin", LANGUAGE_GLOB]
+PAK_FILTERS = [f"{RECIPES}.mbin", f"{PRODUCTS}.mbin", f"{SUBSTANCES}.mbin",
+               "language/nms_*_english.mbin", LANGUAGE_GLOB]
 
 
 def game_path(arg: str | None = None) -> Path:
@@ -118,13 +120,31 @@ def enum(value) -> str:
     return value or ""
 
 
-def load_language(paths: list[Path]) -> dict[str, str]:
-    text: dict[str, str] = {}
+def load_language(paths: list[Path], target: str | None = None) -> dict[str, str]:
+    # English is always read: an id with no English text is not a real item
+    # (UI strings, hidden entries) and the app drops it, so it must stay
+    # empty in another language too.
+    target = (target or LANG).lower()
+    english: dict[str, str] = {}
+    local: dict[str, str] = {}
     for path in paths:
+        lang = path.stem.rsplit("_", 1)[-1].lower()
+        if lang not in ("english", target):
+            continue
         _, top = parse_mxml(path)
         for entry in top.get("Table") or []:
-            text[entry["Id"]] = entry.get("English") or ""
-    return text
+            if lang == "english":
+                english[entry["Id"]] = entry.get("English") or ""
+            if lang == target:
+                # The column is the language's name in the game's own casing
+                # ("Russian", "BrazilianPortuguese"): find it, do not guess it.
+                column = next((k for k in entry if k.lower() == target), "")
+                local[entry["Id"]] = entry.get(column) or ""
+    if target == "english":
+        return english
+    # English rides along under "en:<id>": the storage rules match English subtitles.
+    return {**{key: (local.get(key) or value) if value else "" for key, value in english.items()},
+            **{f"en:{key}": value for key, value in english.items()}}
 
 
 # --- conversion to the NMS-Handbook shape --------------------------------------
@@ -142,9 +162,19 @@ def _texts(row: dict, lang: dict[str, str], *keys: str) -> dict[str, str]:
     return out
 
 
+def hex_colour(c) -> str:
+    """The game's {R,G,B,A} floats as #rrggbb (the colour an item is tinted with in the UI)."""
+    try:
+        return "#" + "".join(f"{round(min(1.0, max(0.0, float(c[k]))) * 255):02x}" for k in "RGB")
+    except (TypeError, KeyError, ValueError):
+        return ""
+
+
 def _common(row: dict, lang: dict[str, str]) -> dict:
     return {
-        **_texts(row, lang, "Name", "NameLower", "Subtitle", "Description"),
+        "Colour_Hex": hex_colour(row.get("Colour")),
+        **_texts(row, lang, "Name", "NameLower", "Subtitle", "Description", "Symbol"),
+        "Subtitle_Text_En": lang.get(f"en:{row.get('Subtitle') or ''}", ""),
         "BaseValue": row.get("BaseValue", "0"),
         "Category": enum(row.get("Category")),
         "Rarity": enum(row.get("Rarity")),
@@ -197,7 +227,7 @@ def convert_recipes(table: list[dict], lang: dict[str, str], items: dict) -> tup
                 "ProductID": out_id,
                 **{k: item.get(k, "") for k in (
                     "Name", "Name_Text", "NameLower", "NameLower_Text",
-                    "Subtitle", "Subtitle_Text", "Description", "Description_Text")},
+                    "Subtitle", "Subtitle_Text", "Subtitle_Text_En", "Description", "Description_Text")},
                 "Recipes": [],
             }
         target[out_id]["Recipes"].append({
@@ -357,35 +387,61 @@ def hgpaktool_version() -> str:
 
 # --- stages -----------------------------------------------------------------------
 
-def unpack(game: Path, dest: Path = MBIN_DIR) -> list[Path]:
+def _hgpaktool() -> Path:
+    tool = Path(sys.executable).parent / "hgpaktool"
+    if not tool.exists():
+        tool = tool.with_suffix(".exe")  # Windows
+    if not tool.exists():
+        sys.exit("hgpaktool is not installed. Run: uv sync --extra extract")
+    return tool
+
+
+def _run_pak(args: list[str], cwd: Path | None = None) -> None:
+    result = subprocess.run([str(_hgpaktool()), *args], capture_output=True, text=True, cwd=cwd)
+    if result.returncode != 0:
+        sys.exit(f"hgpaktool failed:\n{result.stdout}{result.stderr}")
+
+
+def pak_listing(game: Path) -> list[tuple[str, str]]:
+    """(archive, file inside it) for every file in the game's archives. Headers
+    only, well under a second."""
+    with tempfile.TemporaryDirectory(prefix="nms-paklist-") as tmp:
+        _run_pak(["-L", "-p", str(game / "GAMEDATA" / "PCBANKS")], cwd=Path(tmp))
+        listing = (Path(tmp) / "filenames.txt").read_text(errors="replace").splitlines()
+    out, pak = [], ""
+    for line in listing:
+        if line.startswith("Listing "):
+            pak = line.removeprefix("Listing ").strip()
+        elif pak and line.strip():
+            out.append((pak, line.strip()))
+    return out
+
+
+LANGUAGE_FILE = re.compile(r"^language/nms_loc\d+_([a-z]+)\.mbin$")
+
+
+def game_languages(game: Path) -> list[str]:
+    """The text languages this install ships, read from its language tables
+    (language/nms_loc<N>_<language>.mbin), so a new language in a patch shows up
+    without a code change. English first, then alphabetical."""
+    found = {m.group(1) for _, name in pak_listing(game) if (m := LANGUAGE_FILE.match(name))}
+    return sorted(found, key=lambda x: (x != "english", x))
+
+
+def unpack(game: Path, dest: Path = MBIN_DIR, filters: list[str] | None = None) -> list[Path]:
     """Pull the needed .MBIN files out of the game's archives.
 
     Which archive carries the tables is looked up each time rather than
     hard-coded, because it moves between patches (in Cosmos the tables are in
     NMSARC.Precache.pak and the language files in NMSARC.MetadataEtc.pak).
+    `filters` replaces the default file list, for the language-only unpack.
     """
-    tool = Path(sys.executable).parent / "hgpaktool"
-    if not tool.exists():
-        sys.exit("hgpaktool is not installed. Run: uv sync --extra extract")
-
-    def run(args: list[str], cwd: Path | None = None) -> None:
-        result = subprocess.run([str(tool), *args], capture_output=True, text=True, cwd=cwd)
-        if result.returncode != 0:
-            sys.exit(f"hgpaktool failed:\n{result.stdout}{result.stderr}")
-
-    # List every archive first (headers only, well under a second), then
-    # unpack each file from the archive that holds it: hgpaktool treats an
+    # Unpack each file from the archive that holds it: hgpaktool treats an
     # exact path filter that a .pak lacks as an error, not a non-match.
-    with tempfile.TemporaryDirectory(prefix="nms-paklist-") as tmp:
-        run(["-L", "-p", str(game / "GAMEDATA" / "PCBANKS")], cwd=Path(tmp))
-        listing = (Path(tmp) / "filenames.txt").read_text(errors="replace").splitlines()
     wanted: dict[str, list[str]] = {}
-    pak = ""
-    for line in listing:
-        if line.startswith("Listing "):
-            pak = line.removeprefix("Listing ").strip()
-        elif pak and any(fnmatch.fnmatchcase(line.strip(), f) for f in PAK_FILTERS):
-            wanted.setdefault(pak, []).append(line.strip())
+    for pak, name in pak_listing(game):
+        if any(fnmatch.fnmatchcase(name, f) for f in (filters or PAK_FILTERS)):
+            wanted.setdefault(pak, []).append(name)
 
     shutil.rmtree(dest, ignore_errors=True)
     dest.mkdir(parents=True)
@@ -393,14 +449,15 @@ def unpack(game: Path, dest: Path = MBIN_DIR) -> list[Path]:
         args = ["-U", "-O", str(dest)]
         for name in sorted(set(names)):
             args += ["-f", name]
-        run([*args, pak])
+        _run_pak([*args, pak])
     files = sorted(dest.rglob("*.mbin"))
-    for stem in (RECIPES, PRODUCTS, SUBSTANCES):
-        if not (dest / f"{stem}.mbin").exists():
-            sys.exit(f"{stem}.mbin is in none of the game's archives - "
-                     "did a patch rename or move it?")
+    if filters is None:
+        for stem in (RECIPES, PRODUCTS, SUBSTANCES):
+            if not (dest / f"{stem}.mbin").exists():
+                sys.exit(f"{stem}.mbin is in none of the game's archives - "
+                         "did a patch rename or move it?")
     if not any(f.parent.name == "language" for f in files):
-        sys.exit("no English language tables found in the game's archives")
+        sys.exit("no language tables found in the game's archives")
     return files
 
 
@@ -435,7 +492,8 @@ def decompile(src: Path = MBIN_DIR, dest: Path = MXML_DIR) -> str:
             f"MBINCompiler {mbincompiler_version(exe)} could not read every table:\n  {detail}\n"
             "The game's struct layouts changed. Pin the MBINCompiler release made for "
             "this patch in mise.toml (`mise run mbin:releases`), then `mise install`.")
-    header = (dest / f"{RECIPES}.MXML").read_text(encoding="utf-8")[:300]
+    tables = dest / f"{RECIPES}.MXML"  # a language-only run has no recipe table
+    header = tables.read_text(encoding="utf-8")[:300] if tables.exists() else ""
     found = MXML_HEADER.search(header)
     return found.group(1) if found else ""
 

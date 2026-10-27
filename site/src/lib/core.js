@@ -10,36 +10,44 @@
 // trailing zeros gone.
 export const g = (x) => String(Number(Number(x).toPrecision(6)));
 
-export const fmtInt = (n) => Math.round(n).toLocaleString("en-US");
+// The number format and the short time units follow the page's language (lib/i18n.svelte.js sets them).
+let LOCALE = "en";
+export const setNumberLocale = (locale) => { LOCALE = locale; };
+let UNITS = { s: "s", min: "min", h: "h" };
+export const setUnits = (units) => { UNITS = units; };
+
+export const fmtInt = (n) => Math.round(n).toLocaleString(LOCALE);
 export const fmtSigned = (n) => (n >= 0 ? "+" : "-") + fmtInt(Math.abs(n));
 
 // -- recipes (model.Recipe) ---------------------------------------------------
 
 export function multiplierLabel(r) {
-  if (r.loop > 1) return `x${g(r.loop)} loop`;
+  // A recipe that takes its own result in (1 Chlorine + 2 Oxygen -> 6 Chlorine) is shown as what goes in and what comes out of
+  // that item: "1→6". Not a cycle that runs on its own: every run spends the other ingredients too.
+  if (r.loop > 1) {
+    const own = r.in.find(([id]) => id === r.out[0]);
+    return own ? `${g(own[1])}→${g(r.out[1])}` : `x${g(r.loop)}`;
+  }
   if (r.ratio === Math.trunc(r.ratio)) return `x${g(r.ratio)}`;
   return `x${r.ratio.toFixed(2)}`;
 }
 
 export function timeLabel(seconds) {
   if (!seconds) return "-";
-  if (seconds < 60) return `${g(seconds)}s`;
+  if (seconds < 60) return `${g(seconds)} ${UNITS.s}`;
   if (seconds < 3600) {
     const minutes = seconds / 60;
-    return minutes >= 10 ? `${minutes.toFixed(0)}m` : `${minutes.toFixed(1)}m`;
+    return minutes >= 10 ? `${minutes.toFixed(0)} ${UNITS.min}` : `${minutes.toFixed(1)} ${UNITS.min}`;
   }
-  return `${(seconds / 3600).toFixed(1)}h`;
+  return `${(seconds / 3600).toFixed(1)} ${UNITS.h}`;
 }
 
 // screens.fmt_time: the chain planner's machine-time total.
 export function fmtTime(seconds) {
-  if (seconds < 60) return `${g(seconds)}s`;
-  if (seconds < 3600) return `${(seconds / 60).toFixed(1)}m`;
-  return `${(seconds / 3600).toFixed(1)}h`;
+  if (seconds < 60) return `${g(seconds)} ${UNITS.s}`;
+  if (seconds < 3600) return `${(seconds / 60).toFixed(1)} ${UNITS.min}`;
+  return `${(seconds / 3600).toFixed(1)} ${UNITS.h}`;
 }
-
-export const machineShort = (machine) =>
-  machine.split(" ")[0].replace("Nutrient", "Processor");
 
 export function qtyLabel(n, name) {
   return n > 1 ? `${n} ${name}` : name;

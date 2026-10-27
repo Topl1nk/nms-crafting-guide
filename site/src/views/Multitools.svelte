@@ -1,5 +1,7 @@
 <script module>
-  const MT_TABS = [["types", "Types"], ["weapons", "Weapons"], ["getting", "Getting one"], ["tips", "Tips"]];
+  import { N_ } from "../lib/i18n.js";
+
+  const MT_TABS = [["types", N_("Types")], ["weapons", N_("Weapons")], ["getting", N_("Where to get")], ["tips", N_("Tips")]]; // English keys for t()
 </script>
 
 <script>
@@ -7,12 +9,15 @@
   // cards, all from data/multitools.json.
   import List from "../components/List.svelte";
   import { D } from "../lib/data.js";
+  import { t } from "../lib/i18n.js";
   import { setKeys } from "../lib/keys.js";
   import { arrival } from "../lib/router.svelte.js";
 
   const { params } = arrival();
 
   const mt = D.multitools;
+  // "+15-20%" -> 15, "9-18" -> 9, "2 170" -> 2170: the first number is the sort key.
+  const num = (text) => Number(String(text).replace(/\s/g, "").match(/-?\d[\d.,]*/)?.[0].replace(",", ".") ?? -1);
   const tab = MT_TABS.some(([k]) => k === params.get("tab")) ? params.get("tab") : "types";
   let cur = $state.raw(null);
   let list = $state();
@@ -21,56 +26,56 @@
 </script>
 
 {#snippet procedure(p)}
-  <section class="card"><h3>{p.title}</h3>
-    <ol>{#each p.steps as s}<li>{s}</li>{/each}</ol>
-    {#if p.note}<p class="muted">{p.note}</p>{/if}
-    {#if (p.after || []).length}<ul>{#each p.after as s}<li>{s}</li>{/each}</ul>{/if}
+  <section class="card"><h3>{t(p.title)}</h3>
+    <ol>{#each p.steps as s}<li>{t(s)}</li>{/each}</ol>
+    {#if p.note}<p class="muted">{t(p.note)}</p>{/if}
+    {#if (p.after || []).length}<ul>{#each p.after as s}<li>{t(s)}</li>{/each}</ul>{/if}
   </section>
 {/snippet}
 
-<div class="toolbar">
-  <h1 class="view-title">Multi-tools</h1>
-  <a class="btn" href="#/portals?kind=multi-tool">Portal addresses for these tools</a>
+<div class="fbar">
+  <h1><span>{t("Multi-tools")}</span></h1>
+  <nav class="tabs">
+    {#each MT_TABS as [k, label] (k)}<a href="#/multitools?tab={k}" class:on={k === tab}>{t(label)}</a>{/each}
+  </nav>
+  <a class="btn" style="margin-left:auto" href="#/portals?kind=multi-tool">{t("Where they lie: portal addresses")}</a>
 </div>
-<p class="headline">{mt._headline}</p>
-<nav class="tabs">
-  {#each MT_TABS as [k, label] (k)}<a href="#/multitools?tab={k}" class:on={k === tab}>{label}</a>{/each}
-</nav>
+<div class="count headline">{t(mt._headline)}</div>
 <div class="tab">
   {#if tab === "types"}
-    <List bind:this={list} rows={mt.types} onSelect={(t) => { cur = t; }} columns={[
-      { title: "Type", text: (t) => t.type, cls: "strong" },
-      { title: "Damage", text: (t) => t.damage },
-      { title: "Mining", text: (t) => t.mining },
-      { title: "Scan", text: (t) => t.scan },
-      { title: "Slots", text: (t) => t.slots },
-      { title: "Notes", text: (t) => t.note, cls: "wide-only muted" },
+    <List bind:this={list} rows={mt.types} onSelect={(row) => { cur = row; }} columns={[
+      { title: t("Kind"), text: (row) => t(row.type), cls: "strong", sort: (row) => row.type },
+      { title: t("Damage"), text: (row) => t(row.damage), sort: (row) => num(row.damage) },
+      { title: t("Mining"), text: (row) => t(row.mining), sort: (row) => num(row.mining) },
+      { title: t("Scan"), text: (row) => t(row.scan), sort: (row) => num(row.scan) },
+      { title: t("Slots"), text: (row) => t(row.slots), sort: (row) => num(row.slots) },
+      { title: t("Notes"), text: (row) => t(row.note), cls: "wide-only muted clip" },
     ]} />
     {#if cur}
-      <aside class="detail detail-below"><h2>{cur.type}</h2>
-        <p><span class="hl2">damage</span> {cur.damage} · <span class="hl2">mining</span> {cur.mining}
-          · <span class="hl2">scan</span> {cur.scan} · <span class="hl2">slots at spawn</span> {cur.slots}</p>
-        <p>{cur.note}</p></aside>
+      <aside class="detail detail-below"><h2>{t(cur.type)}</h2>
+        <p><span class="hl2">{t("damage")}</span> {t(cur.damage)} · <span class="hl2">{t("mining")}</span> {t(cur.mining)}
+          · <span class="hl2">{t("scan")}</span> {t(cur.scan)} · <span class="hl2">{t("slots when found")}</span> {t(cur.slots)}</p>
+        <p>{t(cur.note)}</p></aside>
     {/if}
   {:else if tab === "weapons"}
     <List bind:this={list} rows={mt.weapons} onSelect={(w) => { cur = w; }} columns={[
-      { title: "Weapon", text: (w) => w.weapon, cls: "strong" },
-      { title: "Like a", text: (w) => w.kind },
-      { title: "Best hit", text: (w) => w.best_hit, cls: "num" },
-      { title: "Good", text: (w) => w.pro, cls: "wide-only" },
-      { title: "Bad", text: (w) => w.con, cls: "wide-only muted" },
+      { title: t("Weapon"), text: (w) => t(w.weapon), cls: "strong", sort: (w) => w.weapon },
+      { title: t("Similar to"), text: (w) => t(w.kind), sort: (w) => w.kind },
+      { title: t("Best hit"), text: (w) => t(w.best_hit), cls: "num", sort: (w) => num(w.best_hit) },
+      { title: t("Pros"), text: (w) => t(w.pro), cls: "wide-only clip" },
+      { title: t("Cons"), text: (w) => t(w.con), cls: "wide-only muted clip" },
     ]} />
     {#if cur}
-      <aside class="detail detail-below"><h2>{cur.weapon} <span class="muted small">{cur.kind}, best measured hit {cur.best_hit}</span></h2>
-        <p><span class="ok">+</span> {cur.pro}</p><p><span class="err">−</span> {cur.con}</p></aside>
+      <aside class="detail detail-below"><h2>{t(cur.weapon)} <span class="muted small">{t(cur.kind)}, {t("best measured hit {n}", { n: t(cur.best_hit) })}</span></h2>
+        <p><span class="ok">+</span> {t(cur.pro)}</p><p><span class="err">−</span> {t(cur.con)}</p></aside>
     {/if}
   {:else if tab === "getting"}
     <div class="prose">
-      <section class="card"><h3>Where each type comes from</h3>
+      <section class="card"><h3>{t("Where each kind comes from")}</h3>
         <dl class="rows">
           {#each mt.getting as g}
-            <dt><b>{g.type}</b> <span class="muted">({g.cost})</span></dt>
-            <dd>{g.where}<div class="muted small">{g.how}</div></dd>
+            <dt><b>{t(g.type)}</b> <span class="muted">({t(g.cost)})</span></dt>
+            <dd>{t(g.where)}<div class="muted small">{t(g.how)}</div></dd>
           {/each}
         </dl>
       </section>
@@ -78,23 +83,21 @@
     </div>
   {:else}
     <div class="prose">
-      {#each mt.rules as r}<section class="card"><h3>{r.title}</h3><p>{r.body}</p></section>{/each}
-      <section class="card"><h3>Where upgrades come from</h3>
+      {#each mt.rules as r}<section class="card"><h3>{t(r.title)}</h3><p>{t(r.body)}</p></section>{/each}
+      <section class="card"><h3>{t("Where to get upgrades")}</h3>
         <dl class="rows">
           {#each mt.upgrade_sources as u}
-            <dt><b>{u.kind}</b></dt>
-            <dd>{u.where} <div class="muted small">{u.note}</div></dd>
+            <dt><b>{t(u.kind)}</b></dt>
+            <dd>{t(u.where)} <div class="muted small">{t(u.note)}</div></dd>
           {/each}
         </dl></section>
-      <section class="card"><h3>Upgrade order</h3>
-        <ol>{#each mt.upgrade_order as s}<li>{s}</li>{/each}</ol></section>
+      <section class="card"><h3>{t("The order to upgrade in")}</h3>
+        <ol>{#each mt.upgrade_order as s}<li>{t(s)}</li>{/each}</ol></section>
     </div>
   {/if}
 </div>
 
 <style>
-  .headline { padding: 0; color: var(--p-green); font-weight: 700; }
-  .tabs { display: flex; gap: 2px; padding: 6px 0 12px; flex-wrap: wrap; font-family: var(--p-mono); }
-  .tab > :global(.list) { margin: 0; }
-  .tab > .detail-below { margin: 12px 0 24px; }
+  .headline { color: var(--p-green); }
+  .tab > .prose { padding: 0 0 4px; }
 </style>

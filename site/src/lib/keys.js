@@ -51,7 +51,7 @@ export function onKey(e, openPalette) {
     case "Escape": active.escape?.(); break;
     case "p": if (id) go(`#/recipes?item=${encodeURIComponent(id)}&role=output`); break;
     case "r": if (id) go(`#/recipes?item=${encodeURIComponent(id)}&role=input`); break;
-    case "c": if (id) go(`#/chain/${encodeURIComponent(id)}`); break;
+    case "c": if (id) go(`#/recipes?path=${encodeURIComponent(id)}`); break;
     case "?": go("#/help"); break;
     default:
       if (/^[1-7]$/.test(e.key)) go(`#/${NAV[Number(e.key) - 1][0]}`);

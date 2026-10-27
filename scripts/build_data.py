@@ -86,13 +86,16 @@ def build_items(substances: dict, products: dict) -> dict:
         items[key] = {
             "name": row.get("NameLower_Text") or row.get("Name_Text", key),
             "kind": "product",
+            "color": row.get("Colour_Hex", ""),
             "subtitle": row.get("Subtitle_Text", ""),
+            "subtitle_en": row.get("Subtitle_Text_En", ""),
             "category": row.get("Category", ""),
             "rarity": row.get("Rarity", ""),
             "value": int(_num(row.get("BaseValue"))),
             "type": row.get("Type", ""),
             "cooking_ingredient": row.get("CookingIngredient") == "True",
             "description": row.get("Description_Text", ""),
+            "symbol": row.get("Symbol_Text", ""),
             # Eating a cooked product grants a temporary buff. The files name
             # the stat it boosts and carry a 0-1 quality for it, which is the
             # only measure of strength they record.
@@ -106,13 +109,16 @@ def build_items(substances: dict, products: dict) -> dict:
         items[key] = {
             "name": row.get("NameLower_Text") or row.get("Name_Text", key),
             "kind": "substance",
+            "color": row.get("Colour_Hex", ""),
             "type": "Substance",
             "subtitle": row.get("Subtitle_Text", ""),
+            "subtitle_en": row.get("Subtitle_Text_En", ""),
             "category": row.get("Category", ""),
             "rarity": row.get("Rarity", ""),
             "value": int(_num(row.get("BaseValue"))),
             "cooking_ingredient": row.get("CookingIngredient") == "True",
             "description": row.get("Description_Text", ""),
+            "symbol": row.get("Symbol_Text", ""),
         }
 
     return items
@@ -133,7 +139,7 @@ def carriable(item: dict) -> bool:
     name = item["name"]
     return (
         item.get("type") not in NOT_CARRIED
-        and item.get("subtitle") != "Reward Item"
+        and (item.get("subtitle_en") or item.get("subtitle")) != "Reward Item"
         and bool(name.strip())
         and "%" not in name
     )
@@ -150,6 +156,7 @@ def build_recipes(table: dict, domain: str, items: dict) -> list[dict]:
                 "name": row.get("NameLower_Text") or row.get("Name_Text", out_id),
                 "kind": "product",
                 "subtitle": row.get("Subtitle_Text", ""),
+                "subtitle_en": row.get("Subtitle_Text_En", ""),
                 "category": "",
                 "rarity": "",
                 "value": 0,
@@ -228,9 +235,14 @@ def main(argv: list[str] | None = None) -> int:
     for recipe in recipes:
         used.add(recipe["output"]["id"])
         used.update(i["id"] for i in recipe["inputs"])
+    # Everything the game's product and substance tables hold, for the Wiki
+    # page: the build menu, the cosmetics and the emotes included. Only rows
+    # with a real name (not a runtime %NAME% template, not empty).
+    wiki = {k: v for k, v in items.items() if v["name"].strip() and "%" not in v["name"]}
     items = {k: v for k, v in items.items() if k in used or carriable(v)}
 
     DATA.mkdir(exist_ok=True)
+    (DATA / "wiki.json").write_text(json.dumps(wiki, indent=1, sort_keys=True, ensure_ascii=False))
     (DATA / "items.json").write_text(json.dumps(items, indent=1, sort_keys=True))
     (DATA / "recipes.json").write_text(json.dumps(recipes, indent=1))
 

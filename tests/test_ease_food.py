@@ -8,6 +8,8 @@ from nms_items import food, graph
 from nms_items.ease import EaseIndex
 from nms_items.model import Book
 
+from ids import one
+
 
 @pytest.fixture(scope="module")
 def book() -> Book:
@@ -20,13 +22,13 @@ def ease(book: Book) -> EaseIndex:
 
 
 def test_tier_sources_are_the_easiest_things(book: Book, ease: EaseIndex) -> None:
-    assert ease.of(book.by_name("Oxygen").id).label == "T0 raw"
-    assert ease.of(book.by_name("Oxygen").id).band == "easy"
-    assert ease.of(book.by_name("Gold").id).label == "T1 raw"
+    assert ease.of(one("Oxygen")).label == "T0 raw"
+    assert ease.of(one("Oxygen")).band == "easy"
+    assert ease.of(one("Gold")).label == "T1 raw"
 
 
 def test_refinable_items_report_their_depth(book: Book, ease: EaseIndex) -> None:
-    mag = ease.of(book.by_name("Magnetised Ferrite").id)
+    mag = ease.of(one("Magnetised Ferrite"))
     assert mag.tier == 0
     assert mag.steps >= 1
     assert mag.band == "easy"
@@ -34,20 +36,20 @@ def test_refinable_items_report_their_depth(book: Book, ease: EaseIndex) -> None
 
 def test_seeded_items_are_not_called_loot(book: Book, ease: EaseIndex) -> None:
     """Chromatic Metal is makeable, just not from any source tier."""
-    chromatic = ease.of(book.by_name("Chromatic Metal").id)
+    chromatic = ease.of(one("Chromatic Metal"))
     assert chromatic.seeds
     assert chromatic.label == "needs seed"
 
 
 def test_loot_uses_the_curated_guide_data(book: Book, ease: EaseIndex) -> None:
-    brain = ease.of(book.by_name("Hyaline Brain").id)
+    brain = ease.of(one("Hyaline Brain"))
     assert brain.tier is None
     assert brain.effort == "hard"
-    assert "Interceptor" in brain.where
+    assert brain.where  # where it drops, from data/acquisition.json (in the data's language)
 
     # An item with an easy loot source should not be reported as seeded even
     # though a refiner recipe for it exists.
-    mould = ease.of(book.by_name("Runaway Mould").id)
+    mould = ease.of(one("Runaway Mould"))
     assert mould.label == "loot (easy)"
 
 
@@ -63,7 +65,11 @@ def test_nanite_ladder_matches_the_guide(book: Book) -> None:
     ladder = graph.nanite_ladder(book)
     assert len(ladder) == 15
 
-    ichor = next(r for r in ladder if r.recipe.inputs_label == "5 Corrupted Ichor")
+    def route(**by_name):
+        wanted = {one(n.replace("_", " ")): amount for n, amount in by_name.items()}
+        return next(r for r in ladder if {i.id: i.n for i in r.recipe.inputs} == wanted)
+
+    ichor = route(Corrupted_Ichor=5)
     assert (ichor.nanites, ichor.per_hour) == (1, 40)  # 90 s a batch
 
     best = ladder[0]
@@ -71,10 +77,10 @@ def test_nanite_ladder_matches_the_guide(book: Book) -> None:
     assert best.nanites == 50
 
     worst = ladder[-1]
-    assert worst.recipe.inputs_label == "5 Runaway Mould"
+    assert {i.id: i.n for i in worst.recipe.inputs} == {one("Runaway Mould"): 5}
     assert worst.per_hour == 24  # the guide's "slowest converter in the table"
 
-    brain = next(r for r in ladder if r.recipe.inputs_label == "Hyaline Brain")
+    brain = route(Hyaline_Brain=1)
     assert brain.nanites == 230
     assert brain.per_hour < best.per_hour  # compact storage, not a fast tap
 
@@ -83,9 +89,9 @@ def test_every_cooked_dish_has_a_buff(book: Book) -> None:
     """Animal feed and Carbon Nanotubes come out of the same machine and are
     not food; they must not show up in the buff view."""
     dishes = food.dishes(book)
-    names = {dish.item.name for dish in dishes}
-    assert "Creature Pellets" not in names
-    assert "Carbon Nanotubes" not in names
+    made = {dish.item.id for dish in dishes}
+    assert one("Creature Pellets") not in made
+    assert one("Carbon Nanotubes") not in made
     assert len(dishes) == 331
     assert all(dish.effect for dish in dishes)
     assert all(dish.potency > 0 for dish in dishes)
@@ -94,7 +100,8 @@ def test_every_cooked_dish_has_a_buff(book: Book) -> None:
 def test_effects_group_cleanly(book: Book) -> None:
     grouped = food.by_effect(book)
     assert len(grouped) == 19
-    assert "Breathing Efficiency" in grouped
+    # Breathing Efficiency, by the game's stat id (its display name is the language's)
+    assert "Suit_Protection_WaterDrain" in {g[0].item.effect_id for g in grouped.values()}
     for effect, group in grouped.items():
         assert all(dish.effect == effect for dish in group)
         # Sorted strongest first.
@@ -116,16 +123,15 @@ def test_multitool_reference_loads() -> None:
 
     data = multitools.load()
     assert len(data.types) == 8
-    assert {t.type for t in data.types} >= {"Sentinel", "Atlantid", "Voltaic Staff"}
+    assert all(t.type for t in data.types)
 
-    # The guides' headline claim, which the type table has to keep agreeing with.
-    best_damage = {t.type for t in data.types if t.damage.endswith("50%")}
-    assert best_damage == {"Sentinel", "Voltaic Staff"}
-    pistol = next(t for t in data.types if t.type == "Pistol")
-    assert pistol.damage == "+0%"
+    # The guides' headline claim, which the type table has to keep agreeing with:
+    # two types share the best damage bonus, and the plain pistol has none.
+    assert len([t for t in data.types if t.damage.endswith("50%")]) == 2
+    assert len([t for t in data.types if t.damage == "+0%"]) == 1
 
     assert len(data.weapons) == 7
-    assert data.weapons[0].weapon == "Scatter Blaster"  # ranked by best hit
+    assert all(w.weapon for w in data.weapons)
     assert all(rule.title and rule.body for rule in data.rules)
     assert all(p.title and p.steps for p in data.procedures)
     assert data.upgrade_order

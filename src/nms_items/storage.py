@@ -69,9 +69,10 @@ class Rule:
             return False
         if self.ids_prefix and not item.id.startswith(self.ids_prefix):
             return False
-        if self.subtitles and item.subtitle not in self.subtitles:
+        sub = item.subtitle_en or item.subtitle  # the rules are written in English
+        if self.subtitles and sub not in self.subtitles:
             return False
-        if self.subtitle_has and not any(s in item.subtitle for s in self.subtitle_has):
+        if self.subtitle_has and not any(s in sub for s in self.subtitle_has):
             return False
         if self.types and item.type not in self.types:
             return False

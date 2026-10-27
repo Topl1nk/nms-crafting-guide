@@ -1,0 +1,8 @@
+﻿{
+  "appId": "ru.nmsii.app",
+  "appName": "NMSii",
+  "webDir": "../dist",
+  "backgroundColor": "#090e1e",
+  "android": { "allowMixedContent": false },
+  "server": { "androidScheme": "https" }
+}

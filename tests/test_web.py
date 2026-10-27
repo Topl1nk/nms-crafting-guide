@@ -35,7 +35,8 @@ CORE = (SITE / "src" / "lib" / "core.js").as_uri()
 # What the site keeps in localStorage, under `nms-items:`. Visitors have these
 # saved from the hand-written page that came before the Svelte one; a renamed
 # key would quietly forget their inventory or their portal addresses.
-STORAGE_KEYS = {"inventory", "inv-cook", "locations", "theme"}
+STORAGE_KEYS = {"inventory", "locations", "theme", "accent", "big", "fs", "sym", "glow",
+                "save-on", "save-skip", "save-slot", "lang"}
 
 # Deep chains, shallow ones, a loop, a cooked dish and something unreachable.
 TARGETS = ["TECHFRAG", "ANTIMATTER", "HYPERFUEL1", "STELLAR2", "MICROCHIP", "FOOD_R_FLOUR",
@@ -170,8 +171,8 @@ def test_every_route_has_a_view() -> None:
     app = (SITE / "src" / "App.svelte").read_text(encoding="utf-8")
     table = re.search(r"const VIEWS = \{(.*?)\};", app, re.S).group(1)
     assert set(re.findall(r"(\w+): \w+", table)) == {
-        "home", "recipes", "chain", "nanites", "cooking", "multitools", "portals",
-        "storage", "inventory", "help",
+        "home", "recipes", "multitools", "portals",
+        "inventory", "help", "tree", "wiki",
     }
 
 
@@ -181,7 +182,10 @@ def test_every_route_has_a_view() -> None:
 # build; skipped before the first one.
 DIST = ROOT / "dist"
 CHECK_PWA = ROOT / "scripts" / "check_pwa.mjs"
-built = pytest.mark.skipif(NODE is None or not (DIST / "sw.js").exists(),
+# The portable build runs from a local server inside an app window, so it
+# registers no service worker (lib/pwa.svelte.js); there is no offline app to check.
+PWA_OFF = "false &&" in (SITE / "src" / "lib" / "pwa.svelte.js").read_text(encoding="utf-8")
+built = pytest.mark.skipif(NODE is None or PWA_OFF or not (DIST / "sw.js").exists(),
                            reason="needs node and a built dist/ (mise run web:build)")
 
 

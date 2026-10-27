@@ -1,4 +1,4 @@
-// The site's build: Svelte source in site/, everything served as-is in web/,
+﻿// The site's build: Svelte source in site/, everything served as-is in web/,
 // the page that gets deployed in dist/.
 //
 // web/ is Vite's public directory, copied into dist/ untouched. It holds what
@@ -21,6 +21,7 @@ const PRECACHE = [
   /^index\.html$/,
   /^assets\//,
   /^data\.json$/,
+  /^(pile|suede)\.webp$/,
   /^fonts\/.*\.woff2$/,
   /^(favicon\.(svg|ico)|apple-touch-icon\.png|icon-[\w-]+\.png|manifest\.webmanifest)$/,
 ];
@@ -75,3 +76,5 @@ export default defineConfig({
   server: { host: "127.0.0.1", port: 8790, strictPort: true },
   preview: { host: "127.0.0.1", port: 8791, strictPort: true },
 });
+
+

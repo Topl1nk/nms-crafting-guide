@@ -1,0 +1,14 @@
+{
+  "name": "nmsii-android",
+  "private": true,
+  "description": "The Android shell of the NMSii site (Capacitor): the built site (../dist) in a WebView, offline. Build: see README.md here.",
+  "scripts": {
+    "sync": "cap sync android",
+    "debug": "cap sync android && cd android && gradlew.bat assembleDebug"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.2.2",
+    "@capacitor/cli": "^6.2.2",
+    "@capacitor/core": "^6.2.2"
+  }
+}

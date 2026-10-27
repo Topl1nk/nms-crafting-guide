@@ -1,97 +1,92 @@
-<script>
-  // Light / Dark / System, as a small menu under the moon-or-sun button.
-  import { applyTheme, themeChoice, THEMES } from "../lib/theme.js";
+﻿<script>
+  // "Look": light or dark, the accent colour, glowing icons, chemical symbols, text size.
+  import { t } from "../lib/i18n.js";
+  import { language, setLanguage } from "../lib/language.svelte.js";
+  import { ACCENTS, applyTheme, look, setLook, themeChoice, THEMES } from "../lib/theme.js";
+  import { toast } from "../lib/toast.svelte.js";
 
   let choice = $state(themeChoice());
+  let accent = $state(look.accent());
+  let glow = $state(look.glow());
+  let fs = $state(look.fs());
+  let sym = $state(look.sym());
   let open = $state(false);
   let button;
-  let menu;
 
-  function toggle(e) {
-    e.stopPropagation();
-    open = !open;
-  }
-
-  function pick(next) {
-    choice = next;
-    applyTheme(next);
-    open = false;
-    button.focus();
-  }
-
-  function keydown(e) {
-    const items = [...menu.querySelectorAll("button")];
-    const i = items.indexOf(document.activeElement);
-    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
-      e.preventDefault();
-      items[(i + (e.key === "ArrowDown" ? 1 : items.length - 1)) % items.length].focus();
-    } else if (e.key === "Escape") {
-      e.stopPropagation();
-      open = false;
-      button.focus();
+  const toggle = (e) => { e.stopPropagation(); open = !open; };
+  const pickTheme = (k) => { choice = k; applyTheme(k); };
+  const pickAccent = (k) => { accent = k; setLook("accent", k); };
+  const pickLanguage = async (e) => {
+    try { await setLanguage(e.target.value); } catch (exc) {
+      e.target.value = language.code;
+      toast(t("Could not load the language ({error})", { error: exc.message }));
     }
-  }
-
-  // Opening it puts focus on the current choice, for the arrow keys.
-  $effect(() => {
-    if (open) menu.querySelector('[aria-checked="true"]')?.focus();
-  });
+  };
 </script>
 
-<svelte:document onclick={(e) => { if (!e.target.closest(".theme-wrap")) open = false; }} />
+<svelte:document onclick={(e) => { if (!e.target.closest(".theme-wrap")) open = false; }}
+  onkeydown={(e) => { if (e.key === "Escape" && open) { open = false; button.focus(); } }} />
 
 <div class="theme-wrap">
-  <button class="icon-btn" id="theme" type="button" aria-label="Theme" aria-haspopup="menu"
-    aria-expanded={open} aria-controls="theme-menu" bind:this={button} onclick={toggle}>
-    <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
-    <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  <button class="icon-btn" id="theme" type="button" aria-label={t("Appearance")} aria-haspopup="dialog"
+    aria-expanded={open} bind:this={button} onclick={toggle} title={t("Appearance")}>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1L7 17M17 7l2.1-2.1"/></svg>
   </button>
-  <div class="theme-menu" id="theme-menu" role="menu" tabindex="-1" hidden={!open} bind:this={menu} onkeydown={keydown}>
-    {#each THEMES as [key, label] (key)}
-      <button type="button" role="menuitemradio" aria-checked={choice === key} onclick={() => pick(key)}>{label}</button>
-    {/each}
+  <div class="panel" role="dialog" aria-label={t("Appearance")} hidden={!open}>
+    <h4>{t("Theme")}</h4>
+    <div class="seg">
+      {#each THEMES as [k, label] (k)}
+        <button type="button" class:on={choice === k} onclick={() => pickTheme(k)}>{t(label)}</button>
+      {/each}
+    </div>
+    <h4>{t("Accent colour")}</h4>
+    <div class="swatches">
+      {#each ACCENTS as [k, label, hex] (k)}
+        <button type="button" class="sw" class:on={accent === k} style="--c:{hex}" title={t(label)} aria-label={t(label)} onclick={() => pickAccent(k)}></button>
+      {/each}
+    </div>
+    {#if language.list.length > 1}
+      <h4>{t("Language")}</h4>
+      <select class="lang" value={language.code} onchange={pickLanguage} aria-label={t("Language")}>
+        {#each language.list as l (l.code)}<option value={l.code}>{l.name}</option>{/each}
+      </select>
+    {/if}
+    <h4>{t("Show")}</h4>
+    <label class="opt"><input type="checkbox" checked={glow} onchange={(e) => { glow = e.target.checked; setLook("glow", glow); }}>
+      <span>{t("Glow icons in the game's own colour")}</span></label>
+    <label class="opt"><input type="checkbox" checked={sym} onchange={(e) => { sym = e.target.checked; setLook("sym", sym); }}>
+      <span>{t("Chemical symbols on icons")}</span></label>
+    <h4>{t("Text size")} <b>{fs}</b></h4>
+    <input class="range" type="range" min="14" max="22" step="1" value={fs} aria-label={t("Text size")}
+      oninput={(e) => { fs = Number(e.target.value); setLook("fs", fs); }}>
   </div>
 </div>
 
 <style>
-  /* The icon shows the theme in effect, whoever chose it. */
-  .sun, :global(:root[data-theme="light"]) .moon { display: none; }
-  :global(:root[data-theme="light"]) .sun { display: block; }
-  @media (prefers-color-scheme: light) {
-    :global(:root:not([data-theme])) .moon { display: none; }
-    :global(:root:not([data-theme])) .sun { display: block; }
-  }
-
   .theme-wrap { position: relative; }
-  .theme-menu {
-    position: absolute;
-    right: 0;
-    top: calc(100% + 6px);
-    z-index: 6;
-    min-width: 9rem;
-    padding: 4px 0;
-    background: var(--p-panel);
-    border: 1px solid var(--p-outline);
-    box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+  .panel {
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: 300px; padding: 16px 18px 14px;
+    background: var(--p-panel); border: 1px solid var(--p-outline); border-radius: 16px;
+    box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);
   }
-  .theme-menu[hidden] { display: none; }
-  .theme-menu button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-    padding: 6px 12px;
-    background: none;
-    border: 0;
-    color: var(--p-muted);
-    font-family: var(--p-mono);
-    font-size: 0.85rem;
-    text-align: left;
-    cursor: pointer;
+  .panel[hidden] { display: none; }
+  h4 { margin: 14px 0 8px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--p-faint); }
+  h4:first-child { margin-top: 0; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--p-raised); border-radius: 12px; }
+  .seg button {
+    height: 34px; border: 0; border-radius: 9px; background: none; color: var(--p-muted); cursor: pointer; font: inherit; font-size: 0.9rem;
   }
-  .theme-menu button::before { content: " "; width: 1ch; color: var(--p-accent); }
-  .theme-menu button[aria-checked="true"] { color: var(--p-text); }
-  .theme-menu button[aria-checked="true"]::before { content: "●"; }
-  .theme-menu button:hover, .theme-menu button:focus-visible { background: var(--p-accent); color: var(--p-on-accent); outline: none; }
-  .theme-menu button:hover::before, .theme-menu button:focus-visible::before { color: var(--p-on-accent); }
+  .seg button.on { background: var(--p-accent); color: var(--p-on-accent); font-weight: 700; }
+  .swatches { display: flex; gap: 10px; }
+  .sw {
+    width: 34px; height: 34px; border-radius: 50%; border: 2px solid transparent; background: var(--c); cursor: pointer;
+    outline: 2px solid transparent; outline-offset: 2px; padding: 0;
+  }
+  .sw.on { outline-color: var(--p-text); }
+  .sw:hover { transform: scale(1.08); }
+  .lang { width: 100%; height: 34px; }
+  h4 b { margin-left: 6px; color: var(--p-text); font-size: 0.8rem; }
+  .range { width: 100%; height: 24px; padding: 0; border: 0; background: none; accent-color: var(--p-accent-ink); cursor: pointer; }
+  .opt { display: flex; align-items: center; gap: 10px; padding: 6px 0; font-size: 0.92rem; color: var(--p-muted); cursor: pointer; }
 </style>
+

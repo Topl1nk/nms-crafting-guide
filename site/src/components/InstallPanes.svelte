@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   // Three ways to run the terminal app, from the least installed to the most.
   // Shown on the start page and in Help; the README says the same at more
   // length.
@@ -44,7 +44,7 @@ mise run tui</code></pre>
     overflow-x: auto;
     background: var(--p-bg);
     border: 1px solid var(--p-outline);
-    border-left: 2px solid var(--p-accent);
+    border-left: 2px solid var(--p-edge-accent);
     font-family: var(--p-mono);
     font-size: 0.85rem;
     line-height: 1.6;
@@ -55,3 +55,5 @@ mise run tui</code></pre>
   :global(.card) .pane { background: var(--p-bg); }
   :global(.card) .pane pre { background: var(--p-panel); }
 </style>
+
+

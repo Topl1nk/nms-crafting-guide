@@ -1,72 +1,91 @@
-<script>
-  // Keys, what the columns mean, and how to run or add to it.
-  import InstallApp from "../components/InstallApp.svelte";
-  import InstallPanes from "../components/InstallPanes.svelte";
-  import { gameRelease, REPO_URL } from "../lib/data.js";
+﻿<script>
+  // What every page is for and how to use it, how to move around, and what the
+  // words in the tables mean.
+  import { t } from "../lib/i18n.js";
+  import { ICONS } from "../lib/icons.js";
 
-  const release = gameRelease();
-
-  let local;
-
-  // A scroll, not a #fragment: the hash is the router's.
-  function toLocal(e) {
-    e.preventDefault();
-    const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    local.scrollIntoView({ behavior: still ? "auto" : "smooth" });
-  }
+  const PAGES = [
+    ["recipes", t("Craft"), "recipes",
+      t("Every recipe in one table. “Kind” picks refining, cooking, nanites or a type of item; “Effect” finds dishes with the buff you need; “My items” keeps only what your items are enough for. Click a row for its card on the right: the scheme, time, gain and other ways. A column heading sorts the table.")],
+    ["tree", t("Tree"), "chain",
+      t("Pick an item to see every way to make it, each as a pyramid: the item on top, below it what it is made from, at the bottom what is only gathered. Hover a tile for its recipe, click it to open it in Craft. The canvas moves with the mouse, Ctrl + wheel zooms. “Batches” multiplies the numbers.")],
+    ["chain", t("Short path"), "chain",
+      t("A button in the card of a recipe (Craft) and of an item (Wiki). In Craft the pyramid of the shortest path takes the table's place: one way from raws to the item that keeps the refiner busy the least, with a count of what to gather. “Available” is which raws you can reach: from the planet only, with asteroids, or with the atmosphere harvester. The red “Close” button (or Esc) brings the table back.")],
+    ["wiki", t("Wiki"), "data",
+      t("Every item in the game with its picture: type, rarity, price, how many ways there are to make it and where it is needed. On the right a card with the description and buttons to Craft, Tree and “Where to put it”.")],
+    ["multitools", t("Multi-tools"), "multitools",
+      t("The kinds of multi-tool, the weapons, where to get each kind and the order to upgrade in. The rows of the tables open into a card under them.")],
+    ["portals", t("Portals"), "portals",
+      t("Paste a portal code, a galactic address or a link and get all the rest, with the glyphs to dial. The list of saved addresses can be searched and added to: they are kept only on this computer.")],
+    ["inventory", t("My items"), "inventory",
+      t("Items from the game save (the program reads it without changing anything and refreshes by itself) or a list you type in by hand. On the right the card of the item under the cursor: where to put it (which container, or sell, or throw away) and why. An item's name opens the Wiki, the “Type” and “Rarity” tags open the Wiki with that filter. “Where it lies” leaves out places (containers, ships, exocraft) that should not be counted.")],
+  ];
+  const KEYS = [
+    [["↓", "↑"], t("move along the list (or J and K)")],
+    [["/"], t("go to the search; Esc or Enter leaves it")],
+    [["Enter"], t("in Craft, everything about the item; in Portals, open the address")],
+    [["Esc"], t("clear the search or the filter")],
+    [["Ctrl", "K"], t("quick search over items and sections")],
+    [["1", "–", "7"], t("go to a section by its number")],
+  ];
+  const WORDS = [
+    [t("Yield"), t("How many times more you get than you put in. “1→6” is a recipe where one of the ingredients is also in the result: 1 chlorine + 2 oxygen → 6 chlorine. The chlorine multiplies, but it is no perpetual motion machine: every run also spends oxygen, which is taken from elsewhere. Real loops are found in the background and added to the table as rows “… per turn” (the “Loops” box keeps only those): several recipes that feed one another and leave more after a turn than they took.")],
+    [t("Time"), t("One cycle, by the game's data. The time the game itself shows is often wrong.")],
+    [t("Where"), t("A portable or personal refiner takes 1 ingredient, a medium one 2, a large one 3.")],
+    [t("Per hour, gain"), t("How many pieces an hour one machine that is never idle gives, and by how much the price grows per cycle. For nanites the gain says nothing: their ways are collected under Craft → Kind → nanites.")],
+    [t("Effect"), t("What a dish gives when it is eaten, and how strongly.")],
+    [t("Raws"), t("Easy — from what is on any planet. Fair and Takes work — asteroids, the atmosphere harvester or many steps are needed. Hard — a rare item that can only be found.")],
+    [t("Letters on an icon"), t("The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.")],
+  ];
 </script>
 
-<div class="prose">
-  <section class="card span"><h3>What this is</h3>
-    <p>NMSii reads the numbers No Man's Sky doesn't show you out of the game's own files{#if release}, currently
-    {release.name} ({release.build}){/if}. This site is one way in. The same data is a
-    <a href="#/help" onclick={toLocal}>terminal app</a>, an <a href="{REPO_URL}#for-ai-assistants-mcp">MCP server</a>
-    for AI assistants, and <a href="llms.txt">markdown</a>, one page per item. Below: the keys, what the columns
-    mean, and how to run it or add to it.</p></section>
-  <section class="card"><h3>Keys</h3>
-    <dl class="rows keys">
-      <dt><kbd>j</kbd> <kbd>k</kbd> / <kbd>↓</kbd> <kbd>↑</kbd></dt><dd>move through the list</dd>
-      <dt><kbd>/</kbd></dt><dd>search - <kbd>Esc</kbd> or <kbd>Enter</kbd> leaves the box</dd>
-      <dt><kbd>Enter</kbd></dt><dd>recipes: everything touching the item · portals: load the address</dd>
-      <dt><kbd>Esc</kbd></dt><dd>clear the search or the item filter</dd>
-      <dt><kbd>p</kbd> <kbd>r</kbd></dt><dd>recipes that produce / consume the highlighted item</dd>
-      <dt><kbd>c</kbd></dt><dd>chain plan for the highlighted item</dd>
-      <dt><kbd>1</kbd>-<kbd>7</kbd></dt><dd>jump to a section</dd>
-    </dl></section>
-  <section class="card"><h3>Reading the columns</h3>
-    <dl class="rows">
-      <dt>Mult</dt><dd>Units out per unit in. <code>x6 loop</code> means the recipe feeds itself:
-        1 Chlorine + 2 Oxygen → 6 Chlorine multiplies the seed six times.</dd>
-      <dt>Time</dt><dd>One batch, from the game files. The in-game display is often wrong.</dd>
-      <dt>Machine</dt><dd>Portable/Personal (1 input), Medium (2), Large (3).</dd>
-      <dt>Rate / Profit</dt><dd>Units per hour with one machine kept fed, and the base-value difference across one batch.
-        Profit is in units and says nothing about nanites; those get their own page.</dd>
-      <dt>Gettable</dt><dd><code>T0/T1/T2 +n</code>: refinable from surface materials / asteroids / an atmosphere harvester,
-        n refining steps away. <code>needs seed</code>: refinable, but wanting a material none of those tiers contain.
-        <code>loot (…)</code>: no recipe makes it.</dd>
-    </dl></section>
-  <section class="card"><h3>The chain planner</h3>
-    <p>It works backwards to a source set - by default the five things you can pick up on any planet - and minimises
-    <b>refiner-seconds per unit</b>, so the plan is the one that ties up a machine for the least time.</p></section>
-  <section class="card span" bind:this={local}><h3>Running it locally</h3>
-    <p>The terminal app reads the same data as this site, and adds vim keys, a command palette, themes, and saving
-    portal addresses to <code>data/locations.json</code>.</p>
-    <InstallPanes />
-    <p class="muted small">On Windows, use WSL or the podman route. The app is a Textual program: any modern terminal draws it.</p>
-    <InstallApp /></section>
-  <section class="card"><h3>Sharing a portal address</h3>
-    <p>Convert it on the <a href="#/portals">portals page</a>, fill in the form there, and press <b>Share on GitHub</b>.
-    It opens an issue on the <i>Share a portal address</i> form with the fields filled in.</p>
-    <p>A bot reads it within a minute, converts the address the same way this page does, and replies with the glyphs
-    and coordinates it got, or a list of what to fix. Edit the issue and it checks again. When a maintainer accepts it,
-    the bot opens the pull request that adds it, crediting you.</p>
-    <p>Comfortable with git? Edit <a href="{REPO_URL}/blob/main/data/locations.json">data/locations.json</a> in a pull
-    request instead; the same checks run on it. Locally, <code>mise run contrib:validate</code>.</p></section>
-  <section class="card"><h3>Where this comes from</h3>
-    <p>Every number is read from the game's own files{#if release}: {release.name} ({release.build}), extracted {release.extracted}{/if}.
-    Earlier builds read the same tables via
-    <a href="https://github.com/ApexFatality93/NMS-Handbook">NMS-Handbook</a>, still the fallback source. The site, the terminal app,
-    the MCP server and the markdown all read the same data; the source, the cheat-sheet PDFs and the full README are on
-    <a href="https://github.com/rdlu/nms-items-interface">GitHub</a>. Portal glyphs are traced from
-    <a href="https://nmsportals.github.io/">nmsportals</a>. No Man's Sky and its data belong to Hello Games.</p></section>
+<div class="fbar"><h1><span>{t("Help")}</span></h1></div>
+<div class="help">
+  <div class="pages">
+    {#each PAGES as [key, title, icon, text] (key)}
+      <a class="card page" href="#/{key}">
+        <span class="head"><svg viewBox="0 0 24 24" aria-hidden="true">{@html ICONS[icon]}</svg><b>{title}</b></span>
+        <span class="text">{text}</span>
+      </a>
+    {/each}
+  </div>
+  <div class="side">
+    <section class="card"><h3>{t("Appearance and language")}</h3>
+      <p>{t("The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.")}</p></section>
+    <section class="card"><h3>{t("Keys")}</h3>
+      <div class="keys">
+        {#each KEYS as [keys, text]}
+          <span class="k">{#each keys as k}<kbd>{k}</kbd>{/each}</span><span>{text}</span>
+        {/each}
+      </div></section>
+    <section class="card"><h3>{t("What the words mean")}</h3>
+      <dl class="words">
+        {#each WORDS as [term, text]}<dt>{term}</dt><dd>{text}</dd>{/each}
+      </dl></section>
+    <section class="card"><h3>{t("Where all this comes from")}</h3>
+      <p>{t("Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/rdlu/nms-items-interface.")}</p></section>
+  </div>
 </div>
+
+<style>
+  .help { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 16px; align-items: start; padding-bottom: 8px; }
+  .pages { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; min-width: 0; }
+  .side { display: grid; gap: 16px; min-width: 0; }
+  .card p { margin: 0; color: var(--p-muted); line-height: 1.55; }
+  .page { display: flex; flex-direction: column; gap: 8px; padding: 16px 18px; color: inherit; text-decoration: none; transition: border-color 0.12s; }
+  .page:hover { border-color: var(--p-edge-accent); }
+  .head { display: flex; align-items: center; gap: 10px; }
+  .head svg { width: 28px; height: 28px; fill: none; stroke: var(--p-accent-ink); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .head b { font-size: 1.05rem; color: var(--p-text); }
+  .text { color: var(--p-muted); line-height: 1.5; font-size: 0.92rem; }
+  .keys { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px 16px; align-items: center; color: var(--p-muted); }
+  .k { display: inline-flex; gap: 4px; justify-content: flex-end; }
+  .words { display: grid; grid-template-columns: 8em minmax(0, 1fr); gap: 12px 16px; margin: 0; }
+  .words dt { color: var(--p-accent-ink); font-weight: 700; padding: 0; }
+  .words dd { margin: 0; color: var(--p-muted); line-height: 1.5; }
+  @media (max-width: 1100px) { .help { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 640px) { .pages { grid-template-columns: minmax(0, 1fr); } }
+</style>
+
+
+

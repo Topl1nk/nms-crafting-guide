@@ -13,6 +13,8 @@ import pytest
 from nms_items.model import Book
 from nms_items.storage import StorageGuide
 
+from ids import all_of, one
+
 # Section 10's table, verbatim, minus the rows' prose. Container 9 is the inbox
 # and names nothing. One name is missing from row 8: Fossil Sample, a real
 # item but a procedural one, absent from the game tables this app reads.
@@ -54,7 +56,7 @@ def test_guide_items_land_in_their_container(
     for name in GUIDE_TABLE[container].split(", "):
         # Some names cover several items (four grades of Hyperdrive Module);
         # every one of them has to agree.
-        items = [i for i in book.items.values() if i.name == name]
+        items = [book.items[i] for i in all_of(name) if i in book.items]
         assert items, f"{name} is not in the game data"
         for item in items:
             assert guide.place(item).home.key == container, (name, item.id)
@@ -97,12 +99,12 @@ def test_families(book: Book, guide: StorageGuide) -> None:
 
 
 def test_search_finds_by_name_and_by_home(book: Book, guide: StorageGuide) -> None:
-    first, placement = guide.search(book, "gravitino")[0]
-    assert first.name == "Gravitino Ball"
+    first, placement = guide.search(book, book.name(one("Gravitino Ball")).lower())[0]
+    assert first.id == one("Gravitino Ball")
     assert placement.label == "Sell - park in 7 Sellables"
 
     junk = guide.search(book, "junk")
     assert junk and all(p.action == "discard" for _, p in junk)
 
     # An exact name sorts ahead of longer ones that contain it.
-    assert guide.search(book, "gold")[0][0].name == "Gold"
+    assert guide.search(book, book.name(one("Gold")).lower())[0][0].id == one("Gold")

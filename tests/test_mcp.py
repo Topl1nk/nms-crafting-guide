@@ -11,6 +11,8 @@ from __future__ import annotations
 
 import json
 import os
+import re
+from difflib import SequenceMatcher
 import sys
 from pathlib import Path
 
@@ -23,6 +25,8 @@ from nms_items import food, graph, mcp_server as m
 from nms_items.model import SOURCE_SETS, data_source
 from nms_items.portals import Address, LocationBook
 
+from ids import one
+
 ROOT = Path(__file__).resolve().parent.parent
 
 
@@ -31,38 +35,51 @@ def d() -> m.Data:
     return m.data()
 
 
+def shared_fragment(a: str, b: str) -> str:
+    """The longest text two names have in common (case aside): a search term that
+    finds both, whatever language their names are in."""
+    a, b = a.lower(), b.lower()
+    hit = SequenceMatcher(None, a, b).find_longest_match(0, len(a), 0, len(b))
+    return a[hit.a:hit.a + hit.size].strip()
+
+
 # -- names or IDs -------------------------------------------------------------------
 
 
 def test_resolve_takes_ids_names_and_case(d):
+    chromatic, carbon = d.book.name("STELLAR2"), d.book.name("FUEL1")
     assert m.resolve("STELLAR2").id == "STELLAR2"
     assert m.resolve("stellar2").id == "STELLAR2"
-    assert m.resolve("Chromatic Metal").id == "STELLAR2"
-    assert m.resolve("chromatic metal").id == "STELLAR2"
+    assert m.resolve(chromatic).id == "STELLAR2"
+    assert m.resolve(chromatic.lower()).id == "STELLAR2"
     # An exact name wins over the longer names it is a prefix of.
-    assert m.resolve("Carbon").id == "FUEL1"
+    assert m.resolve(carbon).id == "FUEL1"
 
 
 def test_resolve_refuses_to_guess(d):
-    with pytest.raises(ToolError, match="ambiguous.*Ferrite Dust"):
-        m.resolve("ferrit")
+    dust, pure = d.book.name(one("Ferrite Dust")), d.book.name(one("Pure Ferrite"))
+    with pytest.raises(ToolError, match=f"ambiguous.*{re.escape(dust)}"):
+        m.resolve(shared_fragment(dust, pure))
     with pytest.raises(ToolError, match="No item"):
         m.resolve("qqqqqqqqqq")
 
 
 def test_search_items_fuzzy(d):
-    assert m.search_items("antimater")["items"][0]["id"] == "ANTIMATTER"
+    name = d.book.name("ANTIMATTER")
+    typo = name[:len(name) // 2] + name[len(name) // 2 + 1:]  # one letter missing, in any language
+    assert m.search_items(typo)["items"][0]["id"] == "ANTIMATTER"
     ids = [row["id"] for row in m.search_items("TECHFRAG")["items"]]
     assert ids[0] == "TECHFRAG"
-    names = [row["name"] for row in m.search_items("ferrite")["items"]]
-    assert "Ferrite Dust" in names and "Pure Ferrite" in names
+    both = shared_fragment(d.book.name(one("Ferrite Dust")), d.book.name(one("Pure Ferrite")))
+    found = {row["id"] for row in m.search_items(both)["items"]}
+    assert {one("Ferrite Dust"), one("Pure Ferrite")} <= found
 
 
 # -- each tool against the module it wraps ------------------------------------------
 
 
 def test_item_info(d):
-    info = m.item_info("Chromatic Metal")
+    info = m.item_info(d.book.name("STELLAR2"))
     item = d.book.items["STELLAR2"]
     assert info["value"] == item.value
     assert info["made_by_total"] == len(d.book.produced_by["STELLAR2"])
@@ -97,12 +114,13 @@ def test_plan_chain_matches_graph(d, target, qty, tier, cooking):
 
 
 def test_search_recipes(d):
-    out = m.search_recipes("chlorine", domain="refine", sort="rate")
-    want = d.book.search("chlorine", "refine")
+    term = d.book.name(one("Chlorine")).lower()
+    out = m.search_recipes(term, domain="refine", sort="rate")
+    want = d.book.search(term, "refine")
     assert out["total"] == len(want)
     rates = [r["output_per_hour"] for r in out["recipes"]]
     assert rates == sorted(rates, reverse=True)
-    made = m.search_recipes(item="Chromatic Metal", role="output", limit=200)
+    made = m.search_recipes(item=d.book.name("STELLAR2"), role="output", limit=200)
     assert made["total"] == len(d.book.produced_by["STELLAR2"])
     assert all(r["output"]["id"] == "STELLAR2" for r in made["recipes"])
 
@@ -119,10 +137,11 @@ def test_cooking_by_buff(d):
     groups = food.by_effect(d.book)
     every = m.cooking_by_buff(limit=1000)["buffs"]
     assert [g["buff"] for g in every] == list(groups)
-    cold = m.cooking_by_buff("cold")["buffs"]
-    assert [g["buff"] for g in cold] == ["Cold Resistance"]
+    cold_effect = next(e for e, g in groups.items() if g[0].item.effect_id == "Suit_Protection_ColdDrain")
+    cold = m.cooking_by_buff(cold_effect.lower())["buffs"]
+    assert [g["buff"] for g in cold] == [cold_effect]
     assert [x["id"] for x in cold[0]["dishes"]] == \
-        [x.item.id for x in groups["Cold Resistance"][:10]]
+        [x.item.id for x in groups[cold_effect][:10]]
     with pytest.raises(ToolError):
         m.cooking_by_buff("no such buff at all")
 
@@ -138,7 +157,7 @@ def test_where_to_store(d):
 
 def test_craftable_from(d):
     have = {"FUEL1": 100, "OXYGEN": 30}
-    out = m.craftable_from({"Carbon": 100, "oxygen": 30, "not an item": 4})
+    out = m.craftable_from({d.book.name("FUEL1"): 100, d.book.name("OXYGEN").lower(): 30, "not an item": 4})
     assert out["unrecognised"].keys() == {"not an item"}
     now = graph.craftable_now(d.book, have, ("refine",))
     near = graph.one_hop_away(d.book, have, ("refine",))
@@ -146,7 +165,7 @@ def test_craftable_from(d):
     assert [(r["index"], r["batches"]) for r in out["craftable"]] == \
         [(r.index, n) for r, n in now]
     assert out["one_short_total"] == len(near)
-    cooked = m.craftable_from({"Carbon": 100}, allow_cooking=True)
+    cooked = m.craftable_from({d.book.name("FUEL1"): 100}, allow_cooking=True)
     assert cooked["one_short_total"] == len(graph.one_hop_away(d.book, {"FUEL1": 100}))
 
 
@@ -192,18 +211,21 @@ def test_every_result_is_json(d):
 
 
 def _check_session(server) -> None:
+    book = m.data().book
+    dust, pure = book.name(one("Ferrite Dust")), book.name(one("Pure Ferrite"))
+
     async def run() -> None:
         async with Client(server) as client:
             tools = {t.name for t in (await client.list_tools()).tools}
             assert tools == {fn.__name__ for fn in m.TOOLS}
 
-            result = await client.call_tool("plan_chain", {"item": "Condensed Carbon", "qty": 5})
+            result = await client.call_tool("plan_chain", {"item": book.name("FUEL2"), "qty": 5})
             assert not result.is_error
             assert result.structured_content["target"]["id"] == "FUEL2"
 
-            bad = await client.call_tool("item_info", {"item": "ferrit"})
+            bad = await client.call_tool("item_info", {"item": shared_fragment(dust, pure)})
             assert bad.is_error
-            assert "Ferrite Dust" in bad.content[0].text
+            assert dust in bad.content[0].text
 
             source = await client.read_resource("nmsii://source")
             assert json.loads(source.contents[0].text) == data_source()

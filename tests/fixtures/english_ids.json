@@ -1,0 +1,286 @@
+{
+ "Albumen Pearl": [
+  "ALBUMENPEARL"
+ ],
+ "Antimatter": [
+  "ANTIMATTER"
+ ],
+ "Atlantideum": [
+  "ROBOT2"
+ ],
+ "Cactus Flesh": [
+  "PLANT_DUST"
+ ],
+ "Carbon": [
+  "FUEL1"
+ ],
+ "Carbon Nanotubes": [
+  "NANOTUBES"
+ ],
+ "Cargo Bulkhead": [
+  "FREI_INV_TOKEN"
+ ],
+ "Chlorine": [
+  "WATER2"
+ ],
+ "Chromatic Metal": [
+  "STELLAR2"
+ ],
+ "Circuit Board": [
+  "FARMPROD9"
+ ],
+ "Cobalt": [
+  "CAVE1"
+ ],
+ "Comet Dust": [
+  "ASTBELT1"
+ ],
+ "Companion Egg": [
+  "EGG1",
+  "EGG10",
+  "EGG11",
+  "EGG12",
+  "EGG13",
+  "EGG14",
+  "EGG15",
+  "EGG16",
+  "EGG17",
+  "EGG18",
+  "EGG2",
+  "EGG3",
+  "EGG4",
+  "EGG5",
+  "EGG6",
+  "EGG7",
+  "EGG8",
+  "EGG9",
+  "S23_PRISMS_EGG"
+ ],
+ "Condensed Carbon": [
+  "FUEL2"
+ ],
+ "Contaminated Metal": [
+  "HULK1"
+ ],
+ "Corrupted Ichor": [
+  "SWARMDUST"
+ ],
+ "Creature Pellets": [
+  "BAIT_BASIC"
+ ],
+ "Cryo-Pump": [
+  "COMPOUND6"
+ ],
+ "Cryogenic Chamber": [
+  "MEGAPROD3"
+ ],
+ "Decrypted User Data": [
+  "TRA_COMMODITY1"
+ ],
+ "Deuterium": [
+  "LAUNCHSUB2"
+ ],
+ "Di-hydrogen": [
+  "LAUNCHSUB"
+ ],
+ "Dioxite": [
+  "COLD1"
+ ],
+ "Echo Seed": [
+  "S10_SOUL"
+ ],
+ "Exocraft Boost Module": [
+  "U_EXOBOOST1",
+  "U_EXOBOOST2",
+  "U_EXOBOOST3",
+  "U_EXOBOOST4"
+ ],
+ "Ferrite Dust": [
+  "LAND1"
+ ],
+ "Fossilised Egg": [
+  "EXPD_EGG_18"
+ ],
+ "Frost Crystal": [
+  "PLANT_SNOW"
+ ],
+ "Fungal Mould": [
+  "PLANT_TOXIC"
+ ],
+ "Gamma Root": [
+  "PLANT_RADIO"
+ ],
+ "Gelatinous Fibres": [
+  "SLIMEPOST1"
+ ],
+ "Glass": [
+  "FARMPROD3"
+ ],
+ "Gold": [
+  "ASTEROID2"
+ ],
+ "Gravitino Ball": [
+  "GRAVBALL"
+ ],
+ "Hadal Core": [
+  "FISHCORE"
+ ],
+ "Hermetic Seal": [
+  "CARBON_SEAL"
+ ],
+ "Hyaline Brain": [
+  "SHIPBRAIN"
+ ],
+ "Hyperdrive Module": [
+  "U_HYPER1",
+  "U_HYPER2",
+  "U_HYPER3",
+  "U_HYPER4"
+ ],
+ "Ionised Cobalt": [
+  "CAVE2"
+ ],
+ "Iridesite": [
+  "ALLOY8"
+ ],
+ "Larval Core": [
+  "FIENDCORE"
+ ],
+ "Launch Thrusters Module": [
+  "U_LAUNCH1",
+  "U_LAUNCH2",
+  "U_LAUNCH3",
+  "U_LAUNCH4"
+ ],
+ "Lemmium": [
+  "ALLOY4"
+ ],
+ "Life Support Module": [
+  "U_ENERGY1",
+  "U_ENERGY2",
+  "U_ENERGY3"
+ ],
+ "Living Glass": [
+  "FARMPROD8"
+ ],
+ "Living Pearl": [
+  "CLAMPEARL"
+ ],
+ "Magnetised Ferrite": [
+  "LAND3"
+ ],
+ "Metal Plating": [
+  "CASING"
+ ],
+ "Microprocessor": [
+  "MICROCHIP"
+ ],
+ "Nanite Cluster": [
+  "TECHFRAG"
+ ],
+ "Navigation Data": [
+  "NAV_DATA"
+ ],
+ "Neutron Microscope": [
+  "TRA_EXOTICS2"
+ ],
+ "Nitrogen": [
+  "GAS3"
+ ],
+ "Oxygen": [
+  "OXYGEN"
+ ],
+ "Paraffinium": [
+  "LUSH1"
+ ],
+ "Platinum": [
+  "ASTEROID3"
+ ],
+ "Pugneum": [
+  "ROBOT1"
+ ],
+ "Pure Ferrite": [
+  "LAND2"
+ ],
+ "Pyrite": [
+  "DUSTY1"
+ ],
+ "Quantum Processor": [
+  "MEGAPROD2"
+ ],
+ "Radiant Shard": [
+  "DRONE_SHARD"
+ ],
+ "Radon": [
+  "GAS2"
+ ],
+ "Repair Kit": [
+  "REPAIRKIT"
+ ],
+ "Runaway Mould": [
+  "SPACEGUNK2"
+ ],
+ "Sac Venom": [
+  "SACVENOM"
+ ],
+ "Salvaged Data": [
+  "BP_SALVAGE"
+ ],
+ "Salvaged Frigate Module": [
+  "FRIG_TOKEN"
+ ],
+ "Sentinel Weapons Shard": [
+  "U_SENTGUN"
+ ],
+ "Silicate Powder": [
+  "SAND1"
+ ],
+ "Silver": [
+  "ASTEROID1"
+ ],
+ "Sodium": [
+  "CATALYST1"
+ ],
+ "Solanium": [
+  "PLANT_HOT"
+ ],
+ "Star Bulb": [
+  "PLANT_LUSH"
+ ],
+ "Starship AI Valves": [
+  "SALVAGE_TECH10"
+ ],
+ "Starship Launch Fuel": [
+  "LAUNCHFUEL"
+ ],
+ "Stasis Device": [
+  "ULTRAPROD2"
+ ],
+ "Storage Augmentation": [
+  "SHIP_INV_TOKEN"
+ ],
+ "Storm Crystal": [
+  "STORM_CRYSTAL"
+ ],
+ "Sulphurine": [
+  "GAS1"
+ ],
+ "Superconductor": [
+  "COMPOUND5"
+ ],
+ "Tainted Metal": [
+  "AF_METAL"
+ ],
+ "Tritium": [
+  "ROCKETSUB"
+ ],
+ "Vortex Cube": [
+  "CAVECUBE"
+ ],
+ "Warp Cell": [
+  "HYPERFUEL1"
+ ],
+ "Wiring Loom": [
+  "TECH_COMP"
+ ]
+}

@@ -23,6 +23,7 @@ Run via `mise run web:data`; `mise run site` serves the result locally, and
 from __future__ import annotations
 
 import json
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -75,11 +76,17 @@ def build(book: Book) -> dict:
             "name": item.name,
             "sub": item.subtitle,
             "cat": item.category,
+            "rar": item.rarity,
+            "type": item.type,
+            "color": item.color,
             "value": item.value,
             "store": item_home[item.id],
         }
+        if item.symbol:
+            row["sym"] = item.symbol
         if item.effect and item.potency > 0:
             row["effect"] = item.effect
+            row["effect_id"] = item.effect_id
             row["potency"] = round(item.potency, 3)
         items[item.id] = row
 
@@ -134,7 +141,8 @@ def build(book: Book) -> dict:
     cooking = [
         {
             "effect": effect,
-            "use": food.EFFECT_USE.get(effect, ""),
+            "id": dishes[0].item.effect_id,
+            "use": food.EFFECT_USE.get(dishes[0].item.effect_id, ""),
             "dishes": [
                 {"item": d.item.id, "recipe": d.recipe.index, "ways": d.ways}
                 for d in dishes
@@ -181,12 +189,29 @@ def build(book: Book) -> dict:
     }
 
 
+def plain(text: str) -> str:
+    text = re.sub(r"<IMG>[^<]*<>", "", text)
+    text = re.sub(r"<[A-Z_0-9]*>", "", text)
+    return re.sub(r"\s*\(\s*\)", "", text).strip()  # a button picture leaves "()" behind
+
+
 def main() -> None:
     bundle = build(Book())
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(bundle, ensure_ascii=False, separators=(",", ":")),
                    encoding="utf-8")
     print(f"wrote {OUT.relative_to(ROOT)} ({OUT.stat().st_size / 1024:.0f} KiB)")
+    # Every item the game has, for the Wiki page: id -> [name, subtitle, type,
+    # category, rarity, value, colour, description]. The game marks colours in
+    # its texts with <TAG>...<> and puts button pictures in <IMG>NAME<>; neither
+    # means anything here.
+    wiki = json.loads((ROOT / "data" / "wiki.json").read_text(encoding="utf-8"))
+    (WEB / "wiki.json").write_text(json.dumps({
+        k: [v["name"], v.get("subtitle", ""), v.get("type", ""), v.get("category", ""), v.get("rarity", ""),
+            v.get("value", 0), v.get("color", ""), plain(v.get("description", ""))]
+        for k, v in wiki.items()
+    }, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    print(f"wrote web/wiki.json ({len(wiki)} items)")
     # The same bundle as markdown, for whatever reads the site without running
     # its JavaScript: llms.txt, a page per section and per item, a sitemap.
     build_markdown.write(bundle, WEB, ROOT)

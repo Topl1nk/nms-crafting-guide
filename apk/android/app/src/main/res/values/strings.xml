@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NMSii</string>
+    <string name="title_activity_main">NMSii</string>
+    <string name="package_name">ru.nmsii.app</string>
+    <string name="custom_url_scheme">ru.nmsii.app</string>
+</resources>

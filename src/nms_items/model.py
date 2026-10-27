@@ -87,9 +87,16 @@ class Item:
     # The game's own item type: Substance, Consumable, Tradeable, Fish,
     # Curiosity... What the storage rules match on, with the subtitle.
     type: str = ""
+    # The tint the game's own UI gives the item, as #rrggbb.
+    color: str = ""
     # Cooked food only: the stat eating it boosts, and the game's own 0-1
     # quality rating for how strongly.
     effect: str = ""
+    effect_id: str = ""
+    # The subtitle in English whatever the data's language: the storage rules match it.
+    subtitle_en: str = ""
+    # The chemical symbol the game prints in the corner of a substance ("Fe", "O2").
+    symbol: str = ""
     potency: float = 0.0
     edible: bool = False
 
@@ -192,7 +199,11 @@ class Book:
                 value=row.get("value", 0),
                 description=row.get("description", ""),
                 type=row.get("type", ""),
+                color=row.get("color", ""),
                 effect=row.get("effect", ""),
+        effect_id=row.get("effect_id", ""),
+        subtitle_en=row.get("subtitle_en", ""),
+                symbol=row.get("symbol", ""),
                 potency=row.get("potency", 0.0),
                 edible=row.get("edible", False),
             )

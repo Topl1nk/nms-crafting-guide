@@ -52,7 +52,12 @@
           "cat": { "type": "string", "description": "The game's category: Earth, Fuel, Metal, Catalyst, Stellar, Flora, Exotic, Special." },
           "value": { "type": "integer", "description": "Base value in units." },
           "store": { "type": "integer", "minimum": 0, "description": "Index into storage.outcomes." },
+          "rar": { "type": "string", "description": "The game's rarity: Common, Uncommon or Rare." },
+          "type": { "type": "string", "description": "The game's item type, e.g. Substance, Product, Consumable." },
+          "color": { "type": "string", "description": "The item's colour in the game, as #rrggbb; empty when it has none." },
+          "sym": { "type": "string", "description": "The chemical symbol the game prints in the corner of the icon (substances), in the data language." },
           "effect": { "type": "string", "description": "Cooked food only: the stat eating it boosts." },
+          "effect_id": { "type": "string", "description": "Cooked food only: the game's id of that stat, the same in every language." },
           "potency": { "type": "number", "minimum": 0, "description": "The game's quality rating for that buff (CookingValue), mostly 0-1." }
         }
       }
@@ -136,10 +141,11 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["effect", "use", "dishes"],
+        "required": ["effect", "id", "use", "dishes"],
         "additionalProperties": false,
         "properties": {
           "effect": { "type": "string" },
+          "id": { "type": "string", "description": "The game's id of that stat, the same in every language." },
           "use": { "type": "string" },
           "dishes": {
             "type": "array",

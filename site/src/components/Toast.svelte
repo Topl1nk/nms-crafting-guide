@@ -1,4 +1,4 @@
-<script>
+﻿<script>
   import { toastState } from "../lib/toast.svelte.js";
 </script>
 
@@ -14,7 +14,7 @@
     font-size: 0.85rem;
     background: var(--p-raised);
     border: 1px solid var(--p-outline);
-    border-left: 3px solid var(--p-accent);
+    border-left: 3px solid var(--p-edge-accent);
     padding: 8px 14px;
     opacity: 0;
     pointer-events: none;
@@ -23,3 +23,5 @@
   }
   .toast.show { opacity: 1; transform: translate(-50%, 0); }
 </style>
+
+

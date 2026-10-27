@@ -49,7 +49,9 @@ export function startPwa() {
   window.addEventListener("online", () => { pwa.offline = false; });
   window.addEventListener("offline", () => { pwa.offline = true; });
 
-  if (import.meta.env.PROD && "serviceWorker" in navigator) register();
+  // Off in this local copy: it runs from localhost next to the game, and a
+  // worker would only cache 2,000 icons twice and serve stale rebuilds.
+  if (false && import.meta.env.PROD && "serviceWorker" in navigator) register();
 }
 
 async function register() {

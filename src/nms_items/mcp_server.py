@@ -246,7 +246,7 @@ def item_info(item: str, recipe_limit: int = 15) -> dict[str, Any]:
         row["buff"] = {
             "stat": it.effect,
             "potency": round(it.potency, 3),
-            "good_for": food.EFFECT_USE.get(it.effect, ""),
+            "good_for": food.EFFECT_USE.get(it.effect_id, ""),
         }
     return row
 
@@ -379,7 +379,7 @@ def cooking_by_buff(buff: str | None = None, limit: int = 10) -> dict[str, Any]:
     terms = (buff or "").lower().split()
     groups = []
     for effect, dishes in food.by_effect(data().book).items():
-        use = food.EFFECT_USE.get(effect, "")
+        use = food.EFFECT_USE.get(dishes[0].item.effect_id, "")
         if terms and not all(t in f"{effect} {use}".lower() for t in terms):
             continue
         groups.append({

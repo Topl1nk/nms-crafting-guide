@@ -1,31 +1,32 @@
-<script>
+﻿<script>
   // The TUI's Ctrl+P palette, as the site's search: sections by name, items by
   // name (exact, then prefix, then substring, like Book.search_items), and a
   // pasted portal address straight into the converter.
   import { tick } from "svelte";
   import { Address } from "../lib/core.js";
   import { CONSUMED, D, name, NAV, PRODUCED } from "../lib/data.js";
+  import { collate, t } from "../lib/i18n.js";
   import { go } from "../lib/router.svelte.js";
+  import { search } from "../lib/search.svelte.js";
 
-  const TAG = { section: "go", item: "recipes", store: "storage", portal: "portal" };
+  const TAG = { section: t("section"), item: t("recipes"), store: t("storage"), portal: t("portal") };
 
-  let shown = $state(false);
-  let q = $state("");
   let sel = $state(0);
-  let input;
   let listEl;
 
-  const rows = $derived(shown ? paletteRows(q) : []);
+  const rows = $derived(search.open ? paletteRows(search.q) : []);
 
-  export async function open() {
-    shown = true;
-    q = "";
+  // The field is in the header (it grows out of the loupe there and takes the focus itself); this is the list under it.
+  export function open() {
+    search.open = true;
+    search.q = "";
     sel = 0;
-    await tick();
-    input.focus();
   }
 
-  function close() { shown = false; }
+  function close() { search.open = false; }
+
+  $effect(() => { search.q; sel = 0; });
+  $effect(() => { search.keydown = keydown; return () => { search.keydown = null; }; });
 
   function choose(row) {
     if (!row) return;
@@ -37,7 +38,8 @@
     text = text.trim();
     const lower = text.toLowerCase();
     const out = [];
-    for (const [key, label] of [["home", "Home"], ...NAV]) {
+    for (const [key, english] of [["home", "Home"], ...NAV]) {
+      const label = t(english);
       if (!lower || label.toLowerCase().includes(lower)) {
         out.push({ kind: "section", label, href: `#/${key === "home" ? "" : key}` });
       }
@@ -55,7 +57,7 @@
       else if (n.includes(lower)) contains.push(id);
     }
     const byName = (a, b) =>
-      (name(a).toLowerCase() !== lower) - (name(b).toLowerCase() !== lower) || name(a).localeCompare(name(b));
+      (name(a).toLowerCase() !== lower) - (name(b).toLowerCase() !== lower) || collate(name(a), name(b));
     for (const id of [...starts.sort(byName), ...contains.sort(byName)].slice(0, 30)) {
       const recipes = PRODUCED[id] || CONSUMED[id];
       out.push({
@@ -63,7 +65,7 @@
         label: name(id),
         note: D.items[id].sub,
         // Items no recipe touches still have a storage answer.
-        href: recipes ? `#/recipes?item=${encodeURIComponent(id)}` : `#/storage?q=${encodeURIComponent(name(id))}`,
+        href: recipes ? `#/recipes?item=${encodeURIComponent(id)}` : `#/wiki?item=${encodeURIComponent(id)}`,
       });
     }
     return out;
@@ -91,10 +93,8 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-<div class="palette" hidden={!shown} onclick={(e) => { if (e.target === e.currentTarget) close(); }}>
-  <div class="palette-box" role="dialog" aria-label="Search">
-    <input type="search" placeholder="item, section, or a portal address…" autocomplete="off" spellcheck="false"
-      bind:this={input} bind:value={q} oninput={() => { sel = 0; }} onkeydown={keydown}>
+<div class="palette" hidden={!search.open} onclick={(e) => { if (e.target === e.currentTarget) close(); }}>
+  <div class="palette-box" role="dialog" aria-label={t("Search")}>
     <ul role="listbox" bind:this={listEl}>
       {#each rows as r, i (i)}
         <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -102,42 +102,36 @@
           <span class="pl">{r.label}</span>{#if r.note}<span class="pn">{r.note}</span>{/if}<span class="pt">{TAG[r.kind]}</span>
         </li>
       {:else}
-        <li class="empty">Nothing by that name.</li>
+        <li class="empty">{t("Nothing with that name.")}</li>
       {/each}
     </ul>
-    <p class="palette-foot"><kbd>↑</kbd> <kbd>↓</kbd> move · <kbd>Enter</kbd> open · <kbd>Esc</kbd> close</p>
+    <p class="palette-foot"><kbd>↑</kbd> <kbd>↓</kbd> {t("select")} · <kbd>Enter</kbd> {t("open")} · <kbd>Esc</kbd> {t("close")}</p>
   </div>
 </div>
 
 <style>
-  /* A pane over the page. */
+  /* The list of results, a pane under the field in the header (the header itself stays free above it). */
   .palette {
     position: fixed;
-    inset: 0;
+    inset: var(--nav-h) 0 0 0;
     z-index: 20;
-    background: color-mix(in srgb, var(--p-bg) 70%, transparent);
+    background: color-mix(in srgb, var(--p-bg) 55%, transparent);
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: flex-start;
-    padding: 10vh 16px 16px;
+    padding: 6px var(--gutter) 16px;
   }
   .palette[hidden] { display: none; }
   .palette-box {
-    width: min(640px, 100%);
+    width: min(560px, 100%);
+    animation: palette-in 0.22s ease 0.32s backwards;
     background: var(--p-panel);
     border: 1px solid var(--p-outline);
     box-shadow: 0 12px 40px rgb(0 0 0 / 0.4);
     font-family: var(--p-mono);
   }
-  input {
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid var(--p-outline);
-    background: var(--p-raised);
-    padding: 12px 14px;
-    font-size: 1rem;
-    outline: none;
-  }
+  @keyframes palette-in { from { opacity: 0; transform: translateY(-6px); } }
+  @media (prefers-reduced-motion: reduce) { .palette-box { animation: none; } }
   ul { list-style: none; margin: 0; padding: 4px 0; max-height: 50vh; overflow: auto; }
   li { display: flex; align-items: baseline; gap: 10px; padding: 6px 14px; cursor: pointer; font-size: 0.9rem; }
   li.sel { background: var(--p-accent); color: var(--p-on-accent); }

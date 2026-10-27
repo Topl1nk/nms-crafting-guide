@@ -10,6 +10,7 @@ is -- lands where it should.
 from __future__ import annotations
 
 import json
+import re
 import random
 
 import pytest
@@ -219,7 +220,8 @@ def test_the_two_for_one_addresses_are_the_ones_the_guides_name() -> None:
     by_code = {loc.code: loc for loc in book.locations}
     assert by_code["11AC008F4025"].kind == "multi-tool"   # Hamonkle VI
     assert by_code["105EFD9D4303"].kind == "starship"     # UptonicaXIX
-    assert "S-class" in by_code["105EFD9D4303"].detail
+    # an S-class multi-tool, in whichever language the file is written
+    assert re.search(r"S-(class|класс)", by_code["105EFD9D4303"].detail)
 
 
 def test_locations_file_is_not_hand_broken() -> None:
