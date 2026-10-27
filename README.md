@@ -305,9 +305,7 @@ mise run tui        # go
 
 ### The terminal app in detail
 
-`mise run tui:screenshot` writes the pictures below from the app itself (Textual renders a screen to SVG), so they cannot go stale.
-
-![the recipe list in the terminal](docs/img/recipes.svg)
+The keys, the columns and the saved addresses of the terminal app. It is English only, and it is the older way in: the site above is where the project is developed.
 
 #### Keys
 
@@ -376,23 +374,6 @@ Then the actions:
   refining steps away. `needs seed` means refinable but wanting a material none
   of those tiers contain — a stellar metal, typically, of which you need two
   units ever. `loot (...)` means no recipe makes it.
-
-#### The screens
-
-`c` plans a chain (the cost it minimises is refiner-seconds per unit, so the plan ties up a machine for the least time), `n` is the nanite
-ladder, `e` the cooking effects, `m` the multi-tools, `P` the portal addresses, `i` the inventory.
-
-![a production chain](docs/img/chain.svg)
-
-![the nanite ladder](docs/img/nanites.svg)
-
-![cooking buffs](docs/img/food.svg)
-
-![multi-tools](docs/img/multitools.svg)
-
-![portal addresses](docs/img/portals.svg)
-
-![inventory](docs/img/inventory.svg)
 
 #### Portal symbols in a terminal
 
@@ -834,7 +815,7 @@ scripts in `mise-tasks/<group>/<name>`, which mise names `group:name`.
 | --- | --- |
 | `mise run tui:console` | Textual debug console, beside `mise run dev` |
 | `mise run tui:serve` | serve the TUI itself in a browser on `:8000` (textual serve) |
-| `mise run tui:screenshot` | regenerate the SVGs in this README |
+| `mise run tui:screenshot` | regenerate the terminal app's SVG screenshots in `docs/img/` |
 
 **`test:*`** — slices of the suite
 
