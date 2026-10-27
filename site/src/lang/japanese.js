@@ -211,7 +211,6 @@ export default {
   "Use it": "使う",
   "Light": "ライト",
   "Dark": "ダーク",
-  "Umber": "アンバー",
   "Gold": "ゴールド",
   "Cyan": "シアン",
   "Green": "グリーン",

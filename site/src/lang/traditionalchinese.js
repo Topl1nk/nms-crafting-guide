@@ -211,7 +211,6 @@ export default {
   "Use it": "使用",
   "Light": "淺色",
   "Dark": "深色",
-  "Umber": "棕褐",
   "Gold": "金色",
   "Cyan": "青色",
   "Green": "綠色",

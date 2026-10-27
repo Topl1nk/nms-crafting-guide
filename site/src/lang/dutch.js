@@ -211,7 +211,6 @@ export default {
   "Use it": "Gebruiken",
   "Light": "Licht",
   "Dark": "Donker",
-  "Umber": "Omber",
   "Gold": "Goud",
   "Cyan": "Cyaan",
   "Green": "Groen",

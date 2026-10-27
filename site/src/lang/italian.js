@@ -211,7 +211,6 @@ export default {
   "Use it": "Usa",
   "Light": "Chiaro",
   "Dark": "Scuro",
-  "Umber": "Terra d'ombra",
   "Gold": "Oro",
   "Cyan": "Ciano",
   "Green": "Verde",

@@ -107,7 +107,7 @@ export default {
   "by time (quickest)": "по времени (быстрые)", "by how easy the raws are": "по доступности сырья",
 
   // -- lib: theme, cycles, gamesave, tree, data (sections)
-  Light: "Светлая", Dark: "Тёмная", Umber: "Умбра", Gold: "Золото", Cyan: "Циан", Green: "Зелёный", Violet: "Фиолетовый", Orange: "Оранжевый",
+  Light: "Светлая", Dark: "Тёмная", Gold: "Золото", Cyan: "Циан", Green: "Зелёный", Violet: "Фиолетовый", Orange: "Оранжевый",
   "No game saves found.": "Сохранения игры не найдены.",
   "Could not read the save: {error}": "Не удалось прочитать сохранение: {error}",
   Loop: "Цикл", loop: "цикл", "{item} per turn": "{item} за оборот", "start with {items}": "начать с {items}",

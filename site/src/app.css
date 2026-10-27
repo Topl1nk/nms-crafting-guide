@@ -42,7 +42,7 @@ html { font-size: var(--fs, 16px); }
 body { font: 1.0625rem/1.5 var(--p-sans); -webkit-font-smoothing: antialiased; }
 /* The accent is the visitor's pick (Appearance): one variable drives every highlight. */
 :root[data-theme="dark"] {
-  --p-accent: var(--accent, #070a14); --p-accent-ink: var(--accent-ink, #acbdd4); --p-on-accent: var(--on-accent, #e2e6f3); --p-tertiary: var(--p-accent-ink);
+  --p-accent: var(--accent, #90a6c6); --p-accent-ink: var(--accent-ink, #90a6c6); --p-on-accent: var(--on-accent, #0b1124); --p-tertiary: var(--p-accent-ink);
   --p-sel: #2a3261; /* the selected row: a lighter blue */
 }
 :root[data-theme="light"] {

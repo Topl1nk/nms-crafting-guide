@@ -211,7 +211,6 @@ export default {
   "Use it": "사용",
   "Light": "밝게",
   "Dark": "어둡게",
-  "Umber": "엄버",
   "Gold": "금색",
   "Cyan": "청록",
   "Green": "초록",

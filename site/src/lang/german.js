@@ -211,7 +211,6 @@ export default {
   "Use it": "Benutzen",
   "Light": "Hell",
   "Dark": "Dunkel",
-  "Umber": "Umbra",
   "Gold": "Gold",
   "Cyan": "Cyan",
   "Green": "Grün",

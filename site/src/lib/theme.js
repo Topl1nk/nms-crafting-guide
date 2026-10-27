@@ -13,10 +13,8 @@ export const THEMES = [["light", N_("Light")], ["dark", N_("Dark")]];
 // a good scan, the purple of rare finds, and warning orange.
 //
 // [key, name, colour, ink, on]: the colour fills (a button, a badge); the ink is the same accent where it is drawn as text, a line or
-// an icon on a dark surface; `on` is the text on a fill. "Umber" is the near-black of the theme itself: it fills dark and writes in
-// the soft beige; the others are the same colour in both roles.
+// an icon on a dark surface (the same colour here); `on` is the text on a fill (dark, when none is given). Gold is the default.
 export const ACCENTS = [
-  ["umber", N_("Umber"), "#070a14", "#acbdd4", "#e2e6f3"],
   ["gold", N_("Gold"), "#f1c265"],
   ["cyan", N_("Cyan"), "#5ccbf0"],
   ["green", N_("Green"), "#64f19f"],
@@ -34,8 +32,8 @@ export function applyTheme(choice) {
 }
 
 export const look = {
-  // An accent saved before "Umber" existed (gold, then the only default) is not a choice: only one made after counts.
-  accent: () => (local.get("accent-chosen", false) ? local.get("accent", "umber") : "umber"),
+  // A saved key that is no longer in the list (the "umber" there once was) falls back to the first: gold.
+  accent: () => local.get("accent", "gold"),
   glow: () => local.get("glow", true),
   // Text size in px; the old "bigger text" switch (18) still counts for a saved choice.
   fs: () => Number(local.get("fs", local.get("big", false) ? 18 : 16)),
@@ -55,7 +53,7 @@ export function applyLook() {
 
 export function setLook(key, value) {
   local.set(key, value);
-  if (key === "accent") local.set("accent-chosen", true);
+
   applyLook();
 }
 

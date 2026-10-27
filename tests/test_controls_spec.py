@@ -1,4 +1,4 @@
-﻿"""The controls of the bars: three-state flags, one fixed width and right-aligned lists, the reset button left of the search,
+"""The controls of the bars: three-state flags, one fixed width and right-aligned lists, the reset button left of the search,
 one canvas for every pyramid, a square glow behind every icon."""
 
 from __future__ import annotations
@@ -286,14 +286,16 @@ def test_the_palette_is_a_warm_umber_without_green_or_yellow_and_the_edge_darken
     assert "border-color: var(--p-outline-hover)" in css and ":hover" in css
 
 
-def test_the_accent_is_the_near_black_of_the_theme_and_written_in_beige() -> None:
-    """The accent that fills (a button, a badge, the active tab) is a near-black of the theme with beige text on it; where the accent
-    is drawn as text, a line or an icon on a dark surface it is the soft beige ink. An accent saved before «Умбра» is not a choice."""
+def test_the_accent_is_gold_unless_another_is_chosen() -> None:
+    """The accent is the visitor's pick and gold by default: it fills (a button, a badge, the active tab) with dark text on it, and is the
+    same colour where it is drawn as text, a line or an icon. A saved key that is no longer offered (the near-black "umber" there once was)
+    falls back to gold. The CSS only has a fallback for the instant before the script sets the variable."""
     theme = read("lib", "theme.js")
-    assert '["umber", N_("Umber"), "#070a14", "#acbdd4", "#e2e6f3"]' in theme
-    assert 'local.get("accent-chosen", false)' in theme and 'local.set("accent-chosen", true)' in theme
+    assert 'ACCENTS = [\n  ["gold", N_("Gold"), "#f1c265"],' in theme.replace("\r\n", "\n")
+    assert '["umber"' not in theme, "no near-black accent: gold is the default"
+    assert 'accent: () => local.get("accent", "gold")' in theme
     app = read("app.css")
-    assert "--p-accent: var(--accent, #070a14); --p-accent-ink: var(--accent-ink, #acbdd4);" in app
+    assert re.search(r"--p-accent: var\(--accent, #[0-9a-f]{6}\); --p-accent-ink: var\(--accent-ink, #[0-9a-f]{6}\);", app)
     for path in sorted(SRC.rglob("*")):
         if path.suffix in {".css", ".svelte"} and path.name != "velvet.css":
             text = path.read_text(encoding="utf-8")
