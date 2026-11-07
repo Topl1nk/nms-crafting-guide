@@ -1,0 +1,6 @@
+# What the packaged desktop app is built from (a separate environment: the TUI's textual and mcp are not part of it).
+# nmsii.py needs only the standard library; the rest is for reading saves and installing the game's pictures.
+pyinstaller>=6.16
+pillow>=11
+lz4>=4.3
+hgpaktool==1.1.3

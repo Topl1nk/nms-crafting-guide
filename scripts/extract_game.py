@@ -44,7 +44,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-CACHE = ROOT / ".cache" / "game"
+# NMS_CACHE moves the cache out of the checkout: the packaged desktop app (desktop/) has no writable checkout.
+CACHE = (Path(os.environ["NMS_CACHE"]) if os.environ.get("NMS_CACHE") else ROOT / ".cache") / "game"
 MBIN_DIR = CACHE / "mbin"
 MXML_DIR = CACHE / "mxml"
 JSON_DIR = CACHE / "json"
@@ -387,17 +388,24 @@ def hgpaktool_version() -> str:
 
 # --- stages -----------------------------------------------------------------------
 
-def _hgpaktool() -> Path:
+def _hgpaktool() -> list[str]:
+    # NMS_HGPAKTOOL: the command as a JSON list, set by the packaged desktop app, which carries hgpaktool inside itself.
+    if os.environ.get("NMS_HGPAKTOOL"):
+        return json.loads(os.environ["NMS_HGPAKTOOL"])
     tool = Path(sys.executable).parent / "hgpaktool"
     if not tool.exists():
         tool = tool.with_suffix(".exe")  # Windows
     if not tool.exists():
         sys.exit("hgpaktool is not installed. Run: uv sync --extra extract")
-    return tool
+    return [str(tool)]
+
+
+def _shown(path: Path) -> Path:
+    return path.relative_to(ROOT) if path.is_relative_to(ROOT) else path
 
 
 def _run_pak(args: list[str], cwd: Path | None = None) -> None:
-    result = subprocess.run([str(_hgpaktool()), *args], capture_output=True, text=True, cwd=cwd)
+    result = subprocess.run([*_hgpaktool(), *args], capture_output=True, text=True, cwd=cwd)
     if result.returncode != 0:
         sys.exit(f"hgpaktool failed:\n{result.stdout}{result.stderr}")
 
@@ -573,11 +581,11 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.stage in ("unpack", "all"):
         files = unpack(game_dir(args.game))
-        print(f"unpacked {len(files)} files into {MBIN_DIR.relative_to(ROOT)}")
+        print(f"unpacked {len(files)} files into {_shown(MBIN_DIR)}")
 
     if args.stage in ("decompile", "all"):
         compiler = decompile()
-        print(f"decompiled into {MXML_DIR.relative_to(ROOT)} with MBINCompiler {compiler}")
+        print(f"decompiled into {_shown(MXML_DIR)} with MBINCompiler {compiler}")
 
     if args.stage in ("convert", "all"):
         header = (MXML_DIR / f"{RECIPES}.MXML")
@@ -589,7 +597,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"converted: {counts['substances']} substances, {counts['products']} products, "
               f"{counts['refining']} refining + {counts['cooking']} cooking recipes")
         print(f"source: {source['summary']}")
-        print(f"wrote {JSON_DIR.relative_to(ROOT)}. Now: mise run data:build")
+        print(f"wrote {_shown(JSON_DIR)}. Now: mise run data:build")
     return 0
 
 

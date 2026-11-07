@@ -37,3 +37,10 @@ web/wiki.json
 # The Android build (apk/README.md): the APK is a build output, not source.
 apk/*.apk
 apk/node_modules/
+
+# The desktop app's build (desktop/): fetched tools, the program folder, installers.
+desktop/vendor/
+desktop/out/
+desktop/build/
+desktop/icon.ico
+.desktop-venv/
