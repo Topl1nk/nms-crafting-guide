@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMSii&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=Una%20gu%C3%ADa%20de%20fabricaci%C3%B3n%20de%20No%20Man%27s%20Sky%20que%20vive%20en%20tu%20PC&descSize=20&descAlignY=60" alt="NMSii">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Una%20gu%C3%ADa%20de%20fabricaci%C3%B3n%20de%20No%20Man%27s%20Sky%20que%20vive%20en%20tu%20PC&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Descargar-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Descargar"></a>
@@ -18,11 +18,11 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMSii" width="100%">
+<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## ¿Qué es?
 
-Estás ante un refinador y te preguntas: *¿en qué se convierte esto y cuál es la forma más rápida de conseguir ese objeto con lo que llevo encima?* NMSii responde en un par de clics.
+Estás ante un refinador y te preguntas: *¿en qué se convierte esto y cuál es la forma más rápida de conseguir ese objeto con lo que llevo encima?* NMS Crafting Guide responde en un par de clics.
 
 Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **directamente de tu propia copia del juego**, así que las cifras son las que el juego usa de verdad, y no las que una wiki recordaba de un parche antiguo.
 
@@ -40,12 +40,12 @@ Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **dire
 
 | | |
 | --- | --- |
-| **Windows** | Descarga `NMSii-Setup-….exe` de la [última versión](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) y ejecútalo. No hacen falta permisos de administrador. El instalador habla 14 idiomas. |
-| **Linux** | Descarga `NMSii-….AppImage`, hazlo ejecutable y haz doble clic. |
+| **Windows** | Descarga `nms-crafting-guide-Setup-….exe` de la [última versión](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) y ejecútalo. No hacen falta permisos de administrador. El instalador habla 14 idiomas. |
+| **Linux** | Descarga `nms-crafting-guide-….AppImage`, hazlo ejecutable y haz doble clic. |
 
 Windows puede mostrar *"Windows protegió su PC"*, porque el programa es nuevo y no está firmado. Pulsa *Más información → Ejecutar de todas formas*.
 
-**Primer arranque.** NMSii encuentra tu No Man's Sky (Steam o GOG) y toma de él las imágenes de los objetos. Tarda unos minutos y ocurre una sola vez. Al cambiar a un idioma aún no preparado, el primer cambio tarda como un minuto y luego los nombres cambian al instante. Las imágenes y los textos se quedan en tu ordenador; pertenecen a Hello Games y nunca se suben.
+**Primer arranque.** NMS Crafting Guide encuentra tu No Man's Sky (Steam o GOG) y toma de él las imágenes de los objetos. Tarda unos minutos y ocurre una sola vez. Al cambiar a un idioma aún no preparado, el primer cambio tarda como un minuto y luego los nombres cambian al instante. Las imágenes y los textos se quedan en tu ordenador; pertenecen a Hello Games y nunca se suben.
 
 ## Un vistazo
 
@@ -71,7 +71,7 @@ Windows puede mostrar *"Windows protegió su PC"*, porque el programa es nuevo y
 ## Conviene saber
 
 - **Claro u oscuro,** cualquier color de acento, texto más grande, iconos brillantes. Todo en el menú de ajustes.
-- **Camino corto.** Elige un objeto y NMSii encuentra cómo hacerlo con cosas que se recogen en cualquier planeta, con el plan que menos ocupa el refinador.
+- **Camino corto.** Elige un objeto y NMS Crafting Guide encuentra cómo hacerlo con cosas que se recogen en cualquier planeta, con el plan que menos ocupa el refinador.
 - **Tras una actualización del juego** la aplicación puede volver a leer las cifras de tu juego, así que nunca se quedan viejas.
 - **Hoja de consulta para imprimir** con las recetas que merece la pena memorizar, en `docs/pdf/`.
 
@@ -79,7 +79,7 @@ Windows puede mostrar *"Windows protegió su PC"*, porque el programa es nuevo y
 
 Hecho por **[Topl1nk](https://github.com/Topl1nk)**.
 
-NMSii empezó como un fork de [nms-items-interface](https://github.com/rdlu/nms-items-interface), de Rodrigo Dlugokenski, y desde entonces se ha reconstruido: páginas nuevas, aplicación de escritorio, los 17 idiomas y datos leídos del juego actual. Los glifos de portal están calcados de [nmsportals](https://nmsportals.github.io/).
+NMS Crafting Guide empezó como un fork de [nms-items-interface](https://github.com/rdlu/nms-items-interface), de Rodrigo Dlugokenski, y desde entonces se ha reconstruido: páginas nuevas, aplicación de escritorio, los 17 idiomas y datos leídos del juego actual. Los glifos de portal están calcados de [nmsportals](https://nmsportals.github.io/).
 
 *No Man's Sky*, con todos sus nombres, imágenes y textos, pertenece a Hello Games; este es un proyecto de fans no oficial. Licencia [GPL-3.0](../../LICENSE). ¿Quieres compilarlo o cambiarlo? Mira [docs/DEVELOPERS.md](../DEVELOPERS.md) (en inglés).
 

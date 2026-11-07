@@ -5,7 +5,7 @@ import data from "./data/simplifiedchinese.js"; // the hand-written texts of dat
 export default {
   ...data,
 
-  "NMSii — a No Man's Sky reference": "NMSii — 无人深空百科",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — 无人深空百科",
   "Could not load the data ({error}).": "无法加载数据（{error}）。",
   "Loading the reference…": "正在加载百科…",
   "from the planet only": "仅限星球",

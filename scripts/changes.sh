@@ -8,7 +8,7 @@
 #
 # Prose alone needs none of them. data/locations.json alone (a portal address)
 # needs only its own check: the suite's tests of it are that same validation,
-# and the Pages build on main still exports it before anything goes live.
+# and the Pages build on nmscg still exports it before anything goes live.
 #
 # Shared by .github/workflows/ci.yml and .githooks/pre-push, so CI and the
 # local hook skip the same things. Conservative: a path not listed below runs

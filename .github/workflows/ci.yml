@@ -5,7 +5,7 @@
 # commit and push; this is the gate for what arrives without them: Dependabot,
 # forks, contributors.
 #
-# `check` is the required status check on main, so it must report on every
+# `check` is the required status check on nmscg, so it must report on every
 # pull request: no workflow-level path filter, which would leave a docs-only PR
 # waiting forever for a check that never starts. Instead scripts/changes.sh
 # skips what a change cannot affect, inside the job: prose alone is a checkout

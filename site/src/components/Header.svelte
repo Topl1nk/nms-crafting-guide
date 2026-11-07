@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   // plugii's navbar: logo and name left, links, search, theme and GitHub
   // right, all in mono; the links fold into a menu on a phone.
   import { NAV } from "../lib/data.js";
@@ -66,7 +66,7 @@
 
 <header class="top" class:menu-open={menuOpen} class:searching={search.open} style="--w: {width}px">
   <div class="top-in">
-    <a class="brand" href="#/"><img src="favicon.svg" alt="" width="26" height="26">NMSii</a>
+    <a class="brand" href="#/"><img src="favicon.svg" alt="" width="26" height="26">NMS Crafting Guide</a>
     <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_noninteractive_element_interactions -->
     <nav id="nav" class="nav" bind:this={nav} aria-label={t("Sections")} onclick={() => { menuOpen = false; }}>
       {#each NAV as [key, label], i (key)}

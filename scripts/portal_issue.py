@@ -331,7 +331,7 @@ def setup(dry_run: bool = False) -> None:
     print("actions   fork pull requests from every outside contributor wait for approval")
 
 
-CHECK = "check"  # the required status check on main: ci.yml's job name
+CHECK = "check"  # the required status check on nmscg: ci.yml's job name
 
 
 def vouch_call(sha: str, repo: str, run_url: str) -> list[str]:

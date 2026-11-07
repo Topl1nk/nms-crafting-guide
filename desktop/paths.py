@@ -15,11 +15,19 @@ THIS = Path(__file__).resolve().parent
 
 
 def data_home() -> Path:
-    if os.environ.get("NMSII_HOME"):
-        return Path(os.environ["NMSII_HOME"])
+    if os.environ.get("NMS_CRAFTING_GUIDE_HOME") or os.environ.get("NMSII_HOME"):
+        return Path(os.environ.get("NMS_CRAFTING_GUIDE_HOME") or os.environ["NMSII_HOME"])
     if os.name == "nt":
-        return Path(os.environ.get("LOCALAPPDATA") or Path.home() / "AppData" / "Local") / "NMSii"
-    return Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local" / "share") / "nmsii"
+        base, old = Path(os.environ.get("LOCALAPPDATA") or Path.home() / "AppData" / "Local"), "NMSii"
+    else:
+        base, old = Path(os.environ.get("XDG_DATA_HOME") or Path.home() / ".local" / "share"), "nmsii"
+    if not (base / "nms-crafting-guide").exists() and (base / old).is_dir():
+        # The program was called NMSii before: its pictures, languages and settings move with the name.
+        try:
+            (base / old).rename(base / "nms-crafting-guide")
+        except OSError:
+            return base / old  # in use: keep working where it is, rather than start empty
+    return base / "nms-crafting-guide"
 
 
 HOME = data_home()
@@ -35,10 +43,10 @@ LANGS_SCRIPT = RES / "scripts" / "build_langs.py"
 
 
 def self_command(tool: str) -> list[str]:
-    """Run one of this program's own helper tools in a child process (see nmsii.py --tool)."""
+    """Run one of this program's own helper tools in a child process (see nms_crafting_guide.py --tool)."""
     if FROZEN:
         return [sys.executable, "--tool", tool]
-    return [sys.executable, str(THIS / "nmsii.py"), "--tool", tool]
+    return [sys.executable, str(THIS / "nms_crafting_guide.py"), "--tool", tool]
 
 
 def mbincompiler() -> Path:

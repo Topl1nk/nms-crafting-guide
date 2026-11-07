@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMSii&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=A%20No%20Man%27s%20Sky%20crafting%20reference%20that%20lives%20on%20your%20PC&descSize=20&descAlignY=60" alt="NMSii">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=A%20No%20Man%27s%20Sky%20crafting%20reference%20that%20lives%20on%20your%20PC&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Download-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Download"></a>
@@ -18,12 +18,12 @@
 
 </div>
 
-<img src="docs/img/site-recipes.webp" alt="NMSii: the Craft page" width="100%">
+<img src="docs/img/site-recipes.webp" alt="NMS Crafting Guide: the Craft page" width="100%">
 
 ## What is it?
 
 You are standing at a refiner and wondering: *what does this turn into, and what is the quickest way to get that item
-from what I'm carrying?* NMSii answers in a couple of clicks.
+from what I'm carrying?* NMS Crafting Guide answers in a couple of clicks.
 
 It is a small program for your computer. It reads recipes, prices and names **straight from your own copy of the
 game**, so the numbers are the ones your game really uses, not what a wiki remembered from an older patch.
@@ -42,13 +42,13 @@ game**, so the numbers are the ones your game really uses, not what a wiki remem
 
 | | |
 | --- | --- |
-| **Windows** | Download `NMSii-Setup-….exe` from the [latest release](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) and run it. No administrator rights needed. The installer speaks 14 languages. |
-| **Linux** | Download `NMSii-….AppImage`, make it executable and double-click it. |
+| **Windows** | Download `nms-crafting-guide-Setup-….exe` from the [latest release](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) and run it. No administrator rights needed. The installer speaks 14 languages. |
+| **Linux** | Download `nms-crafting-guide-….AppImage`, make it executable and double-click it. |
 
 Windows may show a *"Windows protected your PC"* warning, because the program is new and not signed. Press
 *More info → Run anyway*.
 
-**First launch.** NMSii finds your No Man's Sky installation (Steam or GOG) and takes the item pictures from it. This
+**First launch.** NMS Crafting Guide finds your No Man's Sky installation (Steam or GOG) and takes the item pictures from it. This
 takes a few minutes and happens once. If you switch to a language that has not been prepared yet, the first switch takes
 about a minute, and item names then change on the spot. The pictures and texts stay on your computer; they belong to
 Hello Games and are never uploaded or shared.
@@ -88,7 +88,7 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 ## Good to know
 
 - **Light or dark**, any accent colour, bigger text, glowing icons. All in the settings menu.
-- **Short path.** Pick an item and NMSii finds the way to make it from things you can pick up on any planet,
+- **Short path.** Pick an item and NMS Crafting Guide finds the way to make it from things you can pick up on any planet,
   choosing the plan that keeps your refiner busy the least.
 - **After a game update** the app can read the new numbers from your game again, so it does not go stale.
 - **Printable cheat sheet** of the recipes worth memorising, in `docs/pdf/`.
@@ -97,7 +97,7 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 
 Made by **[Topl1nk](https://github.com/Topl1nk)**.
 
-NMSii began as a fork of [nms-items-interface](https://github.com/rdlu/nms-items-interface) by Rodrigo Dlugokenski and
+NMS Crafting Guide began as a fork of [nms-items-interface](https://github.com/rdlu/nms-items-interface) by Rodrigo Dlugokenski and
 has since been rebuilt: new pages, a desktop app, all 17 languages, and data read from the current game.
 Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/). *No Man's Sky* and all of its names,
 pictures and texts belong to Hello Games; this is an unofficial fan project.

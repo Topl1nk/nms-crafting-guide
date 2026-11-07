@@ -1,4 +1,4 @@
-# The desktop app: a Windows installer (NMSii-Setup-<version>.exe) and a Linux AppImage, built from the same site.
+# The desktop app: a Windows installer (nms-crafting-guide-Setup-<version>.exe) and a Linux AppImage, built from the same site.
 # Both carry the program, so the user needs neither Python nor Node, and install nothing but the one file: the installer sets
 # up the Start menu entry and an uninstaller, the AppImage is made executable and run. See desktop/.
 #
@@ -50,11 +50,11 @@ jobs:
         include:
           - os: windows-latest
             platform: windows
-            exe: desktop/out/NMSii/NMSii.exe
+            exe: desktop/out/nms-crafting-guide/nms-crafting-guide.exe
           # The oldest current image, so the AppImage runs on the widest range of glibc.
           - os: ubuntu-22.04
             platform: linux
-            exe: desktop/out/NMSii/NMSii
+            exe: desktop/out/nms-crafting-guide/nms-crafting-guide
     runs-on: ${{ matrix.os }}
     timeout-minutes: 30
     defaults:
@@ -100,17 +100,17 @@ jobs:
         run: |
           # Inno Setup 6 is on the runner image. MSYS_NO_PATHCONV: git-bash would turn /DAppVersion=... into a path.
           export MSYS_NO_PATHCONV=1
-          "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DAppVersion=${{ steps.version.outputs.value }}" desktop/installer/nmsii.iss
+          "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DAppVersion=${{ steps.version.outputs.value }}" desktop/installer/nms-crafting-guide.iss
       - name: Linux AppImage
         if: matrix.platform == 'linux'
         run: bash desktop/installer/build_appimage.sh "${{ steps.version.outputs.value }}"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: NMSii-${{ matrix.platform }}
+          name: nms-crafting-guide-${{ matrix.platform }}
           path: |
-            desktop/out/NMSii-Setup-*.exe
-            desktop/out/NMSii-*.AppImage
+            desktop/out/nms-crafting-guide-Setup-*.exe
+            desktop/out/nms-crafting-guide-*.AppImage
           if-no-files-found: error
 
   release:
@@ -123,11 +123,11 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          pattern: NMSii-*
+          pattern: nms-crafting-guide-*
           path: release
           merge-multiple: true
       - env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release create "$GITHUB_REF_NAME" release/* \
-            --repo "$GITHUB_REPOSITORY" --title "NMSii ${GITHUB_REF_NAME#v}" --generate-notes
+            --repo "$GITHUB_REPOSITORY" --title "NMS Crafting Guide ${GITHUB_REF_NAME#v}" --generate-notes

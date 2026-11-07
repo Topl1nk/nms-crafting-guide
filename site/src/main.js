@@ -1,4 +1,4 @@
-﻿// NMSii on the web: the TUI's screens as pages over data.json.
+// NMS Crafting Guide on the web: the TUI's screens as pages over data.json.
 //
 // App.svelte is the frame (header, view, footer); one component per view in
 // views/, shared pieces in components/, and the logic that is not about

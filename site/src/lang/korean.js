@@ -5,7 +5,7 @@ import data from "./data/korean.js"; // the hand-written texts of data/
 export default {
   ...data,
 
-  "NMSii — a No Man's Sky reference": "NMSii — No Man's Sky 안내서",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — No Man's Sky 안내서",
   "Could not load the data ({error}).": "데이터를 불러올 수 없습니다 ({error}).",
   "Loading the reference…": "안내서를 불러오는 중…",
   "from the planet only": "행성에서만",

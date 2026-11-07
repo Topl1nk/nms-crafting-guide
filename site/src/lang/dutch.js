@@ -5,7 +5,7 @@ import data from "./data/dutch.js"; // the hand-written texts of data/
 export default {
   ...data,
 
-  "NMSii — a No Man's Sky reference": "NMSii — een naslagwerk voor No Man's Sky",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — een naslagwerk voor No Man's Sky",
   "Could not load the data ({error}).": "De gegevens konden niet worden geladen ({error}).",
   "Loading the reference…": "Het naslagwerk wordt geladen…",
   "from the planet only": "alleen van de planeet",

@@ -5,7 +5,7 @@ import data from "./data/polish.js"; // the hand-written texts of data/
 export default {
   ...data,
 
-  "NMSii — a No Man's Sky reference": "NMSii — przewodnik po No Man's Sky",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — przewodnik po No Man's Sky",
   "Could not load the data ({error}).": "Nie udało się wczytać danych ({error}).",
   "Loading the reference…": "Wczytywanie przewodnika…",
   "from the planet only": "tylko z planety",

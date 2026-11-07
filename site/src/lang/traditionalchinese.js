@@ -5,7 +5,7 @@ import data from "./data/traditionalchinese.js"; // the hand-written texts of da
 export default {
   ...data,
 
-  "NMSii — a No Man's Sky reference": "NMSii — 無人深空百科",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — 無人深空百科",
   "Could not load the data ({error}).": "無法載入資料（{error}）。",
   "Loading the reference…": "正在載入百科…",
   "from the planet only": "僅限星球",

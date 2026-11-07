@@ -2,7 +2,7 @@
 
 The site ships with the page's words in every language, but the item texts are Hello Games' and are not in the build. Like the
 pictures (pictures.py), they are read from the installed game: one language takes about a minute, once, and is kept in
-LANGS/<language>.json, which the launcher serves at /lang/ (nmsii.py).
+LANGS/<language>.json, which the launcher serves at /lang/ (nms_crafting_guide.py).
 """
 import re
 import subprocess

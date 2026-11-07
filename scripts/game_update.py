@@ -6,7 +6,7 @@ from extract_game.py) with data/source.json, then:
   current      prints "data is current: <label>"
   blocked      newer build the pinned MBINCompiler cannot read yet: opens or
                updates ONE `game-update` issue for that build, extracts nothing
-  update       newer build it reads: branch data/game-<build> from origin/main
+  update       newer build it reads: branch data/game-<build> from origin/nmscg
                (or the open PR's branch), extract:all, pdf:build, the suite
                (failures are the signal, not an abort), extract:diff, commit,
                push over SSH, open or update the PR "Update data to <label>"
@@ -247,11 +247,11 @@ def update(version: dict, recorded: dict, dry_run: bool, no_pr: bool) -> int:
     if not dry_run and not no_pr and not re.match(r"^(git@|ssh://)", remote_url):
         raise SystemExit(f"origin pushes over {remote_url}, not SSH; refusing to push")
 
-    git("fetch", "origin", "main")
+    git("fetch", "origin", "nmscg")
     has_remote = run(["git", "fetch", "origin",
                       f"+refs/heads/{branch}:refs/remotes/origin/{branch}"],
                      check=False).returncode == 0
-    base = f"origin/{branch}" if has_remote else "origin/main"
+    base = f"origin/{branch}" if has_remote else "origin/nmscg"
     start = git("rev-parse", "--abbrev-ref", "HEAD")
     start = start if start != "HEAD" else git("rev-parse", "HEAD")
 
@@ -264,10 +264,10 @@ def update(version: dict, recorded: dict, dry_run: bool, no_pr: bool) -> int:
     notes: list[str] = []
     try:
         if has_remote:
-            merged = run(["git", "merge", "--no-edit", "origin/main"], check=False)
+            merged = run(["git", "merge", "--no-edit", "origin/nmscg"], check=False)
             if merged.returncode:
                 run(["git", "merge", "--abort"], check=False)
-                raise SystemExit(f"{branch} does not merge origin/main cleanly; fix it by hand")
+                raise SystemExit(f"{branch} does not merge origin/nmscg cleanly; fix it by hand")
         print(f"== extract:all on {branch if not dry_run else base + ' (detached)'}", flush=True)
         run(["mise", "run", "extract:all"], capture=False)
         if run(["mise", "run", "pdf:build"], check=False, capture=False).returncode:
@@ -308,7 +308,7 @@ def update(version: dict, recorded: dict, dry_run: bool, no_pr: bool) -> int:
                   f"{title}\n\n{body}")
             return 0
 
-        assert branch.startswith(BRANCH_PREFIX) and branch != "main"
+        assert branch.startswith(BRANCH_PREFIX) and branch != "nmscg"
         # The suite just ran above; the pre-push hook would only run it again
         # and refuse the push on the very failures this PR exists to show.
         run(["git", "push", "-u", "origin", f"{branch}:refs/heads/{branch}"],
@@ -323,7 +323,7 @@ def update(version: dict, recorded: dict, dry_run: bool, no_pr: bool) -> int:
                      "--body-file", str(tmp), "--add-label", LABEL[0]])
                 print(f"updated {prs[0]['url']}")
             else:
-                out = run(["gh", "pr", "create", "-R", REPO, "--base", "main", "--head", branch,
+                out = run(["gh", "pr", "create", "-R", REPO, "--base", "nmscg", "--head", branch,
                            "--title", title, "--label", LABEL[0], "--body-file", str(tmp)]).stdout
                 print(f"opened {out.strip()}")
         finally:

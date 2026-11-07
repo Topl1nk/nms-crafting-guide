@@ -1,9 +1,9 @@
-"""NMSii as a desktop app: a tiny local web server for the built site (dist/) and the browser's "app" mode, i.e. a plain window with
+"""NMS Crafting Guide as a desktop app: a tiny local web server for the built site (dist/) and the browser's "app" mode, i.e. a plain window with
 no tabs or address bar. The server stops when the window is closed. Nothing leaves this computer.
 
-    nmsii                  open the window
-    nmsii --server         no window: serve and print the address (for tests)
-    nmsii --tool NAME ...  internal: run a helper in a child process (hgpaktool, extract), so the packaged program needs no Python
+    nms-crafting-guide      open the window
+    nms-crafting-guide --server no window: serve and print the address (for tests)
+    nms-crafting-guide --tool NAME ... internal: run a helper in a child process (hgpaktool, extract), so the packaged program needs no Python
 """
 import functools
 import http.server
@@ -69,7 +69,7 @@ import pictures  # noqa: E402
 
 
 # The window's lifetime is not the browser process's: with a profile that is already running (Edge lingers in the background
-# after its window closes, or a second NMSii is started) a new msedge.exe hands its window to that process and exits at once,
+# after its window closes, or a second copy is started) a new msedge.exe hands its window to that process and exits at once,
 # which used to stop the server under a window that was just opened. So the page itself says it is there: a ping every
 # 10 s, and a beacon when it is closed. The server stops when the page has gone, whatever the browser process does.
 HEARTBEAT = (b"<script>(function(){var p=function(){fetch('/api/ping',{method:'POST',keepalive:true}).catch(function(){})};"

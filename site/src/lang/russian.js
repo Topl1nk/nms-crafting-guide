@@ -118,7 +118,7 @@ export default {
   "by floors": "по этажам", "by rarity of raws": "по редкости сырья", "by gain": "по выигрышу",
   "My items": "Мои вещи", Craft: "Крафт", Tree: "Древо", Wiki: "Вики", "Multi-tools": "Мультитулы", Portals: "Порталы", Help: "Помощь",
   "How to make": "Как сделать",
-  "NMSii — a No Man's Sky reference": "NMSii — справочник No Man's Sky",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — справочник No Man's Sky",
   "Could not load the data ({error}).": "Не удалось загрузить данные ({error}).",
   "Loading the reference…": "Загружаю справочник…",
 

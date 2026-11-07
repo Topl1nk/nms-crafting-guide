@@ -1,4 +1,4 @@
-# PyInstaller spec for the desktop app: `pyinstaller desktop/nmsii.spec` from app/ (build.py does it).
+# PyInstaller spec for the desktop app: `pyinstaller desktop/nms-crafting-guide.spec` from app/ (build.py does it).
 # One folder, not one file: a onefile program unpacks itself into a temp folder on every start, which is slow and what virus
 # scanners dislike. The installers (Inno Setup, AppImage) are what make the folder one thing for the user.
 import sys
@@ -8,7 +8,7 @@ app = Path(SPECPATH).parent
 windows = sys.platform == "win32"
 
 a = Analysis(
-    [str(app / "desktop" / "nmsii.py")],
+    [str(app / "desktop" / "nms_crafting_guide.py")],
     pathex=[str(app / "desktop")],
     datas=[
         (str(app / "dist"), "dist"),  # the built site (npm run build)
@@ -29,8 +29,8 @@ exe = EXE(
     a.scripts + [("X utf8", None, "OPTION")],
     [],
     exclude_binaries=True,
-    name="NMSii",
-    console=False,  # a window app: no black console behind it (the tools it starts are run hidden, see nmsii.py)
+    name="nms-crafting-guide",
+    console=False,  # a window app: no black console behind it (the tools it starts are run hidden, see nms_crafting_guide.py)
     icon=str(app / "desktop" / "icon.ico") if windows else None,
 )
-coll = COLLECT(exe, a.binaries, a.datas, name="NMSii")
+coll = COLLECT(exe, a.binaries, a.datas, name="nms-crafting-guide")

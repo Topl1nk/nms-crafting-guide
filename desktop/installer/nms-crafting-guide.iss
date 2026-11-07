@@ -1,6 +1,6 @@
-; Windows installer for NMSii: `iscc /DAppVersion=1.2.3 desktop\installer\nmsii.iss` after desktop/build.py.
+; Windows installer for NMS Crafting Guide: `iscc /DAppVersion=1.2.3 desktop\installer\nms-crafting-guide.iss` after desktop/build.py.
 ; Per-user by default (no administrator prompt, installs under %LOCALAPPDATA%\Programs); the wizard offers
-; "for all users" too. What the player makes (pictures, window settings) lives in %LOCALAPPDATA%\NMSii, apart from the
+; "for all users" too. What the player makes (pictures, window settings) lives in %LOCALAPPDATA%\nms-crafting-guide, apart from the
 ; program, so an update or an uninstall of the program does not touch it.
 
 #ifndef AppVersion
@@ -9,20 +9,20 @@
 
 [Setup]
 AppId={{6E1B6B3A-4F0C-4F5B-9A53-4D5B0F5E2C11}
-AppName=NMSii
+AppName=NMS Crafting Guide
 AppVersion={#AppVersion}
 AppPublisher=Topl1nk
 AppPublisherURL=https://github.com/Topl1nk/nms-crafting-guide
-DefaultDirName={autopf}\NMSii
-DefaultGroupName=NMSii
+DefaultDirName={autopf}\nms-crafting-guide
+DefaultGroupName=NMS Crafting Guide
 DisableProgramGroupPage=yes
 PrivilegesRequired=lowest
 PrivilegesRequiredOverridesAllowed=dialog
 ArchitecturesInstallIn64BitMode=x64compatible
 SetupIconFile=..\icon.ico
-UninstallDisplayIcon={app}\NMSii.exe
+UninstallDisplayIcon={app}\nms-crafting-guide.exe
 OutputDir=..\out
-OutputBaseFilename=NMSii-Setup-{#AppVersion}
+OutputBaseFilename=nms-crafting-guide-Setup-{#AppVersion}
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
@@ -46,15 +46,21 @@ Name: "turkish"; MessagesFile: "compiler:Languages\Turkish.isl"
 Name: "ukrainian"; MessagesFile: "compiler:Languages\Ukrainian.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 
+[InstallDelete]
+; The program was called NMSii before: take its old file and shortcuts away on an update.
+Type: files; Name: "{app}\NMSii.exe"
+Type: files; Name: "{autoprograms}\NMSii.lnk"
+Type: files; Name: "{autodesktop}\NMSii.lnk"
+
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"
 
 [Files]
-Source: "..\out\NMSii\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
+Source: "..\out\nms-crafting-guide\*"; DestDir: "{app}"; Flags: recursesubdirs createallsubdirs ignoreversion
 
 [Icons]
-Name: "{autoprograms}\NMSii"; Filename: "{app}\NMSii.exe"
-Name: "{autodesktop}\NMSii"; Filename: "{app}\NMSii.exe"; Tasks: desktopicon
+Name: "{autoprograms}\NMS Crafting Guide"; Filename: "{app}\nms-crafting-guide.exe"
+Name: "{autodesktop}\NMS Crafting Guide"; Filename: "{app}\nms-crafting-guide.exe"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\NMSii.exe"; Description: "{cm:LaunchProgram,NMSii}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\nms-crafting-guide.exe"; Description: "{cm:LaunchProgram,NMS Crafting Guide}"; Flags: nowait postinstall skipifsilent

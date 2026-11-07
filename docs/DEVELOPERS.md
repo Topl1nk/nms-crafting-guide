@@ -1,4 +1,8 @@
-# NMSii — a No Man's Sky crafting guide
+# NMS Crafting Guide: notes for developers
+
+The terminal app, the MCP server and the tools around them keep their old name, NMSii. The desktop app and the site are called NMS Crafting Guide.
+
+---
 
 The numbers No Man's Sky doesn't show you, for the two lookups you actually make while playing: *what does this refine
 into*, and *how do I get that from what I'm carrying*. Then the rest: every way to make an item laid out as a tree, which dish

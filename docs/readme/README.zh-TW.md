@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMSii&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=%E4%BD%8F%E5%9C%A8%E4%BD%A0%E9%9B%BB%E8%85%A6%E8%A3%A1%E7%9A%84%E3%80%8A%E7%84%A1%E4%BA%BA%E6%B7%B1%E7%A9%BA%E3%80%8B%E8%A3%BD%E4%BD%9C%E9%80%9F%E6%9F%A5%E5%B7%A5%E5%85%B7&descSize=20&descAlignY=60" alt="NMSii">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=%E4%BD%8F%E5%9C%A8%E4%BD%A0%E9%9B%BB%E8%85%A6%E8%A3%A1%E7%9A%84%E3%80%8A%E7%84%A1%E4%BA%BA%E6%B7%B1%E7%A9%BA%E3%80%8B%E8%A3%BD%E4%BD%9C%E9%80%9F%E6%9F%A5%E5%B7%A5%E5%85%B7&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%E4%B8%8B%E8%BC%89-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="下載"></a>
@@ -18,11 +18,11 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMSii" width="100%">
+<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## 這是什麼?
 
-你站在精煉器前,心想:*這個會變成什麼?用我身上的東西,最快怎麼得到那個物品?* NMSii 點幾下就能回答。
+你站在精煉器前,心想:*這個會變成什麼?用我身上的東西,最快怎麼得到那個物品?* NMS Crafting Guide 點幾下就能回答。
 
 這是一個裝在你電腦上的小程式。它**直接從你自己的遊戲**讀取配方、價格和名稱,所以數字就是遊戲真正在用的,而不是某個維基記著的舊更新資料。
 
@@ -40,12 +40,12 @@
 
 | | |
 | --- | --- |
-| **Windows** | 從[最新版本](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)下載 `NMSii-Setup-….exe` 並執行。不需要系統管理員權限。安裝程式支援 14 種語言。 |
-| **Linux** | 下載 `NMSii-….AppImage`,賦予可執行權限後按兩下執行。 |
+| **Windows** | 從[最新版本](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)下載 `nms-crafting-guide-Setup-….exe` 並執行。不需要系統管理員權限。安裝程式支援 14 種語言。 |
+| **Linux** | 下載 `nms-crafting-guide-….AppImage`,賦予可執行權限後按兩下執行。 |
 
 因為程式較新且未簽署,Windows 可能顯示*「Windows 已保護您的電腦」*。請按*其他資訊 → 仍要執行*。
 
-**第一次啟動。** NMSii 會找到你安裝的《無人深空》(Steam 或 GOG),並從中取出物品圖片。這需要幾分鐘,只會發生一次。切換到尚未準備好的語言時,第一次切換約需一分鐘,之後名稱會立刻改變。圖片和文字都留在你的電腦上,它們屬於 Hello Games,絕不會被上傳。
+**第一次啟動。** NMS Crafting Guide 會找到你安裝的《無人深空》(Steam 或 GOG),並從中取出物品圖片。這需要幾分鐘,只會發生一次。切換到尚未準備好的語言時,第一次切換約需一分鐘,之後名稱會立刻改變。圖片和文字都留在你的電腦上,它們屬於 Hello Games,絕不會被上傳。
 
 ## 看一看
 
@@ -71,7 +71,7 @@
 ## 小提示
 
 - **淺色或深色,** 任意強調色、更大的文字、發光圖示。全在設定選單裡。
-- **最短路徑。** 選一個物品,NMSii 會找出用任何星球上都撿得到的東西製作它、且最少佔用精煉器的方案。
+- **最短路徑。** 選一個物品,NMS Crafting Guide 會找出用任何星球上都撿得到的東西製作它、且最少佔用精煉器的方案。
 - **遊戲更新後,** 應用程式可以重新從你的遊戲讀取數字,所以不會過時。
 - **可列印的速查表,** 收錄值得記住的配方,在 `docs/pdf/`。
 
@@ -79,7 +79,7 @@
 
 作者: **[Topl1nk](https://github.com/Topl1nk)**.
 
-NMSii 最初是 Rodrigo Dlugokenski 的 [nms-items-interface](https://github.com/rdlu/nms-items-interface) 的分支,此後被重新打造:新頁面、桌面應用程式、全部 17 種語言,以及從目前遊戲讀取的資料。傳送門字形描摹自 [nmsportals](https://nmsportals.github.io/)。
+NMS Crafting Guide 最初是 Rodrigo Dlugokenski 的 [nms-items-interface](https://github.com/rdlu/nms-items-interface) 的分支,此後被重新打造:新頁面、桌面應用程式、全部 17 種語言,以及從目前遊戲讀取的資料。傳送門字形描摹自 [nmsportals](https://nmsportals.github.io/)。
 
 《無人深空》及其所有名稱、圖片和文字屬於 Hello Games;這是一個非官方的粉絲專案。授權為 [GPL-3.0](../../LICENSE)。想自己建置或修改?見 [docs/DEVELOPERS.md](../DEVELOPERS.md)(英文)。
 

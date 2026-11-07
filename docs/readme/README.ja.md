@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMSii&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AEPC%E3%81%A7%E5%8B%95%E3%81%8F%20No%20Man%27s%20Sky%20%E3%81%AE%E3%82%AF%E3%83%A9%E3%83%95%E3%83%88%E6%97%A9%E8%A6%8B%E3%83%84%E3%83%BC%E3%83%AB&descSize=20&descAlignY=60" alt="NMSii">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AEPC%E3%81%A7%E5%8B%95%E3%81%8F%20No%20Man%27s%20Sky%20%E3%81%AE%E3%82%AF%E3%83%A9%E3%83%95%E3%83%88%E6%97%A9%E8%A6%8B%E3%83%84%E3%83%BC%E3%83%AB&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="ダウンロード"></a>
@@ -18,11 +18,11 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMSii" width="100%">
+<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## これは何?
 
-精製機の前で、こう思ったことはありませんか。*これは何になる? 手持ちの素材でそのアイテムを一番早く手に入れるには?* NMSii なら数クリックで答えが出ます。
+精製機の前で、こう思ったことはありませんか。*これは何になる? 手持ちの素材でそのアイテムを一番早く手に入れるには?* NMS Crafting Guide なら数クリックで答えが出ます。
 
 あなたのパソコンで動く小さなプログラムです。レシピ、価格、名前を**手元のゲームから直接**読み取るので、古いパッチをうろ覚えしたWikiではなく、ゲームが実際に使っている数値が出ます。
 
@@ -40,12 +40,12 @@
 
 | | |
 | --- | --- |
-| **Windows** | [最新リリース](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)から `NMSii-Setup-….exe` をダウンロードして実行してください。管理者権限は不要です。インストーラーは14言語に対応しています。 |
-| **Linux** | `NMSii-….AppImage` をダウンロードし、実行権限を付けてダブルクリックします。 |
+| **Windows** | [最新リリース](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)から `nms-crafting-guide-Setup-….exe` をダウンロードして実行してください。管理者権限は不要です。インストーラーは14言語に対応しています。 |
+| **Linux** | `nms-crafting-guide-….AppImage` をダウンロードし、実行権限を付けてダブルクリックします。 |
 
 新しく署名もないプログラムのため、Windows に *「WindowsによってPCが保護されました」* と表示されることがあります。*詳細情報 → 実行* を押してください。
 
-**初回起動。** NMSii はインストール済みの No Man's Sky(Steam または GOG)を見つけ、アイテム画像を取り込みます。数分かかりますが、一度だけです。まだ準備されていない言語に切り替えると、最初の切り替えに約1分かかり、その後すぐに名前が変わります。画像とテキストはあなたのパソコンに残り、Hello Games のものとして、アップロードされることはありません。
+**初回起動。** NMS Crafting Guide はインストール済みの No Man's Sky(Steam または GOG)を見つけ、アイテム画像を取り込みます。数分かかりますが、一度だけです。まだ準備されていない言語に切り替えると、最初の切り替えに約1分かかり、その後すぐに名前が変わります。画像とテキストはあなたのパソコンに残り、Hello Games のものとして、アップロードされることはありません。
 
 ## 画面を見てみる
 
@@ -79,7 +79,7 @@
 
 作者: **[Topl1nk](https://github.com/Topl1nk)**.
 
-NMSii は Rodrigo Dlugokenski 氏の [nms-items-interface](https://github.com/rdlu/nms-items-interface) のフォークとして始まり、その後作り直されました。新しいページ、デスクトップアプリ、全17言語、現行ゲームから読み取ったデータが加わっています。ポータルのグリフは [nmsportals](https://nmsportals.github.io/) を元に描き起こしました。
+NMS Crafting Guide は Rodrigo Dlugokenski 氏の [nms-items-interface](https://github.com/rdlu/nms-items-interface) のフォークとして始まり、その後作り直されました。新しいページ、デスクトップアプリ、全17言語、現行ゲームから読み取ったデータが加わっています。ポータルのグリフは [nmsportals](https://nmsportals.github.io/) を元に描き起こしました。
 
 *No Man's Sky* とそのすべての名前・画像・テキストは Hello Games のものです。これは非公式のファンプロジェクトです。ライセンスは [GPL-3.0](../../LICENSE)。ビルドや改変は [docs/DEVELOPERS.md](../DEVELOPERS.md)(英語)を参照してください。
 

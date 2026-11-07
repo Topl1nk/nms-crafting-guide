@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMSii&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=Een%20craftinggids%20voor%20No%20Man%27s%20Sky%20die%20op%20je%20pc%20leeft&descSize=20&descAlignY=60" alt="NMSii">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Een%20craftinggids%20voor%20No%20Man%27s%20Sky%20die%20op%20je%20pc%20leeft&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Downloaden-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Downloaden"></a>
@@ -18,11 +18,11 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMSii" width="100%">
+<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## Wat is het?
 
-Je staat bij een raffinaderij en vraagt je af: *wat wordt dit, en wat is de snelste manier om dat voorwerp te krijgen met wat ik bij me heb?* NMSii antwoordt in een paar klikken.
+Je staat bij een raffinaderij en vraagt je af: *wat wordt dit, en wat is de snelste manier om dat voorwerp te krijgen met wat ik bij me heb?* NMS Crafting Guide antwoordt in een paar klikken.
 
 Het is een klein programma voor je computer. Het leest recepten, prijzen en namen **rechtstreeks uit je eigen kopie van de game**, dus de cijfers zijn die de game echt gebruikt, niet wat een wiki zich van een oude patch herinnerde.
 
@@ -40,12 +40,12 @@ Het is een klein programma voor je computer. Het leest recepten, prijzen en name
 
 | | |
 | --- | --- |
-| **Windows** | Download `NMSii-Setup-….exe` van de [nieuwste release](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) en voer het uit. Geen beheerdersrechten nodig. Het installatieprogramma spreekt 14 talen. |
-| **Linux** | Download `NMSii-….AppImage`, maak het uitvoerbaar en dubbelklik erop. |
+| **Windows** | Download `nms-crafting-guide-Setup-….exe` van de [nieuwste release](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) en voer het uit. Geen beheerdersrechten nodig. Het installatieprogramma spreekt 14 talen. |
+| **Linux** | Download `nms-crafting-guide-….AppImage`, maak het uitvoerbaar en dubbelklik erop. |
 
 Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma nieuw en niet ondertekend is. Klik op *Meer informatie → Toch uitvoeren*.
 
-**Eerste start.** NMSii vindt je No Man's Sky (Steam of GOG) en haalt de voorwerpafbeeldingen eruit. Dat duurt een paar minuten en gebeurt één keer. Wissel je naar een taal die nog niet klaar is, dan duurt de eerste keer ongeveer een minuut, waarna de namen meteen veranderen. Afbeeldingen en teksten blijven op je computer; ze zijn van Hello Games en worden nooit geüpload.
+**Eerste start.** NMS Crafting Guide vindt je No Man's Sky (Steam of GOG) en haalt de voorwerpafbeeldingen eruit. Dat duurt een paar minuten en gebeurt één keer. Wissel je naar een taal die nog niet klaar is, dan duurt de eerste keer ongeveer een minuut, waarna de namen meteen veranderen. Afbeeldingen en teksten blijven op je computer; ze zijn van Hello Games en worden nooit geüpload.
 
 ## Een kijkje
 
@@ -71,7 +71,7 @@ Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma n
 ## Goed om te weten
 
 - **Licht of donker,** elke accentkleur, grotere tekst, gloeiende pictogrammen. Alles in het instellingenmenu.
-- **Korte weg.** Kies een voorwerp en NMSii vindt hoe je het maakt van wat je op elke planeet kunt oprapen, met het plan dat de raffinaderij het minst bezet.
+- **Korte weg.** Kies een voorwerp en NMS Crafting Guide vindt hoe je het maakt van wat je op elke planeet kunt oprapen, met het plan dat de raffinaderij het minst bezet.
 - **Na een game-update** kan de app de cijfers opnieuw uit je game lezen, zodat ze niet verouderen.
 - **Afdrukbare spiekbrief** met de recepten die het onthouden waard zijn, in `docs/pdf/`.
 
@@ -79,7 +79,7 @@ Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma n
 
 Gemaakt door **[Topl1nk](https://github.com/Topl1nk)**.
 
-NMSii begon als fork van [nms-items-interface](https://github.com/rdlu/nms-items-interface) van Rodrigo Dlugokenski en is sindsdien opnieuw opgebouwd: nieuwe pagina's, desktop-app, alle 17 talen en gegevens uit de huidige game. De portaalglyphs zijn nagetekend van [nmsportals](https://nmsportals.github.io/).
+NMS Crafting Guide begon als fork van [nms-items-interface](https://github.com/rdlu/nms-items-interface) van Rodrigo Dlugokenski en is sindsdien opnieuw opgebouwd: nieuwe pagina's, desktop-app, alle 17 talen en gegevens uit de huidige game. De portaalglyphs zijn nagetekend van [nmsportals](https://nmsportals.github.io/).
 
 *No Man's Sky*, met alle namen, afbeeldingen en teksten, is van Hello Games; dit is een onofficieel fanproject. Licentie [GPL-3.0](../../LICENSE). Zelf bouwen of aanpassen? Zie [docs/DEVELOPERS.md](../DEVELOPERS.md) (in het Engels).
 

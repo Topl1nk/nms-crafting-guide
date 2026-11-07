@@ -55,7 +55,7 @@ def setup() -> None:
         print(f"Custom domain set to {DOMAIN}")
     elif DOMAIN:
         print(f"Custom domain already {DOMAIN}")
-    print("Next: push to main to deploy, then `mise run pages:https` once the certificate is issued.")
+    print("Next: push to nmscg to deploy, then `mise run pages:https` once the certificate is issued.")
 
 
 def https() -> None:
@@ -110,7 +110,7 @@ def status() -> None:
         print(f"Deploy    {run['conclusion'] or run['status']} for {run['headSha'][:7]} "
               f"at {run['createdAt']}\n          {run['url']}")
     else:
-        print("Deploy    no runs yet - push to main")
+        print("Deploy    no runs yet - push to nmscg")
 
 
 def main() -> None:

@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   import { tick } from "svelte";
   // The frame every view sits in, and the hand-off from the URL to a view.
   import Footer from "./components/Footer.svelte";
@@ -70,8 +70,8 @@
     window.scrollTo(0, 0);
     const known = route.section !== "home" && VIEWS[route.section];
     document.title = known
-      ? `${t(NAV.find(([k]) => k === route.section)?.[1] ?? "How to make")} · NMSii`
-      : t("NMSii — a No Man's Sky reference");
+      ? `${t(NAV.find(([k]) => k === route.section)?.[1] ?? "How to make")} · NMS Crafting Guide`
+      : t("NMS Crafting Guide — a No Man's Sky reference");
   });
 </script>
 

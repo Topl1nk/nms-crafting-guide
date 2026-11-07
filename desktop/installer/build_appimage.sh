@@ -1,24 +1,24 @@
 #!/usr/bin/env bash
-# Linux package for NMSii: one AppImage file, which runs where it is (chmod +x, double-click), no install step and no root.
+# Linux package for NMS Crafting Guide: one AppImage file, which runs where it is (chmod +x, double-click), no install step and no root.
 # Run from app/ after desktop/build.py:  desktop/installer/build_appimage.sh 1.2.3
 set -euo pipefail
 
 version="${1:?usage: build_appimage.sh VERSION}"
 out=desktop/out
-appdir="$out/NMSii.AppDir"
+appdir="$out/nms-crafting-guide.AppDir"
 
 rm -rf "$appdir"
 mkdir -p "$appdir/usr/lib"
-cp -r "$out/NMSii" "$appdir/usr/lib/nmsii"
-cp web/icon-512.png "$appdir/nmsii.png"
+cp -r "$out/nms-crafting-guide" "$appdir/usr/lib/nms-crafting-guide"
+cp web/icon-512.png "$appdir/nms-crafting-guide.png"
 
-cat >"$appdir/nmsii.desktop" <<'EOF'
+cat >"$appdir/nms-crafting-guide.desktop" <<'EOF'
 [Desktop Entry]
 Type=Application
-Name=NMSii
+Name=NMS Crafting Guide
 Comment=No Man's Sky refining, cooking and crafting from the game's own tables
-Exec=NMSii
-Icon=nmsii
+Exec=nms-crafting-guide
+Icon=nms-crafting-guide
 Categories=Game;Utility;
 Terminal=false
 EOF
@@ -26,9 +26,9 @@ EOF
 cat >"$appdir/AppRun" <<'EOF'
 #!/bin/sh
 HERE="$(dirname "$(readlink -f "$0")")"
-exec "$HERE/usr/lib/nmsii/NMSii" "$@"
+exec "$HERE/usr/lib/nms-crafting-guide/nms-crafting-guide" "$@"
 EOF
-chmod +x "$appdir/AppRun" "$appdir/usr/lib/nmsii/NMSii"
+chmod +x "$appdir/AppRun" "$appdir/usr/lib/nms-crafting-guide/nms-crafting-guide"
 
 tool="$out/appimagetool"
 if [ ! -x "$tool" ]; then
@@ -36,4 +36,4 @@ if [ ! -x "$tool" ]; then
   chmod +x "$tool"
 fi
 # The runner has no FUSE: let the tool unpack itself instead of mounting.
-ARCH=x86_64 APPIMAGE_EXTRACT_AND_RUN=1 "$tool" "$appdir" "$out/NMSii-$version-x86_64.AppImage"
+ARCH=x86_64 APPIMAGE_EXTRACT_AND_RUN=1 "$tool" "$appdir" "$out/nms-crafting-guide-$version-x86_64.AppImage"

@@ -1,4 +1,4 @@
-﻿// The site's build: Svelte source in site/, everything served as-is in web/,
+// The site's build: Svelte source in site/, everything served as-is in web/,
 // the page that gets deployed in dist/.
 //
 // web/ is Vite's public directory, copied into dist/ untouched. It holds what
@@ -41,7 +41,7 @@ function* walk(dir) {
 function serviceWorker() {
   let outDir;
   return {
-    name: "nmsii-service-worker",
+    name: "nmscg-service-worker",
     apply: "build",
     configResolved(config) { outDir = resolve(config.root, config.build.outDir); },
     closeBundle() {

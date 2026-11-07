@@ -5,7 +5,7 @@ import data from "./data/japanese.js"; // the hand-written texts of data/
 export default {
   ...data,
 
-  "NMSii — a No Man's Sky reference": "NMSii — No Man's Sky 事典",
+  "NMS Crafting Guide — a No Man's Sky reference": "NMS Crafting Guide — No Man's Sky 事典",
   "Could not load the data ({error}).": "データを読み込めませんでした（{error}）。",
   "Loading the reference…": "事典を読み込み中…",
   "from the planet only": "惑星のみ",

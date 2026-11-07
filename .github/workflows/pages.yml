@@ -20,7 +20,7 @@ concurrency:
 
 jobs:
   # No test suite here, deliberately: it was most of this job's time, and every
-  # change reaches main through a pull request whose required `check` passed
+  # change reaches nmscg through a pull request whose required `check` passed
   # (ci.yml, or the contributions bot's own validation for a portal address).
   # The type check stays, as a last guard before a broken page goes live.
   build:

@@ -1,4 +1,4 @@
-"""Build the desktop app's program folder (desktop/out/NMSii/), which the installers then wrap.
+"""Build the desktop app's program folder (desktop/out/nms-crafting-guide/), which the installers then wrap.
 
     npm run build && python desktop/fetch_tools.py && python desktop/build.py
 
@@ -23,7 +23,7 @@ def main() -> int:
         im.save(HERE / "icon.ico", sizes=[(16, 16), (32, 32), (48, 48), (64, 64), (128, 128), (256, 256)])
     subprocess.run([sys.executable, "-m", "PyInstaller", "--noconfirm", "--clean",
                     "--distpath", str(HERE / "out"), "--workpath", str(HERE / "build"),
-                    str(HERE / "nmsii.spec")], check=True, cwd=APP)
+                    str(HERE / "nms-crafting-guide.spec")], check=True, cwd=APP)
     return 0
 
 

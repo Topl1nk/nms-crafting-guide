@@ -1,7 +1,7 @@
 {
-  "name": "nmsii-site",
+  "name": "nms-crafting-guide-site",
   "private": true,
-  "description": "The web front end of NMSii, the No Man's Sky Items Interface: Svelte over the data.json scripts/build_web.py exports",
+  "description": "The web front end of NMS Crafting Guide, a No Man's Sky reference: Svelte over the data.json scripts/build_web.py exports",
   "license": "GPL-3.0-or-later",
   "type": "module",
   "engines": {

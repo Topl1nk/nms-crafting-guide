@@ -107,7 +107,7 @@ jobs:
           git commit -m "Add the portal address from #$ISSUE"
           git push --force origin "$branch"
           if [ -z "$(gh pr list --head "$branch" --json number -q '.[0].number')" ]; then
-            gh pr create --head "$branch" --base main \
+            gh pr create --head "$branch" --base nmscg \
               --title "Add the portal address from #$ISSUE" \
               --body "Adds the address checked in #$ISSUE to data/locations.json as \`shared\`, crediting its author.
 

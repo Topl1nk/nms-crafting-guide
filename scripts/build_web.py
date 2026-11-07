@@ -17,7 +17,7 @@ and per item, a sitemap -- by build_markdown.py, for readers that do not run
 JavaScript.
 
 Run via `mise run web:data`; `mise run site` serves the result locally, and
-.github/workflows/pages.yml publishes it to GitHub Pages on every push to main.
+.github/workflows/pages.yml publishes it to GitHub Pages on every push to nmscg.
 """
 
 from __future__ import annotations

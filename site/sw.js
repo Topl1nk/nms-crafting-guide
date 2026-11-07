@@ -20,10 +20,10 @@
 
 /* global VERSION, PRECACHE */
 
-const SHELL = `nmsii-shell-${VERSION}`;
-const DATA = "nmsii-data"; // data.json, kept across versions
-const DOCS = "nmsii-docs"; // markdown, images and the rest, on demand
-const PDF = "nmsii-pdf"; // the cheat sheets, a few hundred KB each
+const SHELL = `nmscg-shell-${VERSION}`;
+const DATA = "nmscg-data"; // data.json, kept across versions
+const DOCS = "nmscg-docs"; // markdown, images and the rest, on demand
+const PDF = "nmscg-pdf"; // the cheat sheets, a few hundred KB each
 const KEEP = new Set([SHELL, DATA, DOCS, PDF]);
 const CAPS = { [DOCS]: 150, [PDF]: 4 };
 
@@ -46,7 +46,7 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     for (const name of await caches.keys()) {
-      if (name.startsWith("nmsii-") && !KEEP.has(name)) await caches.delete(name);
+      if ((name.startsWith("nmscg-") || name.startsWith("nmsii-")) && !KEEP.has(name)) await caches.delete(name);
     }
     await self.clients.claim();
   })());

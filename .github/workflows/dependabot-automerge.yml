@@ -8,7 +8,7 @@
 # The pattern from GitHub's Dependabot docs: plain `pull_request`, where a
 # Dependabot run gets a read-only token plus the permissions declared here and
 # no secrets; `pull_request_target` is not needed. The job only enables
-# auto-merge; the merge itself waits on main's ruleset, which allows merge
+# auto-merge; the merge itself waits on nmscg's ruleset, which allows merge
 # commits and rebases, so it is `--merge`.
 #
 # Known caveat: a merge done by auto-merge that was enabled with GITHUB_TOKEN

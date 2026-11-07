@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "No Man's Sky Items Interface (NMSii)",
-  "short_name": "NMSii",
+  "name": "NMS Crafting Guide",
+  "short_name": "NMS Guide",
   "description": "Refining, cooking, nanites, multi-tools, portal addresses and storage for No Man's Sky, read from the game's own recipe tables. Works offline once installed.",
   "lang": "en",
   "dir": "ltr",
