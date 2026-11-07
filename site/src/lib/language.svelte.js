@@ -9,7 +9,7 @@ import { browserLanguage, SAME, setWords, t } from "./i18n.js";
 import { local } from "./local.js";
 import { localizeStorage } from "./words.js";
 
-export const language = $state({ code: "", base: "", list: [], building: false });
+export const language = $state({ code: "", base: "", list: [], building: false, texts: 0 });  // texts: counts the game texts arriving late, so the page is drawn again
 
 /** The desktop app builds a language's game texts from the player's own game when the build has none (desktop/languages.py). */
 async function buildPack(code) {
@@ -92,7 +92,7 @@ export async function setLanguage(code) {
     const pack = await buildPack(code);
     if (pack) {
       packs[code] = pack;
-      if (language.code === code) { retext(pack); rewordLoops(); }
+      if (language.code === code) { retext(pack); rewordLoops(); language.texts++; }
     }
   }
 }
