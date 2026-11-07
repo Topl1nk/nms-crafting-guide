@@ -1,7 +1,7 @@
 // The game's pictures, installed from the player's own game by the local launcher (tools/launch.py -> tools/pictures.py) with one
 // press. A page on a plain static host has no launcher: `available` stays false and nothing is offered.
 
-export const pictures = $state({ available: false, game: "", have: 0, saves: 0, state: "idle", step: "", done: 0, total: 0, error: "" });
+export const pictures = $state({ available: false, game: "", have: 0, complete: false, saves: 0, state: "idle", step: "", done: 0, total: 0, error: "" });
 
 async function look() {
   const res = await fetch("api/pictures", { cache: "no-store" });
@@ -11,7 +11,9 @@ async function look() {
 
 /** Ask the launcher whether it is there, and what it has. */
 export async function probePictures() {
-  try { await look(); } catch { pictures.available = false; }
+  try { await look(); } catch { pictures.available = false; return; }
+  // An installation that was cut short (the window closed in the middle) leaves some pictures and no mark: finish it.
+  if (pictures.game && pictures.have && !pictures.complete && pictures.state === "idle") installPictures();
 }
 
 let polling = 0;

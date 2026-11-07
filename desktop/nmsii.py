@@ -89,6 +89,8 @@ class Life:
     def watch(self):
         while not self.done.wait(1):
             now = time.monotonic()
+            if pictures.state["state"] == "running":  # an installation in progress is not cut off, even by a closed window
+                continue
             if (self.bye is not None and now - self.bye > 5
                     or self.last is None and now - self.started > 90  # the page never came up
                     or self.last is not None and now - self.last > 130):
