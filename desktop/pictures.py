@@ -89,6 +89,21 @@ def _hgpaktool() -> list[str]:
     return paths.self_command("hgpaktool")
 
 
+def tool_env(game: Path) -> dict:
+    """The environment the game-reading helper tools (extract, langs) are started with."""
+    return {**os.environ, "NMS_GAME_DIR": str(game), "MBINCOMPILER": str(paths.mbincompiler()),
+            "NMS_CACHE": str(paths.CACHE), "NMS_HGPAKTOOL": json.dumps(_hgpaktool()), "PYTHONUTF8": "1"}
+
+
+def tables(game: Path, force: bool = False) -> None:
+    """The game's item tables, read out of its archives into the cache (once, unless forced)."""
+    if force or not (TABLES / "Substance_Table.json").exists():
+        run = subprocess.run([*paths.self_command("extract"), "--game", str(game), "all"],
+                             capture_output=True, text=True, env=tool_env(game))
+        if run.returncode:
+            raise RuntimeError((run.stdout + run.stderr)[-400:])
+
+
 def install(force: bool = False) -> None:
     """The whole job, in this thread; `state` says how far it has got."""
     from PIL import Image
@@ -101,13 +116,7 @@ def install(force: bool = False) -> None:
 
     DONE_MARK.unlink(missing_ok=True)
     _say("tables")
-    if force or not (TABLES / "Substance_Table.json").exists():
-        env = {**os.environ, "NMS_GAME_DIR": str(game), "MBINCOMPILER": str(paths.mbincompiler()),
-               "NMS_CACHE": str(paths.CACHE), "NMS_HGPAKTOOL": json.dumps(_hgpaktool()), "PYTHONUTF8": "1"}
-        run = subprocess.run([*paths.self_command("extract"), "--game", str(game), "all"],
-                             capture_output=True, text=True, env=env)
-        if run.returncode:
-            raise RuntimeError((run.stdout + run.stderr)[-400:])
+    tables(game, force)
 
     want: dict[str, list[str]] = {}  # lower-case dds path -> the names it is saved under
     for table in ("Substance_Table.json", "Product_Table.json"):

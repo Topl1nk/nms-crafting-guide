@@ -13,6 +13,9 @@ a = Analysis(
     datas=[
         (str(app / "dist"), "dist"),  # the built site (npm run build)
         (str(app / "scripts" / "extract_game.py"), "scripts"),
+        (str(app / "scripts" / "build_langs.py"), "scripts"),
+        (str(app / "data" / "wiki.json"), "data"),  # what build_langs.py keys the game's texts by
+        (str(app / "data" / "items.json"), "data"),
         (str(app / "desktop" / "vendor"), "vendor"),  # fetch_tools.py
     ],
     hiddenimports=["hgpaktool.cli", "lz4.block", "PIL.Image", "PIL.WebPImagePlugin"],

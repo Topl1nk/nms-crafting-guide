@@ -57,6 +57,7 @@
       <select class="lang" value={language.code} onchange={pickLanguage} aria-label={t("Language")}>
         {#each language.list as l (l.code)}<option value={l.code}>{l.name}</option>{/each}
       </select>
+      {#if language.building}<span class="hint" aria-busy="true">…</span>{/if}
     {/if}
     {#if pictures.available}
       <h4>{t("Game pictures")}</h4>

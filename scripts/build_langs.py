@@ -21,6 +21,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -29,11 +31,18 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import extract_game as eg  # noqa: E402
-from build_web import plain  # noqa: E402
 
 CACHE = eg.CACHE
-WORK = ROOT / ".cache" / "lang"
-WEB = ROOT / "web"
+WORK = CACHE / "lang"
+# NMS_LANG_OUT: where the packaged desktop app (desktop/languages.py) wants the files, as its program folder is read-only.
+WEB = Path(os.environ["NMS_LANG_OUT"]) if os.environ.get("NMS_LANG_OUT") else ROOT / "web"
+
+
+def plain(text: str) -> str:
+    """As build_web.plain, which is not imported: it pulls in the whole site build."""
+    text = re.sub(r"<IMG>[^<]*<>", "", text)
+    text = re.sub(r"<[A-Z_0-9]*>", "", text)
+    return re.sub(r"\s*\(\s*\)", "", text).strip()
 
 # Each language's own name for itself. The game ships the tables, not these
 # labels; a language missing here is shown under its code.
@@ -81,7 +90,9 @@ def main() -> int:
 
     game = eg.game_dir(args.game)
     found = eg.game_languages(game)
-    langs = [x for x in found if not args.only or x in args.only.split(",")]
+    wanted = [x for x in found if not args.only or x in args.only.split(",")]
+    # The texts the data was built in are always read too: the page's "ops" are keyed by them (below).
+    langs = wanted + [x for x in ("english",) if x in found and x not in wanted]
     print(f"game languages: {', '.join(found)}")
     wiki_ids = list(json.loads((ROOT / "data" / "wiki.json").read_text(encoding="utf-8")))
     keys = keys_of_items()
@@ -113,14 +124,15 @@ def main() -> int:
     for data in built.values():
         data["ops"] = {base_ops[k]: v for k, v in data["ops"].items() if base_ops[k] and v}
     (WEB / "lang").mkdir(parents=True, exist_ok=True)
-    for lang, data in built.items():
+    for lang in wanted:
         (WEB / "lang" / f"{lang}.json").write_text(
-            json.dumps(data, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    (WEB / "languages.json").write_text(json.dumps({
-        "base": base,
-        "list": [{"code": c, "name": NATIVE.get(c, c)} for c in built],
-    }, ensure_ascii=False, indent=1), encoding="utf-8")
-    print(f"wrote {len(built)} languages to web/lang/ (data is in {base})")
+            json.dumps(built[lang], ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    if not args.only:  # a list of only some of the languages would hide the others from the page
+        (WEB / "languages.json").write_text(json.dumps({
+            "base": base,
+            "list": [{"code": c, "name": NATIVE.get(c, c)} for c in built],
+        }, ensure_ascii=False, indent=1), encoding="utf-8")
+    print(f"wrote {len(wanted)} languages to {WEB / 'lang'} (data is in {base})")
     return 0
 
 

@@ -9,7 +9,28 @@ import { browserLanguage, SAME, setWords, t } from "./i18n.js";
 import { local } from "./local.js";
 import { localizeStorage } from "./words.js";
 
-export const language = $state({ code: "", base: "", list: [] });
+export const language = $state({ code: "", base: "", list: [], building: false });
+
+/** The desktop app builds a language's game texts from the player's own game when the build has none (desktop/languages.py). */
+async function buildPack(code) {
+  try {
+    if (!(await fetch("api/lang?code=" + code)).ok) return null;  // no launcher: a plain site
+    await fetch("api/lang/build?code=" + code, { method: "POST" });
+    language.building = true;
+    for (;;) {
+      await new Promise((r) => setTimeout(r, 2000));
+      const s = await (await fetch("api/lang?code=" + code, { cache: "no-store" })).json();
+      if (s.state === "error") return null;
+      if (s.state === "done" || (s.state === "idle" && s.have)) break;
+    }
+    const res = await fetch(`lang/${code}.json`, { cache: "no-store" });
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;
+  } finally {
+    language.building = false;
+  }
+}
 
 // The languages the page's words come in, for a build that has no languages.json (one without the game's files): the page is translated
 // into each, while the game's own texts (item names, descriptions) stay English there, as they have no pack to be read from.
@@ -66,4 +87,12 @@ export async function setLanguage(code) {
   rewordLoops();
   language.code = code;
   local.set("lang", code);
+  if (code !== language.base && !packs[code]) {
+    // The page is already in the language; the item texts follow once they are built, if the language is still the one chosen.
+    const pack = await buildPack(code);
+    if (pack) {
+      packs[code] = pack;
+      if (language.code === code) { retext(pack); rewordLoops(); }
+    }
+  }
 }

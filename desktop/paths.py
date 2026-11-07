@@ -27,9 +27,11 @@ DIST = Path(os.environ.get("NMS_DIST") or RES / "dist")
 PROFILE = HOME / "browser-profile"  # window size, theme and saved items live here
 PICTURES = HOME / "pictures"
 ICONS = PICTURES / "icons"
+LANGS = HOME / "lang"  # the game's item texts, one <language>.json each, built from the player's game on demand (languages.py)
 CACHE = HOME / "cache"  # what is unpacked from the game; NMS_CACHE for scripts/extract_game.py
 VENDOR = RES / "vendor"  # MBINCompiler and its mapping.json, fetched at build time (desktop/fetch_tools.py)
 EXTRACT_SCRIPT = RES / "scripts" / "extract_game.py"
+LANGS_SCRIPT = RES / "scripts" / "build_langs.py"
 
 
 def self_command(tool: str) -> list[str]:

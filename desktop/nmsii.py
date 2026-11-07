@@ -52,6 +52,10 @@ def run_tool(argv: list[str]) -> int:
         sys.argv = [str(paths.EXTRACT_SCRIPT), *rest]
         runpy.run_path(str(paths.EXTRACT_SCRIPT), run_name="__main__")
         return 0
+    if name == "langs":
+        sys.argv = [str(paths.LANGS_SCRIPT), *rest]
+        runpy.run_path(str(paths.LANGS_SCRIPT), run_name="__main__")
+        return 0
     print(f"unknown tool {name}", file=sys.stderr)
     return 2
 
@@ -59,6 +63,7 @@ def run_tool(argv: list[str]) -> int:
 if len(sys.argv) > 2 and sys.argv[1] == "--tool":
     sys.exit(run_tool(sys.argv[2:]))
 
+import languages  # noqa: E402
 import nms_save  # noqa: E402
 import pictures  # noqa: E402
 
@@ -89,8 +94,8 @@ class Life:
     def watch(self):
         while not self.done.wait(1):
             now = time.monotonic()
-            if pictures.state["state"] == "running":  # an installation in progress is not cut off, even by a closed window
-                continue
+            if "running" in (pictures.state["state"], *(s["state"] for s in languages.state.values())):
+                continue  # an installation in progress is not cut off, even by a closed window
             if (self.bye is not None and now - self.bye > 5
                     or self.last is None and now - self.started > 90  # the page never came up
                     or self.last is not None and now - self.last > 130):
@@ -139,6 +144,21 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
                 return self.send_json({"error": f"{type(exc).__name__}: {exc}"}, 500)
         if url.path == "/api/pictures":
             return self.send_json({**pictures.status(), "saves": len(nms_save.save_files())})
+        if url.path == "/api/lang":
+            return self.send_json(languages.status(urllib.parse.parse_qs(url.query).get("code", [""])[0]))
+        if url.path.startswith("/lang/"):
+            # The texts built from the player's game (languages.py), else what the build holds.
+            name = urllib.parse.unquote(url.path.removeprefix("/lang/"))
+            mine = (paths.LANGS / name).resolve()
+            if mine.parent == paths.LANGS.resolve() and mine.is_file():
+                body = mine.read_bytes()
+                self.send_response(200)
+                self.send_header("Content-Type", "application/json; charset=utf-8")
+                self.send_header("Cache-Control", "no-cache")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
         if url.path.startswith("/icons/"):
             # The player's own pictures first (written by pictures.py), else what the build holds.
             name = urllib.parse.unquote(url.path.removeprefix("/icons/"))
@@ -167,6 +187,11 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         if url.path == "/api/bye":
             LIFE.goodbye()
             return self.send_json({})
+        if url.path == "/api/lang/build":
+            try:
+                return self.send_json({"started": languages.start(urllib.parse.parse_qs(url.query).get("code", [""])[0])}, 202)
+            except ValueError:
+                return self.send_json({"error": "bad language"}, 400)
         if url.path == "/api/pictures/install":
             force = urllib.parse.parse_qs(url.query).get("force", ["0"])[0] == "1"
             return self.send_json({"started": pictures.start(force)}, 202)
