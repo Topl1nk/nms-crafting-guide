@@ -91,7 +91,8 @@ jobs:
           pid=$!
           trap 'kill $pid 2>/dev/null || true' EXIT
           for _ in $(seq 1 30); do curl -fs http://127.0.0.1:18765/ >/dev/null && break; sleep 1; done
-          curl -fs http://127.0.0.1:18765/ | grep -qi '<html'
+          curl -fs http://127.0.0.1:18765/ | grep -q 'api/ping'   # the page carries the heartbeat that keeps the app running
+          curl -fs -X POST -H 'Origin: http://127.0.0.1:18765' http://127.0.0.1:18765/api/ping >/dev/null
           curl -fs http://127.0.0.1:18765/api/pictures | grep -q '"have"'
 
       - name: Windows installer

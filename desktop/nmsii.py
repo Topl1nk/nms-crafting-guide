@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 import threading
+import time
 import urllib.parse
 import webbrowser
 from pathlib import Path
@@ -62,6 +63,42 @@ import nms_save  # noqa: E402
 import pictures  # noqa: E402
 
 
+# The window's lifetime is not the browser process's: with a profile that is already running (Edge lingers in the background
+# after its window closes, or a second NMSii is started) a new msedge.exe hands its window to that process and exits at once,
+# which used to stop the server under a window that was just opened. So the page itself says it is there: a ping every
+# 10 s, and a beacon when it is closed. The server stops when the page has gone, whatever the browser process does.
+HEARTBEAT = (b"<script>(function(){var p=function(){fetch('/api/ping',{method:'POST',keepalive:true}).catch(function(){})};"
+             b"p();setInterval(p,10000);addEventListener('pagehide',function(){navigator.sendBeacon('/api/bye')})})()</script>")
+
+
+class Life:
+    """Whether a page is still looking at the server. Throttled background timers can slip to a minute, hence the 130 s."""
+
+    def __init__(self):
+        self.started = time.monotonic()
+        self.last = None   # time of the last ping
+        self.bye = None    # time of a close beacon; a reload sends one and pings again at once, which cancels it
+        self.done = threading.Event()
+
+    def ping(self):
+        self.last, self.bye = time.monotonic(), None
+
+    def goodbye(self):
+        self.bye = time.monotonic()
+
+    def watch(self):
+        while not self.done.wait(1):
+            now = time.monotonic()
+            if (self.bye is not None and now - self.bye > 5
+                    or self.last is None and now - self.started > 90  # the page never came up
+                    or self.last is not None and now - self.last > 130):
+                break
+        self.done.set()
+
+
+LIFE = Life()
+
+
 class Quiet(http.server.SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass
@@ -77,6 +114,14 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
 
     def do_GET(self):
         url = urllib.parse.urlparse(self.path)
+        if url.path in ("/", "/index.html"):
+            body = (paths.DIST / "index.html").read_bytes().replace(b"</body>", HEARTBEAT + b"</body>", 1)
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(body)))
+            self.end_headers()
+            self.wfile.write(body)
+            return
         if url.path == "/api/saves":
             return self.send_json(nms_save.listing())
         if url.path == "/api/save":
@@ -114,6 +159,12 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         origin = self.headers.get("Origin", "")
         if not host.startswith("127.0.0.1:") or (origin and origin != f"http://{host}"):
             return self.send_json({"error": "forbidden"}, 403)
+        if url.path == "/api/ping":
+            LIFE.ping()
+            return self.send_json({})
+        if url.path == "/api/bye":
+            LIFE.goodbye()
+            return self.send_json({})
         if url.path == "/api/pictures/install":
             force = urllib.parse.parse_qs(url.query).get("force", ["0"])[0] == "1"
             return self.send_json({"started": pictures.start(force)}, 202)
@@ -162,16 +213,16 @@ def main() -> int:
     browser = find_browser()
     if browser:
         paths.PROFILE.mkdir(parents=True, exist_ok=True)
-        subprocess.run([browser, f"--app={url}", f"--user-data-dir={paths.PROFILE}",
-                        "--window-size=1366,860", "--no-first-run", "--no-default-browser-check"])
+        # Not waited for (see HEARTBEAT): the browser process may hand the window over and exit at once.
+        subprocess.Popen([browser, f"--app={url}", f"--user-data-dir={paths.PROFILE}",
+                          "--window-size=1366,860", "--no-first-run", "--no-default-browser-check"])
     else:
-        # No browser with an app window: open the default one. Without a terminal there is nothing to press Enter in, so the
-        # server stays until the program is stopped.
-        webbrowser.open(url)
-        if sys.stdin is not None and sys.stdin.isatty():
-            input(f"NMSii is open at {url}\nPress Enter here to stop it.")
-        else:
-            threading.Event().wait()
+        webbrowser.open(url)  # no browser with an app window: a tab in the default one, which the same beacon ends
+    threading.Thread(target=LIFE.watch, daemon=True).start()
+    try:
+        LIFE.done.wait()
+    except KeyboardInterrupt:
+        pass
     server.shutdown()
     return 0
 
