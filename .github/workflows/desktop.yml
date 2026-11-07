@@ -33,7 +33,9 @@ jobs:
           fetch-depth: 0
       - uses: ./.github/actions/setup
       - run: uv run python scripts/build_web.py
-      - run: npm run build
+      # vite directly, not `npm run build`: its postbuild check_pwa wants the service worker registered, which this fork turns
+      # off (site/src/lib/pwa.svelte.js), and the desktop app is not an installable web app anyway.
+      - run: npx vite build
       - uses: actions/upload-artifact@v4
         with:
           name: site
