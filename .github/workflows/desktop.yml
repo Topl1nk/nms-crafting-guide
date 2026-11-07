@@ -1,0 +1,133 @@
+# The desktop app: a Windows installer (NMSii-Setup-<version>.exe) and a Linux AppImage, built from the same site.
+# Both carry the program, so the user needs neither Python nor Node, and install nothing but the one file: the installer sets
+# up the Start menu entry and an uninstaller, the AppImage is made executable and run. See desktop/.
+#
+# By hand (Actions -> Desktop -> Run workflow) it leaves the two files as artifacts of the run. Pushing a tag v1.2.3
+# also publishes them as a GitHub Release. Like Pages, the build holds none of the game's pictures or texts (they are Hello
+# Games', not in the repository): the app installs the pictures from the player's own game on first use (Settings).
+name: Desktop
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: desktop-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # PyInstaller supports it and uv fetches it on any runner, whatever python the image has.
+  PYTHON_VERSION: "3.13"
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - run: uv run python scripts/build_web.py
+      # vite directly, not `npm run build`: its postbuild check_pwa wants the service worker registered, which this fork turns
+      # off (site/src/lib/pwa.svelte.js), and the desktop app is not an installable web app anyway.
+      - run: npx vite build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site
+          path: dist
+          if-no-files-found: error
+
+  package:
+    needs: site
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            platform: windows
+            exe: desktop/out/NMSii/NMSii.exe
+          # The oldest current image, so the AppImage runs on the widest range of glibc.
+          - os: ubuntu-22.04
+            platform: linux
+            exe: desktop/out/NMSii/NMSii
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v10.3.1
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
+          path: dist
+
+      - id: version
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then v="${GITHUB_REF_NAME#v}"; else v="0.0.0-${GITHUB_SHA::7}"; fi
+          echo "value=$v" >>"$GITHUB_OUTPUT"
+
+      # Its own environment: the program is built from desktop/requirements.txt, not from the TUI's dependencies.
+      - run: |
+          uv venv .desktop-venv --python "$PYTHON_VERSION"
+          uv pip install --python .desktop-venv -r desktop/requirements.txt
+          echo "$PWD/.desktop-venv/$([ '${{ matrix.platform }}' = windows ] && echo Scripts || echo bin)" >>"$GITHUB_PATH"
+      - run: python desktop/fetch_tools.py --platform ${{ matrix.platform }}
+      - run: python desktop/build.py
+
+      # The packaged program, started as a user would: it must serve the site, answer the API, and run its helper tools.
+      - name: Smoke test
+        run: |
+          # hgpaktool prints its usage and exits non-zero on -h: look at what it says, not at the code.
+          help=$("${{ matrix.exe }}" --tool hgpaktool -h 2>&1 || true)
+          grep -q HGPAKtool <<<"$help"
+          "${{ matrix.exe }}" --server --port 18765 &
+          pid=$!
+          trap 'kill $pid 2>/dev/null || true' EXIT
+          for _ in $(seq 1 30); do curl -fs http://127.0.0.1:18765/ >/dev/null && break; sleep 1; done
+          curl -fs http://127.0.0.1:18765/ | grep -q 'api/ping'   # the page carries the heartbeat that keeps the app running
+          curl -fs -X POST -H 'Origin: http://127.0.0.1:18765' http://127.0.0.1:18765/api/ping >/dev/null
+          curl -fs http://127.0.0.1:18765/api/pictures | grep -q '"have"'
+
+      - name: Windows installer
+        if: matrix.platform == 'windows'
+        run: |
+          # Inno Setup 6 is on the runner image. MSYS_NO_PATHCONV: git-bash would turn /DAppVersion=... into a path.
+          export MSYS_NO_PATHCONV=1
+          "/c/Program Files (x86)/Inno Setup 6/ISCC.exe" "/DAppVersion=${{ steps.version.outputs.value }}" desktop/installer/nmsii.iss
+      - name: Linux AppImage
+        if: matrix.platform == 'linux'
+        run: bash desktop/installer/build_appimage.sh "${{ steps.version.outputs.value }}"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NMSii-${{ matrix.platform }}
+          path: |
+            desktop/out/NMSii-Setup-*.exe
+            desktop/out/NMSii-*.AppImage
+          if-no-files-found: error
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: package
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: NMSii-*
+          path: release
+          merge-multiple: true
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" release/* \
+            --repo "$GITHUB_REPOSITORY" --title "NMSii ${GITHUB_REF_NAME#v}" --generate-notes

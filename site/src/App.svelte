@@ -78,7 +78,7 @@
 <svelte:window onkeydown={(e) => onKey(e, () => ready && palette.open())} />
 
 <!-- Everything is drawn again when the language changes, so no word of the page is left in the old one. -->
-{#key language.code}
+{#key `${language.code}|${language.texts}`}
   <Header section={route.section} onsearch={() => ready && palette.open()} />
   <Palette bind:this={palette} />
 {/key}
@@ -88,7 +88,7 @@
   {:else if !ready}
     <p class="pad muted">{t("Loading the reference…")}</p>
   {:else}
-    {#key `${route.visit}|${language.code}`}
+    {#key `${route.visit}|${language.code}|${language.texts}`}
       <View />
     {/key}
   {/if}
@@ -96,7 +96,7 @@
 <!-- The footer waits for the page above it: drawn under the one-line
      "Loading" it would be pushed down a screen when data.json lands, the
      whole of Lighthouse's layout shift (CLS 0.25 desktop, 0.52 mobile). -->
-{#key language.code}
+{#key `${language.code}|${language.texts}`}
   {#if ready || failed}
     <Footer {markdown} release={ready ? gameRelease() : null} />
   {/if}

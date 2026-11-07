@@ -359,5 +359,15 @@ export default {
   "Ship: {name}": "Корабль: {name}", "Exocraft: {name}": "Экзокрафт: {name}", "Ship {n}": "Корабль {n}", "Exocraft {n}": "Экзокрафт {n}",
   Freighter: "Грузовой корабль",
 
+  "Game pictures": "Картинки игры",
+  "Install from my game": "Взять из моей игры",
+  "Update from my game": "Обновить из моей игры",
+  "{n} pictures installed": "Картинок установлено: {n}",
+  "{n} save slots found": "Слотов сохранений найдено: {n}",
+  "The game was not found": "Игра не найдена",
+  "Reading the game's tables…": "Читаю таблицы игры…",
+  "Listing the game's files…": "Просматриваю файлы игры…",
+  "Taking the pictures: {done} of {total}": "Беру картинки: {done} из {total}",
+  "Done, reloading…": "Готово, перезагружаю…",
   // @@END
 };

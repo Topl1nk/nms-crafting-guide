@@ -1,7 +1,9 @@
 ﻿<script>
   // "Look": light or dark, the accent colour, glowing icons, chemical symbols, text size.
+  import { onMount } from "svelte";
   import { t } from "../lib/i18n.js";
   import { language, setLanguage } from "../lib/language.svelte.js";
+  import { installPictures, pictures, probePictures } from "../lib/pictures.svelte.js";
   import { ACCENTS, applyTheme, look, setLook, themeChoice, THEMES } from "../lib/theme.js";
   import { toast } from "../lib/toast.svelte.js";
 
@@ -12,6 +14,11 @@
   let sym = $state(look.sym());
   let open = $state(false);
   let button;
+  onMount(probePictures);
+  const stepText = $derived(
+    pictures.step === "pictures" ? t("Taking the pictures: {done} of {total}", { done: pictures.done, total: pictures.total })
+      : pictures.step === "listing" ? t("Listing the game's files…") : t("Reading the game's tables…"));
+  const pictureError = $derived(/game not found/.test(pictures.error) ? t("The game was not found") : pictures.error);
 
   const toggle = (e) => { e.stopPropagation(); open = !open; };
   const pickTheme = (k) => { choice = k; applyTheme(k); };
@@ -50,6 +57,22 @@
       <select class="lang" value={language.code} onchange={pickLanguage} aria-label={t("Language")}>
         {#each language.list as l (l.code)}<option value={l.code}>{l.name}</option>{/each}
       </select>
+      {#if language.building}<span class="hint" aria-busy="true">…</span>{/if}
+    {/if}
+    {#if pictures.available}
+      <h4>{t("Game pictures")}</h4>
+      <div class="pics">
+        {#if pictures.state === "running"}
+          <span class="bar"><i style="width:{pictures.total ? Math.round((100 * pictures.done) / pictures.total) : 6}%"></i></span>
+          <span class="hint">{stepText}</span>
+        {:else if pictures.state === "done"}
+          <span class="hint">{t("Done, reloading…")}</span>
+        {:else}
+          <button type="button" class="install" disabled={!pictures.game} onclick={installPictures}>{pictures.have ? t("Update from my game") : t("Install from my game")}</button>
+          <span class="hint">{pictures.game ? `${t("{n} pictures installed", { n: pictures.have })} · ${t("{n} save slots found", { n: pictures.saves })}` : t("The game was not found")}</span>
+          {#if pictures.state === "error"}<span class="hint err">{pictureError}</span>{/if}
+        {/if}
+      </div>
     {/if}
     <h4>{t("Show")}</h4>
     <label class="opt"><input type="checkbox" checked={glow} onchange={(e) => { glow = e.target.checked; setLook("glow", glow); }}>
@@ -64,6 +87,14 @@
 
 <style>
   .theme-wrap { position: relative; }
+  .pics { display: grid; gap: 8px; }
+  .install { height: 36px; border-radius: 10px; border: 1px solid var(--p-edge-accent); background: var(--p-accent); color: var(--p-on-accent); font: inherit; font-weight: 700; cursor: pointer; }
+  .install:disabled { opacity: 0.5; cursor: default; }
+  .install:not(:disabled):hover { filter: brightness(1.08); }
+  .hint { font-size: 0.82rem; color: var(--p-faint); }
+  .hint.err { color: var(--p-red); }
+  .bar { display: block; height: 8px; border-radius: 999px; background: var(--p-raised); overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--p-accent); transition: width 0.3s; }
   .panel {
     position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: 300px; padding: 16px 18px 14px;
     background: var(--p-panel); border: 1px solid var(--p-outline); border-radius: 16px;
