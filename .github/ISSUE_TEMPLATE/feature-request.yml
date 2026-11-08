@@ -1,0 +1,17 @@
+name: Suggest a feature
+description: An idea that would make the guide more useful.
+title: "Idea: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: goal
+    attributes:
+      label: What are you trying to do?
+      description: Describe the situation in the game, not the solution. What is hard or missing today?
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would help?
+      description: Your idea, if you have one. Sketches and examples are welcome.
