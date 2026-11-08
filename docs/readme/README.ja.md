@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
+<img src="../img/ja/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## これは何?
 
@@ -52,20 +52,20 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="../img/site-tree.webp" alt="クラフトツリー。"><br><sub><b>クラフトツリー。</b> アイテムの作り方と集める素材。</sub></td>
-    <td width="50%"><img src="../img/site-cooking.webp" alt="料理。"><br><sub><b>料理。</b> 欲しい効果に最適な料理。</sub></td>
+    <td width="50%"><img src="../img/ja/site-tree.webp" alt="クラフトツリー。"><br><sub><b>クラフトツリー。</b> アイテムの作り方と集める素材。</sub></td>
+    <td width="50%"><img src="../img/ja/site-cooking.webp" alt="料理。"><br><sub><b>料理。</b> 欲しい効果に最適な料理。</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-nanites.webp" alt="ナナイト。"><br><sub><b>ナナイト。</b> 1時間あたりのナナイトで並べた全ルート。</sub></td>
-    <td width="50%"><img src="../img/site-wiki.webp" alt="Wiki。"><br><sub><b>Wiki。</b> ゲーム内の全アイテムとそのカード。</sub></td>
+    <td width="50%"><img src="../img/ja/site-nanites.webp" alt="ナナイト。"><br><sub><b>ナナイト。</b> 1時間あたりのナナイトで並べた全ルート。</sub></td>
+    <td width="50%"><img src="../img/ja/site-wiki.webp" alt="Wiki。"><br><sub><b>Wiki。</b> ゲーム内の全アイテムとそのカード。</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-inventory.webp" alt="マイアイテム。"><br><sub><b>マイアイテム。</b> 所持品と、それぞれの収納先。</sub></td>
-    <td width="50%"><img src="../img/site-portals.webp" alt="ポータル。"><br><sub><b>ポータル。</b> コードとアドレス、グリフ付き。</sub></td>
+    <td width="50%"><img src="../img/ja/site-inventory.webp" alt="マイアイテム。"><br><sub><b>マイアイテム。</b> 所持品と、それぞれの収納先。</sub></td>
+    <td width="50%"><img src="../img/ja/site-portals.webp" alt="ポータル。"><br><sub><b>ポータル。</b> コードとアドレス、グリフ付き。</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-multitools.webp" alt="マルチツール。"><br><sub><b>マルチツール。</b> 8種類を比較し、最良のものを入手する方法。</sub></td>
-    <td width="50%"><img src="../img/site-tree-picker.webp" alt="作れるアイテムを選ぶと、"><br><sub><b>作れるアイテムを選ぶと、</b> その作り方が分かります。</sub></td>
+    <td width="50%"><img src="../img/ja/site-multitools.webp" alt="マルチツール。"><br><sub><b>マルチツール。</b> 8種類を比較し、最良のものを入手する方法。</sub></td>
+    <td width="50%"><img src="../img/ja/site-tree-picker.webp" alt="作れるアイテムを選ぶと、"><br><sub><b>作れるアイテムを選ぶと、</b> その作り方が分かります。</sub></td>
   </tr>
 </table>
 

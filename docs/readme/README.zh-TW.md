@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
+<img src="../img/zh-TW/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## 這是什麼?
 
@@ -52,20 +52,20 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="../img/site-tree.webp" alt="製作樹。"><br><sub><b>製作樹。</b> 製作物品的每種方法以及要收集什麼。</sub></td>
-    <td width="50%"><img src="../img/site-cooking.webp" alt="烹飪。"><br><sub><b>烹飪。</b> 針對你想要效果的最強料理。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-tree.webp" alt="製作樹。"><br><sub><b>製作樹。</b> 製作物品的每種方法以及要收集什麼。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-cooking.webp" alt="烹飪。"><br><sub><b>烹飪。</b> 針對你想要效果的最強料理。</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-nanites.webp" alt="奈米簇。"><br><sub><b>奈米簇。</b> 所有路線,依每小時奈米簇排序。</sub></td>
-    <td width="50%"><img src="../img/site-wiki.webp" alt="百科。"><br><sub><b>百科。</b> 遊戲裡所有物品及其卡片。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-nanites.webp" alt="奈米簇。"><br><sub><b>奈米簇。</b> 所有路線,依每小時奈米簇排序。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-wiki.webp" alt="百科。"><br><sub><b>百科。</b> 遊戲裡所有物品及其卡片。</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-inventory.webp" alt="我的物品。"><br><sub><b>我的物品。</b> 你帶著什麼,以及每樣東西該放哪裡。</sub></td>
-    <td width="50%"><img src="../img/site-portals.webp" alt="傳送門。"><br><sub><b>傳送門。</b> 代碼與地址,附帶繪製好的字形。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-inventory.webp" alt="我的物品。"><br><sub><b>我的物品。</b> 你帶著什麼,以及每樣東西該放哪裡。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-portals.webp" alt="傳送門。"><br><sub><b>傳送門。</b> 代碼與地址,附帶繪製好的字形。</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-multitools.webp" alt="多功能工具。"><br><sub><b>多功能工具。</b> 八種類型比較,以及如何拿到最好的。</sub></td>
-    <td width="50%"><img src="../img/site-tree-picker.webp" alt="選擇任何可製作的物品,"><br><sub><b>選擇任何可製作的物品,</b> 看看怎麼做。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-multitools.webp" alt="多功能工具。"><br><sub><b>多功能工具。</b> 八種類型比較,以及如何拿到最好的。</sub></td>
+    <td width="50%"><img src="../img/zh-TW/site-tree-picker.webp" alt="選擇任何可製作的物品,"><br><sub><b>選擇任何可製作的物品,</b> 看看怎麼做。</sub></td>
   </tr>
 </table>
 

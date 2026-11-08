@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
+<img src="../img/ko/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## 무엇인가요?
 
@@ -52,20 +52,20 @@
 
 <table>
   <tr>
-    <td width="50%"><img src="../img/site-tree.webp" alt="제작 트리."><br><sub><b>제작 트리.</b> 아이템을 만드는 모든 방법과 모아야 할 재료.</sub></td>
-    <td width="50%"><img src="../img/site-cooking.webp" alt="요리."><br><sub><b>요리.</b> 원하는 효과에 가장 강한 요리.</sub></td>
+    <td width="50%"><img src="../img/ko/site-tree.webp" alt="제작 트리."><br><sub><b>제작 트리.</b> 아이템을 만드는 모든 방법과 모아야 할 재료.</sub></td>
+    <td width="50%"><img src="../img/ko/site-cooking.webp" alt="요리."><br><sub><b>요리.</b> 원하는 효과에 가장 강한 요리.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-nanites.webp" alt="나나이트."><br><sub><b>나나이트.</b> 시간당 나나이트로 정렬한 모든 경로.</sub></td>
-    <td width="50%"><img src="../img/site-wiki.webp" alt="위키."><br><sub><b>위키.</b> 게임의 모든 아이템과 카드.</sub></td>
+    <td width="50%"><img src="../img/ko/site-nanites.webp" alt="나나이트."><br><sub><b>나나이트.</b> 시간당 나나이트로 정렬한 모든 경로.</sub></td>
+    <td width="50%"><img src="../img/ko/site-wiki.webp" alt="위키."><br><sub><b>위키.</b> 게임의 모든 아이템과 카드.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-inventory.webp" alt="내 아이템."><br><sub><b>내 아이템.</b> 가진 것과 각각 들어갈 곳.</sub></td>
-    <td width="50%"><img src="../img/site-portals.webp" alt="포털."><br><sub><b>포털.</b> 코드와 주소, 글리프 그림 포함.</sub></td>
+    <td width="50%"><img src="../img/ko/site-inventory.webp" alt="내 아이템."><br><sub><b>내 아이템.</b> 가진 것과 각각 들어갈 곳.</sub></td>
+    <td width="50%"><img src="../img/ko/site-portals.webp" alt="포털."><br><sub><b>포털.</b> 코드와 주소, 글리프 그림 포함.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-multitools.webp" alt="멀티툴."><br><sub><b>멀티툴.</b> 여덟 종류 비교와 최고의 것을 얻는 법.</sub></td>
-    <td width="50%"><img src="../img/site-tree-picker.webp" alt="만들 수 있는 아이템을 고르면"><br><sub><b>만들 수 있는 아이템을 고르면</b> 만드는 법이 보입니다.</sub></td>
+    <td width="50%"><img src="../img/ko/site-multitools.webp" alt="멀티툴."><br><sub><b>멀티툴.</b> 여덟 종류 비교와 최고의 것을 얻는 법.</sub></td>
+    <td width="50%"><img src="../img/ko/site-tree-picker.webp" alt="만들 수 있는 아이템을 고르면"><br><sub><b>만들 수 있는 아이템을 고르면</b> 만드는 법이 보입니다.</sub></td>
   </tr>
 </table>
 

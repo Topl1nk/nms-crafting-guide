@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
+<img src="../img/es/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## ¿Qué es?
 
@@ -52,20 +52,20 @@ Windows puede mostrar *"Windows protegió su PC"*, porque el programa es nuevo y
 
 <table>
   <tr>
-    <td width="50%"><img src="../img/site-tree.webp" alt="Árbol de fabricación."><br><sub><b>Árbol de fabricación.</b> Todas las formas de hacer un objeto y qué reunir.</sub></td>
-    <td width="50%"><img src="../img/site-cooking.webp" alt="Cocina."><br><sub><b>Cocina.</b> Los mejores platos para el efecto que quieres.</sub></td>
+    <td width="50%"><img src="../img/es/site-tree.webp" alt="Árbol de fabricación."><br><sub><b>Árbol de fabricación.</b> Todas las formas de hacer un objeto y qué reunir.</sub></td>
+    <td width="50%"><img src="../img/es/site-cooking.webp" alt="Cocina."><br><sub><b>Cocina.</b> Los mejores platos para el efecto que quieres.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-nanites.webp" alt="Nanitos."><br><sub><b>Nanitos.</b> Todas las rutas, por nanitos a la hora.</sub></td>
-    <td width="50%"><img src="../img/site-wiki.webp" alt="Wiki."><br><sub><b>Wiki.</b> Todos los objetos del juego con su ficha.</sub></td>
+    <td width="50%"><img src="../img/es/site-nanites.webp" alt="Nanitos."><br><sub><b>Nanitos.</b> Todas las rutas, por nanitos a la hora.</sub></td>
+    <td width="50%"><img src="../img/es/site-wiki.webp" alt="Wiki."><br><sub><b>Wiki.</b> Todos los objetos del juego con su ficha.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-inventory.webp" alt="Mis objetos."><br><sub><b>Mis objetos.</b> Lo que llevas y dónde va cada cosa.</sub></td>
-    <td width="50%"><img src="../img/site-portals.webp" alt="Portales."><br><sub><b>Portales.</b> Códigos y direcciones, con los glifos dibujados.</sub></td>
+    <td width="50%"><img src="../img/es/site-inventory.webp" alt="Mis objetos."><br><sub><b>Mis objetos.</b> Lo que llevas y dónde va cada cosa.</sub></td>
+    <td width="50%"><img src="../img/es/site-portals.webp" alt="Portales."><br><sub><b>Portales.</b> Códigos y direcciones, con los glifos dibujados.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-multitools.webp" alt="Multiherramientas."><br><sub><b>Multiherramientas.</b> Ocho tipos comparados y cómo conseguir las mejores.</sub></td>
-    <td width="50%"><img src="../img/site-tree-picker.webp" alt="Elige cualquier objeto"><br><sub><b>Elige cualquier objeto</b> que se pueda fabricar y mira cómo.</sub></td>
+    <td width="50%"><img src="../img/es/site-multitools.webp" alt="Multiherramientas."><br><sub><b>Multiherramientas.</b> Ocho tipos comparados y cómo conseguir las mejores.</sub></td>
+    <td width="50%"><img src="../img/es/site-tree-picker.webp" alt="Elige cualquier objeto"><br><sub><b>Elige cualquier objeto</b> que se pueda fabricar y mira cómo.</sub></td>
   </tr>
 </table>
 

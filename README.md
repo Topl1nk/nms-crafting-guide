@@ -81,8 +81,8 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 
 <table>
   <tr>
-    <td width="50%"><img src="docs/img/site-recipes-ru.webp" alt="Craft in Russian"></td>
-    <td width="50%"><img src="docs/img/site-wiki-ru.webp" alt="Wiki in Russian"></td>
+    <td width="50%"><img src="docs/img/ru/site-recipes.webp" alt="Craft in Russian"></td>
+    <td width="50%"><img src="docs/img/ru/site-wiki.webp" alt="Wiki in Russian"></td>
   </tr>
 </table>
 

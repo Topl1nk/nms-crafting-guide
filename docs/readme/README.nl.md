@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="../img/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
+<img src="../img/nl/site-recipes.webp" alt="NMS Crafting Guide" width="100%">
 
 ## Wat is het?
 
@@ -52,20 +52,20 @@ Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma n
 
 <table>
   <tr>
-    <td width="50%"><img src="../img/site-tree.webp" alt="Craftingboom."><br><sub><b>Craftingboom.</b> Elke manier om een voorwerp te maken en wat je moet verzamelen.</sub></td>
-    <td width="50%"><img src="../img/site-cooking.webp" alt="Koken."><br><sub><b>Koken.</b> De sterkste gerechten voor het effect dat je wilt.</sub></td>
+    <td width="50%"><img src="../img/nl/site-tree.webp" alt="Craftingboom."><br><sub><b>Craftingboom.</b> Elke manier om een voorwerp te maken en wat je moet verzamelen.</sub></td>
+    <td width="50%"><img src="../img/nl/site-cooking.webp" alt="Koken."><br><sub><b>Koken.</b> De sterkste gerechten voor het effect dat je wilt.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-nanites.webp" alt="Nanieten."><br><sub><b>Nanieten.</b> Alle routes, gerangschikt op nanieten per uur.</sub></td>
-    <td width="50%"><img src="../img/site-wiki.webp" alt="Wiki."><br><sub><b>Wiki.</b> Alle voorwerpen van de game met hun kaart.</sub></td>
+    <td width="50%"><img src="../img/nl/site-nanites.webp" alt="Nanieten."><br><sub><b>Nanieten.</b> Alle routes, gerangschikt op nanieten per uur.</sub></td>
+    <td width="50%"><img src="../img/nl/site-wiki.webp" alt="Wiki."><br><sub><b>Wiki.</b> Alle voorwerpen van de game met hun kaart.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-inventory.webp" alt="Mijn spullen."><br><sub><b>Mijn spullen.</b> Wat je draagt en waar alles heen moet.</sub></td>
-    <td width="50%"><img src="../img/site-portals.webp" alt="Portalen."><br><sub><b>Portalen.</b> Codes en adressen, met getekende glyphs.</sub></td>
+    <td width="50%"><img src="../img/nl/site-inventory.webp" alt="Mijn spullen."><br><sub><b>Mijn spullen.</b> Wat je draagt en waar alles heen moet.</sub></td>
+    <td width="50%"><img src="../img/nl/site-portals.webp" alt="Portalen."><br><sub><b>Portalen.</b> Codes en adressen, met getekende glyphs.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-multitools.webp" alt="Multitools."><br><sub><b>Multitools.</b> Acht typen vergeleken en hoe je de beste krijgt.</sub></td>
-    <td width="50%"><img src="../img/site-tree-picker.webp" alt="Kies een voorwerp"><br><sub><b>Kies een voorwerp</b> dat gemaakt kan worden en zie hoe.</sub></td>
+    <td width="50%"><img src="../img/nl/site-multitools.webp" alt="Multitools."><br><sub><b>Multitools.</b> Acht typen vergeleken en hoe je de beste krijgt.</sub></td>
+    <td width="50%"><img src="../img/nl/site-tree-picker.webp" alt="Kies een voorwerp"><br><sub><b>Kies een voorwerp</b> dat gemaakt kan worden en zie hoe.</sub></td>
   </tr>
 </table>
 

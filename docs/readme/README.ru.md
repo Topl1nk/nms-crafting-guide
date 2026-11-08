@@ -19,7 +19,7 @@
 
 </div>
 
-<img src="../img/site-recipes-ru.webp" alt="NMS Crafting Guide: страница «Крафт»" width="100%">
+<img src="../img/ru/site-recipes.webp" alt="NMS Crafting Guide: страница «Крафт»" width="100%">
 
 ## Что это?
 
@@ -58,31 +58,20 @@ Windows может показать предупреждение *«Windows за
 
 <table>
   <tr>
-    <td width="50%"><img src="../img/site-tree.webp" alt="Дерево крафта"><br><sub><b>Дерево крафта.</b> Все способы сделать предмет и что для этого собрать.</sub></td>
-    <td width="50%"><img src="../img/site-cooking.webp" alt="Готовка"><br><sub><b>Готовка.</b> Сильнейшие блюда для нужного эффекта.</sub></td>
+    <td width="50%"><img src="../img/ru/site-tree.webp" alt="Дерево крафта"><br><sub><b>Дерево крафта.</b> Все способы сделать предмет и что для этого собрать.</sub></td>
+    <td width="50%"><img src="../img/ru/site-cooking.webp" alt="Готовка"><br><sub><b>Готовка.</b> Сильнейшие блюда для нужного эффекта.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-nanites.webp" alt="Наниты"><br><sub><b>Наниты.</b> Все пути, отсортированные по нанитам в час.</sub></td>
-    <td width="50%"><img src="../img/site-wiki.webp" alt="Вики"><br><sub><b>Вики.</b> Все предметы игры с карточками.</sub></td>
+    <td width="50%"><img src="../img/ru/site-nanites.webp" alt="Наниты"><br><sub><b>Наниты.</b> Все пути, отсортированные по нанитам в час.</sub></td>
+    <td width="50%"><img src="../img/ru/site-wiki.webp" alt="Вики"><br><sub><b>Вики.</b> Все предметы игры с карточками.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-inventory.webp" alt="Мои вещи"><br><sub><b>Мои вещи.</b> Что у вас есть и куда что класть.</sub></td>
-    <td width="50%"><img src="../img/site-portals.webp" alt="Порталы"><br><sub><b>Порталы.</b> Коды и адреса с нарисованными глифами.</sub></td>
+    <td width="50%"><img src="../img/ru/site-inventory.webp" alt="Мои вещи"><br><sub><b>Мои вещи.</b> Что у вас есть и куда что класть.</sub></td>
+    <td width="50%"><img src="../img/ru/site-portals.webp" alt="Порталы"><br><sub><b>Порталы.</b> Коды и адреса с нарисованными глифами.</sub></td>
   </tr>
   <tr>
-    <td width="50%"><img src="../img/site-multitools.webp" alt="Мультитулы"><br><sub><b>Мультитулы.</b> Восемь типов рядом и как получить лучшие.</sub></td>
-    <td width="50%"><img src="../img/site-tree-picker.webp" alt="Выбор предмета"><br><sub><b>Любой предмет,</b> который можно сделать, и как.</sub></td>
-  </tr>
-</table>
-
-### Ваш язык
-
-Один выбор в меню настроек (шестерёнка) меняет и страницу, и игровые названия.
-
-<table>
-  <tr>
-    <td width="50%"><img src="../img/site-recipes-ru.webp" alt="Крафт по-русски"></td>
-    <td width="50%"><img src="../img/site-wiki-ru.webp" alt="Вики по-русски"></td>
+    <td width="50%"><img src="../img/ru/site-multitools.webp" alt="Мультитулы"><br><sub><b>Мультитулы.</b> Восемь типов рядом и как получить лучшие.</sub></td>
+    <td width="50%"><img src="../img/ru/site-tree-picker.webp" alt="Выбор предмета"><br><sub><b>Любой предмет,</b> который можно сделать, и как.</sub></td>
   </tr>
 </table>
 
