@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="다운로드"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%EC%A0%9C%EC%9E%91%EC%9E%90-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="제작자: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%86%B1%20%EC%95%B1-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="데스크톱 앱: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%ED%95%B5%EC%8B%AC%EA%B3%BC%20%EB%8D%B0%EC%9D%B4%ED%84%B0-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="핵심과 데이터: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -77,7 +78,8 @@
 
 ## 크레딧
 
-만든 사람: **[Topl1nk](https://github.com/Topl1nk)**.
+- 데스크톱 앱과 인터페이스: **[Topl1nk](https://github.com/Topl1nk)**
+- 핵심, 레시피, 데이터: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide는 Rodrigo Dlugokenski의 [nms-items-interface](https://github.com/rdlu/nms-items-interface) 포크로 시작해 이후 다시 만들어졌습니다. 새 페이지, 데스크톱 앱, 17개 언어 전체, 현재 게임에서 읽은 데이터가 추가되었습니다. 포털 글리프는 [nmsportals](https://nmsportals.github.io/)를 따라 그렸습니다.
 
@@ -85,7 +87,8 @@ NMS Crafting Guide는 Rodrigo Dlugokenski의 [nms-items-interface](https://githu
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%EC%A0%9C%EC%9E%91-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="제작 Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%86%B1%20%EC%95%B1-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="데스크톱 앱: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%ED%95%B5%EC%8B%AC%EA%B3%BC%20%EB%8D%B0%EC%9D%B4%ED%84%B0-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="핵심과 데이터: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

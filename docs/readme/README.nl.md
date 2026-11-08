@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Downloaden-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Downloaden"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Auteur-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Auteur: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop--app-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Desktop-app: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Kern%20en%20data-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Kern en data: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -77,7 +78,8 @@ Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma n
 
 ## Credits
 
-Gemaakt door **[Topl1nk](https://github.com/Topl1nk)**.
+- Desktop-app en interface: **[Topl1nk](https://github.com/Topl1nk)**
+- Kern, recepten en data: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide begon als fork van [nms-items-interface](https://github.com/rdlu/nms-items-interface) van Rodrigo Dlugokenski en is sindsdien opnieuw opgebouwd: nieuwe pagina's, desktop-app, alle 17 talen en gegevens uit de huidige game. De portaalglyphs zijn nagetekend van [nmsportals](https://nmsportals.github.io/).
 
@@ -85,7 +87,8 @@ NMS Crafting Guide begon als fork van [nms-items-interface](https://github.com/r
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Gemaakt%20door-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Gemaakt door Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop--app-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Desktop-app: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Kern%20en%20data-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Kern en data: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

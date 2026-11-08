@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="ダウンロード"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E4%BD%9C%E8%80%85-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="作者: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97%E7%89%88-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="デスクトップ版: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%A0%B8%E3%81%A8%E3%83%87%E3%83%BC%E3%82%BF-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="中核とデータ: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -77,7 +78,8 @@
 
 ## クレジット
 
-作者: **[Topl1nk](https://github.com/Topl1nk)**.
+- デスクトップアプリとインターフェース: **[Topl1nk](https://github.com/Topl1nk)**
+- 中核・レシピ・データ: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide は Rodrigo Dlugokenski 氏の [nms-items-interface](https://github.com/rdlu/nms-items-interface) のフォークとして始まり、その後作り直されました。新しいページ、デスクトップアプリ、全17言語、現行ゲームから読み取ったデータが加わっています。ポータルのグリフは [nmsportals](https://nmsportals.github.io/) を元に描き起こしました。
 
@@ -85,7 +87,8 @@ NMS Crafting Guide は Rodrigo Dlugokenski 氏の [nms-items-interface](https://
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E4%BD%9C%E8%80%85-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="作者 Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97%E7%89%88-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="デスクトップ版: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%A0%B8%E3%81%A8%E3%83%87%E3%83%BC%E3%82%BF-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="中核とデータ: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Download-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Download"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Author-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Author: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop%20app-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Desktop app: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Core%20%26%20data-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Core & data: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -95,7 +96,8 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 
 ## Credits
 
-Made by **[Topl1nk](https://github.com/Topl1nk)**.
+- Desktop app and interface: **[Topl1nk](https://github.com/Topl1nk)**
+- Core, recipes and data: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide began as a fork of [nms-items-interface](https://github.com/rdlu/nms-items-interface) by Rodrigo Dlugokenski and
 has since been rebuilt: new pages, a desktop app, all 17 languages, and data read from the current game.
@@ -106,7 +108,8 @@ Released under the [GPL-3.0](LICENSE). Building it yourself or changing it? See 
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Made%20by-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Made by Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop%20app-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Desktop app: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Core%20%26%20data-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Core & data: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

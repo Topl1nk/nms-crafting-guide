@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Transferir-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Transferir"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Autor-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Autor: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/App%20desktop-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="App desktop: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/N%C3%BAcleo%20e%20dados-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Núcleo e dados: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -77,7 +78,8 @@ O Windows pode mostrar *"O Windows protegeu o seu PC"*, porque o programa é nov
 
 ## Créditos
 
-Feito por **[Topl1nk](https://github.com/Topl1nk)**.
+- Aplicação de desktop e interface: **[Topl1nk](https://github.com/Topl1nk)**
+- Núcleo, receitas e dados: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 O NMS Crafting Guide começou como um fork do [nms-items-interface](https://github.com/rdlu/nms-items-interface), de Rodrigo Dlugokenski, e foi reconstruído desde então: novas páginas, aplicação de desktop, os 17 idiomas e dados lidos do jogo atual. Os glifos de portal foram decalcados de [nmsportals](https://nmsportals.github.io/).
 
@@ -85,7 +87,8 @@ O NMS Crafting Guide começou como um fork do [nms-items-interface](https://gith
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Feito%20por-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Feito por Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/App%20desktop-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="App desktop: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/N%C3%BAcleo%20e%20dados-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Núcleo e dados: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

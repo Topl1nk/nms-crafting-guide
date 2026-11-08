@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Pobierz-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Pobierz"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Autor-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Autor: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Aplikacja-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Aplikacja: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Rdze%C5%84%20i%20dane-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Rdzeń i dane: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -77,7 +78,8 @@ Windows może pokazać *„System Windows ochronił ten komputer”*, bo program
 
 ## Autorzy
 
-Stworzył **[Topl1nk](https://github.com/Topl1nk)**.
+- Aplikacja na komputer i interfejs: **[Topl1nk](https://github.com/Topl1nk)**
+- Rdzeń, receptury i dane: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide zaczął jako fork [nms-items-interface](https://github.com/rdlu/nms-items-interface) autorstwa Rodrigo Dlugokenskiego i od tamtej pory został przebudowany: nowe strony, aplikacja na komputer, wszystkie 17 języków i dane odczytane z obecnej gry. Glify portali przerysowano z [nmsportals](https://nmsportals.github.io/).
 
@@ -85,7 +87,8 @@ NMS Crafting Guide zaczął jako fork [nms-items-interface](https://github.com/r
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Stworzy%C5%82-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Stworzył Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Aplikacja-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Aplikacja: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Rdze%C5%84%20i%20dane-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Rdzeń i dane: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

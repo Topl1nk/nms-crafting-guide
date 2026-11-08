@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%E4%B8%8B%E8%BC%89-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="下載"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E4%BD%9C%E8%80%85-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="作者: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E6%A1%8C%E9%9D%A2%E6%87%89%E7%94%A8-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="桌面應用: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%E6%A0%B8%E5%BF%83%E8%88%87%E8%B3%87%E6%96%99-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="核心與資料: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -77,7 +78,8 @@
 
 ## 致謝
 
-作者: **[Topl1nk](https://github.com/Topl1nk)**.
+- 桌面應用與介面: **[Topl1nk](https://github.com/Topl1nk)**
+- 核心、配方與資料: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide 最初是 Rodrigo Dlugokenski 的 [nms-items-interface](https://github.com/rdlu/nms-items-interface) 的分支,此後被重新打造:新頁面、桌面應用程式、全部 17 種語言,以及從目前遊戲讀取的資料。傳送門字形描摹自 [nmsportals](https://nmsportals.github.io/)。
 
@@ -85,7 +87,8 @@ NMS Crafting Guide 最初是 Rodrigo Dlugokenski 的 [nms-items-interface](https
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E4%BD%9C%E8%80%85-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="作者 Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E6%A1%8C%E9%9D%A2%E6%87%89%E7%94%A8-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="桌面應用: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%E6%A0%B8%E5%BF%83%E8%88%87%E8%B3%87%E6%96%99-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="核心與資料: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 

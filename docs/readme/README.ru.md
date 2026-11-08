@@ -4,7 +4,8 @@
 
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Скачать-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Скачать"></a>
-  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Автор-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Автор: Topl1nk"></a>
+  <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%D0%9F%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Приложение: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%D0%AF%D0%B4%D1%80%D0%BE%20%D0%B8%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-Rodrigo%20Dlugokenski-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Ядро и данные: Rodrigo Dlugokenski"></a>
 </p>
 
 <p>
@@ -95,7 +96,8 @@ Windows может показать предупреждение *«Windows за
 
 ## Авторы
 
-Сделал **[Topl1nk](https://github.com/Topl1nk)**.
+- Приложение для компьютера и интерфейс: **[Topl1nk](https://github.com/Topl1nk)**
+- Основа, рецепты и данные: **[Rodrigo Dlugokenski](https://github.com/rdlu)**, [nms-items-interface](https://github.com/rdlu/nms-items-interface)
 
 NMS Crafting Guide начался как форк [nms-items-interface](https://github.com/rdlu/nms-items-interface) Rodrigo Dlugokenski и с тех
 пор переделан: новые страницы, приложение для компьютера, все 17 языков и данные из актуальной версии игры.
@@ -106,7 +108,8 @@ NMS Crafting Guide начался как форк [nms-items-interface](https://
 
 <div align="center">
 
-<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Сделал-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Сделал Topl1nk"></a>
+<a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%D0%9F%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Приложение: Topl1nk"></a>
+  <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%D0%AF%D0%B4%D1%80%D0%BE%20%D0%B8%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Ядро и данные: Rodrigo Dlugokenski"></a>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
 
