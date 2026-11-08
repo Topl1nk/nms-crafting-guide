@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=%EB%82%B4%20PC%EC%97%90%EC%84%9C%20%EB%8F%8C%EC%95%84%EA%B0%80%EB%8A%94%20No%20Man%27s%20Sky%20%EC%A0%9C%EC%9E%91%20%EB%8F%84%EC%9A%B0%EB%AF%B8&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=%EB%82%B4+%EA%B2%8C%EC%9E%84%EC%9D%98+%EB%AA%A8%EB%93%A0+%EB%A0%88%EC%8B%9C%ED%94%BC;%EB%91%90+%EB%B2%88%EC%9D%98+%ED%81%B4%EB%A6%AD%EC%9C%BC%EB%A1%9C+%EA%B0%80%EC%9E%A5+%EC%A7%A7%EC%9D%80+%EC%A0%95%EC%A0%9C+%EA%B2%BD%EB%A1%9C;%EB%82%98%EB%82%98%EC%9D%B4%ED%8A%B8+%EA%B2%BD%EB%A1%9C%2C+%EC%9A%94%EB%A6%AC+%ED%9A%A8%EA%B3%BC%2C+%ED%8F%AC%ED%84%B8+%EA%B8%80%EB%A6%AC%ED%94%84;17%EA%B0%9C+%EC%96%B8%EC%96%B4.+%EC%98%A4%ED%94%84%EB%9D%BC%EC%9D%B8+%EC%9E%91%EB%8F%99." alt="내 게임의 모든 레시피">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="다운로드"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%86%B1%20%EC%95%B1-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="데스크톱 앱: Topl1nk"></a>
@@ -44,9 +46,14 @@
 | **Windows** | [최신 릴리스](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)에서 `nms-crafting-guide-Setup-….exe`를 내려받아 실행하세요. 관리자 권한은 필요 없습니다. 설치 프로그램은 14개 언어를 지원합니다. |
 | **Linux** | `nms-crafting-guide-….AppImage`를 내려받아 실행 권한을 주고 더블클릭하세요. |
 
-새 프로그램이고 서명이 없어서 Windows가 *"Windows의 PC 보호"* 화면을 보여 줄 수 있습니다. *추가 정보 → 실행*을 누르세요.
+> [!NOTE]
+> 새 프로그램이고 서명이 없어서 Windows가 *"Windows의 PC 보호"* 화면을 보여 줄 수 있습니다. *추가 정보 → 실행*을 누르세요.
 
-**처음 실행.** NMS Crafting Guide는 설치된 No Man's Sky(Steam 또는 GOG)를 찾아 아이템 그림을 가져옵니다. 몇 분 걸리며 한 번만 일어납니다. 아직 준비되지 않은 언어로 바꾸면 첫 전환에 약 1분이 걸리고, 그 뒤 이름이 바로 바뀝니다. 그림과 텍스트는 내 컴퓨터에만 남으며, Hello Games의 것이므로 업로드되지 않습니다.
+> [!IMPORTANT]
+> **처음 실행.** NMS Crafting Guide는 설치된 No Man's Sky(Steam 또는 GOG)를 찾아 아이템 그림을 가져옵니다. 몇 분 걸리며 한 번만 일어납니다. 그림과 텍스트는 내 컴퓨터에만 남으며, Hello Games의 것이므로 업로드되지 않습니다.
+
+> [!TIP]
+> 아직 준비되지 않은 언어로 바꾸면 첫 전환에 약 1분이 걸리고, 그 뒤 이름이 바로 바뀝니다.
 
 ## 화면 둘러보기
 
@@ -90,6 +97,6 @@ NMS Crafting Guide는 Rodrigo Dlugokenski의 [nms-items-interface](https://githu
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%EB%8D%B0%EC%8A%A4%ED%81%AC%ED%86%B1%20%EC%95%B1-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="데스크톱 앱: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%ED%95%B5%EC%8B%AC%EA%B3%BC%20%EB%8D%B0%EC%9D%B4%ED%84%B0-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="핵심과 데이터: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=%EB%A7%91%EC%9D%80+%ED%95%98%EB%8A%98+%EB%90%98%EC%84%B8%EC%9A%94%2C+%EC%97%AC%ED%96%89%EC%9E%90%EC%97%AC&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="맑은 하늘 되세요, 여행자여">
 
 </div>

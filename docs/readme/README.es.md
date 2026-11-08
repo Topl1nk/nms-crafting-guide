@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Una%20gu%C3%ADa%20de%20fabricaci%C3%B3n%20de%20No%20Man%27s%20Sky%20que%20vive%20en%20tu%20PC&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=Todas+las+recetas+de+tu+propio+juego;La+cadena+de+refinado+m%C3%A1s+corta+en+dos+clics;Rutas+de+nanitos%2C+efectos+de+cocina%2C+glifos+de+portales;17+idiomas.+Funciona+sin+conexi%C3%B3n." alt="Todas las recetas de tu propio juego">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Descargar-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Descargar"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/App%20de%20escritorio-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="App de escritorio: Topl1nk"></a>
@@ -44,9 +46,14 @@ Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **dire
 | **Windows** | Descarga `nms-crafting-guide-Setup-….exe` de la [última versión](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) y ejecútalo. No hacen falta permisos de administrador. El instalador habla 14 idiomas. |
 | **Linux** | Descarga `nms-crafting-guide-….AppImage`, hazlo ejecutable y haz doble clic. |
 
-Windows puede mostrar *"Windows protegió su PC"*, porque el programa es nuevo y no está firmado. Pulsa *Más información → Ejecutar de todas formas*.
+> [!NOTE]
+> Windows puede mostrar *"Windows protegió su PC"*, porque el programa es nuevo y no está firmado. Pulsa *Más información → Ejecutar de todas formas*.
 
-**Primer arranque.** NMS Crafting Guide encuentra tu No Man's Sky (Steam o GOG) y toma de él las imágenes de los objetos. Tarda unos minutos y ocurre una sola vez. Al cambiar a un idioma aún no preparado, el primer cambio tarda como un minuto y luego los nombres cambian al instante. Las imágenes y los textos se quedan en tu ordenador; pertenecen a Hello Games y nunca se suben.
+> [!IMPORTANT]
+> **Primer arranque.** NMS Crafting Guide encuentra tu No Man's Sky (Steam o GOG) y toma de él las imágenes de los objetos. Tarda unos minutos y ocurre una sola vez. Las imágenes y los textos se quedan en tu ordenador; pertenecen a Hello Games y nunca se suben.
+
+> [!TIP]
+> Al cambiar a un idioma aún no preparado, el primer cambio tarda como un minuto y luego los nombres cambian al instante.
 
 ## Un vistazo
 
@@ -90,6 +97,6 @@ NMS Crafting Guide empezó como un fork de [nms-items-interface](https://github.
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/App%20de%20escritorio-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="App de escritorio: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/N%C3%BAcleo%20y%20datos-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Núcleo y datos: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=Cielos+despejados%2C+Viajero&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="Cielos despejados, Viajero">
 
 </div>

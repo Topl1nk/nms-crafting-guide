@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Een%20craftinggids%20voor%20No%20Man%27s%20Sky%20die%20op%20je%20pc%20leeft&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=Alle+recepten+uit+je+eigen+spel;De+kortste+raffinageketen+in+twee+klikken;Nanietroutes%2C+kookeffecten%2C+portaalglyphs;17+talen.+Werkt+offline." alt="Alle recepten uit je eigen spel">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Downloaden-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Downloaden"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop--app-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Desktop-app: Topl1nk"></a>
@@ -44,9 +46,14 @@ Het is een klein programma voor je computer. Het leest recepten, prijzen en name
 | **Windows** | Download `nms-crafting-guide-Setup-….exe` van de [nieuwste release](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) en voer het uit. Geen beheerdersrechten nodig. Het installatieprogramma spreekt 14 talen. |
 | **Linux** | Download `nms-crafting-guide-….AppImage`, maak het uitvoerbaar en dubbelklik erop. |
 
-Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma nieuw en niet ondertekend is. Klik op *Meer informatie → Toch uitvoeren*.
+> [!NOTE]
+> Windows toont misschien *"Windows heeft uw pc beschermd"*, omdat het programma nieuw en niet ondertekend is. Klik op *Meer informatie → Toch uitvoeren*.
 
-**Eerste start.** NMS Crafting Guide vindt je No Man's Sky (Steam of GOG) en haalt de voorwerpafbeeldingen eruit. Dat duurt een paar minuten en gebeurt één keer. Wissel je naar een taal die nog niet klaar is, dan duurt de eerste keer ongeveer een minuut, waarna de namen meteen veranderen. Afbeeldingen en teksten blijven op je computer; ze zijn van Hello Games en worden nooit geüpload.
+> [!IMPORTANT]
+> **Eerste start.** NMS Crafting Guide vindt je No Man's Sky (Steam of GOG) en haalt de voorwerpafbeeldingen eruit. Dat duurt een paar minuten en gebeurt één keer. Afbeeldingen en teksten blijven op je computer; ze zijn van Hello Games en worden nooit geüpload.
+
+> [!TIP]
+> Wissel je naar een taal die nog niet klaar is, dan duurt de eerste keer ongeveer een minuut, waarna de namen meteen veranderen.
 
 ## Een kijkje
 
@@ -90,6 +97,6 @@ NMS Crafting Guide begon als fork van [nms-items-interface](https://github.com/r
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop--app-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Desktop-app: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Kern%20en%20data-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Kern en data: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=Heldere+luchten%2C+Reiziger&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="Heldere luchten, Reiziger">
 
 </div>

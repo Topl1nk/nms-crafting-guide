@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Um%20guia%20de%20cria%C3%A7%C3%A3o%20de%20No%20Man%27s%20Sky%20que%20vive%20no%20seu%20PC&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=Todas+as+receitas+do+seu+pr%C3%B3prio+jogo;A+cadeia+de+refina%C3%A7%C3%A3o+mais+curta+em+dois+cliques;Rotas+de+nanites%2C+efeitos+de+culin%C3%A1ria%2C+glifos+de+portais;17+idiomas.+Funciona+offline." alt="Todas as receitas do seu próprio jogo">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Transferir-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Transferir"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/App%20desktop-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="App desktop: Topl1nk"></a>
@@ -44,9 +46,14 @@ Está diante de um refinador e pergunta-se: *em que se transforma isto e qual a 
 | **Windows** | Transfira `nms-crafting-guide-Setup-….exe` da [última versão](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) e execute. Não precisa de administrador. O instalador fala 14 idiomas. |
 | **Linux** | Transfira `nms-crafting-guide-….AppImage`, torne-o executável e faça duplo clique. |
 
-O Windows pode mostrar *"O Windows protegeu o seu PC"*, porque o programa é novo e não está assinado. Clique em *Mais informações → Executar mesmo assim*.
+> [!NOTE]
+> O Windows pode mostrar *"O Windows protegeu o seu PC"*, porque o programa é novo e não está assinado. Clique em *Mais informações → Executar mesmo assim*.
 
-**Primeira execução.** O NMS Crafting Guide encontra o seu No Man's Sky (Steam ou GOG) e tira dele as imagens dos itens. Demora alguns minutos e acontece uma vez. Ao mudar para um idioma ainda não preparado, a primeira mudança demora cerca de um minuto, e os nomes mudam logo a seguir. Imagens e textos ficam no seu computador; pertencem à Hello Games e nunca são enviados.
+> [!IMPORTANT]
+> **Primeira execução.** O NMS Crafting Guide encontra o seu No Man's Sky (Steam ou GOG) e tira dele as imagens dos itens. Demora alguns minutos e acontece uma vez. Imagens e textos ficam no seu computador; pertencem à Hello Games e nunca são enviados.
+
+> [!TIP]
+> Ao mudar para um idioma ainda não preparado, a primeira mudança demora cerca de um minuto, e os nomes mudam logo a seguir.
 
 ## Uma vista de olhos
 
@@ -90,6 +97,6 @@ O NMS Crafting Guide começou como um fork do [nms-items-interface](https://gith
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/App%20desktop-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="App desktop: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/N%C3%BAcleo%20e%20dados-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Núcleo e dados: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=C%C3%A9us+limpos%2C+Viajante&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="Céus limpos, Viajante">
 
 </div>

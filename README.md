@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=A%20No%20Man%27s%20Sky%20crafting%20reference%20that%20lives%20on%20your%20PC&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=Every+recipe+from+your+own+game;The+shortest+refining+chain+in+two+clicks;Nanite+routes%2C+cooking+buffs%2C+portal+glyphs;17+languages.+Works+offline." alt="Every recipe from your own game">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Download-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Download"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop%20app-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Desktop app: Topl1nk"></a>
@@ -46,13 +48,18 @@ game**, so the numbers are the ones your game really uses, not what a wiki remem
 | **Windows** | Download `nms-crafting-guide-Setup-….exe` from the [latest release](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) and run it. No administrator rights needed. The installer speaks 14 languages. |
 | **Linux** | Download `nms-crafting-guide-….AppImage`, make it executable and double-click it. |
 
-Windows may show a *"Windows protected your PC"* warning, because the program is new and not signed. Press
-*More info → Run anyway*.
+> [!NOTE]
+> Windows may show a *"Windows protected your PC"* warning, because the program is new and not signed. Press
+> *More info → Run anyway*.
 
-**First launch.** NMS Crafting Guide finds your No Man's Sky installation (Steam or GOG) and takes the item pictures from it. This
-takes a few minutes and happens once. If you switch to a language that has not been prepared yet, the first switch takes
-about a minute, and item names then change on the spot. The pictures and texts stay on your computer; they belong to
-Hello Games and are never uploaded or shared.
+> [!IMPORTANT]
+> **First launch.** NMS Crafting Guide finds your No Man's Sky installation (Steam or GOG) and takes the item pictures
+> from it. This takes a few minutes and happens once. The pictures and texts stay on your computer; they belong to
+> Hello Games and are never uploaded or shared.
+
+> [!TIP]
+> If you switch to a language that has not been prepared yet, the first switch takes about a minute, and item names
+> then change on the spot.
 
 ## A look around
 
@@ -111,6 +118,6 @@ Released under the [GPL-3.0](LICENSE). Building it yourself or changing it? See 
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/Desktop%20app-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Desktop app: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/Core%20%26%20data-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Core & data: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=Fair%20skies%2C%20Traveller&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="Fair skies, Traveller">
 
 </div>

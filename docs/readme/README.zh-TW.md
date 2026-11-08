@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=%E4%BD%8F%E5%9C%A8%E4%BD%A0%E9%9B%BB%E8%85%A6%E8%A3%A1%E7%9A%84%E3%80%8A%E7%84%A1%E4%BA%BA%E6%B7%B1%E7%A9%BA%E3%80%8B%E8%A3%BD%E4%BD%9C%E9%80%9F%E6%9F%A5%E5%B7%A5%E5%85%B7&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=%E4%BE%86%E8%87%AA%E4%BD%A0%E8%87%AA%E5%B7%B1%E9%81%8A%E6%88%B2%E7%9A%84%E5%85%A8%E9%83%A8%E9%85%8D%E6%96%B9;%E5%85%A9%E6%AC%A1%E9%BB%9E%E6%93%8A%E6%89%BE%E5%88%B0%E6%9C%80%E7%9F%AD%E7%B2%BE%E7%85%89%E8%B7%AF%E7%B7%9A;%E5%A5%88%E7%B1%B3%E7%B0%87%E8%B7%AF%E7%B7%9A%E3%80%81%E7%83%B9%E9%A3%AA%E5%A2%9E%E7%9B%8A%E3%80%81%E5%82%B3%E9%80%81%E9%96%80%E7%AC%A6%E8%99%9F;%E6%94%AF%E6%8F%B4+17+%E7%A8%AE%E8%AA%9E%E8%A8%80%2C%E9%9B%A2%E7%B7%9A%E5%8F%AF%E7%94%A8%E3%80%82" alt="來自你自己遊戲的全部配方">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%E4%B8%8B%E8%BC%89-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="下載"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E6%A1%8C%E9%9D%A2%E6%87%89%E7%94%A8-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="桌面應用: Topl1nk"></a>
@@ -44,9 +46,14 @@
 | **Windows** | 從[最新版本](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)下載 `nms-crafting-guide-Setup-….exe` 並執行。不需要系統管理員權限。安裝程式支援 14 種語言。 |
 | **Linux** | 下載 `nms-crafting-guide-….AppImage`,賦予可執行權限後按兩下執行。 |
 
-因為程式較新且未簽署,Windows 可能顯示*「Windows 已保護您的電腦」*。請按*其他資訊 → 仍要執行*。
+> [!NOTE]
+> 因為程式較新且未簽署,Windows 可能顯示*「Windows 已保護您的電腦」*。請按*其他資訊 → 仍要執行*。
 
-**第一次啟動。** NMS Crafting Guide 會找到你安裝的《無人深空》(Steam 或 GOG),並從中取出物品圖片。這需要幾分鐘,只會發生一次。切換到尚未準備好的語言時,第一次切換約需一分鐘,之後名稱會立刻改變。圖片和文字都留在你的電腦上,它們屬於 Hello Games,絕不會被上傳。
+> [!IMPORTANT]
+> **第一次啟動。** NMS Crafting Guide 會找到你安裝的《無人深空》(Steam 或 GOG),並從中取出物品圖片。這需要幾分鐘,只會發生一次。圖片和文字都留在你的電腦上,它們屬於 Hello Games,絕不會被上傳。
+
+> [!TIP]
+> 切換到尚未準備好的語言時,第一次切換約需一分鐘,之後名稱會立刻改變。
 
 ## 看一看
 
@@ -90,6 +97,6 @@ NMS Crafting Guide 最初是 Rodrigo Dlugokenski 的 [nms-items-interface](https
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E6%A1%8C%E9%9D%A2%E6%87%89%E7%94%A8-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="桌面應用: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%E6%A0%B8%E5%BF%83%E8%88%87%E8%B3%87%E6%96%99-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="核心與資料: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=%E9%A1%98%E5%A4%A9%E7%A9%BA%E6%99%B4%E6%9C%97%2C%E6%97%85%E8%A1%8C%E8%80%85&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="願天空晴朗,旅行者">
 
 </div>

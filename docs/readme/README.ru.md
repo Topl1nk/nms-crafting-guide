@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=Справочник%20по%20крафту%20No%20Man%27s%20Sky%20прямо%20на%20вашем%20ПК&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=%D0%92%D1%81%D0%B5+%D1%80%D0%B5%D1%86%D0%B5%D0%BF%D1%82%D1%8B+%D0%B8%D0%B7+%D0%B2%D0%B0%D1%88%D0%B5%D0%B9+%D1%81%D0%BE%D0%B1%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%BE%D0%B9+%D0%B8%D0%B3%D1%80%D1%8B;%D0%9A%D1%80%D0%B0%D1%82%D1%87%D0%B0%D0%B9%D1%88%D0%B0%D1%8F+%D1%86%D0%B5%D0%BF%D0%BE%D1%87%D0%BA%D0%B0+%D0%BF%D0%B5%D1%80%D0%B5%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B8+%D0%B2+%D0%B4%D0%B2%D0%B0+%D0%BA%D0%BB%D0%B8%D0%BA%D0%B0;%D0%9F%D1%83%D1%82%D0%B8+%D0%BA+%D0%BD%D0%B0%D0%BD%D0%B8%D1%82%D0%B0%D0%BC%2C+%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D1%8B+%D0%B1%D0%BB%D1%8E%D0%B4%2C+%D0%B3%D0%BB%D0%B8%D1%84%D1%8B+%D0%BF%D0%BE%D1%80%D1%82%D0%B0%D0%BB%D0%BE%D0%B2;17+%D1%8F%D0%B7%D1%8B%D0%BA%D0%BE%D0%B2.+%D0%A0%D0%B0%D0%B1%D0%BE%D1%82%D0%B0%D0%B5%D1%82+%D0%B1%D0%B5%D0%B7+%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D0%BD%D0%B5%D1%82%D0%B0." alt="Все рецепты из вашей собственной игры">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/Скачать-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Скачать"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%D0%9F%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Приложение: Topl1nk"></a>
@@ -46,13 +48,15 @@
 | **Windows** | Скачайте `nms-crafting-guide-Setup-….exe` из [последнего релиза](https://github.com/Topl1nk/nms-crafting-guide/releases/latest) и запустите. Права администратора не нужны. Установщик говорит на 14 языках. |
 | **Linux** | Скачайте `nms-crafting-guide-….AppImage`, сделайте его исполняемым и откройте двойным щелчком. |
 
-Windows может показать предупреждение *«Windows защитила ваш компьютер»*: программа новая и не подписана. Нажмите
-*Подробнее → Выполнить в любом случае*.
+> [!NOTE]
+> Windows может показать предупреждение *«Windows защитила ваш компьютер»*: программа новая и не подписана. Нажмите
+> *Подробнее → Выполнить в любом случае*.
 
-**Первый запуск.** NMS Crafting Guide находит установленную No Man's Sky (Steam или GOG) и берёт из неё картинки предметов. Это
-занимает несколько минут и происходит один раз. Если выбрать язык, который ещё не подготовлен, первое переключение
-займёт около минуты, после чего названия предметов сменятся сразу. Картинки и тексты остаются на вашем компьютере: они
-принадлежат Hello Games и никуда не загружаются.
+> [!IMPORTANT]
+> **Первый запуск.** NMS Crafting Guide находит установленную No Man's Sky (Steam или GOG) и берёт из неё картинки предметов. Это занимает несколько минут и происходит один раз. Картинки и тексты остаются на вашем компьютере: они принадлежат Hello Games и никуда не загружаются.
+
+> [!TIP]
+> Если выбрать язык, который ещё не подготовлен, первое переключение займёт около минуты, после чего названия предметов сменятся сразу.
 
 ## Посмотрите сами
 
@@ -100,6 +104,6 @@ NMS Crafting Guide начался как форк [nms-items-interface](https://
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%D0%9F%D1%80%D0%B8%D0%BB%D0%BE%D0%B6%D0%B5%D0%BD%D0%B8%D0%B5-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="Приложение: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%D0%AF%D0%B4%D1%80%D0%BE%20%D0%B8%20%D0%B4%D0%B0%D0%BD%D0%BD%D1%8B%D0%B5-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="Ядро и данные: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=%D0%AF%D1%81%D0%BD%D0%BE%D0%B3%D0%BE+%D0%BD%D0%B5%D0%B1%D0%B0%2C+%D0%9F%D1%83%D1%82%D0%B5%D1%88%D0%B5%D1%81%D1%82%D0%B2%D0%B5%D0%BD%D0%BD%D0%B8%D0%BA&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="Ясного неба, Путешественник">
 
 </div>

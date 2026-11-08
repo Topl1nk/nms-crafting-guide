@@ -2,6 +2,8 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=230&section=header&text=NMS%20Crafting%20Guide&fontSize=64&fontColor=ffffff&fontAlignY=38&desc=%E3%81%82%E3%81%AA%E3%81%9F%E3%81%AEPC%E3%81%A7%E5%8B%95%E3%81%8F%20No%20Man%27s%20Sky%20%E3%81%AE%E3%82%AF%E3%83%A9%E3%83%95%E3%83%88%E6%97%A9%E8%A6%8B%E3%83%84%E3%83%BC%E3%83%AB&descSize=20&descAlignY=60" alt="NMS Crafting Guide">
 
+<img src="https://readme-typing-svg.demolab.com?font=Segoe+UI&weight=600&size=22&duration=3200&pause=900&color=F2B705&center=true&vCenter=true&width=640&height=40&lines=%E3%81%82%E3%81%AA%E3%81%9F%E8%87%AA%E8%BA%AB%E3%81%AE%E3%82%B2%E3%83%BC%E3%83%A0%E3%81%AE%E3%83%AC%E3%82%B7%E3%83%94%E3%82%92%E3%81%99%E3%81%B9%E3%81%A6;2%E3%82%AF%E3%83%AA%E3%83%83%E3%82%AF%E3%81%A7%E6%9C%80%E7%9F%AD%E3%81%AE%E7%B2%BE%E8%A3%BD%E3%83%AB%E3%83%BC%E3%83%88;%E3%83%8A%E3%83%8A%E3%82%A4%E3%83%88%E3%81%AE%E7%A8%BC%E3%81%8E%E6%96%B9%E3%80%81%E6%96%99%E7%90%86%E3%81%AE%E5%8A%B9%E6%9E%9C%E3%80%81%E3%83%9D%E3%83%BC%E3%82%BF%E3%83%AB%E3%81%AE%E3%82%B0%E3%83%AA%E3%83%95;17%E8%A8%80%E8%AA%9E%E5%AF%BE%E5%BF%9C%E3%80%82%E3%82%AA%E3%83%95%E3%83%A9%E3%82%A4%E3%83%B3%E3%81%A7%E5%8B%95%E4%BD%9C%E3%80%82" alt="あなた自身のゲームのレシピをすべて">
+
 <p>
   <a href="https://github.com/Topl1nk/nms-crafting-guide/releases/latest"><img src="https://img.shields.io/badge/%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89-Windows%20%7C%20Linux-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="ダウンロード"></a>
   <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97%E7%89%88-Topl1nk-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="デスクトップ版: Topl1nk"></a>
@@ -44,9 +46,14 @@
 | **Windows** | [最新リリース](https://github.com/Topl1nk/nms-crafting-guide/releases/latest)から `nms-crafting-guide-Setup-….exe` をダウンロードして実行してください。管理者権限は不要です。インストーラーは14言語に対応しています。 |
 | **Linux** | `nms-crafting-guide-….AppImage` をダウンロードし、実行権限を付けてダブルクリックします。 |
 
-新しく署名もないプログラムのため、Windows に *「WindowsによってPCが保護されました」* と表示されることがあります。*詳細情報 → 実行* を押してください。
+> [!NOTE]
+> 新しく署名もないプログラムのため、Windows に *「WindowsによってPCが保護されました」* と表示されることがあります。*詳細情報 → 実行* を押してください。
 
-**初回起動。** NMS Crafting Guide はインストール済みの No Man's Sky(Steam または GOG)を見つけ、アイテム画像を取り込みます。数分かかりますが、一度だけです。まだ準備されていない言語に切り替えると、最初の切り替えに約1分かかり、その後すぐに名前が変わります。画像とテキストはあなたのパソコンに残り、Hello Games のものとして、アップロードされることはありません。
+> [!IMPORTANT]
+> **初回起動。** NMS Crafting Guide はインストール済みの No Man's Sky(Steam または GOG)を見つけ、アイテム画像を取り込みます。数分かかりますが、一度だけです。画像とテキストはあなたのパソコンに残り、Hello Games のものとして、アップロードされることはありません。
+
+> [!TIP]
+> まだ準備されていない言語に切り替えると、最初の切り替えに約1分かかり、その後すぐに名前が変わります。
 
 ## 画面を見てみる
 
@@ -90,6 +97,6 @@ NMS Crafting Guide は Rodrigo Dlugokenski 氏の [nms-items-interface](https://
 <a href="https://github.com/Topl1nk"><img src="https://img.shields.io/badge/%E3%83%87%E3%82%B9%E3%82%AF%E3%83%88%E3%83%83%E3%83%97%E7%89%88-Topl1nk-f2b705?style=for-the-badge&logo=github&logoColor=black" alt="デスクトップ版: Topl1nk"></a>
   <a href="https://github.com/rdlu"><img src="https://img.shields.io/badge/%E4%B8%AD%E6%A0%B8%E3%81%A8%E3%83%87%E3%83%BC%E3%82%BF-Rodrigo%20Dlugokenski-1d2a6b?style=for-the-badge&logo=github&logoColor=white" alt="中核とデータ: Rodrigo Dlugokenski"></a>
 
-<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=120&section=footer" alt="">
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0b1330,60:1d2a6b,100:f2b705&height=170&section=footer&text=%E8%89%AF%E3%81%8D%E7%A9%BA%E3%81%AE%E6%97%85%E3%82%92%E3%80%81%E6%97%85%E4%BA%BA%E3%82%88&fontSize=30&fontColor=ffffff&fontAlignY=62&animation=twinkling" alt="良き空の旅を、旅人よ">
 
 </div>
