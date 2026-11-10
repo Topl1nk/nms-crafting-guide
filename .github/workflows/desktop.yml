@@ -36,7 +36,7 @@ jobs:
       # vite directly, not `npm run build`: its postbuild check_pwa wants the service worker registered, which this fork turns
       # off (site/src/lib/pwa.svelte.js), and the desktop app is not an installable web app anyway.
       - run: npx vite build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: site
           path: dist
@@ -105,7 +105,7 @@ jobs:
         if: matrix.platform == 'linux'
         run: bash desktop/installer/build_appimage.sh "${{ steps.version.outputs.value }}"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: nms-crafting-guide-${{ matrix.platform }}
           path: |
