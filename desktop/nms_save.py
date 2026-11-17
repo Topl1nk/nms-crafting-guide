@@ -38,6 +38,39 @@ def _namegen():
     except ImportError:
         return None
     return planet, system
+
+
+def _name_variants(seed: int) -> list[str]:
+    """Every name a planet's seed can make up, one per name template the game has. The game shows the name a planet got when
+    it was discovered, and the rule that picks the template has changed since (a planet found a year ago shows "Odale VI"
+    where the rule of today gives "Iidak 73/G1", from the same words and numbers), so a search should find the planet by any
+    of them. The draws are those of nms_namegen's planetName."""
+    namegen = _namegen()
+    if not namegen:
+        return []
+    from nms_namegen.generator import generateName
+    from nms_namegen.prng import PRNG
+    from nms_namegen.roman import toRoman
+    planet = namegen[0]
+    low, high = seed & 0xFFFFFFFF, seed >> 32
+    mixed = (((low & 0xFFFF) << 16) | (low >> 16)) ^ low ^ high
+    rng = PRNG(((low or 1) * PRNG.MULTIPLIER) + (mixed & 0xFFFFFFFF))
+    adornment = ((rng.seed & 0xFFFFFFFF) * 10) >> 0x20
+    code, shortcode, numeral = rng.random(50) + 1, rng.random(0x1A) + 0x41, rng.random(0x12) + 2
+    digit, alpha, longcode = rng.random(0x09) + 1, rng.random(0x1A) + 0x41, rng.random(0x59) + 0xB
+    parts = {"%PROCNORM%": generateName(rng, 7, 4, 8).capitalize(), "%PROCSHORT%": generateName(rng, 5, 4, 5).capitalize(),
+             "%PROCLONG%": generateName(rng, 7, 6, 10).capitalize(), "%ADORNMENT%": planet.adornments[adornment],
+             "%SHORTCODE%": planet.format_shortcode(shortcode, code % 0x50), "%NUMERAL%": toRoman(numeral),
+             "%LONGCODE%": planet.format_longcode(longcode, digit, alpha)}
+    names: list[str] = []
+    for template in planet.styles:
+        if template.startswith("Style"):
+            continue  # the list's placeholder for a template the game does not have
+        for key, text in parts.items():
+            template = template.replace(key, text)
+        if template not in names:
+            names.append(template)
+    return names
 # Where the game keeps its saves: %APPDATA% on Windows; on Linux the Proton prefix of the Steam install (App ID 275850).
 PROTON = Path("steamapps/compatdata/275850/pfx/drive_c/users/steamuser/AppData/Roaming")
 
@@ -153,7 +186,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "biome": "", "word_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "aliases": [], "biome": "", "word_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
@@ -209,6 +242,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
             if not p["name"] and p["planet"] > 0:  # planet 0 is no body of the system (nms_namegen would read it as the last one)
                 seed = seeds[key] if key in seeds else planet_mod.planetSeed(code, galaxy)
                 p["name"], p["name_source"] = planet_mod.planetName(seed), "generated"
+                p["aliases"] = [n for n in _name_variants(seed) if n != p["name"]]
             if not p["system_name"]:
                 p["system_name"], p["system_name_source"] = system_mod.systemName(code, galaxy), "generated"
         except (KeyError, IndexError, ValueError):

@@ -83,6 +83,17 @@ def test_the_planet_the_player_stands_on_is_listed_even_if_nothing_was_scanned()
     assert nms_save.planets(save, ME) == []
 
 
+def test_a_planet_is_found_by_the_name_the_game_showed_when_it_was_discovered() -> None:
+    pytest.importorskip("numpy")
+    # Sobinsk IX 2: the words and the numeral are those of the seed, the game showed "Odale VI" (it was found a year ago), today's rule gives another template
+    seed = 0x557B3D1B13177D2A
+    assert "Odale VI" in nms_save._name_variants(seed)
+    assert len(nms_save._name_variants(seed)) == len(set(nms_save._name_variants(seed)))
+    ua = (2 << 52) | (6 << 40) | 0x024BCAD3  # planet 2 of system 6, y 2, z 0x4BC, x 0xAD3
+    found = nms_save.planets(_save([_typed(ua, [seed, 5])]), ME)
+    assert found[0]["name"] == "Iidak 73/G1" and "Odale VI" in found[0]["aliases"]
+
+
 def test_planet_zero_is_the_system_and_not_listed() -> None:
     base = {"Name": "", "Owner": {"UID": ME}, "GalacticAddress": IBOSON & ~(0xF << 52), "LastUpdateTimestamp": 5}
     found = nms_save.planets(_save([_record("Flora", IBOSON & ~(0xF << 52))], [base]), ME)  # a base can sit at planet 0
