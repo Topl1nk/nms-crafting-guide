@@ -19,10 +19,24 @@ from pathlib import Path
 
 import lz4.block
 
-import nms_names
 import paths
 
 MAGIC = 0xFEEDA1E5
+
+
+def _namegen():
+    """The names the game makes up for planets and systems come from nms_namegen (third_party/, MIT, Stuart Coyle & had.sh & GGF),
+    which needs numpy. Without it the names the save does not hold are simply left out. Installed, the package is in the bundle;
+    from a checkout it is the copy under third_party/."""
+    if not paths.FROZEN:
+        path = str(paths.RES / "third_party" / "nms_namegen")
+        if path not in sys.path:
+            sys.path.insert(0, path)
+    try:
+        from nms_namegen import planet, system
+    except ImportError:
+        return None
+    return planet, system
 # Where the game keeps its saves: %APPDATA% on Windows; on Linux the Proton prefix of the Steam install (App ID 275850).
 PROTON = Path("steamapps/compatdata/275850/pfx/drive_c/users/steamuser/AppData/Roaming")
 
@@ -107,7 +121,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
     """The planets the player has been to, as far as the save shows it: those with a discovery of theirs (the planet itself,
     or an animal, plant or mineral found on it) or with a base of theirs. The save does not keep a planet's resources, and
     its name only if one was given (or uploaded with the discovery). Where there is none, the name is worked out from the
-    planet's seed and address the way the game makes it up (nms_names.py) and marked "generated" in name_source and
+    planet's seed and address the way the game makes it up (nms_namegen, see _namegen) and marked "generated" in name_source and
     system_name_source; a name taken from the save is marked "save"."""
     records = ((save.get("DiscoveryManagerData") or {}).get("DiscoveryData-v1") or {}).get("Store", {}).get("Record") or []
     state = save["BaseContext"]["PlayerStateData"]
@@ -156,16 +170,21 @@ def planets(save: dict, account: str = "") -> list[dict]:
             for p in found.values():
                 if (p["galaxy"], p["system"]) == (_place(key)["galaxy"], _place(key)["system"]):
                     p["system_name"] = name
+    namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")
+        if not namegen:
+            continue
+        planet_mod, system_mod = namegen
         code, galaxy = int(p["code"], 16), p["galaxy"] - 1
         try:
-            if not p["name"]:
-                p["name"], p["name_source"] = nms_names.planet_name(seeds[key] if key in seeds else nms_names.planet_seed(code, galaxy)), "generated"
+            if not p["name"] and p["planet"] > 0:  # planet 0 is no body of the system (nms_namegen would read it as the last one)
+                seed = seeds[key] if key in seeds else planet_mod.planetSeed(code, galaxy)
+                p["name"], p["name_source"] = planet_mod.planetName(seed), "generated"
             if not p["system_name"]:
-                p["system_name"], p["system_name_source"] = nms_names.system_name(code, galaxy), "generated"
-        except (KeyError, IndexError, OSError, ValueError):
-            pass  # no name rather than a wrong one: a planet number the system has no body for, or the letter table missing
+                p["system_name"], p["system_name_source"] = system_mod.systemName(code, galaxy), "generated"
+        except (KeyError, IndexError, ValueError):
+            pass  # no name rather than a wrong one: e.g. a planet number the system has no body for
     return sorted(found.values(), key=lambda p: p["seen"], reverse=True)
 
 

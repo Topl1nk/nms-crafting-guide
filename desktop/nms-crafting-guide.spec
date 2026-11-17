@@ -9,7 +9,7 @@ windows = sys.platform == "win32"
 
 a = Analysis(
     [str(app / "desktop" / "nms_crafting_guide.py")],
-    pathex=[str(app / "desktop")],
+    pathex=[str(app / "desktop"), str(app / "third_party" / "nms_namegen")],
     datas=[
         (str(app / "dist"), "dist"),  # the built site (npm run build)
         (str(app / "scripts" / "extract_game.py"), "scripts"),
@@ -17,10 +17,12 @@ a = Analysis(
         (str(app / "data" / "wiki.json"), "data"),  # what build_langs.py keys the game's texts by
         (str(app / "data" / "items.json"), "data"),
         (str(app / "desktop" / "vendor"), "vendor"),  # fetch_tools.py
-        (str(app / "data" / "namegen.json.gz"), "data"),  # the letter table of desktop/nms_names.py (scripts/build_namegen.py)
-        (str(app / "desktop" / "THIRD_PARTY.md"), "."),  # the licence of nms_namegen, whose generator that is a port of
+        # nms_namegen (third_party/, MIT): its letter table is read from next to generator.py, so it goes where the module is
+        (str(app / "third_party" / "nms_namegen" / "nms_namegen" / "letter_map.json"), "nms_namegen"),
+        (str(app / "third_party" / "nms_namegen" / "LICENCE"), "third_party/nms_namegen"),
+        (str(app / "third_party" / "nms_namegen" / "SOURCE.md"), "third_party/nms_namegen"),
     ],
-    hiddenimports=["hgpaktool.cli", "lz4.block", "PIL.Image", "PIL.WebPImagePlugin"],
+    hiddenimports=["hgpaktool.cli", "lz4.block", "PIL.Image", "PIL.WebPImagePlugin", "nms_namegen.planet", "nms_namegen.system"],
     excludes=["tkinter", "textual", "mcp", "pytest"],
 )
 pyz = PYZ(a.pure)

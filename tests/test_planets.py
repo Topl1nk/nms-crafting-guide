@@ -60,6 +60,7 @@ IBOSON = (1 << 52) | (0x079 << 40) | (0xFC << 24) | (0x6A7 << 12) | 0xFEA
 
 
 def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> None:
+    pytest.importorskip("numpy")  # nms_namegen needs it
     planet = _record("Planet", ILUS)
     planet["DD"]["VP"] = ["0x3E851C2217BAF847", 0]
     flora = _record("Flora", IBOSON)  # no planet record: the seed is worked out from the address
@@ -69,6 +70,13 @@ def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> No
     other = found["1079FC6A7FEA"]
     assert (other["system_name"], other["system_name_source"]) == ("Ibosoniec", "generated")
     assert other["name_source"] == "generated" and other["name"]
+
+
+def test_planet_zero_is_no_body_and_gets_no_generated_name() -> None:
+    pytest.importorskip("numpy")
+    found = nms_save.planets(_save([_record("Flora", IBOSON & ~(0xF << 52))]), ME)  # a base can sit at planet 0
+    assert (found[0]["name"], found[0]["name_source"]) == ("", "")
+    assert found[0]["system_name_source"] == "generated"
 
 
 def test_a_name_in_the_save_is_kept_and_marked() -> None:

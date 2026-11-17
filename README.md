@@ -108,7 +108,9 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 
 NMS Crafting Guide began as a fork of [nms-items-interface](https://github.com/rdlu/nms-items-interface) by Rodrigo Dlugokenski and
 has since been rebuilt: new pages, a desktop app, all 17 languages, and data read from the current game.
-Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/). *No Man's Sky* and all of its names,
+Portal glyphs are traced from [nmsportals](https://nmsportals.github.io/). The names the game makes up for planets and systems
+(when your save does not hold one) are worked out with [nms_namegen](https://github.com/hadsh/nms_namegen) by Stuart Coyle, had.sh and
+GoodGuysFree, MIT licence, included unchanged in [third_party/nms_namegen](third_party/nms_namegen). *No Man's Sky* and all of its names,
 pictures and texts belong to Hello Games; this is an unofficial fan project.
 
 Released under the [GPL-3.0](LICENSE). Building it yourself or changing it? See [docs/DEVELOPERS.md](docs/DEVELOPERS.md).
