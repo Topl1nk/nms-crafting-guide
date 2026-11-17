@@ -40,6 +40,27 @@ def _namegen():
         return None
     word_filter.patch(planet, system, region)  # the game filters every word it makes up (word_filter.py), nms_namegen does not
     return planet, system
+
+
+def _planet_name_parts(planet, seed: int) -> dict:
+    """What a planet's name is made of, so the page can put it together in the player's language: the game takes the template
+    (NAMEGEN_PLANET_STYLE_n) and the word added to it (NAMEGEN_PLANET_ADORN_n: Delta, Sigma ...) from its text tables, and those
+    differ by language. The draws are those of nms_namegen's planetName, which this follows step by step."""
+    from nms_namegen.prng import PRNG
+    from nms_namegen.roman import toRoman
+    low, high = seed & 0xFFFFFFFF, seed >> 32
+    mixed = ((((low & 0xFFFF) << 16) | (low >> 16)) ^ low ^ high) & 0xFFFFFFFF
+    rng = PRNG(((low or 1) * PRNG.MULTIPLIER) + mixed)
+    adorn = ((rng.seed & 0xFFFFFFFF) * 10) >> 0x20
+    code, shortcode, numeral = rng.random(50) + 1, rng.random(0x1A) + 0x41, rng.random(0x12) + 2
+    digit, alpha, longcode = rng.random(0x09) + 1, rng.random(0x1A) + 0x41, rng.random(0x59) + 0xB
+    parts = {"PROCNORM": planet.generateName(rng, 7, 4, 8).capitalize(), "PROCSHORT": planet.generateName(rng, 5, 4, 5).capitalize(),
+             "PROCLONG": planet.generateName(rng, 7, 6, 10).capitalize(), "SHORTCODE": planet.format_shortcode(shortcode, code % 0x50),
+             "NUMERAL": toRoman(numeral), "LONGCODE": planet.format_longcode(longcode, digit, alpha)}
+    style = rng.random(9) + 1
+    if not planet.np.double(0.0350000001) <= planet.np.double(rng.randi()) * planet.TINY_DOUBLE:
+        style = 10
+    return {"style": style, "adorn": adorn + 1, **parts}
 # Where the game keeps its saves: %APPDATA% on Windows; on Linux the Proton prefix of the Steam install (App ID 275850).
 PROTON = Path("steamapps/compatdata/275850/pfx/drive_c/users/steamuser/AppData/Roaming")
 
@@ -155,7 +176,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "biome": "", "word_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "name_parts": None, "biome": "", "word_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
@@ -211,6 +232,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
             if not p["name"] and p["planet"] > 0:  # planet 0 is no body of the system (nms_namegen would read it as the last one)
                 seed = seeds[key] if key in seeds else planet_mod.planetSeed(code, galaxy)
                 p["name"], p["name_source"] = planet_mod.planetName(seed), "generated"
+                p["name_parts"] = _planet_name_parts(planet_mod, seed)
             if not p["system_name"]:
                 p["system_name"], p["system_name_source"] = system_mod.systemName(code, galaxy), "generated"
         except (KeyError, IndexError, ValueError):

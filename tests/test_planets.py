@@ -83,6 +83,22 @@ def test_the_planet_the_player_stands_on_is_listed_even_if_nothing_was_scanned()
     assert nms_save.planets(save, ME) == []
 
 
+def test_the_name_parts_put_together_give_the_name() -> None:
+    pytest.importorskip("numpy")
+    planet, _ = nms_save._namegen()
+    seen = set()
+    for n in range(1, 600):
+        seed = n * 0x9E3779B97F4A7C15 & (2**64 - 1)
+        parts = nms_save._planet_name_parts(planet, seed)
+        template = planet.styles[10 if parts["style"] == 10 else parts["style"] - 1]  # nms_namegen keeps a placeholder at 9
+        text = template.replace("%ADORNMENT%", planet.adornments[parts["adorn"] - 1])
+        for key in ("PROCNORM", "PROCSHORT", "PROCLONG", "SHORTCODE", "NUMERAL", "LONGCODE"):
+            text = text.replace(f"%{key}%", parts[key])
+        assert text == planet.planetName(seed), (hex(seed), text)
+        seen.add(parts["style"])
+    assert {1, 2, 3, 4, 5, 6, 7, 8, 9, 10} - seen <= {10}  # every template turns up (the last is rare)
+
+
 def test_the_name_is_the_one_the_game_shows_after_its_word_filter() -> None:
     pytest.importorskip("numpy")
     # Sobinsk IX 2, shown in the game as "Odale VI". One of the words made up for it ("eomititu") holds "tit", which the game's

@@ -58,7 +58,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "desktop"))
 import planet_word  # noqa: E402
 
 # The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
-WORD_KEYS = [f"{prefix}{i}" for prefix, n in planet_word.WORDS.values() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2"]
+WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.WORDS.values() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2"]
+             # and what a made-up planet name is put together from: its template and the word added to it (Delta, Sigma ...)
+             + [f"NAMEGEN_PLANET_STYLE_{i}" for i in range(1, 11)] + [f"NAMEGEN_PLANET_ADORN_{i}" for i in range(1, 11)])
 
 
 def check_word_counts(english: dict[str, str]) -> None:

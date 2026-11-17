@@ -36,12 +36,19 @@
   const rows = $derived.by(() => {
     const all = gamesave.report?.planets ?? [];
     const terms = search.toLowerCase().split(/\s+/).filter(Boolean);
-    return all.filter((p) => terms.every((w) => [p.name, p.system_name, p.code, hex3(p.system), galaxyName(p.galaxy)].join(" ").toLowerCase().includes(w)));
+    return all.filter((p) => terms.every((w) => [shown(p), p.name, p.system_name, p.code, hex3(p.system), galaxyName(p.galaxy)].join(" ").toLowerCase().includes(w)));
   });
 
   const hex3 = (n) => `0x${n.toString(16).toUpperCase().padStart(3, "0")}`;
   const when = (ts) => (ts ? new Date(ts * 1000).toLocaleDateString(ui.locale, { year: "numeric", month: "short", day: "numeric" }) : "");
-  const nameOf = (p) => p.name || t("Unnamed planet");
+  // A name the save does not hold is put together the way the game does it, from its own texts in the chosen language: the
+  // template (NAMEGEN_PLANET_STYLE_n) and the word added to it (Delta becomes Дельта). A name from the save is shown as it is.
+  const shown = (p) => {
+    const w = D.biomes.words, n = p.name_parts, template = n && w[`NAMEGEN_PLANET_STYLE_${n.style}`];
+    if (!template) return p.name;
+    return template.replace("%ADORN%", w[`NAMEGEN_PLANET_ADORN_${n.adorn}`] || "").replace(/%([A-Z]+)%/g, (m, key) => n[key] ?? m);
+  };
+  const nameOf = (p) => shown(p) || t("Unnamed planet");
   const keyOf = (p) => `${p.galaxy}/${p.code}`;
   const typeName = (id) => (TYPES[id] ? t(TYPES[id]) : t("{colour} type", { colour: t(STARS[id] ?? id) }));
 
@@ -62,7 +69,7 @@
 </script>
 
 {#snippet dates(p)}{when(p.seen)}{/snippet}
-{#snippet nameCell(p)}{p.name || ""}{#if !p.name}<span class="muted">{nameOf(p)}</span>{/if}{/snippet}
+{#snippet nameCell(p)}{shown(p) || ""}{#if !shown(p)}<span class="muted">{nameOf(p)}</span>{/if}{/snippet}
 
 <div class="fbar">
   <h1><span>{t("Planets")}</span></h1>
@@ -80,7 +87,7 @@
   <div class="split split-planets">
     <div class="main">
       <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
-        { title: t("Name"), cell: nameCell, cls: "strong", sort: (p) => p.name },
+        { title: t("Name"), cell: nameCell, cls: "strong", sort: shown },
         { title: t("System"), text: (p) => p.system_name || hex3(p.system), sort: (p) => p.system_name || hex3(p.system) },
         { title: t("Planet type"), text: kindOf, sort: kindOf },
         { title: t("Galaxy"), text: (p) => galaxyName(p.galaxy), cls: "wide-only", sort: (p) => p.galaxy },
