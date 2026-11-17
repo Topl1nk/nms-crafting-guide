@@ -15,6 +15,10 @@ ROOT = Path(__file__).resolve().parent.parent
 PACKAGE = ROOT / "third_party" / "nms_namegen"
 sys.path.insert(0, str(PACKAGE))
 
+sys.path.insert(0, str(ROOT / "desktop"))
+
+import word_filter  # noqa: E402
+from nms_namegen import planet as planet_module, region as region_module, system as system_module  # noqa: E402
 from nms_namegen.planet import planetName, planetSeed  # noqa: E402
 from nms_namegen.region import regionName  # noqa: E402
 from nms_namegen.system import planetSeeds, systemName  # noqa: E402
@@ -24,8 +28,18 @@ def _u64(n: int) -> int:
     return n & 0xFFFFFFFFFFFFFFFF  # the vectors keep seeds as signed 64-bit numbers
 
 
-def test_the_reference_vectors_of_nms_namegen_all_come_out_the_same() -> None:
-    cases = json.loads((PACKAGE / "test" / "fixtures" / "golden_vectors.json").read_text(encoding="utf-8"))
+@pytest.fixture
+def as_published():
+    """nms_namegen without the game's word filter that desktop/nms_save.py adds (desktop/word_filter.py): its reference vectors
+    pin the library's own output, which has no filter."""
+    modules = (planet_module, system_module, region_module)
+    word_filter.unpatch(*modules)
+    yield
+    word_filter.patch(*modules)
+
+
+def test_the_reference_vectors_of_nms_namegen_all_come_out_the_same(as_published) -> None:
+    cases =json.loads((PACKAGE / "test" / "fixtures" / "golden_vectors.json").read_text(encoding="utf-8"))
     assert len(cases) == 443
     wrong = []
     for rec in cases:

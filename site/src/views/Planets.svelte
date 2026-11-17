@@ -36,7 +36,7 @@
   const rows = $derived.by(() => {
     const all = gamesave.report?.planets ?? [];
     const terms = search.toLowerCase().split(/\s+/).filter(Boolean);
-    return all.filter((p) => terms.every((w) => [p.name, ...p.aliases, p.system_name, p.code, hex3(p.system), galaxyName(p.galaxy)].join(" ").toLowerCase().includes(w)));
+    return all.filter((p) => terms.every((w) => [p.name, p.system_name, p.code, hex3(p.system), galaxyName(p.galaxy)].join(" ").toLowerCase().includes(w)));
   });
 
   const hex3 = (n) => `0x${n.toString(16).toUpperCase().padStart(3, "0")}`;
