@@ -72,6 +72,17 @@ def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> No
     assert other["name_source"] == "generated" and other["name"]
 
 
+def test_the_planet_the_player_stands_on_is_listed_even_if_nothing_was_scanned() -> None:
+    here = {"RealityIndex": 0, "GalacticAddress": {"VoxelX": -343, "VoxelY": 0, "VoxelZ": -1500, "SolarSystemIndex": 350, "PlanetIndex": 4}}
+    assert nms_save._pack(here) == HOME  # the same number as the save's own record of that planet
+    save = _save([])
+    save["BaseContext"]["PlayerStateData"].update({"UniverseAddress": here, "TimeStamp": 777})
+    found = nms_save.planets(save, ME)
+    assert [(p["code"], p["seen"]) for p in found] == [("415E00A24EA9", 777)]
+    here["GalacticAddress"]["PlanetIndex"] = 0  # in a system's space, not on a planet
+    assert nms_save.planets(save, ME) == []
+
+
 def test_planet_zero_is_the_system_and_not_listed() -> None:
     base = {"Name": "", "Owner": {"UID": ME}, "GalacticAddress": IBOSON & ~(0xF << 52), "LastUpdateTimestamp": 5}
     found = nms_save.planets(_save([_record("Flora", IBOSON & ~(0xF << 52))], [base]), ME)  # a base can sit at planet 0

@@ -108,6 +108,14 @@ def _ua(value) -> int:
     return int(value, 16) if isinstance(value, str) else int(value or 0)
 
 
+def _pack(address: dict | None) -> int:
+    """The same address as the save writes the player's own (UniverseAddress: voxel x, y, z, system and planet index, reality)."""
+    galactic = (address or {}).get("GalacticAddress") or {}
+    return ((galactic.get("VoxelX", 0) & 0xFFF) | (galactic.get("VoxelZ", 0) & 0xFFF) << 12 | (galactic.get("VoxelY", 0) & 0xFF) << 24
+            | ((address or {}).get("RealityIndex", 0) & 0xFF) << 32 | (galactic.get("SolarSystemIndex", 0) & 0xFFF) << 40
+            | (galactic.get("PlanetIndex", 0) & 0xF) << 52)
+
+
 def _place(ua: int) -> dict:
     """The fields of a universe address, low bits first: x 12 bits, z 12, y 8, galaxy 8 (0-based), system 12, planet 4.
     The portal code is the same fields in the order planet, system, y, z, x, each as hex. (Checked against the save's own
@@ -171,6 +179,10 @@ def planets(save: dict, account: str = "") -> list[dict]:
             p = planet(_ua(b["GalacticAddress"]) & mask)
             p["bases"].append((b.get("Name") or "").strip())
             p["seen"] = max(p["seen"], b.get("LastUpdateTimestamp", 0))
+    here = _pack(state.get("UniverseAddress"))  # where the player is now: a planet visited even if nothing was scanned there
+    if (here >> 52) & 0xF:
+        p = planet(here & mask)
+        p["seen"] = max(p["seen"], state.get("TimeStamp", 0))
     # Names the player gave: the planet's own record, and its system's (the system is the planet without its index).
     for r in records:
         name = (r.get("DM") or {}).get("CN")
