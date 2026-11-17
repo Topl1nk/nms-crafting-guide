@@ -4,7 +4,7 @@
 // web/lang/<code>.json holds the game's texts, site/src/lang/<code>.js the page's words (lib/i18n.svelte.js).
 
 import { rewordLoops } from "./cycles.svelte.js";
-import { D, ENGLISH, retext } from "./data.js";
+import { D, ENGLISH, packLacksWords, retext } from "./data.js";
 import { browserLanguage, SAME, setWords, t } from "./i18n.js";
 import { local } from "./local.js";
 import { localizeStorage } from "./words.js";
@@ -87,8 +87,9 @@ export async function setLanguage(code) {
   rewordLoops();
   language.code = code;
   local.set("lang", code);
-  if (code !== language.base && !packs[code]) {
+  if (code !== language.base && (!packs[code] || (packLacksWords(packs[code]) && !language.building))) {
     // The page is already in the language; the item texts follow once they are built, if the language is still the one chosen.
+    // A pack that lacks words the page now asks for is built again from the game (the one kept is shown meanwhile).
     const pack = await buildPack(code);
     if (pack) {
       packs[code] = pack;

@@ -33,6 +33,9 @@ export async function load(url = "data.json") {
 
 export const name = (id) => D.items[id]?.name ?? id;
 
+/** A language pack built before the page asked for more of the game's words (a newer program, an older pack) lacks some of them. */
+export const packLacksWords = (pack) => !pack?.words || Object.keys(BASE.words).some((key) => !(key in pack.words));
+
 function prepare() {
   ENGLISH.storage = structuredClone(D.storage);
   ENGLISH.use = D.cooking.map((g) => g.use);
