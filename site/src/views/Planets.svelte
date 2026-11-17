@@ -16,7 +16,8 @@
   // The planets you have been to (#/planets), read from the game save: a list, and the card of the chosen one. The save keeps a
   // planet's address, the day it was found, what you found on it and your bases there; it does not keep its type or its
   // resources (the game works those out from the planet's seed), so the type is chosen by hand, from the game's own table of types,
-  // and the card says plainly that the resources are not known.
+  // and the card says plainly that the resources are not known. A name is kept only if one was given: the desktop program works
+  // the others out from the seed and the address (name_source "generated"), and the card says so.
   import GlyphStrip from "../components/GlyphStrip.svelte";
   import List from "../components/List.svelte";
   import Select from "../components/Select.svelte";
@@ -95,7 +96,7 @@
       {#if cur}
         {@const p = cur}
         <h2>{nameOf(p)}</h2>
-        {#if !p.name}<p class="muted small">{t("The save keeps a planet's name only if you gave it one; the game makes up the other names on the spot.")}</p>{/if}
+        {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
         <p class="muted">{t("{ordinal} in the system", { ordinal: ordinal(p.planet + 1), n: p.planet + 1 })}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
         <GlyphStrip code={p.code} />
         <dl>

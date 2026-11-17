@@ -17,6 +17,8 @@ a = Analysis(
         (str(app / "data" / "wiki.json"), "data"),  # what build_langs.py keys the game's texts by
         (str(app / "data" / "items.json"), "data"),
         (str(app / "desktop" / "vendor"), "vendor"),  # fetch_tools.py
+        (str(app / "data" / "namegen.json.gz"), "data"),  # the letter table of desktop/nms_names.py (scripts/build_namegen.py)
+        (str(app / "desktop" / "THIRD_PARTY.md"), "."),  # the licence of nms_namegen, whose generator that is a port of
     ],
     hiddenimports=["hgpaktool.cli", "lz4.block", "PIL.Image", "PIL.WebPImagePlugin"],
     excludes=["tkinter", "textual", "mcp", "pytest"],

@@ -580,7 +580,7 @@ export default {
   "Share of the planets around a star of each colour, by the game's weights:": "在每種顏色恆星周圍的星球中所佔的比例（按遊戲的權重）：",
   "Resources": "資源",
   "The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.": "遊戲檔案沒有說明星球上有哪些資源。遊戲是根據星球的種子計算出來的，存檔中也沒有保存，因此這裡不列出任何資源。",
-  "The save keeps a planet's name only if you gave it one; the game makes up the other names on the spot.": "存檔只保存你給星球取的名字；其他名字是遊戲當場生成的。",
+  "The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.": "存檔裡沒有的名字，是依遊戲生成名字的方式，根據星球的種子和位址計算出來的。你在遊戲中取的名字，或遊戲命名方式的變化，可能會使它們不一致。",
   "The planets you have been to, from your save: address, what you found, your bases": "你到訪過的星球（來自存檔）：位址、發現、基地",
   "{n} planet|{n} planets": "{n} 顆星球",
   "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there and your bases. The save does not hold a planet's type or its resources, so the type is picked by hand from the game's own list and the resources are not shown.": "從遊戲存檔讀取你到訪過的星球：帶字形的傳送門位址、發現時間、你在那裡發現的植物、動物和礦物數量，以及你的基地。存檔中沒有星球的類型和資源，所以類型需要從遊戲自帶的清單中手動選擇，資源則不顯示。",

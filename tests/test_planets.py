@@ -49,7 +49,32 @@ def test_only_the_players_own_finds_count() -> None:
     home = found[0]
     assert (home["name"], home["system_name"], home["found"], home["seen"]) == ("Home", "Sol", 300, 400)
     assert (home["flora"], home["fauna"], home["minerals"]) == (1, 1, 0)
-    assert found[1]["name"] == "" and found[1]["minerals"] == 1
+    assert found[1]["minerals"] == 1
+    assert home["name_source"] == "save" and home["system_name_source"] == "save"
+
+
+# Ilus IX, planet 2 of system 0x002 in the galaxy whose byte is 7 (the eighth); its seed is what the save's discovery record
+# holds. The other is planet 1 of the system a real save names "Ibosoniec", in Euclid.
+ILUS = (2 << 52) | (0x002 << 40) | (7 << 32) | (0x03 << 24) | (0xF89 << 12) | 0x7FF
+IBOSON = (1 << 52) | (0x079 << 40) | (0xFC << 24) | (0x6A7 << 12) | 0xFEA
+
+
+def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> None:
+    planet = _record("Planet", ILUS)
+    planet["DD"]["VP"] = ["0x3E851C2217BAF847", 0]
+    flora = _record("Flora", IBOSON)  # no planet record: the seed is worked out from the address
+    found = {p["code"]: p for p in nms_save.planets(_save([planet, flora]), ME)}
+    ilus = found["200203F897FF"]
+    assert (ilus["name"], ilus["name_source"]) == ("Ilus IX", "generated")
+    other = found["1079FC6A7FEA"]
+    assert (other["system_name"], other["system_name_source"]) == ("Ibosoniec", "generated")
+    assert other["name_source"] == "generated" and other["name"]
+
+
+def test_a_name_in_the_save_is_kept_and_marked() -> None:
+    found = nms_save.planets(_save([_record("Planet", ILUS, name="My Rock"), _record("SolarSystem", ILUS, name="My Sun")]), ME)
+    assert (found[0]["name"], found[0]["name_source"], found[0]["system_name"], found[0]["system_name_source"]) == (
+        "My Rock", "save", "My Sun", "save")
 
 
 def test_a_base_makes_its_planet_visited() -> None:

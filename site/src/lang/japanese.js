@@ -580,7 +580,7 @@ export default {
   "Share of the planets around a star of each colour, by the game's weights:": "各色の恒星の周りにある惑星に占める割合（ゲームの重み付けによる）：",
   "Resources": "資源",
   "The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.": "ゲームのファイルには、惑星にどんな資源があるかは書かれていません。ゲームは惑星のシードから資源を算出しており、セーブにも保存されないため、ここには表示しません。",
-  "The save keeps a planet's name only if you gave it one; the game makes up the other names on the spot.": "セーブに残るのは、自分で付けた惑星名だけです。それ以外の名前はゲームがその場で生成します。",
+  "The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.": "セーブにない名前は、ゲームが名前を作るのと同じやり方で、惑星のシード値とアドレスから計算しています。ゲーム内で付けた名前や、ゲームの命名方法の変更があると、異なる場合があります。",
   "The planets you have been to, from your save: address, what you found, your bases": "セーブから見る訪れた惑星：アドレス、発見したもの、基地",
   "{n} planet|{n} planets": "{n} 個の惑星",
   "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there and your bases. The save does not hold a planet's type or its resources, so the type is picked by hand from the game's own list and the resources are not shown.": "セーブから読み取った、訪れた惑星の一覧です。グリフ付きのポータルアドレス、発見した日、そこで見つけた植物・動物・鉱物の数、そして基地を表示します。セーブには惑星のタイプも資源も記録されていないため、タイプはゲームの一覧から手で選び、資源は表示しません。",

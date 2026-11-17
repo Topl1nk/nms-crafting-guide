@@ -19,6 +19,7 @@ from pathlib import Path
 
 import lz4.block
 
+import nms_names
 import paths
 
 MAGIC = 0xFEEDA1E5
@@ -104,8 +105,10 @@ def _place(ua: int) -> dict:
 
 def planets(save: dict, account: str = "") -> list[dict]:
     """The planets the player has been to, as far as the save shows it: those with a discovery of theirs (the planet itself,
-    or an animal, plant or mineral found on it) or with a base of theirs. The save does not keep a planet's type, its
-    resources or the name the game made up for it, only a name the player gave it, so these are left out."""
+    or an animal, plant or mineral found on it) or with a base of theirs. The save does not keep a planet's resources, and
+    its name only if one was given (or uploaded with the discovery). Where there is none, the name is worked out from the
+    planet's seed and address the way the game makes it up (nms_names.py) and marked "generated" in name_source and
+    system_name_source; a name taken from the save is marked "save"."""
     records = ((save.get("DiscoveryManagerData") or {}).get("DiscoveryData-v1") or {}).get("Store", {}).get("Record") or []
     state = save["BaseContext"]["PlayerStateData"]
     mask = (1 << 56) - 1
@@ -119,12 +122,15 @@ def planets(save: dict, account: str = "") -> list[dict]:
     found: dict[int, dict] = {}
 
     def planet(key: int) -> dict:
-        return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "found": 0, "seen": 0,
-                                      "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+        return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
+                                      "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
+    seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
     for r in records:
         kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
+        if kind == "Planet" and r["DD"].get("VP"):
+            seeds[key] = _ua(r["DD"]["VP"][0])
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1
@@ -150,6 +156,16 @@ def planets(save: dict, account: str = "") -> list[dict]:
             for p in found.values():
                 if (p["galaxy"], p["system"]) == (_place(key)["galaxy"], _place(key)["system"]):
                     p["system_name"] = name
+    for key, p in found.items():
+        p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")
+        code, galaxy = int(p["code"], 16), p["galaxy"] - 1
+        try:
+            if not p["name"]:
+                p["name"], p["name_source"] = nms_names.planet_name(seeds[key] if key in seeds else nms_names.planet_seed(code, galaxy)), "generated"
+            if not p["system_name"]:
+                p["system_name"], p["system_name_source"] = nms_names.system_name(code, galaxy), "generated"
+        except (KeyError, IndexError, OSError, ValueError):
+            pass  # no name rather than a wrong one: a planet number the system has no body for, or the letter table missing
     return sorted(found.values(), key=lambda p: p["seen"], reverse=True)
 
 

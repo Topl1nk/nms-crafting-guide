@@ -580,7 +580,7 @@ export default {
   "Share of the planets around a star of each colour, by the game's weights:": "각 색깔의 항성 주변 행성 중 차지하는 비율(게임의 가중치 기준):",
   "Resources": "자원",
   "The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.": "게임 파일에는 행성에 어떤 자원이 있는지 나와 있지 않습니다. 게임은 행성의 시드로 자원을 계산하고 세이브에도 저장되지 않으므로 여기에는 표시하지 않습니다.",
-  "The save keeps a planet's name only if you gave it one; the game makes up the other names on the spot.": "세이브에는 직접 붙인 행성 이름만 저장됩니다. 나머지 이름은 게임이 그때그때 만들어 냅니다.",
+  "The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.": "세이브에 없는 이름은 게임이 이름을 만드는 방식대로 행성의 시드와 주소로 계산한 것입니다. 게임에서 직접 붙인 이름이나 게임의 이름 생성 방식 변경이 있으면 다를 수 있습니다.",
   "The planets you have been to, from your save: address, what you found, your bases": "세이브로 보는 방문한 행성: 주소, 발견한 것, 기지",
   "{n} planet|{n} planets": "행성 {n}개",
   "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there and your bases. The save does not hold a planet's type or its resources, so the type is picked by hand from the game's own list and the resources are not shown.": "게임 세이브에서 읽은 방문한 행성 목록입니다. 글리프가 붙은 포털 주소, 발견한 날, 그곳에서 발견한 식물·동물·광물 수, 그리고 기지를 보여 줍니다. 세이브에는 행성의 유형도 자원도 기록되지 않으므로 유형은 게임 목록에서 직접 고르고 자원은 표시하지 않습니다.",
