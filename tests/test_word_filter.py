@@ -22,6 +22,34 @@ class Rng:
         self.steps += 1
 
 
+import pytest  # noqa: E402
+
+# Words and the generator state the game's own routine (NMS.exe, run on its own) left behind, for inputs where nms_namegen's
+# generateName went another way: the letters after the last three are not in the table (the apostrophe cases), a run of
+# consonants, a "y". (alphabet set, shortest, longest, the generator's two halves) -> (word, the generator's halves after it)
+FROM_THE_GAME = [
+    ((0, 5, 10, 3455889666, 1879152050), "ongzi'ihlan", (2917711707, 628206463)),
+    ((0, 6, 10, 3323089296, 1076715195), "netxelwi", (1670673441, 774103384)),
+    ((1, 6, 10, 576955318, 42816082), "mepfluthrell", (1204789845, 578600832)),
+    ((2, 7, 12, 4088371166, 2109023089), "haefilskygugn", (3869059615, 786071663)),
+    ((4, 5, 9, 471477094, 1608122770), "ialilingg", (1558564053, 938374049)),
+    ((3, 7, 12, 277694675, 599185707), "poslovke'ogal", (419226268, 854640944)),
+    ((7, 4, 7, 2132519730, 1067883041), "litbyocks", (1827113661, 1121821400)),
+    ((7, 4, 8, 12345, 678), "kulav", (4174815804, 330053558)),
+]
+
+
+@pytest.mark.parametrize(("given", "word", "after"), FROM_THE_GAME)
+def test_the_word_generator_gives_what_the_games_routine_gives(given, word, after) -> None:
+    pytest.importorskip("numpy")
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "third_party" / "nms_namegen"))
+    from nms_namegen.prng import PRNG
+    alphaset, shortest, longest, low, high = given
+    rng = PRNG((high << 32) | low)
+    assert word_filter._game_word_generator()(rng, alphaset, shortest, longest) == word
+    assert (rng.seed & 0xFFFFFFFF, rng.seed >> 32) == after
+
+
 def test_a_clean_word_is_left_alone_and_spends_nothing() -> None:
     rng = Rng(12345)
     assert word_filter.filter_word("odale", rng) == "odale" and rng.steps == 0
