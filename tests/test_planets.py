@@ -73,16 +73,12 @@ def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> No
     assert other["name_source"] == "generated" and other["name"]
 
 
-def test_planets_others_found_in_a_visited_system_are_listed_and_elsewhere_are_not() -> None:
+def test_planets_others_found_are_listed_whoever_found_them_and_wherever() -> None:
     other = "7657"
-    visited = _record("SolarSystem", HOME & ~(0xF << 52))                  # the player's own discovery of the system
-    beside = _record("Planet", HOME + (1 << 52), owner=other)              # planet 5 of it, found by someone else
-    away = _record("Planet", HOME + (1 << 40), owner=other)                # a planet of another system, found by someone else
-    found = nms_save.planets(_save([visited, beside, away]), ME)
-    assert [p["code"] for p in found] == ["515E00A24EA9"]
-    save = _save([beside, away])  # the save's own list of visited systems tells the same
-    save["BaseContext"]["PlayerStateData"]["VisitedSystems"] = [HOME & ~(0xF << 52)]
-    assert [p["code"] for p in nms_save.planets(save, ME)] == ["515E00A24EA9"]
+    beside = _record("Planet", HOME + (1 << 52), owner=other)  # planet 5 of a system the player has no discovery of
+    away = _record("Planet", HOME + (1 << 40), owner=other)    # a planet of another system
+    found = nms_save.planets(_save([beside, away]), ME)
+    assert sorted(p["code"] for p in found) == ["415F00A24EA9", "515E00A24EA9"]
 
 
 def test_the_planet_the_player_stands_on_is_listed_even_if_nothing_was_scanned() -> None:

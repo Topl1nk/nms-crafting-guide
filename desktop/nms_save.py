@@ -158,9 +158,9 @@ BIOMES = {0: "Lush", 1: "Toxic", 2: "Scorched", 3: "Radioactive", 4: "Frozen", 5
 
 def planets(save: dict, account: str = "") -> list[dict]:
     """The planets the player has been to, as far as the save shows it: those with a discovery of theirs (the planet itself,
-    or an animal, plant or mineral found on it) or with a base of theirs, where they stand now, and the planets others found in
-    the systems the player has visited (the game lists those too; only what the save holds of them, it has no more). The
-    counts of what was found on a planet are the player's own. The save does not keep a planet's resources, and
+    or an animal, plant or mineral found on it) or with a base of theirs, where they stand now, and every planet the save's store of
+    discoveries holds, whoever found it (the game lists those too; the save has no more of them). The counts of what was found
+    on a planet are the player's own. The save does not keep a planet's resources, and
     its name only if one was given (or uploaded with the discovery). Where there is none, the name is worked out from the
     planet's seed and address the way the game makes it up (nms_namegen, see _namegen) and marked "generated" in name_source and
     system_name_source; a name taken from the save is marked "save"."""
@@ -199,15 +199,11 @@ def planets(save: dict, account: str = "") -> list[dict]:
             p = planet(key)
             p["found"] = owner.get("TS", 0)
             p["seen"] = max(p["seen"], p["found"])
-    # The planets of the systems the player has been to that others found: the game lists them with the system. A system is
-    # visited if the save lists it as such, or the player has a discovery of it.
-    visited = {(_place(_ua(v) & mask)["galaxy"], _place(_ua(v) & mask)["system"]) for v in state.get("VisitedSystems") or []}
-    visited |= {(_place(_ua(r["DD"]["UA"]) & mask)["galaxy"], _place(_ua(r["DD"]["UA"]) & mask)["system"])
-                for r in records if r["DD"]["DT"] == "SolarSystem" and mine(r.get("OWS", {}))}
+    # The planets others found: the game's list of visited systems is what its store of discoveries holds (found by anyone, the
+    # save's own list of visited systems is shorter), so every planet record counts, whoever found it.
     for r in records:
-        key = _ua(r["DD"]["UA"]) & mask
-        if r["DD"]["DT"] == "Planet" and not mine(r.get("OWS", {})) and (_place(key)["galaxy"], _place(key)["system"]) in visited:
-            planet(key)
+        if r["DD"]["DT"] == "Planet":
+            planet(_ua(r["DD"]["UA"]) & mask)
     for b in state.get("PersistentPlayerBases", []):
         if mine(b.get("Owner") or {}) and _ua(b.get("GalacticAddress")):
             p = planet(_ua(b["GalacticAddress"]) & mask)
