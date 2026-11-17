@@ -184,7 +184,7 @@ def test_the_tabs_run_in_the_order_asked() -> None:
     data = read("lib", "data.js")
     nav = re.search(r"export const NAV = \[(.*?)\];", data, re.S).group(1)
     keys = re.findall(r'\["(\w+)", N_\("[^"]+"\)\]', nav)
-    assert keys == ["inventory", "recipes", "tree", "wiki", "multitools", "portals", "help"]
+    assert keys == ["inventory", "recipes", "tree", "wiki", "multitools", "portals", "planets", "help"]
 
 
 def test_each_row_has_its_own_card() -> None:

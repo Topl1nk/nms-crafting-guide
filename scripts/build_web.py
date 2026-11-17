@@ -165,6 +165,7 @@ def build(book: Book) -> dict:
     ]
 
     locations_raw = json.loads((DATA_DIR / "locations.json").read_text(encoding="utf-8"))
+    biomes = json.loads((DATA_DIR / "biomes.json").read_text(encoding="utf-8"))
 
     return {
         "source": source(),
@@ -178,6 +179,7 @@ def build(book: Book) -> dict:
         "storage": {"homes": homes, "outcomes": outcomes},
         "multitools": json.loads((DATA_DIR / "multitools.json").read_text(encoding="utf-8")),
         "glyphs": glyphs,
+        "biomes": {"stars": biomes["stars"], "types": biomes["types"]},
         "portals": {
             "glyph_names": portals.GLYPH_NAMES,
             "galaxies": portals.GALAXY_NAMES,

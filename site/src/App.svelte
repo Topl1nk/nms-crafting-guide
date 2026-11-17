@@ -18,6 +18,7 @@
   import Home from "./views/Home.svelte";
   import Inventory from "./views/Inventory.svelte";
   import Multitools from "./views/Multitools.svelte";
+  import Planets from "./views/Planets.svelte";
   import Portals from "./views/Portals.svelte";
   import Recipes from "./views/Recipes.svelte";
   import Tree from "./views/Tree.svelte";
@@ -25,7 +26,7 @@
 
   const VIEWS = {
     home: Home, recipes: Recipes,
-    multitools: Multitools, portals: Portals, inventory: Inventory,
+    multitools: Multitools, portals: Portals, planets: Planets, inventory: Inventory,
     help: Help, tree: Tree, wiki: Wiki,
   };
 

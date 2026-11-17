@@ -6,6 +6,7 @@ export const ICONS = {
   chain: '<rect x="9" y="3" width="6" height="4"/><rect x="3" y="17" width="6" height="4"/><rect x="15" y="17" width="6" height="4"/><path d="M12 7v7.5M6 17v-2.5h12V17"/>',
   multitools: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="1.5"/><path d="M12 2v5M12 17v5M2 12h5M17 12h5"/>',
   portals: '<path d="M5 21V11a7 7 0 0 1 14 0v10"/><path d="M8.5 21v-9.5a3.5 3.5 0 0 1 7 0V21M3 21h18"/>',
+  planets: '<circle cx="12" cy="12" r="8"/><path d="M4.5 9.5c4 2.5 11 2.5 15 0M4 14.5c4.5 2.5 11.5 2.5 16 0"/>',
   storage: '<rect x="3" y="4" width="18" height="5"/><path d="M5 9v11h14V9M10 13h4"/>',
   inventory: '<path d="M6 10a6 6 0 0 1 12 0v10H6z"/><path d="M9.5 5V3h5v2M9 14h6v3H9z"/>',
   data: '<ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/>',

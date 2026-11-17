@@ -4,7 +4,7 @@
   "title": "NMSii data bundle",
   "description": "web/data.json: everything the site at topl1nk.github.io/nms-crafting-guide shows, exported by scripts/build_web.py from the nms_items modules. Item IDs are the game's own. Recipe references are indexes into `recipes`; `store` is an index into `storage.outcomes`.",
   "type": "object",
-  "required": ["source", "items", "ease", "recipes", "tiers", "nanite", "nanites", "cooking", "storage", "multitools", "glyphs", "portals"],
+  "required": ["source", "items", "ease", "recipes", "tiers", "nanite", "nanites", "cooking", "storage", "multitools", "glyphs", "portals", "biomes"],
   "additionalProperties": false,
   "$defs": {
     "itemId": { "type": "string", "pattern": "^[A-Za-z0-9_-]+$" },
@@ -221,6 +221,28 @@
           "viewbox": { "type": "string" },
           "transform": { "type": "string" },
           "paths": { "$ref": "#/$defs/strings" }
+        }
+      }
+    },
+    "biomes": {
+      "description": "data/biomes.json, read from the game's biome tables by scripts/build_biomes.py: planet types, their terrain variants and their share among the planets of each star colour. No resources: the game files do not say which a planet has.",
+      "type": "object",
+      "required": ["stars", "types"],
+      "additionalProperties": false,
+      "properties": {
+        "stars": { "type": "array", "items": { "type": "string" } },
+        "types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "variants", "stars"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string" },
+              "variants": { "type": "integer", "minimum": 1 },
+              "stars": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 100 } }
+            }
+          }
         }
       }
     },

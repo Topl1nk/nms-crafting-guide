@@ -131,5 +131,5 @@ export const REPO_URL = "https://github.com/Topl1nk/nms-crafting-guide";
 // The sections, in key order: 1-7 jump to the first seven, ? to Help. The names are English keys for t().
 export const NAV = [
   ["inventory", N_("My items")], ["recipes", N_("Craft")], ["tree", N_("Tree")], ["wiki", N_("Wiki")],
-  ["multitools", N_("Multi-tools")], ["portals", N_("Portals")], ["help", N_("Help")],
+  ["multitools", N_("Multi-tools")], ["portals", N_("Portals")], ["planets", N_("Planets")], ["help", N_("Help")],
 ];

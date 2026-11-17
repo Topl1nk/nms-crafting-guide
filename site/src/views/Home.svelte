@@ -18,6 +18,7 @@
     ["wiki", t("Wiki"), t("Every item in the game: type, rarity, price and where it is needed"), "data", () => tn(Object.keys(D.items).length, "{n} item|{n} items", { n: fmtInt(Object.keys(D.items).length) })],
     ["multitools", t("Multi-tools"), t("Types, weapons, where to get them and how to upgrade"), "multitools", () => tn(D.multitools.types.length, "{n} type|{n} types")],
     ["portals", t("Portals"), t("Place addresses: code, glyphs, galactic coordinates"), "portals", () => tn(D.portals.locations.length, "{n} address|{n} addresses")],
+    ["planets", t("Planets"), t("The planets you have been to, from your save: address, what you found, your bases"), "planets", () => tn(gamesave.report?.planets?.length ?? 0, "{n} planet|{n} planets")],
     ["inventory", t("My items"), t("What you have and where to put it: a card for every item"), "inventory", () => (inventory.fromSave ? t("from the save") : tn(Object.keys(inventory.items).length, "{n} kind|{n} kinds"))],
     ["help", t("Help"), t("Where things are, the keys and what the words in the tables mean"), "keys", () => t("guide")],
   ];

@@ -36,7 +36,7 @@ CORE = (SITE / "src" / "lib" / "core.js").as_uri()
 # saved from the hand-written page that came before the Svelte one; a renamed
 # key would quietly forget their inventory or their portal addresses.
 STORAGE_KEYS = {"inventory", "locations", "theme", "accent", "big", "fs", "sym", "glow",
-                "save-on", "save-skip", "save-slot", "lang"}
+                "save-on", "save-skip", "save-slot", "lang", "planet-type"}
 
 # Deep chains, shallow ones, a loop, a cooked dish and something unreachable.
 TARGETS = ["TECHFRAG", "ANTIMATTER", "HYPERFUEL1", "STELLAR2", "MICROCHIP", "FOOD_R_FLOUR",
@@ -171,7 +171,7 @@ def test_every_route_has_a_view() -> None:
     app = (SITE / "src" / "App.svelte").read_text(encoding="utf-8")
     table = re.search(r"const VIEWS = \{(.*?)\};", app, re.S).group(1)
     assert set(re.findall(r"(\w+): \w+", table)) == {
-        "home", "recipes", "multitools", "portals",
+        "home", "recipes", "multitools", "portals", "planets",
         "inventory", "help", "tree", "wiki",
     }
 

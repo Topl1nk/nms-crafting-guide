@@ -17,6 +17,8 @@
       t("The kinds of multi-tool, the weapons, where to get each kind and the order to upgrade in. The rows of the tables open into a card under them.")],
     ["portals", t("Portals"), "portals",
       t("Paste a portal code, a galactic address or a link and get all the rest, with the glyphs to dial. The list of saved addresses can be searched and added to: they are kept only on this computer.")],
+    ["planets", t("Planets"), "planets",
+      t("The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there and your bases. The save does not hold a planet's type or its resources, so the type is picked by hand from the game's own list and the resources are not shown.")],
     ["inventory", t("My items"), "inventory",
       t("Items from the game save (the program reads it without changing anything and refreshes by itself) or a list you type in by hand. On the right the card of the item under the cursor: where to put it (which container, or sell, or throw away) and why. An item's name opens the Wiki, the “Type” and “Rarity” tags open the Wiki with that filter. “Where it lies” leaves out places (containers, ships, exocraft) that should not be counted.")],
   ];
@@ -26,7 +28,7 @@
     [["Enter"], t("in Craft, everything about the item; in Portals, open the address")],
     [["Esc"], t("clear the search or the filter")],
     [["Ctrl", "K"], t("quick search over items and sections")],
-    [["1", "–", "7"], t("go to a section by its number")],
+    [["1", "–", "8"], t("go to a section by its number")],
   ];
   const WORDS = [
     [t("Yield"), t("How many times more you get than you put in. “1→6” is a recipe where one of the ingredients is also in the result: 1 chlorine + 2 oxygen → 6 chlorine. The chlorine multiplies, but it is no perpetual motion machine: every run also spends oxygen, which is taken from elsewhere. Real loops are found in the background and added to the table as rows “… per turn” (the “Loops” box keeps only those): several recipes that feed one another and leave more after a turn than they took.")],

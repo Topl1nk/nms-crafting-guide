@@ -87,9 +87,76 @@ def _items(inv: dict) -> dict[str, int]:
     return out
 
 
+def _ua(value) -> int:
+    """A universe address as the save writes it: a number, or a "0x..." string."""
+    return int(value, 16) if isinstance(value, str) else int(value or 0)
+
+
+def _place(ua: int) -> dict:
+    """The fields of a universe address, low bits first: x 12 bits, z 12, y 8, galaxy 8 (0-based), system 12, planet 4.
+    The portal code is the same fields in the order planet, system, y, z, x, each as hex. (Checked against the save's own
+    current address: x -343 and z -1500 read back as 0xEA9 and 0xA24.)"""
+    planet, system, galaxy = (ua >> 52) & 0xF, (ua >> 40) & 0xFFF, (ua >> 32) & 0xFF
+    y, z, x = (ua >> 24) & 0xFF, (ua >> 12) & 0xFFF, ua & 0xFFF
+    return {"galaxy": galaxy + 1, "planet": planet, "system": system,
+            "code": f"{planet:X}{system:03X}{y:02X}{z:03X}{x:03X}"}
+
+
+def planets(save: dict, account: str = "") -> list[dict]:
+    """The planets the player has been to, as far as the save shows it: those with a discovery of theirs (the planet itself,
+    or an animal, plant or mineral found on it) or with a base of theirs. The save does not keep a planet's type, its
+    resources or the name the game made up for it, only a name the player gave it, so these are left out."""
+    records = ((save.get("DiscoveryManagerData") or {}).get("DiscoveryData-v1") or {}).get("Store", {}).get("Record") or []
+    state = save["BaseContext"]["PlayerStateData"]
+    mask = (1 << 56) - 1
+    if not account:  # a save outside a Steam folder: the account whose own discoveries (local id = user id) are most
+        own = [r["OWS"].get("UID") for r in records if r["OWS"].get("UID") and r["OWS"].get("LID") == r["OWS"].get("UID")]
+        account = max(set(own), key=own.count) if own else ""
+
+    def mine(owner: dict) -> bool:
+        return bool(account) and owner.get("UID") == account
+
+    found: dict[int, dict] = {}
+
+    def planet(key: int) -> dict:
+        return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "found": 0, "seen": 0,
+                                      "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+
+    count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
+    for r in records:
+        kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
+        if kind in count and mine(owner):
+            p = planet(key)
+            p[count[kind]] += 1
+            p["seen"] = max(p["seen"], owner.get("TS", 0))
+        elif kind == "Planet" and mine(owner):
+            p = planet(key)
+            p["found"] = owner.get("TS", 0)
+            p["seen"] = max(p["seen"], p["found"])
+    for b in state.get("PersistentPlayerBases", []):
+        if mine(b.get("Owner") or {}) and _ua(b.get("GalacticAddress")):
+            p = planet(_ua(b["GalacticAddress"]) & mask)
+            p["bases"].append((b.get("Name") or "").strip())
+            p["seen"] = max(p["seen"], b.get("LastUpdateTimestamp", 0))
+    # Names the player gave: the planet's own record, and its system's (the system is the planet without its index).
+    for r in records:
+        name = (r.get("DM") or {}).get("CN")
+        if not name:
+            continue
+        key = _ua(r["DD"]["UA"]) & mask
+        if r["DD"]["DT"] == "Planet" and key in found:
+            found[key]["name"] = name
+        elif r["DD"]["DT"] == "SolarSystem":
+            for p in found.values():
+                if (p["galaxy"], p["system"]) == (_place(key)["galaxy"], _place(key)["system"]):
+                    p["system_name"] = name
+    return sorted(found.values(), key=lambda p: p["seen"], reverse=True)
+
+
 def report(path: Path) -> dict:
     """Everything the player carries or has stored, container by container."""
-    p = read(path)["BaseContext"]["PlayerStateData"]
+    save = read(path)
+    p = save["BaseContext"]["PlayerStateData"]
     # The labels are English: the page words them in its language (site/src/lib/words.js placeLabel);
     # only a ship's or an exocraft's own name, which the player gave it, is carried as it is.
     found = [("suit", "Exosuit", p.get("Inventory", {})),
@@ -108,7 +175,9 @@ def report(path: Path) -> dict:
     for c in containers:
         for item, n in c["items"].items():
             totals[item] = totals.get(item, 0) + n
-    return {"file": path.name, "saved": path.stat().st_mtime, "containers": containers, "totals": totals}
+    account = path.parent.name.removeprefix("st_") if path.parent.name.startswith("st_") else ""
+    return {"file": path.name, "saved": path.stat().st_mtime, "containers": containers, "totals": totals,
+            "planets": planets(save, account)}
 
 
 def listing() -> list[dict]:
