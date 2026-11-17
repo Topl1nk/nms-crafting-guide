@@ -41,6 +41,7 @@ INFESTED_PREFIX = ["INFESTED" + s for s in _SIX] + ["INFESTED"] * 10
 RUINED_PREFIX = ["RUINED" + s for s in _SIX] + ["RUINED"] * 10
 WEIRD, INFESTED, STRUCTURE, SWAMP, LAVA = 7, 24, 3, 25, 26  # the biome and the variants (planet_gen.SUBTYPE)
 # the word after the planet's: "Planet", "Moon", "Giant" (loc keys), by the body's size class (planet_gen: 3 = moon, 4 = giant)
+PARADISE = "UI_PARADISE_PLANET"
 CLASS_KEY = {3: "PLANETCLASS2", 4: "DISC_TYPE_GIANT"}
 
 
@@ -90,8 +91,9 @@ def word_number(seed: int, count: int) -> int:
     return ((low * count) >> 32) + 1
 
 
-def prefix(biome: int, subtype: int) -> str:
-    """The prefix of the planet's word, "" where it is not known."""
+def prefix(biome: int, subtype: int, paradise: bool | None = None) -> str:
+    """The prefix of the planet's word, "" where it is not known. paradise: whether the planet is a calm Lush one without sentinels
+    (planet_data.py works that out); None where that is not known."""
     if biome == WEIRD:
         return WEIRD_PREFIX.get(subtype, "")
     if not 0 <= biome < len(BIOME_PREFIX):
@@ -101,11 +103,13 @@ def prefix(biome: int, subtype: int) -> str:
     if subtype == STRUCTURE:
         return RUINED_PREFIX[biome]
     if biome == 0 and subtype != SWAMP:
-        return ""  # may be "Paradise" (see above)
+        return "" if paradise is None or paradise else "LUSH"  # a "Paradise" has a text of its own (UI_PARADISE_PLANET), see above
     return "SWAMPBIOME" if subtype == SWAMP else "LAVABIOME" if subtype == LAVA else BIOME_PREFIX[biome]
 
 
-def word_key(seed: int, biome: int, subtype: int) -> str:
-    """The loc key of the planet's word (e.g. "TOXIC4"), "" when it is not known."""
-    name = prefix(biome, subtype)
+def word_key(seed: int, biome: int, subtype: int, paradise: bool | None = None) -> str:
+    """The loc key of the planet's word (e.g. "TOXIC4"), "" when it is not known; PARADISE for a Paradise planet."""
+    if paradise and biome == 0 and subtype not in (INFESTED, STRUCTURE, SWAMP):
+        return PARADISE
+    name = prefix(biome, subtype, paradise)
     return f"{name}{word_number(seed, COUNTS[name])}" if name else ""

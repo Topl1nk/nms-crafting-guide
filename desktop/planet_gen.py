@@ -127,6 +127,9 @@ class Body:
     subtype: int = 0
     start: bool = False  # the system's start planet (bit 16 of a discovery record's second value)
     from_dead: bool = False  # a "Dead" planet the game turned into a "Weird" one
+    star: int = 0    # the system's star colour (0 yellow, 1 green, 2 blue, 3 red, 4 purple)
+    index: int = 0   # the body's number in the system minus one
+    galaxy: int = 0
 
 
 def _attributes(ua: int) -> dict:
@@ -324,6 +327,8 @@ def bodies(system: int) -> list[Body]:
     attrs = _attributes(ua)
     body_list = _body_list(ua, attrs)
     _biomes(ua, attrs, body_list, _orbit_draws(ua, body_list, attrs["planet_count"]))
+    for i, body in enumerate(body_list):
+        body.star, body.index, body.galaxy = attrs["star_type"], i, (ua >> 32) & 0xFF
     return body_list
 
 

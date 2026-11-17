@@ -1,4 +1,4 @@
-﻿"""Check desktop/planet_gen.py against the game's own solar-system generator.
+"""Check desktop/planet_gen.py against the game's own solar-system generator.
 
     No Man's Sky must be running (any menu or save will do; the generator's tables are loaded at start).
 
@@ -136,6 +136,15 @@ class Emulator:
         uc.mem_write(page, data.ljust(0x1000, b"\0"))
         return True
 
+    def cstr(self, address: int, limit: int = 1 << 16) -> bytes:
+        out = b""
+        while len(out) < limit:
+            c = self.rd(address + len(out), 1)
+            if c == b"\0":
+                break
+            out += c
+        return out
+
     def rd(self, address: int, size: int) -> bytes:
         from unicorn import UcError
         for page in range(address & ~0xFFF, address + size, 0x1000):
@@ -148,6 +157,9 @@ class Emulator:
     def wr(self, address: int, data: bytes) -> None:
         self.rd(address, len(data))
         self.uc.mem_write(address, data)
+
+    def q(self, address: int) -> int:
+        return struct.unpack("<Q", self.rd(address, 8))[0]
 
     def alloc(self, size: int) -> int:
         self.heap = (self.heap + 63) & ~63
@@ -183,6 +195,53 @@ class Emulator:
             rax = self.alloc(rcx)
         elif name == "HeapAlloc":
             rax = self.alloc(r8)
+        elif name == "__stdio_common_vsprintf":  # sprintf with %s and %d, which is all the game's code asks of it here
+            from unicorn.x86_const import UC_X86_REG_R9, UC_X86_REG_RSP
+            fmt = self.cstr(uc.reg_read(UC_X86_REG_R9)).decode("latin1")
+            va = self.q(uc.reg_read(UC_X86_REG_RSP) + 0x30)
+            text, i, n = "", 0, 0
+            while i < len(fmt):
+                if fmt[i] == "%" and i + 1 < len(fmt):
+                    arg = self.q(va + 8 * n)
+                    n += 1
+                    text += self.cstr(arg).decode("latin1") if fmt[i + 1] == "s" else str(struct.unpack("<i", struct.pack("<I", arg & 0xFFFFFFFF))[0])
+                    i += 2
+                else:
+                    text += fmt[i]
+                    i += 1
+            data = text.encode("latin1")[:r8 - 1] + b"\0"
+            self.wr(rdx, data)
+            rax = len(data) - 1
+        elif name in ("strstr", "strchr"):
+            haystack = self.cstr(rcx)
+            at = haystack.find(self.cstr(rdx) if name == "strstr" else bytes([rdx & 0xFF]))
+            rax = 0 if at < 0 else rcx + at
+        elif name in ("strcmp", "strncmp", "_stricmp", "_strnicmp", "memcmp"):
+            a, b = (self.rd(rcx, r8), self.rd(rdx, r8)) if name == "memcmp" else (self.cstr(rcx), self.cstr(rdx))
+            if name.endswith("icmp"):
+                a, b = a.lower(), b.lower()
+            if name in ("strncmp", "_strnicmp"):
+                a, b = a[:r8], b[:r8]
+            rax = 0 if a == b else 1 if a > b else 0xFFFFFFFF
+        elif name == "strlen":
+            rax = len(self.cstr(rcx))
+        elif name in ("toupper", "towupper"):
+            rax = rcx - 32 if 97 <= (rcx & 0xFF) <= 122 else rcx & 0xFF
+        elif name in ("tolower", "towlower"):
+            rax = rcx + 32 if 65 <= (rcx & 0xFF) <= 90 else rcx & 0xFF
+        elif name in ("strcpy", "strncpy"):
+            text = self.cstr(rdx)
+            size_ = len(text) + 1 if name == "strcpy" else r8
+            self.wr(rcx, (text + b"\0" * size_)[:size_])
+            rax = rcx
+        elif name in ("strcat", "strncat"):
+            text = self.cstr(rdx)[:r8] if name == "strncat" else self.cstr(rdx)
+            self.wr(rcx + len(self.cstr(rcx)), text + b"\0")
+            rax = rcx
+        elif name in ("GetTickCount64", "GetTickCount", "timeGetTime"):
+            rax = 100000
+        elif name.startswith(("_Mtx", "_Cnd", "Sleep", "Interlocked", "TryAcquire", "WakeCondition", "Initialize", "_Thrd")):
+            rax = 0
         elif name in ("free", "HeapFree"):
             rax = 1
         elif name in ("SetLastError", "EnterCriticalSection", "LeaveCriticalSection", "AcquireSRWLockExclusive", "ReleaseSRWLockExclusive",
@@ -262,6 +321,7 @@ class Emulator:
         where = self.alloc(16)
         self.wr(where, struct.pack("<Q", address))
         self.call(SYSTEM_RVA, where, system, holder)
+        self.system_at = system
         total = struct.unpack("<I", self.rd(system + 0x2544, 4))[0]
         bodies = []
         for i in range(total):
@@ -270,6 +330,41 @@ class Emulator:
                            struct.unpack_from("<I", d, 0x34)[0], struct.unpack_from("<I", d, 0x38)[0] == 1))
         return bodies
 
+    def levels(self, count: int) -> list[dict]:
+        """The planet routine (0x16c44c0) for the first `count` bodies of the system made last: what stage A and the weather made of
+        each (the fields of the routine's working structure). The texts are not made: the routine that picks them is stood in for."""
+        from unicorn.x86_const import UC_X86_REG_RBP, UC_X86_REG_RSP
+        base = self.base
+        g = self.q(base + 0x6F6C288)
+        planet_generator = self.q(g + 0x72B610) + 0x522B40
+        captured: dict[str, bytes] = {}
+
+        def after_texts(e) -> None:
+            captured["G"] = e.rd(e.uc.reg_read(UC_X86_REG_RBP) + 0x160, 0x3C00)
+
+        def texts(e) -> None:  # 0x16cdf20 draws a number under a loc key; nothing here needs the key
+            rsp = e.uc.reg_read(UC_X86_REG_RSP)
+            e.uc.reg_write(UC_X86_REG_RAX, e.uc.reg_read(UC_X86_REG_RDX))
+            e.uc.reg_write(UC_X86_REG_RIP, e.q(rsp))
+            e.uc.reg_write(UC_X86_REG_RSP, rsp + 8)
+
+        from unicorn.x86_const import UC_X86_REG_RAX, UC_X86_REG_RDX, UC_X86_REG_RIP
+        self.hooks[base + 0x16C503B] = after_texts
+        self.hooks[base + 0x16CDF20] = texts
+        out = []
+        for i in range(count):
+            work = self.alloc(0x400)
+            self.wr(work, b"\0" * 0x400)
+            captured.clear()
+            self.call(0x16C44C0, planet_generator, work, self.system_at + 0x2180 + i * 0x58, 0)
+            if "G" not in captured:  # the routine ended before its texts (a body the game builds differently): not compared
+                out.append(None)
+                continue
+            G = captured["G"]
+            gi = lambda o: struct.unpack_from("<i", G, o)[0]
+            out.append({"flora": gi(0x3538), "extra": gi(0x3540), "sentinels": [gi(0x34CC + 24 * k) for k in range(4)], "weather_kind": gi(0x1E54),
+                        "weather_class": gi(0x1E48), "weather_extreme": gi(0x1E50)})
+        return out
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
@@ -277,11 +372,13 @@ def main() -> int:
     ap.add_argument("--pid", type=int)
     ap.add_argument("--systems", type=int, default=200)
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--data", action="store_true", help="also check planet_data.py: flora, sentinels and weather of every body")
     args = ap.parse_args()
     game = Path(args.game or os.environ.get("NMS_GAME_DIR") or "")
     exe = game / "Binaries" / "NMS.exe"
     if not exe.is_file():
         sys.exit(f"{exe} not found: pass --game or set NMS_GAME_DIR")
+    import planet_data
     import planet_gen
     import pefile
     pe = pefile.PE(str(exe), fast_load=True)
@@ -298,6 +395,15 @@ def main() -> int:
         if mine != theirs:
             differ += 1
             print(f"{address:013x}: the game makes {theirs}, planet_gen {mine}")
+        if args.data and mine == theirs:
+            ours = planet_gen.bodies(address)
+            for body, game_says in zip(ours, emulator.levels(len(ours))):
+                if game_says is None:
+                    continue
+                got = planet_data.levels(body.seed, body, body.star, body.galaxy, body.index)
+                if any(got[k] != game_says[k] for k in game_says):
+                    differ += 1
+                    print(f"{address:013x} body {body.index}: the game makes {game_says}, planet_data {({k: got[k] for k in game_says})}")
     print(f"{args.systems} systems, {differ} differ from the game's generator")
     return 1 if differ else 0
 

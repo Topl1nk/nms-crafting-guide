@@ -20,6 +20,7 @@ from pathlib import Path
 import lz4.block
 
 import paths
+import planet_data
 import planet_gen
 import planet_word
 import word_filter
@@ -157,6 +158,19 @@ BIOMES = {0: "Lush", 1: "Toxic", 2: "Scorched", 3: "Radioactive", 4: "Frozen", 5
           9: "Green", 10: "Blue", 12: "Swamp", 13: "Lava", 14: "Waterworld", 15: "GasGiant"}
 
 
+COMBAT_TIMERS = {"Off": 0, "Slow": 1, "Normal": 2, "Fast": 3}  # GcCombatTimerDifficultyOption
+
+
+def _game_rules(save: dict) -> tuple[int, int | None]:
+    """The game mode number and the sentinel setting the planets' sentinels depend on. The setting is the game's combat timer option
+    (checked against the running game at "Normal"); where the ground and space timers differ the game's choice is not known: None."""
+    mode = (save.get("BaseContext") or {}).get("GameMode")
+    settings = (((save.get("BaseContext") or {}).get("PlayerStateData") or {}).get("DifficultyState") or {}).get("Settings") or {}
+    ground = (settings.get("GroundCombatTimers") or {}).get("CombatTimerDifficultyOption")
+    space = (settings.get("SpaceCombatTimers") or {}).get("CombatTimerDifficultyOption")
+    return (mode if isinstance(mode, int) else 0), (COMBAT_TIMERS.get(ground) if ground == space else None)
+
+
 def planets(save: dict, account: str = "") -> list[dict]:
     """The planets the player has been to, as far as the save shows it: those with a discovery of theirs (the planet itself,
     or an animal, plant or mineral found on it) or with a base of theirs, where they stand now, and every planet the save's store of
@@ -179,11 +193,13 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "sentinel_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
     types: dict[int, str] = {}  # and its type, from the same record
+    mode, setting = _game_rules(save)
+    data: dict[int, dict] = {}  # what the game shows of a planet's weather, flora and sentinels (loc keys), where it is worked out
     words: dict[int, tuple[str, str]] = {}  # and the loc keys of the word the game puts before "Planet" and of "Planet" itself (planet_word.py)
     for r in records:
         kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
@@ -194,7 +210,9 @@ def planets(save: dict, account: str = "") -> list[dict]:
                 types[key] = BIOMES.get(vp1 & 0xFFFF, "")
                 body = planet_gen.find(key, seeds[key], vp1)  # None where the generator does not agree with the record
                 if body:
-                    words[key] = (planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
+                    info = planet_data.describe(body, setting, mode) or {}
+                    words[key] = (info.get("word") or planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
+                    data[key] = {k: info[k] for k in ("weather", "flora", "sentinels") if info.get(k)}
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1
@@ -232,6 +250,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
     for key, p in found.items():
         p["biome"] = types.get(key, "")
         p["word_key"], p["class_key"] = words.get(key, ("", "")) if p["planet"] else ("", "")
+        p["weather_key"], p["flora_key"], p["sentinel_key"] = (data.get(key, {}).get(k, "") for k in ("weather", "flora", "sentinels"))
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")

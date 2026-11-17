@@ -56,11 +56,13 @@ def unpack(game: Path) -> Path:
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "desktop"))
+import planet_data  # noqa: E402
 import planet_gen  # noqa: E402
 import planet_word  # noqa: E402
 
 # The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
-WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT"]
+WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET"]
+             + [f"{prefix}{i}" for prefix, n in planet_data.COUNTS.items() for i in range(1, n + 1)]
              # and what a made-up planet name is put together from: its template and the word added to it (Delta, Sigma ...)
              + [f"NAMEGEN_PLANET_STYLE_{i}" for i in range(1, 11)] + [f"NAMEGEN_PLANET_ADORN_{i}" for i in range(1, 11)])
 
@@ -68,12 +70,12 @@ WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i i
 def check_word_counts(english: dict[str, str]) -> None:
     """The game takes as many texts as it finds under PREFIX1, PREFIX2, ...; if a patch adds or drops one, the number it
     picks changes, so the counts in planet_word.WORDS must follow."""
-    for prefix, n in planet_word.COUNTS.items():
+    for prefix, n in {**planet_word.COUNTS, **planet_data.COUNTS}.items():
         found = 0
         while english.get(f"{prefix}{found + 1}"):
             found += 1
         if found != n:
-            sys.exit(f"the game has {found} texts under {prefix}, planet_word.py counts {n}: update COUNTS in desktop/planet_word.py")
+            sys.exit(f"the game has {found} texts under {prefix}, planet_word.py counts {n}: update COUNTS in desktop/planet_word.py or planet_data.py")
 
 
 def word_texts(text: dict[str, str]) -> dict[str, str]:
@@ -105,6 +107,69 @@ def convert(folder: Path) -> dict:
         if share:
             types.append({"id": name, "variants": n, "stars": share})
     return {"stars": list(stars), "types": types}
+
+
+def unpack_named(game: Path, names: list[str], work: Path) -> Path:
+    """Unpack and decompile exactly these files (lower-case game paths, .mbin); returns the folder of the .MXML files."""
+    wanted: dict[str, list[str]] = {}
+    want = {n.lower() for n in names}
+    for pak, name in eg.pak_listing(game):
+        if name.lower() in want:
+            wanted.setdefault(pak, []).append(name)
+    found = sum(len(v) for v in wanted.values())
+    if found != len(want):
+        sys.exit(f"{len(want) - found} of the {len(want)} files the planet data needs are not in the game: check the build and the paths")
+    shutil.rmtree(work, ignore_errors=True)
+    mbin, mxml = work / "mbin", work / "mxml"
+    mbin.mkdir(parents=True)
+    mxml.mkdir()
+    for pak, pak_names in wanted.items():
+        args = ["-U", "-O", str(mbin)]
+        for name in sorted(set(pak_names)):
+            args += ["-f", name]
+        eg._run_pak([*args, pak])
+    result = subprocess.run([eg.mbincompiler(), "-y", "-Q", "-d", str(mxml), str(mbin)], capture_output=True, text=True)
+    log = result.stdout + result.stderr
+    if "[WARN]" in log or "[ERROR]" in log or len(list(mxml.rglob("*.MXML"))) != len(want):
+        sys.exit("MBINCompiler did not read the planet data files:\n" + log)
+    return mxml
+
+
+def planet_data_tables(game: Path, folder: Path) -> dict:
+    """What desktop/planet_data.py works a planet's weather, sentinels, flora and fauna out from: the weather odds of every biome
+    file per star colour and its flora text, the storm chances of each weather type, and the probabilities in the game's globals."""
+    files = ET.parse(folder / "biomefilenames.MXML").getroot()
+    options = {}  # (biome, variant) -> the game path of its biome file
+    for biome in files.find("Property[@name='BiomeFiles']"):
+        for o in biome.find("Property[@name='FileOptions']"):
+            sub = planet_gen.SUBTYPE[o.find("Property[@name='SubType']/Property").get("value")]
+            options[(planet_gen.BIOME[biome.get("name")], sub)] = o.find("Property[@name='Filename']").get("value").lower().replace(".mxml", ".mbin")
+    weather_list = unpack_named(game, ["metadata/simulation/solarsystem/weather/weatherlist.mbin"], WORK / "weather_list")
+    kinds = [(p.get("name"), p.get("value").lower().replace(".mxml", ".mbin"))
+             for p in ET.parse(next(weather_list.rglob("weatherlist.MXML"))).getroot().find("Property[@name='Table']")]
+    weather = unpack_named(game, [path for _, path in kinds], WORK / "weather")
+    storms = []
+    for _, path in kinds:
+        root = ET.parse(next(weather.rglob(Path(path).stem + ".MXML"))).getroot()
+        storms.append({"low": float(root.find("Property[@name='LowStormsChance']").get("value")),
+                       "high": float(root.find("Property[@name='HighStormsChance']").get("value"))})
+    biome_files = unpack_named(game, sorted(set(options.values())), WORK / "biome_files")
+    per_file = {}
+    for (biome, sub), path in options.items():
+        root = ET.parse(next(biome_files.rglob(Path(path).stem + ".MXML"))).getroot()
+        per_file[f"{biome},{sub}"] = {
+            "flora": root.find("Property[@name='FloraLifeLocID']").get("value"),
+            "weather": [[float(w.get("value")) for w in root.find("Property[@name='WeatherOptions']/Property[@name='%s']/Property" % star)]
+                        for star in ("Yellow", "Green", "Blue", "Red", "Purple")]}
+    glob = unpack_named(game, ["gcgameplayglobals.global.mbin", "gcsolargenerationglobals.global.mbin"], WORK / "globals")
+    play = ET.parse(next(glob.rglob("gcgameplayglobals.global.MXML"))).getroot()
+    solar = ET.parse(next(glob.rglob("gcsolargenerationglobals.global.MXML"))).getroot()
+    chance = {n: float(play.find(f"Property[@name='{n}']").get("value")) for n in (
+        "AggressiveSentinelProbability", "AggressiveSentinelProbabilitySurvival", "LowSentinelProbability", "LowSentinelProbabilitySurvival",
+        "CorruptSentinelProbability", "ViciousSentinelProbability", "ViciousStormProbability", "ViciousWeatherProbability",
+        "NonAggressiveLushSurvivalProbabability")}
+    chance["ExtremePlanetChance"] = [float(p.get("value")) for p in solar.find("Property[@name='ExtremePlanetChance']")]
+    return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance}
 
 
 def generator_tables(folder: Path) -> dict:
@@ -144,7 +209,9 @@ def main(argv: list[str] | None = None) -> int:
     game = eg.game_dir(args.game)
     folder = unpack(game)
     data = convert(folder)
-    GEN_OUT.write_text(json.dumps(generator_tables(folder), indent=1) + "\n", encoding="utf-8")
+    tables = generator_tables(folder)
+    tables["data"] = planet_data_tables(game, folder)
+    GEN_OUT.write_text(json.dumps(tables, indent=1) + "\n", encoding="utf-8")
     print(f"wrote {GEN_OUT.relative_to(ROOT)}")
     paths = sorted((eg.MXML_DIR / "language").glob("*.MXML"))
     check_word_counts(eg.load_language(paths, "english"))

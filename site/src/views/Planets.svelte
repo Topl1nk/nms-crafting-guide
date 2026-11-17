@@ -57,6 +57,8 @@
   const wordOf = (p) => (D.biomes.words[p.word_key] || "").replace("%PLANETCLASS%", D.biomes.words[p.class_key || "PLANETCLASS1"] || "").trim();
   // What the table and the card call the planet's type: the game's own word, else the type's name (Weird planets have no word).
   const kindOf = (p) => (p.planet ? wordOf(p) || (TYPES[p.biome] ? t(TYPES[p.biome]) : "") : "");
+  // The game's text under a loc key (weather, sentinels, flora), without the planet-word placeholders.
+  const textOf = (key) => (D.biomes.words[key] || "").replace(/%[A-Z]+%/g, "").trim();
   const address = $derived.by(() => { try { return cur ? Address.fromCode(cur.code) : null; } catch { return null; } });
 
   const typed = debounce((value) => { st.text = value; search = value; });
@@ -105,6 +107,15 @@
         </div>
         {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span>{#if chosen}<span class="muted small">{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</span>{/if}</div>{/if}
         <GlyphStrip code={p.code} />
+
+        {#if p.weather_key || p.sentinel_key || p.flora_key}
+          <h3>{t("Planetary data")}</h3>
+          <dl>
+            {#if p.weather_key}<dt>{t("Weather")}</dt><dd>{textOf(p.weather_key)}</dd>{/if}
+            {#if p.sentinel_key}<dt>{t("Sentinels")}</dt><dd>{textOf(p.sentinel_key)}</dd>{/if}
+            {#if p.flora_key}<dt>{t("Flora")}</dt><dd>{textOf(p.flora_key)}</dd>{/if}
+          </dl>
+        {/if}
 
         {#if p.flora || p.fauna || p.minerals || p.bases.length}
           <div class="stats">
