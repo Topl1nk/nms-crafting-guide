@@ -16,6 +16,7 @@ a = Analysis(
         (str(app / "scripts" / "build_langs.py"), "scripts"),
         (str(app / "data" / "wiki.json"), "data"),  # what build_langs.py keys the game's texts by
         (str(app / "data" / "items.json"), "data"),
+        (str(app / "data" / "planet_generator.json"), "data"),  # the weights desktop/planet_gen.py draws biomes and variants with
         (str(app / "desktop" / "vendor"), "vendor"),  # fetch_tools.py
         # nms_namegen (third_party/, MIT): its letter table is read from next to generator.py, so it goes where the module is
         (str(app / "third_party" / "nms_namegen" / "nms_namegen" / "letter_map.json"), "nms_namegen"),

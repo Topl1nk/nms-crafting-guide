@@ -20,6 +20,7 @@ from pathlib import Path
 import lz4.block
 
 import paths
+import planet_gen
 import planet_word
 import word_filter
 
@@ -178,19 +179,22 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "name_parts": None, "biome": "", "word_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
     types: dict[int, str] = {}  # and its type, from the same record
-    words: dict[int, str] = {}  # and the loc key of the word the game puts before "Planet" (planet_word.py)
+    words: dict[int, tuple[str, str]] = {}  # and the loc keys of the word the game puts before "Planet" and of "Planet" itself (planet_word.py)
     for r in records:
         kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
         if kind == "Planet" and r["DD"].get("VP"):
             seeds[key] = _ua(r["DD"]["VP"][0])
             if len(r["DD"]["VP"]) > 1:
-                types[key] = BIOMES.get(_ua(r["DD"]["VP"][1]) & 0xFFFF, "")
-                words[key] = planet_word.word_key(seeds[key], _ua(r["DD"]["VP"][1]))
+                vp1 = _ua(r["DD"]["VP"][1])
+                types[key] = BIOMES.get(vp1 & 0xFFFF, "")
+                body = planet_gen.find(key, seeds[key], vp1)  # None where the generator does not agree with the record
+                if body:
+                    words[key] = (planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1
@@ -227,7 +231,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
                     p["system_name"] = name
     for key, p in found.items():
         p["biome"] = types.get(key, "")
-        p["word_key"] = words.get(key, "") if p["planet"] else ""
+        p["word_key"], p["class_key"] = words.get(key, ("", "")) if p["planet"] else ("", "")
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")

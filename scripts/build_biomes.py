@@ -27,7 +27,8 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "biomes.json"
 WORK = eg.CACHE / "biomes"
 BIOMES = "metadata/simulation/solarsystem/biomes"
-FILES = [f"{BIOMES}/biomefilenames.mbin", f"{BIOMES}/biomelistperstartype.mbin"]
+GEN_OUT = ROOT / "data" / "planet_generator.json"
+FILES = [f"{BIOMES}/biomefilenames.mbin", f"{BIOMES}/biomelistperstartype.mbin", f"{BIOMES}/biomefilenamesarchive.mbin"]
 
 
 def unpack(game: Path) -> Path:
@@ -55,10 +56,11 @@ def unpack(game: Path) -> Path:
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "desktop"))
+import planet_gen  # noqa: E402
 import planet_word  # noqa: E402
 
 # The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
-WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.WORDS.values() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2"]
+WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT"]
              # and what a made-up planet name is put together from: its template and the word added to it (Delta, Sigma ...)
              + [f"NAMEGEN_PLANET_STYLE_{i}" for i in range(1, 11)] + [f"NAMEGEN_PLANET_ADORN_{i}" for i in range(1, 11)])
 
@@ -66,12 +68,12 @@ WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.WORDS.values() for i i
 def check_word_counts(english: dict[str, str]) -> None:
     """The game takes as many texts as it finds under PREFIX1, PREFIX2, ...; if a patch adds or drops one, the number it
     picks changes, so the counts in planet_word.WORDS must follow."""
-    for prefix, n in planet_word.WORDS.values():
+    for prefix, n in planet_word.COUNTS.items():
         found = 0
         while english.get(f"{prefix}{found + 1}"):
             found += 1
         if found != n:
-            sys.exit(f"the game has {found} texts under {prefix}, planet_word.py counts {n}: update WORDS in desktop/planet_word.py")
+            sys.exit(f"the game has {found} texts under {prefix}, planet_word.py counts {n}: update COUNTS in desktop/planet_word.py")
 
 
 def word_texts(text: dict[str, str]) -> dict[str, str]:
@@ -105,12 +107,45 @@ def convert(folder: Path) -> dict:
     return {"stars": list(stars), "types": types}
 
 
+def generator_tables(folder: Path) -> dict:
+    """What desktop/planet_gen.py draws a planet's biome and variant from: the variants of every biome with their odds (the table
+    the game picks a variant from, and the archive table it checks the pick against), the biomes a start planet, a moon of a purple
+    system and a giant may have, and the biome odds per star colour with the rows of the two special galaxy kinds."""
+    def options(path: Path) -> tuple[dict, ET.Element]:
+        root = ET.parse(path).getroot()
+        files = {}
+        for biome in root.find("Property[@name='BiomeFiles']"):
+            files[str(planet_gen.BIOME[biome.get("name")])] = [
+                [planet_gen.SUBTYPE[o.find("Property[@name='SubType']/Property").get("value")],
+                 float(o.find("Property[@name='Weight']").get("value")), float(o.find("Property[@name='PurpleSystemWeight']").get("value"))]
+                for o in biome.find("Property[@name='FileOptions']")]
+        return files, root
+
+    files, root = options(folder / "biomefilenames.MXML")
+    archive, _ = options(folder / "biomefilenamesarchive.MXML")
+    lists = {key: [planet_gen.BIOME[e.find("Property").get("value")] for e in root.find(f"Property[@name='{name}']")]
+             for key, name in (("start", "ValidStartPlanetBiome"), ("moon", "ValidPurpleMoonBiome"), ("giant", "ValidGiantPlanetBiome"))}
+    per_star = ET.parse(folder / "biomelistperstartype.MXML").getroot()
+
+    def row(e: ET.Element) -> dict:
+        return {"prob": [float(p.get("value")) for p in e.find("Property[@name='BiomeProbability']")],
+                "prime": [float(p.get("value")) for p in e.find("Property[@name='PrimeBiomeProbability']")]}
+
+    rows = [row(s) for s in per_star.find("Property[@name='StarType']")] + [row(per_star.find(f"Property[@name='{n}']")) for n in ("LushYellow", "AbandonedYellow")]
+    return {"_source": "metadata/simulation/solarsystem/biomes/{biomefilenames,biomefilenamesarchive,biomelistperstartype}.mbin of the installed game",
+            "files": files, "archive": archive, "lists": lists, "rows": rows,
+            "dead_to_weird": float(per_star.find("Property[@name='ConvertDeadToWeird']").get("value"))}
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--game", help="No Man's Sky install (default $NMS_GAME_DIR)")
     args = parser.parse_args(argv)
     game = eg.game_dir(args.game)
-    data = convert(unpack(game))
+    folder = unpack(game)
+    data = convert(folder)
+    GEN_OUT.write_text(json.dumps(generator_tables(folder), indent=1) + "\n", encoding="utf-8")
+    print(f"wrote {GEN_OUT.relative_to(ROOT)}")
     paths = sorted((eg.MXML_DIR / "language").glob("*.MXML"))
     check_word_counts(eg.load_language(paths, "english"))
     data["words"] = word_texts(eg.load_language(paths))  # in the language data/ is built in (NMS_LANG)
