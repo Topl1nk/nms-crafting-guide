@@ -49,6 +49,8 @@
   const chosen = $derived(cur?.planet && cur.biome ? D.biomes.types.find((b) => b.id === cur.biome) : null); // a type the game's table lists
   // The word the game puts before "Planet" in its own language: the text under the planet's loc key, ending in the word for the planet.
   const wordOf = (p) => (D.biomes.words[p.word_key] || "").replace("%PLANETCLASS%", D.biomes.words.PLANETCLASS1 || "").trim();
+  // What the table and the card call the planet's type: the game's own word, else the type's name (Weird planets have no word).
+  const kindOf = (p) => (p.planet ? wordOf(p) || (TYPES[p.biome] ? t(TYPES[p.biome]) : "") : "");
   const address = $derived.by(() => { try { return cur ? Address.fromCode(cur.code) : null; } catch { return null; } });
 
   const typed = debounce((value) => { st.text = value; search = value; });
@@ -81,6 +83,7 @@
       <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
         { title: t("Name"), cell: nameCell, cls: "strong", sort: (p) => p.name },
         { title: t("System"), text: (p) => p.system_name || hex3(p.system), sort: (p) => p.system_name || hex3(p.system) },
+        { title: t("Planet type"), text: kindOf, sort: kindOf },
         { title: t("Galaxy"), text: (p) => galaxyName(p.galaxy), cls: "wide-only", sort: (p) => p.galaxy },
         { title: t("Last seen"), cell: dates, cls: "muted", sort: (p) => p.seen },
       ]} />
@@ -110,8 +113,8 @@
         {#if p.planet}
         <h3>{t("Planet type")}</h3>
         {#if chosen}
-          <p><b>{typeName(chosen.id)}</b> <span class="muted small">{t("Read from the save.")}</span></p>
-          {#if wordOf(p)}<p><b>{wordOf(p)}</b></p>{/if}
+          {#if wordOf(p)}<p><b>{wordOf(p)}</b></p>
+          {:else}<p><b>{typeName(chosen.id)}</b> <span class="muted small">{t("Read from the save.")}</span></p>{/if}
           <p>{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</p>
         {:else}<p class="muted">—</p>{/if}
         {/if}
