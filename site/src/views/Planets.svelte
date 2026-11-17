@@ -94,41 +94,46 @@
         { title: t("Last seen"), cell: dates, cls: "muted", sort: (p) => p.seen },
       ]} />
     </div>
-    <section class="readout">
+    <aside class="detail">
       {#if cur}
         {@const p = cur}
-        <h2>{nameOf(p)}</h2>
-        {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
-        <p class="muted">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
+        <div class="ic-head">
+          <div>
+            <h2>{nameOf(p)}</h2>
+            <p class="muted">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
+          </div>
+        </div>
+        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span>{#if chosen}<span class="muted small">{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</span>{/if}</div>{/if}
         <GlyphStrip code={p.code} />
+
+        {#if p.flora || p.fauna || p.minerals || p.bases.length}
+          <div class="stats">
+            <div class="stat"><b>{p.flora}</b><small>{t("Flora")}</small></div>
+            <div class="stat"><b>{p.fauna}</b><small>{t("Fauna")}</small></div>
+            <div class="stat"><b>{p.minerals}</b><small>{t("Minerals")}</small></div>
+            <div class="stat"><b>{p.bases.length}</b><small>{t("Bases")}</small></div>
+          </div>
+        {/if}
+
         <dl>
           <dt>{t("Portal code")}</dt><dd><b>{p.code}</b> <button class="link" onclick={() => copy(p.code, t("portal code"))}>{t("copy")}</button> · <a href="#/portals?code={p.code}">{t("To the converter")}</a></dd>
           {#if address}<dt>{t("Galactic")}</dt><dd><b>{address.galactic}</b></dd>{/if}
-          <dt>{t("System")}</dt><dd>{hex3(p.system)}</dd>
+          <dt>{t("System")}</dt><dd>{p.system_name ? `${p.system_name} · ` : ""}{hex3(p.system)}</dd>
           {#if p.found}<dt>{t("First found")}</dt><dd>{when(p.found)}</dd>{/if}
-          <dt>{t("Last seen")}</dt><dd>{when(p.seen)}</dd>
+          {#if p.seen}<dt>{t("Last seen")}</dt><dd>{when(p.seen)}</dd>{/if}
         </dl>
 
-        <h3>{t("What you found here")}</h3>
-        <p>{t("Flora")}: <b>{p.flora}</b> · {t("Fauna")}: <b>{p.fauna}</b> · {t("Minerals")}: <b>{p.minerals}</b></p>
-        <h3>{t("Bases")}</h3>
         {#if p.bases.length}
+          <h3>{t("Bases")}</h3>
           <ul>{#each p.bases as name}<li>{name || t("Unnamed base")}</li>{/each}</ul>
-        {:else}<p class="muted">—</p>{/if}
-
-        {#if p.planet}
-        <h3>{t("Planet type")}</h3>
-        {#if chosen}
-          {#if wordOf(p)}<p><b>{wordOf(p)}</b></p>
-          {:else}<p><b>{typeName(chosen.id)}</b> <span class="muted small">{t("Read from the save.")}</span></p>{/if}
-          <p>{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</p>
-        {:else}<p class="muted">—</p>{/if}
         {/if}
 
         <h3>{t("Resources")}</h3>
         <p class="warn">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
+
+        {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small foot">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
       {/if}
-    </section>
+    </aside>
   </div>
 {/if}
 
@@ -136,13 +141,10 @@
   .split-planets { grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 460px); }
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }
   .main :global(.list) { flex: 1 1 0; height: auto; max-height: none; overflow: auto; min-height: 160px; }
-  .readout { align-self: stretch; }
-  .readout h2 { margin: 0 0 4px; font-size: 1.1rem; }
-  .readout h3 { margin: 16px 0 6px; font-size: 0.95rem; }
+  .split-planets .detail { align-self: stretch; }
+  .foot { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--p-outline); }
   dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 10px 0 0; }
   dt { color: var(--p-faint); }
   dd { margin: 0; }
-  .shares { display: flex; flex-wrap: wrap; gap: 6px 16px; list-style: none; padding: 0; margin: 4px 0 0; }
-  .shares li { margin: 0; }
   @media (max-width: 1000px) { .split-planets { grid-template-columns: minmax(0, 1fr); } }
 </style>
