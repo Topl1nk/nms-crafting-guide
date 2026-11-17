@@ -20,6 +20,7 @@ from pathlib import Path
 import lz4.block
 
 import paths
+import planet_word
 
 MAGIC = 0xFEEDA1E5
 
@@ -144,17 +145,19 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "biome": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "biome": "", "word_key": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
     types: dict[int, str] = {}  # and its type, from the same record
+    words: dict[int, str] = {}  # and the loc key of the word the game puts before "Planet" (planet_word.py)
     for r in records:
         kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
         if kind == "Planet" and r["DD"].get("VP"):
             seeds[key] = _ua(r["DD"]["VP"][0])
             if len(r["DD"]["VP"]) > 1:
                 types[key] = BIOMES.get(_ua(r["DD"]["VP"][1]) & 0xFFFF, "")
+                words[key] = planet_word.word_key(seeds[key], _ua(r["DD"]["VP"][1]))
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1
@@ -182,6 +185,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
                     p["system_name"] = name
     for key, p in found.items():
         p["biome"] = types.get(key, "")
+        p["word_key"] = words.get(key, "") if p["planet"] else ""
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")

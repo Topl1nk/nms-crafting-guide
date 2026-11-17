@@ -54,6 +54,28 @@ def unpack(game: Path) -> Path:
     return mxml / BIOMES
 
 
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "desktop"))
+import planet_word  # noqa: E402
+
+# The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
+WORD_KEYS = [f"{prefix}{i}" for prefix, n in planet_word.WORDS.values() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2"]
+
+
+def check_word_counts(english: dict[str, str]) -> None:
+    """The game takes as many texts as it finds under PREFIX1, PREFIX2, ...; if a patch adds or drops one, the number it
+    picks changes, so the counts in planet_word.WORDS must follow."""
+    for prefix, n in planet_word.WORDS.values():
+        found = 0
+        while english.get(f"{prefix}{found + 1}"):
+            found += 1
+        if found != n:
+            sys.exit(f"the game has {found} texts under {prefix}, planet_word.py counts {n}: update WORDS in desktop/planet_word.py")
+
+
+def word_texts(text: dict[str, str]) -> dict[str, str]:
+    return {k: text.get(k, "") for k in WORD_KEYS}
+
+
 def convert(folder: Path) -> dict:
     files = ET.parse(folder / "biomefilenames.MXML").getroot()
     variants: dict[str, int] = {}
@@ -87,6 +109,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     game = eg.game_dir(args.game)
     data = convert(unpack(game))
+    paths = sorted((eg.MXML_DIR / "language").glob("*.MXML"))
+    check_word_counts(eg.load_language(paths, "english"))
+    data["words"] = word_texts(eg.load_language(paths))  # in the language data/ is built in (NMS_LANG)
     data = {
         "_source": "metadata/simulation/solarsystem/biomes/{biomefilenames,biomelistperstartype}.mbin of the installed game",
         "_note": "Planet types, how many terrain variants each has and its share among the planets of a star colour. "

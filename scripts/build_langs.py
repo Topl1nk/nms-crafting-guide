@@ -31,6 +31,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import extract_game as eg  # noqa: E402
+from build_biomes import word_texts  # noqa: E402
 
 CACHE = eg.CACHE
 WORK = CACHE / "lang"
@@ -111,6 +112,7 @@ def main() -> int:
                           plain(pick(t, keys[i]["desc"])), pick(t, keys[i]["sym"])] for i in wiki_ids if i in keys},
             "ops": {k: pick(t, k) for k in rkeys},
             "fx": {s: t.get(s.upper(), "") for s in stats},
+            "words": word_texts(t),
         }
 
     # The language data/ was built in: the one whose item names it matches.

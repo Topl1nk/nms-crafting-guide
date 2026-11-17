@@ -17,7 +17,7 @@ export let PACK = null; // the game-language texts in use (lib/language.svelte.j
 
 // The texts of the language data.json was built in, kept so any language can be
 // switched to, and back, without a reload.
-const BASE = { items: {}, ops: [], effects: [] };
+const BASE = { items: {}, ops: [], effects: [], words: {} };
 
 // The page's own words data.json carries in English (the storage guide, what each buff is for), as exported:
 // lib/language.svelte.js puts them into the chosen language from here.
@@ -39,6 +39,7 @@ function prepare() {
   for (const [id, i] of Object.entries(D.items)) BASE.items[id] = { name: i.name, sub: i.sub, effect: i.effect, sym: i.sym };
   BASE.ops = D.recipes.map((r) => r.op);
   BASE.effects = D.cooking.map((g) => g.effect);
+  BASE.words = { ...D.biomes.words };
   index();
 }
 
@@ -60,6 +61,7 @@ export function retext(pack) {
   }
   D.recipes.forEach((r, i) => { r.op = pack?.ops[BASE.ops[i]] || BASE.ops[i]; });
   D.cooking.forEach((g, i) => { g.effect = pack?.fx[g.id] || BASE.effects[i]; });
+  for (const key of Object.keys(BASE.words)) D.biomes.words[key] = pack?.words?.[key] || BASE.words[key];  // the planet words
   index();
 }
 

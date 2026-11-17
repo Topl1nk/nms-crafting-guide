@@ -47,6 +47,8 @@
   const typeName = (id) => (TYPES[id] ? t(TYPES[id]) : t("{colour} type", { colour: t(STARS[id] ?? id) }));
 
   const chosen = $derived(cur?.planet && cur.biome ? D.biomes.types.find((b) => b.id === cur.biome) : null); // a type the game's table lists
+  // The word the game puts before "Planet" in its own language: the text under the planet's loc key, ending in the word for the planet.
+  const wordOf = (p) => (D.biomes.words[p.word_key] || "").replace("%PLANETCLASS%", D.biomes.words.PLANETCLASS1 || "").trim();
   const address = $derived.by(() => { try { return cur ? Address.fromCode(cur.code) : null; } catch { return null; } });
 
   const typed = debounce((value) => { st.text = value; search = value; });
@@ -109,11 +111,8 @@
         <h3>{t("Planet type")}</h3>
         {#if chosen}
           <p><b>{typeName(chosen.id)}</b> <span class="muted small">{t("Read from the save.")}</span></p>
+          {#if wordOf(p)}<p><b>{wordOf(p)}</b></p>{/if}
           <p>{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</p>
-          <p class="muted small">{t("Share of the planets around a star of each colour, by the game's weights:")}</p>
-          <ul class="shares">
-            {#each D.biomes.stars.filter((s) => chosen.stars[s]) as star (star)}<li><span>{t(STARS[star] ?? star)}</span> <b>{chosen.stars[star]}%</b></li>{/each}
-          </ul>
         {:else}<p class="muted">—</p>{/if}
         {/if}
 

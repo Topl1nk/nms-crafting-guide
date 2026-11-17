@@ -179,7 +179,7 @@ def build(book: Book) -> dict:
         "storage": {"homes": homes, "outcomes": outcomes},
         "multitools": json.loads((DATA_DIR / "multitools.json").read_text(encoding="utf-8")),
         "glyphs": glyphs,
-        "biomes": {"stars": biomes["stars"], "types": biomes["types"]},
+        "biomes": {"stars": biomes["stars"], "types": biomes["types"], "words": biomes.get("words", {})},
         "portals": {
             "glyph_names": portals.GLYPH_NAMES,
             "galaxies": portals.GALAXY_NAMES,
