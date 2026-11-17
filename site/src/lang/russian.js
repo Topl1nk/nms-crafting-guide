@@ -388,7 +388,6 @@ export default {
   "Red": "Красная",
   "Purple": "Фиолетовая",
   "{colour} type": "Тип ({colour})",
-  "not chosen": "не выбран",
   "Unnamed planet": "Планета без имени",
   "Name, system or portal code": "Название, система или код портала",
   "This page reads your game save through the desktop program, and there is none to read here.": "Эта страница читает сохранение игры через программу для компьютера, а здесь читать нечего.",
@@ -402,7 +401,9 @@ export default {
   "Minerals": "Минералы",
   "Unnamed base": "База без имени",
   "Planet type": "Тип планеты",
-  "The save does not record a planet's type, so you choose it here. It is kept only in this browser.": "В сохранении тип планеты не записан, поэтому вы выбираете его сами. Выбор хранится только в этом браузере.",
+  "A place in the system": "Место в системе",
+  "A place in the system, not a planet": "Место в системе, а не планета",
+  "Read from the save.": "Взято из сохранения.",
   "{n} terrain variant|{n} terrain variants": "{n} вариант рельефа|{n} варианта рельефа|{n} вариантов рельефа|{n} варианта рельефа",
   "Share of the planets around a star of each colour, by the game's weights:": "Доля среди планет вокруг звезды каждого цвета, по весам игры:",
   "Resources": "Ресурсы",
@@ -410,6 +411,6 @@ export default {
   "The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.": "Названия, которых нет в сохранении, рассчитываются по зерну (seed) и адресу планеты так, как их придумывает игра. Название, которое вы дали в игре, или изменение в том, как игра даёт названия, могут привести к расхождению.",
   "The planets you have been to, from your save: address, what you found, your bases": "Планеты, где вы были, по сохранению: адрес, находки, базы",
   "{n} planet|{n} planets": "{n} планета|{n} планеты|{n} планет|{n} планеты",
-  "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there and your bases. The save does not hold a planet's type or its resources, so the type is picked by hand from the game's own list and the resources are not shown.": "Планеты, где вы были, по сохранению игры: адрес портала с глифами, когда вы её нашли, сколько растений, животных и минералов вы там нашли, и ваши базы. В сохранении нет ни типа планеты, ни её ресурсов, поэтому тип выбирается вручную из списка самой игры, а ресурсы не показываются.",
+  "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there, your bases and the planet's type. Names the save does not hold are calculated the way the game makes them up. The save does not hold a planet's resources, so they are not shown.": "Планеты, где вы были, по сохранению игры: адрес портала с глифами, когда вы её нашли, сколько растений, животных и минералов вы там нашли, ваши базы и тип планеты. Названия, которых нет в сохранении, рассчитываются так, как их придумывает игра. Ресурсы планеты в сохранении не хранятся, поэтому не показываются.",
   // @@END
 };

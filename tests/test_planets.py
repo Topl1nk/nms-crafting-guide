@@ -79,6 +79,28 @@ def test_planet_zero_is_no_body_and_gets_no_generated_name() -> None:
     assert found[0]["system_name_source"] == "generated"
 
 
+def _typed(ua: int, vp: list, owner: str = ME) -> dict:
+    record = _record("Planet", ua, owner=owner)
+    record["DD"]["VP"] = vp
+    return record
+
+
+def test_the_planet_type_is_read_from_the_discovery_record() -> None:
+    plain = HOME  # planet 4
+    flagged = HOME + (1 << 52)  # planet 5: the bits above the low 16 are not part of the type
+    swamp = HOME + (2 << 52)
+    test_biome = HOME + (3 << 52)  # 11 is the game's test biome, not shown
+    beyond = HOME + (4 << 52)  # a number the table of types does not have
+    short = HOME + (5 << 52)  # a record with no second value
+    none = HOME + (6 << 52)  # no record of the planet at all: only a plant found there
+    other = HOME + (7 << 52)  # a planet only someone else found still tells its type
+    records = [_typed(plain, ["0x1", 2]), _typed(flagged, ["0x1", 0x10001]), _typed(swamp, ["0x1", 12]), _typed(test_biome, ["0x1", 11]),
+               _typed(beyond, ["0x1", 99]), _typed(short, ["0x1"]), _record("Flora", none), _typed(other, ["0x1", "0x4"], owner="x"),
+               _record("Flora", other)]
+    found = {p["planet"]: p["biome"] for p in nms_save.planets(_save(records), ME)}
+    assert found == {4: "Scorched", 5: "Toxic", 6: "Swamp", 7: "", 8: "", 9: "", 10: "", 11: "Frozen"}
+
+
 def test_a_name_in_the_save_is_kept_and_marked() -> None:
     found = nms_save.planets(_save([_record("Planet", ILUS, name="My Rock"), _record("SolarSystem", ILUS, name="My Sun")]), ME)
     assert (found[0]["name"], found[0]["name_source"], found[0]["system_name"], found[0]["system_name_source"]) == (

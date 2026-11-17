@@ -14,19 +14,17 @@
 
 <script>
   // The planets you have been to (#/planets), read from the game save: a list, and the card of the chosen one. The save keeps a
-  // planet's address, the day it was found, what you found on it and your bases there; it does not keep its type or its
-  // resources (the game works those out from the planet's seed), so the type is chosen by hand, from the game's own table of types,
-  // and the card says plainly that the resources are not known. A name is kept only if one was given: the desktop program works
+  // planet's address, the day it was found, its type (a number in the discovery record, read by the desktop program), what you
+  // found on it and your bases there; it does not keep its resources (the game works those out from the planet's seed), and the
+  // card says plainly that they are not known. A name is kept only if one was given: the desktop program works
   // the others out from the seed and the address (name_source "generated"), and the card says so.
   import GlyphStrip from "../components/GlyphStrip.svelte";
   import List from "../components/List.svelte";
-  import Select from "../components/Select.svelte";
   import { Address } from "../lib/core.js";
   import { D, galaxyName } from "../lib/data.js";
   import { gamesave } from "../lib/gamesave.svelte.js";
   import { ordinal, t, tn, ui } from "../lib/i18n.js";
   import { setKeys } from "../lib/keys.js";
-  import { local } from "../lib/local.js";
   import { copy } from "../lib/toast.svelte.js";
   import { debounce } from "../lib/util.js";
 
@@ -34,7 +32,6 @@
   let cur = $state.raw(null);
   let list = $state();
   let input = $state();
-  let types = $state.raw(local.get("planet-type", {})); // portal code (with the galaxy) -> the type chosen for it
 
   const rows = $derived.by(() => {
     const all = gamesave.report?.planets ?? [];
@@ -44,19 +41,13 @@
 
   const hex3 = (n) => `0x${n.toString(16).toUpperCase().padStart(3, "0")}`;
   const when = (ts) => (ts ? new Date(ts * 1000).toLocaleDateString(ui.locale, { year: "numeric", month: "short", day: "numeric" }) : "");
-  const nameOf = (p) => p.name || t("Unnamed planet");
+  // Planet 0 of an address is a place in the system (a base can stand there), not one of its planets.
+  const nameOf = (p) => p.name || (p.planet ? t("Unnamed planet") : t("A place in the system"));
   const keyOf = (p) => `${p.galaxy}/${p.code}`;
   const typeName = (id) => (TYPES[id] ? t(TYPES[id]) : t("{colour} type", { colour: t(STARS[id] ?? id) }));
 
-  const typeOptions = $derived([["", t("not chosen")], ...D.biomes.types.map((b) => [b.id, typeName(b.id)])]);
-  const chosen = $derived(cur ? D.biomes.types.find((b) => b.id === types[keyOf(cur)]) : null);
+  const chosen = $derived(cur?.planet && cur.biome ? D.biomes.types.find((b) => b.id === cur.biome) : null); // a type the game's table lists
   const address = $derived.by(() => { try { return cur ? Address.fromCode(cur.code) : null; } catch { return null; } });
-
-  function pick(id) {
-    types = { ...types };
-    if (id) types[keyOf(cur)] = id; else delete types[keyOf(cur)];
-    local.set("planet-type", types);
-  }
 
   const typed = debounce((value) => { st.text = value; search = value; });
 
@@ -68,7 +59,7 @@
 </script>
 
 {#snippet dates(p)}{when(p.seen)}{/snippet}
-{#snippet nameCell(p)}{p.name || ""}{#if !p.name}<span class="muted">{t("Unnamed planet")}</span>{/if}{/snippet}
+{#snippet nameCell(p)}{p.name || ""}{#if !p.name}<span class="muted">{nameOf(p)}</span>{/if}{/snippet}
 
 <div class="fbar">
   <h1><span>{t("Planets")}</span></h1>
@@ -97,7 +88,7 @@
         {@const p = cur}
         <h2>{nameOf(p)}</h2>
         {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
-        <p class="muted">{t("{ordinal} in the system", { ordinal: ordinal(p.planet + 1), n: p.planet + 1 })}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
+        <p class="muted">{p.planet ? t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet }) : t("A place in the system, not a planet")}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
         <GlyphStrip code={p.code} />
         <dl>
           <dt>{t("Portal code")}</dt><dd><b>{p.code}</b> <button class="link" onclick={() => copy(p.code, t("portal code"))}>{t("copy")}</button> · <a href="#/portals?code={p.code}">{t("To the converter")}</a></dd>
@@ -114,15 +105,16 @@
           <ul>{#each p.bases as name}<li>{name || t("Unnamed base")}</li>{/each}</ul>
         {:else}<p class="muted">—</p>{/if}
 
+        {#if p.planet}
         <h3>{t("Planet type")}</h3>
-        <p class="muted small">{t("The save does not record a planet's type, so you choose it here. It is kept only in this browser.")}</p>
-        <div class="type-pick"><Select label={t("Type")} value={types[keyOf(p)] ?? ""} options={typeOptions} onchange={pick} /></div>
         {#if chosen}
+          <p><b>{typeName(chosen.id)}</b> <span class="muted small">{t("Read from the save.")}</span></p>
           <p>{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</p>
           <p class="muted small">{t("Share of the planets around a star of each colour, by the game's weights:")}</p>
           <ul class="shares">
             {#each D.biomes.stars.filter((s) => chosen.stars[s]) as star (star)}<li><span>{t(STARS[star] ?? star)}</span> <b>{chosen.stars[star]}%</b></li>{/each}
           </ul>
+        {:else}<p class="muted">—</p>{/if}
         {/if}
 
         <h3>{t("Resources")}</h3>
@@ -142,7 +134,6 @@
   dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 10px 0 0; }
   dt { color: var(--p-faint); }
   dd { margin: 0; }
-  .type-pick { margin: 6px 0 10px; }
   .shares { display: flex; flex-wrap: wrap; gap: 6px 16px; list-style: none; padding: 0; margin: 4px 0 0; }
   .shares li { margin: 0; }
   @media (max-width: 1000px) { .split-planets { grid-template-columns: minmax(0, 1fr); } }

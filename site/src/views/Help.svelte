@@ -18,7 +18,7 @@
     ["portals", t("Portals"), "portals",
       t("Paste a portal code, a galactic address or a link and get all the rest, with the glyphs to dial. The list of saved addresses can be searched and added to: they are kept only on this computer.")],
     ["planets", t("Planets"), "planets",
-      t("The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there and your bases. The save does not hold a planet's type or its resources, so the type is picked by hand from the game's own list and the resources are not shown.")],
+      t("The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there, your bases and the planet's type. Names the save does not hold are calculated the way the game makes them up. The save does not hold a planet's resources, so they are not shown.")],
     ["inventory", t("My items"), "inventory",
       t("Items from the game save (the program reads it without changing anything and refreshes by itself) or a list you type in by hand. On the right the card of the item under the cursor: where to put it (which container, or sell, or throw away) and why. An item's name opens the Wiki, the “Type” and “Rarity” tags open the Wiki with that filter. “Where it lies” leaves out places (containers, ships, exocraft) that should not be counted.")],
   ];

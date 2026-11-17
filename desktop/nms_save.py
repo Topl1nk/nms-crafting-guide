@@ -117,6 +117,13 @@ def _place(ua: int) -> dict:
             "code": f"{planet:X}{system:03X}{y:02X}{z:03X}{x:03X}"}
 
 
+# The planet type a discovery record holds: the low 16 bits of its second value (DD.VP[1]) are the game's biome number, in the order
+# of GcBiomeType (11 is the test biome, left out). Read off a real save, where all 125 planets fall in 0..13 and the rarest types
+# (swamp, lava) are the rarest here too; the higher bits are not understood and not used. Not checked against the game itself.
+BIOMES = {0: "Lush", 1: "Toxic", 2: "Scorched", 3: "Radioactive", 4: "Frozen", 5: "Barren", 6: "Dead", 7: "Weird", 8: "Red",
+          9: "Green", 10: "Blue", 12: "Swamp", 13: "Lava", 14: "Waterworld", 15: "GasGiant"}
+
+
 def planets(save: dict, account: str = "") -> list[dict]:
     """The planets the player has been to, as far as the save shows it: those with a discovery of theirs (the planet itself,
     or an animal, plant or mineral found on it) or with a base of theirs. The save does not keep a planet's resources, and
@@ -137,14 +144,17 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "biome": "", "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
+    types: dict[int, str] = {}  # and its type, from the same record
     for r in records:
         kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
         if kind == "Planet" and r["DD"].get("VP"):
             seeds[key] = _ua(r["DD"]["VP"][0])
+            if len(r["DD"]["VP"]) > 1:
+                types[key] = BIOMES.get(_ua(r["DD"]["VP"][1]) & 0xFFFF, "")
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1
@@ -170,6 +180,8 @@ def planets(save: dict, account: str = "") -> list[dict]:
             for p in found.values():
                 if (p["galaxy"], p["system"]) == (_place(key)["galaxy"], _place(key)["system"]):
                     p["system_name"] = name
+    for key, p in found.items():
+        p["biome"] = types.get(key, "")
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")
