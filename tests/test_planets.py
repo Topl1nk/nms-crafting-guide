@@ -72,11 +72,10 @@ def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> No
     assert other["name_source"] == "generated" and other["name"]
 
 
-def test_planet_zero_is_no_body_and_gets_no_generated_name() -> None:
-    pytest.importorskip("numpy")
-    found = nms_save.planets(_save([_record("Flora", IBOSON & ~(0xF << 52))]), ME)  # a base can sit at planet 0
-    assert (found[0]["name"], found[0]["name_source"]) == ("", "")
-    assert found[0]["system_name_source"] == "generated"
+def test_planet_zero_is_the_system_and_not_listed() -> None:
+    base = {"Name": "", "Owner": {"UID": ME}, "GalacticAddress": IBOSON & ~(0xF << 52), "LastUpdateTimestamp": 5}
+    found = nms_save.planets(_save([_record("Flora", IBOSON & ~(0xF << 52))], [base]), ME)  # a base can sit at planet 0
+    assert found == []
 
 
 def _typed(ua: int, vp: list, owner: str = ME) -> dict:

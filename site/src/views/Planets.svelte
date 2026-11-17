@@ -41,8 +41,7 @@
 
   const hex3 = (n) => `0x${n.toString(16).toUpperCase().padStart(3, "0")}`;
   const when = (ts) => (ts ? new Date(ts * 1000).toLocaleDateString(ui.locale, { year: "numeric", month: "short", day: "numeric" }) : "");
-  // Planet 0 of an address is a place in the system (a base can stand there), not one of its planets.
-  const nameOf = (p) => p.name || (p.planet ? t("Unnamed planet") : t("A place in the system"));
+  const nameOf = (p) => p.name || t("Unnamed planet");
   const keyOf = (p) => `${p.galaxy}/${p.code}`;
   const typeName = (id) => (TYPES[id] ? t(TYPES[id]) : t("{colour} type", { colour: t(STARS[id] ?? id) }));
 
@@ -93,7 +92,7 @@
         {@const p = cur}
         <h2>{nameOf(p)}</h2>
         {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
-        <p class="muted">{p.planet ? t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet }) : t("A place in the system, not a planet")}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
+        <p class="muted">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
         <GlyphStrip code={p.code} />
         <dl>
           <dt>{t("Portal code")}</dt><dd><b>{p.code}</b> <button class="link" onclick={() => copy(p.code, t("portal code"))}>{t("copy")}</button> · <a href="#/portals?code={p.code}">{t("To the converter")}</a></dd>

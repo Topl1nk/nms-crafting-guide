@@ -201,7 +201,8 @@ def planets(save: dict, account: str = "") -> list[dict]:
                 p["system_name"], p["system_name_source"] = system_mod.systemName(code, galaxy), "generated"
         except (KeyError, IndexError, ValueError):
             pass  # no name rather than a wrong one: e.g. a planet number the system has no body for
-    return sorted(found.values(), key=lambda p: p["seen"], reverse=True)
+    # Planet 0 of an address is the system itself (a base can be recorded there), not one of its planets: not listed.
+    return sorted((p for p in found.values() if p["planet"] > 0), key=lambda p: p["seen"], reverse=True)
 
 
 def report(path: Path) -> dict:
