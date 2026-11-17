@@ -49,6 +49,25 @@ def test_odale_vi() -> None:
     assert (got["weather"], got["sentinels"], got["flora"]) == ("WEATHER_BARREN10", "SENTINEL_DEFAULT5", "RARITY_LOW8")
 
 
+SUBSTANCES = json.loads((ROOT / "tests" / "fixtures" / "planet_substances.json").read_text(encoding="utf-8"))
+
+
+def test_substances_match_the_game() -> None:
+    # what the game's whole planet generator (0x16c59b0) made of each planet: its common, uncommon and rare substance
+    assert len(SUBSTANCES) > 50
+    for p in SUBSTANCES:
+        body = planet_gen.Body(int(p["seed"], 16), p["size"], -1, p["biome"], p["subtype"], False, star=p["star"])
+        want = {k: p[k] for k in ("common", "uncommon", "rare")}
+        assert planet_data.substances(body.seed, body, p["star"], p["extreme"]) == want, p["seed"]
+
+
+def test_substances_of_odale_vi() -> None:
+    # In the game: Pyrite, Magnetised Ferrite, Copper (and bones and cactus flesh, which are not worked out)
+    body = planet_gen.Body(0x557B3D1B13177D2A, 1, -1, 5, 21, False, star=0, index=1, galaxy=0)
+    got = planet_data.describe(body, 2, 1)["substances"]
+    assert got == {"common": "YELLOW2", "uncommon": "DUSTY1", "rare": "LAND3"}
+
+
 def test_no_answer_where_the_rules_are_not_ported() -> None:
     body = planet_gen.Body(1, 1, -1, 5, 1, False)
     assert planet_data.describe(body, 2, 0) is None   # the game mode 0: extra rules

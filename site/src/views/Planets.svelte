@@ -19,6 +19,7 @@
   // card says plainly that they are not known. A name is kept only if one was given: the desktop program works
   // the others out from the seed and the address (name_source "generated"), and the card says so.
   import GlyphStrip from "../components/GlyphStrip.svelte";
+  import ItemIcon from "../components/ItemIcon.svelte";
   import List from "../components/List.svelte";
   import { Address } from "../lib/core.js";
   import { D, galaxyName } from "../lib/data.js";
@@ -108,12 +109,16 @@
         {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span>{#if chosen}<span class="muted small">{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</span>{/if}</div>{/if}
         <GlyphStrip code={p.code} />
 
-        {#if p.weather_key || p.sentinel_key || p.flora_key}
+        {#if p.weather_key || p.sentinel_key || p.flora_key || p.resources?.length}
           <h3>{t("Planetary data")}</h3>
           <dl>
             {#if p.weather_key}<dt>{t("Weather")}</dt><dd>{textOf(p.weather_key)}</dd>{/if}
             {#if p.sentinel_key}<dt>{t("Sentinels")}</dt><dd>{textOf(p.sentinel_key)}</dd>{/if}
             {#if p.flora_key}<dt>{t("Flora")}</dt><dd>{textOf(p.flora_key)}</dd>{/if}
+            {#if p.resources?.length}
+              <dt>{D.biomes.words.UI_DISC_MINERALS || t("Minerals")}</dt>
+              <dd>{#each p.resources as id}<span class="chip-item"><ItemIcon {id} size={22} />{D.items[id]?.name ?? id}</span>{/each}</dd>
+            {/if}
           </dl>
         {/if}
 

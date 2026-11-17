@@ -12872,6 +12872,48 @@
     0.25,
     0.33
    ]
+  },
+  "substances": {
+   "biome": [
+    "LUSH1",
+    "TOXIC1",
+    "HOT1",
+    "RADIO1",
+    "COLD1",
+    "DUSTY1",
+    "SPACEGUNK3",
+    "ASTEROID2",
+    "HOT1",
+    "TOXIC1",
+    "COLD1",
+    "LAND3",
+    "PLANT_POOP",
+    "LAVA1",
+    "WATERWORLD1",
+    "GASGIANT1",
+    "GAS1"
+   ],
+   "star": [
+    "YELLOW2",
+    "GREEN2",
+    "BLUE2",
+    "RED2",
+    "PURPLE2"
+   ],
+   "extreme": [
+    "EX_YELLOW",
+    "EX_GREEN",
+    "EX_BLUE",
+    "EX_RED",
+    "EX_PURPLE"
+   ],
+   "rare": [
+    "CATALYST1",
+    "LAND3",
+    "CAVE1",
+    "WATER1",
+    "ASTEROID1"
+   ]
   }
  }
 }

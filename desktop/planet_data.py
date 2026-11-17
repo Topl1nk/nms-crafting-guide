@@ -5,6 +5,7 @@ A port of the routines in NMS.exe (build 184271) that decide them and pick their
 
     0x16cc250  stage A: flora and fauna level, sentinel level for each of the four sentinel settings (0x16ccb80 is its sentinel step)
     0x16cd310  the weather: its kind, how stormy and whether extreme
+    0x16cd970  the substances: the common, uncommon and rare one (stage 19); the full generator that runs it is 0x16c59b0
     0x16ce410  the texts: a prefix per kind (WEATHER_BARREN, RARITY_LOW, SENTINEL_DEFAULT ...) and a number drawn among the texts under it
 
 Each routine has its own random generator, started from a stage seed of the planet's seed (planet_word.stage_seed): stage 0 for
@@ -58,7 +59,8 @@ def _tables() -> dict:
     global _t
     if _t is None:
         raw = json.loads((paths.RES / "data" / "planet_generator.json").read_text(encoding="utf-8"))["data"]
-        _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"]}
+        _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"],
+              "substances": raw["substances"]}
     return _t
 
 
@@ -177,6 +179,34 @@ def levels(seed: int, body: planet_gen.Body, star: int, galaxy: int, index: int,
     return {"flora": flora, "fauna": fauna, "extra": extra, "sentinels": sentinels, "weather_kind": wkind, "weather_class": klass,
             "weather_extreme": extreme}
 
+
+# the chances of the game's three swamp and lava picks below (constants of the exe, 0x4bf61e4, 0x4bf6b60, 0x4bf71b8)
+_SWAMP_ODDS = (F(0.15), F(0.33), F(0.66))
+_SUBSTANCE_STAGE = 19
+
+
+def substances(seed: int, body: planet_gen.Body, star: int, extreme: int) -> dict:
+    """The three substances the planet's resource list shows apart from its plants, bones and scrap: the common one (by the star's
+    colour, an extreme planet has the activated one), the uncommon one (by biome; swamp and lava planets draw among a few) and the
+    rare one (drawn from the game's list). Loc-free ids such as "YELLOW2"; 0x16cd970, its random generator is stage 19."""
+    table = _tables()["substances"]
+    state = _state(planet_word.stage_seed(seed, _SUBSTANCE_STAGE))
+    s = state[0] * _MULT + state[1]
+    low1 = s & 0xFFFFFFFF
+    s = low1 * _MULT + (s >> 32)
+    chance = F((s & 0xFFFFFFFF) * 2.0 ** -32)
+    rare = table["rare"][(low1 * len(table["rare"])) >> 32]
+    biome = body.biome if 0 <= body.biome < len(table["biome"]) else 0
+    if biome == 13 or body.subtype == planet_gen.SUBTYPE["Lava"]:
+        uncommon = table["biome"][13 if _SWAMP_ODDS[1] > chance else 5]
+    elif biome == 12 or body.subtype == planet_gen.SUBTYPE["Swamp"]:
+        uncommon = table["biome"][12 if _SWAMP_ODDS[0] > chance else 16 if _SWAMP_ODDS[1] > chance else 12 if _SWAMP_ODDS[2] <= chance else 0]
+    else:
+        uncommon = table["biome"][biome]
+    common = table["extreme" if extreme == 1 else "star"][star]
+    return {"common": common, "uncommon": uncommon, "rare": rare}
+
+
 def _file(t: dict, body: planet_gen.Body) -> dict:
     """The biome file the game uses for this body: the one of its variant, else the first the game has for the biome."""
     entry = t["files"].get((body.biome, body.subtype))
@@ -223,8 +253,11 @@ def texts(seed: int, body: planet_gen.Body, lv: dict, setting: int = 2) -> dict:
 
 def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | None:
     """The loc keys of a planet's "Planetary data" and its word, or None where they are not worked out (a game mode with extra rules,
-    or a sentinel setting the save does not state clearly). Keys: weather, flora, sentinels, word (fauna is not worked out: None)."""
+    or a sentinel setting the save does not state clearly). Keys: weather, flora, sentinels, word (fauna is not worked out: None),
+    substances (its common, uncommon and rare substance ids)."""
     if mode in (0, 6) or setting is None:
         return None
     lv = levels(body.seed, body, body.star, body.galaxy, body.index, setting)
-    return texts(body.seed, body, lv, setting)
+    out = texts(body.seed, body, lv, setting)
+    out["substances"] = substances(body.seed, body, body.star, lv["weather_extreme"])
+    return out

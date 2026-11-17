@@ -61,7 +61,7 @@ import planet_gen  # noqa: E402
 import planet_word  # noqa: E402
 
 # The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
-WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET"]
+WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET", "UI_DISC_MINERALS"]
              + [f"{prefix}{i}" for prefix, n in planet_data.COUNTS.items() for i in range(1, n + 1)]
              # and what a made-up planet name is put together from: its template and the word added to it (Delta, Sigma ...)
              + [f"NAMEGEN_PLANET_STYLE_{i}" for i in range(1, 11)] + [f"NAMEGEN_PLANET_ADORN_{i}" for i in range(1, 11)])
@@ -161,15 +161,20 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
             "flora": root.find("Property[@name='FloraLifeLocID']").get("value"),
             "weather": [[float(w.get("value")) for w in root.find("Property[@name='WeatherOptions']/Property[@name='%s']/Property" % star)]
                         for star in ("Yellow", "Green", "Blue", "Red", "Purple")]}
-    glob = unpack_named(game, ["gcgameplayglobals.global.mbin", "gcsolargenerationglobals.global.mbin"], WORK / "globals")
+    glob = unpack_named(game, ["gcgameplayglobals.global.mbin", "gcsolargenerationglobals.global.mbin", "gcterrainglobals.global.mbin"], WORK / "globals")
     play = ET.parse(next(glob.rglob("gcgameplayglobals.global.MXML"))).getroot()
     solar = ET.parse(next(glob.rglob("gcsolargenerationglobals.global.MXML"))).getroot()
+    terrain = ET.parse(next(glob.rglob("gcterrainglobals.global.MXML"))).getroot()
+    # the substances of a planet: its common one by star colour (an extreme planet's: its own), its uncommon one by biome, its rare one drawn
+    substances = {key: [p.get("value") for p in terrain.find(f"Property[@name='{name}']")]
+                  for key, name in (("biome", "MiningSubstanceBiome"), ("star", "MiningSubstanceStar"), ("extreme", "MiningSubstanceStarExtreme"),
+                                    ("rare", "MiningSubstanceRare"))}
     chance = {n: float(play.find(f"Property[@name='{n}']").get("value")) for n in (
         "AggressiveSentinelProbability", "AggressiveSentinelProbabilitySurvival", "LowSentinelProbability", "LowSentinelProbabilitySurvival",
         "CorruptSentinelProbability", "ViciousSentinelProbability", "ViciousStormProbability", "ViciousWeatherProbability",
         "NonAggressiveLushSurvivalProbabability")}
     chance["ExtremePlanetChance"] = [float(p.get("value")) for p in solar.find("Property[@name='ExtremePlanetChance']")]
-    return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance}
+    return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances}
 
 
 def generator_tables(folder: Path) -> dict:
