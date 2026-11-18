@@ -570,6 +570,7 @@ export default {
   "Planetary data": "Dados do planeta",
   "Weather": "Clima",
   "Sentinels": "Sentinelas",
+  "Found by you": "Encontrado por si",
   "First found": "Descoberto em",
   "What you found here": "O que encontrou aqui",
   "Flora": "Flora",

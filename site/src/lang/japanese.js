@@ -570,6 +570,7 @@ export default {
   "Planetary data": "惑星データ",
   "Weather": "天候",
   "Sentinels": "センチネル",
+  "Found by you": "あなたの発見",
   "First found": "発見日",
   "What you found here": "ここで見つけたもの",
   "Flora": "植物",

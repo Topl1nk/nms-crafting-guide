@@ -397,6 +397,7 @@ export default {
   "Planetary data": "Планетарные данные",
   "Weather": "Погода",
   "Sentinels": "Стражи",
+  "Found by you": "Найдено вами",
   "First found": "Открыта",
   "What you found here": "Что вы здесь нашли",
   "Flora": "Растения",

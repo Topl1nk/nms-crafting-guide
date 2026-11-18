@@ -570,6 +570,7 @@ export default {
   "Planetary data": "행성 데이터",
   "Weather": "날씨",
   "Sentinels": "센티넬",
+  "Found by you": "내가 발견한 것",
   "First found": "발견일",
   "What you found here": "여기서 발견한 것",
   "Flora": "식물",

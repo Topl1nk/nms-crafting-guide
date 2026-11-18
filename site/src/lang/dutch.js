@@ -570,6 +570,7 @@ export default {
   "Planetary data": "Planeetgegevens",
   "Weather": "Weer",
   "Sentinels": "Schildwachten",
+  "Found by you": "Door jou gevonden",
   "First found": "Ontdekt op",
   "What you found here": "Wat je hier hebt gevonden",
   "Flora": "Flora",

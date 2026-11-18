@@ -127,7 +127,8 @@
         {/if}
 
         {#if p.flora || p.fauna || p.minerals}
-          <div class="finds" title={t("Found")}>
+          <h3>{t("Found by you")}</h3>
+          <div class="finds">
             {#each [["flora", p.flora, "Flora"], ["fauna", p.fauna, "Fauna"], ["mineral", p.minerals, "Minerals"]] as [icon, n, label]}
               {#if n}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}</b><small>{t(label)}</small></span>{/if}
             {/each}
@@ -153,7 +154,7 @@
   h3 { margin: 18px 0 8px; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--p-faint); font-weight: 600; }
   .res { display: flex; flex-wrap: wrap; gap: 6px; }
   .res span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--p-raised); white-space: nowrap; font-size: 0.9rem; }
-  .finds { display: flex; gap: 18px; margin-top: 18px; }
+  .finds { display: flex; gap: 18px; }
   .finds span { display: inline-flex; align-items: center; gap: 6px; }
   .finds small { color: var(--p-faint); font-size: 0.78rem; }
   h3 { display: flex; align-items: center; gap: 8px; }

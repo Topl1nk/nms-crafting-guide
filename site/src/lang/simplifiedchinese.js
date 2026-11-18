@@ -570,6 +570,7 @@ export default {
   "Planetary data": "行星数据",
   "Weather": "天气",
   "Sentinels": "哨兵",
+  "Found by you": "你的发现",
   "First found": "发现于",
   "What you found here": "你在这里的发现",
   "Flora": "植物",
