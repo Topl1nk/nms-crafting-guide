@@ -62,7 +62,8 @@
   // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
   const label = (key, english) => textOf(key) || t(english);
   // The resource list is the hints (plant, bones, salvage ...) and then the rare, the uncommon and the common substance.
-  const subOf = (p, i) => (p.resources?.length >= 3 ? p.resources[p.resources.length - 3 + i] : "");
+  const hintsOf = (p) => (p.resources?.length >= 3 ? p.resources.slice(0, -3) : []);
+  const subOf =(p, i) => (p.resources?.length >= 3 ? p.resources[p.resources.length - 3 + i] : "");
   const subName = (p, i) => { const id = subOf(p, i); return id ? D.items[id]?.name ?? textOf(id) ?? id : ""; };
   // A planet whose weather, sentinels, flora and fauna are not worked out (the save's record and the generator disagree on its type).
   const unknown = (p) => p.planet && !(p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key);
@@ -88,7 +89,8 @@
 {#snippet headFlora()}{@render findHead("flora")}{/snippet}
 {#snippet headFauna()}{@render findHead("fauna")}{/snippet}
 {#snippet headMineral()}{@render findHead("mineral")}{/snippet}
-{#snippet resCell(p)}<span class="res-row">{#each p.resources ?? [] as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
+{#snippet hintCell(p)}<span class="res-row">{#each hintsOf(p) as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
+{#snippet subsCell(p)}<span class="res-row">{#each [0, 1, 2] as i}{@const id = subOf(p, i)}{#if id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/if}{/each}</span>{/snippet}
 <!-- the name over its system (and galaxy, outside the first): one column instead of three -->
 {#snippet nameCell(p)}<span class="two"><span>{#if shown(p)}{shown(p)}{:else}<span class="muted">{nameOf(p)}</span>{/if}</span><small class="muted">{p.system_name || hex3(p.system)}{p.galaxy > 1 ? ` · ${galaxyName(p.galaxy)}` : ""}</small></span>{/snippet}
 
@@ -116,7 +118,8 @@
         { title: label("UI_DISC_FLORA", "Flora"), head: headFlora, cell: fl, cls: "wide-only num", sort: (p) => p.flora },
         { title: label("UI_DISC_FAUNA", "Fauna"), head: headFauna, cell: fa, cls: "wide-only num", sort: (p) => p.fauna },
         { title: label("UI_DISC_MINERALS", "Minerals"), head: headMineral, cell: mi, cls: "wide-only num", sort: (p) => p.minerals },
-        { title: label("RESOURCES_L", "Resources"), cell: resCell, cls: "wide-only", sort: (p) => subName(p, 0) },
+        { title: label("RESOURCES_L", "Resources"), cell: hintCell, cls: "wide-only", sort: (p) => hintsOf(p).length },
+        { title: t("Rare, uncommon, common"), cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
         { title: t("Last seen"), cell: dates, cls: "num muted", sort: (p) => p.seen },
       ]} />
     </div>
