@@ -62,14 +62,19 @@
   // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
   const label = (key, english) => textOf(key) || t(english);
   // The resource list is the hints (plant, bones, salvage ...) and then the rare, the uncommon and the common substance.
-  const hintsOf = (p) => (p.resources?.length >= 3 ? p.resources.slice(0, -3) : []);
-  const subOf =(p, i) => (p.resources?.length >= 3 ? p.resources[p.resources.length - 3 + i] : "");
+  // The plant comes first (its hint is an item's id, the others' are the game's UI texts), then the rest in the game's order.
+  const hintsOf = (p) => {
+    const hints = p.resources?.length >= 3 ? p.resources.slice(0, -3) : [];
+    return [...hints.filter((id) => !id.startsWith("UI_")), ...hints.filter((id) => id.startsWith("UI_"))];
+  };
+  const resOf = (p) => [...hintsOf(p), ...(p.resources?.length >= 3 ? p.resources.slice(-3) : p.resources ?? [])];
+  const subOf = (p, i) => (p.resources?.length >= 3 ? p.resources[p.resources.length - 3 + i] : "");
   const subName = (p, i) => { const id = subOf(p, i); return id ? D.items[id]?.name ?? textOf(id) ?? id : ""; };
   // A planet whose weather, sentinels, flora and fauna are not worked out (the save's record and the generator disagree on its type).
   const unknown = (p) => p.planet && !(p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key);
 
   // What the game shows beside a hint that is not an item (the bones, the salvage, the bugs, the swarm): a picture of an item that is the same.
-  const HINT_ICON = { UI_BONES_HINT: "ANY_BONE", UI_SCRAP_HINT: "SCRAP_GOODS", UI_BUGS_HINT: "FOOD_M_GRUB", UI_B_SWARM_HINT: "SWARMDUST" };
+  const HINT_ICON = { UI_BONES_HINT: "HINT_bones", UI_SCRAP_HINT: "BP_SALVAGE", UI_BUGS_HINT: "FOOD_M_GRUB", UI_B_SWARM_HINT: "SWARMDUST" };
 
   const typed = debounce((value) => { st.text = value; search = value; });
 
@@ -83,6 +88,7 @@
 {#snippet dates(p)}{when(p.seen)}{/snippet}
 <!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
 {#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null, "#6fdc8c"], ["fauna", p.fauna, p.fauna_total, "#f3b878"], ["mineral", p.minerals, null, "#be96f6"]] as [icon, n, total, tone]}{#if n || total}<span class="cnt"><ItemIcon id="FIND_{icon}" size={32} color={tone} /><b>{n}{#if total}/{total}{/if}</b></span>{/if}{/each}</span>{/snippet}
+{#snippet baseCell(p)}{#if p.bases.length}<span class="cnt" title={p.bases.map((n) => n || t("Unnamed base")).join(", ")}><ItemIcon id="PLANET_base" size={32} color="#8fb6ff" />{#if p.bases.length > 1}<b>{p.bases.length}</b>{/if}</span>{/if}{/snippet}
 {#snippet hintCell(p)}<span class="res-row">{#each hintsOf(p) as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
 {#snippet subsCell(p)}<span class="res-row">{#each [0, 1, 2] as i}{@const id = subOf(p, i)}{#if id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/if}{/each}</span>{/snippet}
 <!-- the name over its system (and galaxy, outside the first): one column instead of three -->
@@ -112,6 +118,7 @@
         { title: t("Found by you"), cell: foundCell, cls: "wide-only", sort: (p) => p.fauna + p.flora + p.minerals },
         { title: label("RESOURCES_L", "Resources"), cell: hintCell, cls: "wide-only", sort: (p) => hintsOf(p).length },
         { title: `${label("RESOURCES_L", "Resources")} 2`, cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
+        { title: t("Bases"), cell: baseCell, cls: "wide-only", sort: (p) => p.bases.length },
         { title: t("Last seen"), cell: dates, cls: "num muted", sort: (p) => p.seen },
       ]} />
     </div>
@@ -140,7 +147,7 @@
         {#if p.resources?.length}
           <h3>{label("RESOURCES_L", "Resources")}</h3>
           <div class="res">
-            {#each p.resources as id}<span><ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={24} />{D.items[id]?.name ?? (textOf(id) || id)}</span>{/each}
+            {#each resOf(p) as id}<span><ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={24} />{D.items[id]?.name ?? (textOf(id) || id)}</span>{/each}
           </div>
         {:else}
           <p class="muted small">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
@@ -156,7 +163,7 @@
         {/if}
         {#if p.bases.length}
           <h3>{t("Bases")}</h3>
-          <ul>{#each p.bases as name}<li>{name || t("Unnamed base")}</li>{/each}</ul>
+          <div class="res">{#each p.bases as name}<span><ItemIcon id="PLANET_base" size={24} color="#8fb6ff" />{name || t("Unnamed base")}</span>{/each}</div>
         {/if}
       {/if}
     </aside>

@@ -44,6 +44,8 @@ PLACES = {
     "PLANET_resources": f"{UI}discovery/planetdata.dds",
     **{f"FIND_{n}": f"{UI}discovery/categories.{n}.dds" for n in ("flora", "fauna")},
     "FIND_mineral": "textures/ui/frontend/components/discovery/silhouette.mineral.dds",
+    "HINT_bones": f"{UI}u4products/product.bones.dds",  # the planet's "Ancient Bones" among its resources
+    "PLANET_base": f"{UI}buildable/buildable.basecoreflag.dds",  # your base on a planet
 }
 
 state = {"state": "idle", "step": "", "done": 0, "total": 0, "error": ""}
