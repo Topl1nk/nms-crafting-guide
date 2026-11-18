@@ -21,10 +21,9 @@
   import GlyphStrip from "../components/GlyphStrip.svelte";
   import ItemIcon from "../components/ItemIcon.svelte";
   import List from "../components/List.svelte";
-  import { Address } from "../lib/core.js";
   import { D, galaxyName } from "../lib/data.js";
   import { gamesave } from "../lib/gamesave.svelte.js";
-  import { ordinal, t, tn, ui } from "../lib/i18n.js";
+  import { ordinal, t, ui } from "../lib/i18n.js";
   import { setKeys } from "../lib/keys.js";
   import { copy } from "../lib/toast.svelte.js";
   import { debounce } from "../lib/util.js";
@@ -53,14 +52,12 @@
   const keyOf = (p) => `${p.galaxy}/${p.code}`;
   const typeName = (id) => (TYPES[id] ? t(TYPES[id]) : t("{colour} type", { colour: t(STARS[id] ?? id) }));
 
-  const chosen = $derived(cur?.planet && cur.biome ? D.biomes.types.find((b) => b.id === cur.biome) : null); // a type the game's table lists
   // The word the game puts before "Planet" in its own language: the text under the planet's loc key, ending in the word for the planet.
   const wordOf = (p) => (D.biomes.words[p.word_key] || "").replace("%PLANETCLASS%", D.biomes.words[p.class_key || "PLANETCLASS1"] || "").trim();
   // What the table and the card call the planet's type: the game's own word, else the type's name (Weird planets have no word).
   const kindOf = (p) => (p.planet ? wordOf(p) || (TYPES[p.biome] ? t(TYPES[p.biome]) : "") : "");
   // The game's text under a loc key (weather, sentinels, flora), without the planet-word placeholders.
   const textOf = (key) => (D.biomes.words[key] || "").replace(/%[A-Z]+%/g, "").trim();
-  const address = $derived.by(() => { try { return cur ? Address.fromCode(cur.code) : null; } catch { return null; } });
 
   const typed = debounce((value) => { st.text = value; search = value; });
 
@@ -100,59 +97,40 @@
     <aside class="detail">
       {#if cur}
         {@const p = cur}
-        <div class="ic-head">
-          <div>
-            <h2>{nameOf(p)}</h2>
-            <p class="muted">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""} · {p.galaxy}. {galaxyName(p.galaxy)}</p>
-          </div>
-        </div>
-        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span>{#if chosen}<span class="muted small">{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</span>{/if}</div>{/if}
-        <GlyphStrip code={p.code} />
+        <h2>{nameOf(p)}</h2>
+        <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
+        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span></div>{/if}
 
-        {#if p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key || p.resources?.length}
-          <h3>{t("Planetary data")}</h3>
+        <div class="portal">
+          <GlyphStrip code={p.code} />
+          <p class="code"><b>{p.code}</b> <button class="link" onclick={() => copy(p.code, t("portal code"))}>{t("copy")}</button> · <a href="#/portals?code={p.code}">{t("To the converter")}</a></p>
+        </div>
+
+        {#if p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key}
           <dl>
             {#if p.weather_key}<dt>{t("Weather")}</dt><dd>{textOf(p.weather_key)}</dd>{/if}
             {#if p.sentinel_key}<dt>{t("Sentinels")}</dt><dd>{textOf(p.sentinel_key)}</dd>{/if}
             {#if p.flora_key}<dt>{t("Flora")}</dt><dd>{textOf(p.flora_key)}</dd>{/if}
             {#if p.fauna_key}<dt>{t("Fauna")}</dt><dd>{textOf(p.fauna_key)}</dd>{/if}
-            {#if p.resources?.length}
-              <dt>{t("Resources")}</dt>
-              <dd>
-                {#each p.resources as id}<span class="chip-item">{#if D.items[id]}<ItemIcon {id} size={22} />{D.items[id].name}{:else}{textOf(id) || id}{/if}</span>{/each}
-              </dd>
-            {/if}
           </dl>
         {/if}
 
-        {#if p.flora || p.fauna || p.minerals || p.bases.length}
-          <div class="stats">
-            <div class="stat"><b>{p.flora}</b><small>{t("Flora")}</small></div>
-            <div class="stat"><b>{p.fauna}</b><small>{t("Fauna")}</small></div>
-            <div class="stat"><b>{p.minerals}</b><small>{t("Minerals")}</small></div>
-            <div class="stat"><b>{p.bases.length}</b><small>{t("Bases")}</small></div>
+        {#if p.resources?.length}
+          <h3>{t("Resources")}</h3>
+          <div class="res">
+            {#each p.resources as id}<span>{#if D.items[id]}<ItemIcon {id} size={20} />{D.items[id].name}{:else}{textOf(id) || id}{/if}</span>{/each}
           </div>
+        {:else}
+          <p class="muted small">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
         {/if}
 
-        <dl>
-          <dt>{t("Portal code")}</dt><dd><b>{p.code}</b> <button class="link" onclick={() => copy(p.code, t("portal code"))}>{t("copy")}</button> · <a href="#/portals?code={p.code}">{t("To the converter")}</a></dd>
-          {#if address}<dt>{t("Galactic")}</dt><dd><b>{address.galactic}</b></dd>{/if}
-          <dt>{t("System")}</dt><dd>{p.system_name ? `${p.system_name} · ` : ""}{hex3(p.system)}</dd>
-          {#if p.found}<dt>{t("First found")}</dt><dd>{when(p.found)}</dd>{/if}
-          {#if p.seen}<dt>{t("Last seen")}</dt><dd>{when(p.seen)}</dd>{/if}
-        </dl>
-
+        {#if p.flora || p.fauna || p.minerals}
+          <p class="muted small finds">{p.flora} {t("Flora")} · {p.fauna} {t("Fauna")} · {p.minerals} {t("Minerals")}</p>
+        {/if}
         {#if p.bases.length}
           <h3>{t("Bases")}</h3>
           <ul>{#each p.bases as name}<li>{name || t("Unnamed base")}</li>{/each}</ul>
         {/if}
-
-        {#if !p.resources?.length}
-          <h3>{t("Resources")}</h3>
-          <p class="warn">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
-        {/if}
-
-        {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small foot">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
       {/if}
     </aside>
   </div>
@@ -163,8 +141,14 @@
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }
   .main :global(.list) { flex: 1 1 0; height: auto; max-height: none; overflow: auto; min-height: 160px; }
   .split-planets .detail { align-self: stretch; }
-  .foot { margin-top: 18px; padding-top: 10px; border-top: 1px solid var(--p-outline); }
-  dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 12px; margin: 10px 0 0; }
+  .sub { margin: 2px 0 10px; }
+  .portal { margin: 4px 0 14px; }
+  .code { margin: 6px 0 0; font-size: 0.9rem; }
+  h3 { margin: 18px 0 8px; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--p-faint); font-weight: 600; }
+  .res { display: flex; flex-wrap: wrap; gap: 6px; }
+  .res span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--p-raised); white-space: nowrap; font-size: 0.9rem; }
+  .finds { margin-top: 16px; }
+  dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; }
   dt { color: var(--p-faint); }
   dd { margin: 0; }
   @media (max-width: 1000px) { .split-planets { grid-template-columns: minmax(0, 1fr); } }
