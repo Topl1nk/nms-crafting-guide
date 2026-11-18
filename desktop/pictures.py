@@ -24,7 +24,7 @@ import paths  # noqa: E402
 ICONS = paths.ICONS
 RAW = paths.CACHE / "pictures_raw"
 DONE_MARK = paths.PICTURES / "complete"  # written when an installation ran to its end; without it the pictures may be a part
-SET = "5"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
+SET = "6"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
 TABLES = paths.CACHE / "game" / "json"  # where scripts/extract_game.py writes, given NMS_CACHE
 UI = "textures/ui/frontend/icons/"
 CHUNK = 250  # names to a hgpaktool run (about 18 000 characters of command line; Windows allows 32 000)
@@ -65,7 +65,7 @@ GLOBES = {
     "Lush": ((110, 160, 70), (60, 130, 210), (150, 205, 255)),
     "Toxic": ((160, 175, 50), (190, 215, 70), (210, 235, 90)),
     "Scorched": ((200, 120, 60), (230, 90, 40), (255, 170, 90)),
-    "Radioactive": ((200, 160, 70), (120, 210, 90), (190, 240, 100)),
+    "Radioactive": ((200, 160, 70), (215, 35, 40), (190, 240, 100)),  # red water: seen on a radioactive planet in the game
     "Frozen": ((205, 225, 245), (140, 195, 240), (200, 235, 255)),
     "Barren": ((195, 155, 115), None, (230, 190, 140)),
     "Dead": ((130, 130, 140), None, (180, 180, 190)),
@@ -87,15 +87,21 @@ def _globes() -> None:
     def layer(name: str):
         return Image.open(RAW / f"{GLOBE}{name}.dds").convert("RGBA")
 
-    def tint(im, rgb, alpha=1.0):
+    def tint(im, rgb, alpha=1.0, lift=150):
         r, g, b, a = im.split()
-        gray = im.convert("L").point(lambda v: min(255, int(150 + v * 0.55)))
+        gray = im.convert("L").point(lambda v: min(255, int(lift + v * (255 - lift) / 255 * 0.9 + v * 0.0)))
         out = ImageChops.multiply(Image.merge("RGB", (gray, gray, gray)), Image.new("RGB", im.size, rgb))
         out.putalpha(a.point(lambda v: int(v * alpha)))
         return out
 
     shadow = layer("7.shadow")
+    def mix(rgb, other, k):
+        return tuple(int(c * (1 - k) + o * k) for c, o in zip(rgb, other))
+
     for name, (land, water, rim) in GLOBES.items():
+        # In the game the ground stays near its own grey-brown; the colour of the type shows in the water layer and the rim is pale.
+        land = land if name == "GasGiant" else mix(land, (205, 190, 175), 0.65)
+        rim = mix(rim, (255, 255, 255), 0.7)
         if name == "GasGiant":
             globe = tint(layer("gasgiant.1"), land)
             globe.alpha_composite(tint(layer("gasgiant.1.clouds"), (255, 255, 255), 0.6))
@@ -104,16 +110,16 @@ def _globes() -> None:
             globe.save(ICONS / f"GLOBE_{name}.webp", quality=85, method=4)
             continue
         else:
-            globe = tint(layer("7.terrain"), land)
+            globe = tint(layer("7.terrain"), land, lift=60)
             if name == "Waterworld":  # the sea covers all of it (the small set's "full water", drawn larger to fit)
                 sea = layer("water.full").crop((120, 120, 392, 392)).resize(globe.size, Image.LANCZOS)
                 globe.alpha_composite(tint(sea, water, 0.85))
             elif water:
                 globe.alpha_composite(tint(layer("7.water"), water))
-            globe.alpha_composite(tint(layer("7.continents"), land, 0.6))
-            globe.alpha_composite(tint(layer("7.clouds"), (255, 255, 255), 0.5))
+            globe.alpha_composite(tint(layer("7.continents"), land, 0.6, lift=60))
+            globe.alpha_composite(tint(layer("7.clouds"), (255, 255, 255), 0.7, lift=235))
         shade = Image.new("RGBA", globe.size, (0, 0, 10, 0))
-        shade.putalpha(shadow.split()[3].point(lambda v: int(v * 0.5)))
+        shade.putalpha(shadow.split()[3].point(lambda v: int(v * 0.65)))
         globe.alpha_composite(shade)
         globe.alpha_composite(tint(layer("7.innerglow"), rim))
         halo = layer("outerglow").crop((105, 105, 408, 408)).resize((int(512 * 303 / 272), int(512 * 303 / 272)), Image.LANCZOS)
