@@ -39,6 +39,11 @@ PLACES = {
     "STORE_freighter": f"{UI}categories/invcat.freighter.dds",
     "STORE_act_discard": f"{UI}buildable/bazaar.compostbin.dds",
     "UNITS": f"{UI}substances/currency.units.dds",
+    # the pictures of the Discoveries menu's planetary data (the Planets page): its four rows, and the three kinds of finds
+    **{f"PLANET_{n}": f"{UI}discovery/planetdata.{n}.dds" for n in ("weather", "sentinels", "flora", "fauna")},
+    "PLANET_resources": f"{UI}discovery/planetdata.dds",
+    **{f"FIND_{n}": f"{UI}discovery/categories.{n}.dds" for n in ("flora", "fauna")},
+    "FIND_mineral": "textures/ui/frontend/components/discovery/silhouette.mineral.dds",
 }
 
 state = {"state": "idle", "step": "", "done": 0, "total": 0, "error": ""}

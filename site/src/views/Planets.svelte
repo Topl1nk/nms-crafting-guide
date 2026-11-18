@@ -59,6 +59,9 @@
   // The game's text under a loc key (weather, sentinels, flora), without the planet-word placeholders.
   const textOf = (key) => (D.biomes.words[key] || "").replace(/%[A-Z]+%/g, "").trim();
 
+  // What the game shows beside a hint that is not an item (the bones, the salvage, the bugs, the swarm): a picture of an item that is the same.
+  const HINT_ICON = { UI_BONES_HINT: "ANY_BONE", UI_SCRAP_HINT: "SCRAP_GOODS", UI_BUGS_HINT: "FOOD_M_GRUB", UI_B_SWARM_HINT: "SWARMDUST" };
+
   const typed = debounce((value) => { st.text = value; search = value; });
 
   setKeys({
@@ -108,24 +111,27 @@
 
         {#if p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key}
           <dl>
-            {#if p.weather_key}<dt>{t("Weather")}</dt><dd>{textOf(p.weather_key)}</dd>{/if}
-            {#if p.sentinel_key}<dt>{t("Sentinels")}</dt><dd>{textOf(p.sentinel_key)}</dd>{/if}
-            {#if p.flora_key}<dt>{t("Flora")}</dt><dd>{textOf(p.flora_key)}</dd>{/if}
-            {#if p.fauna_key}<dt>{t("Fauna")}</dt><dd>{textOf(p.fauna_key)}</dd>{/if}
+            {#each [["weather", "Weather", p.weather_key], ["sentinels", "Sentinels", p.sentinel_key], ["flora", "Flora", p.flora_key], ["fauna", "Fauna", p.fauna_key]] as [icon, label, key]}
+              {#if key}<dt><ItemIcon id="PLANET_{icon}" size={32} color="#8fb6ff" />{t(label)}</dt><dd>{textOf(key)}</dd>{/if}
+            {/each}
           </dl>
         {/if}
 
         {#if p.resources?.length}
           <h3>{t("Resources")}</h3>
           <div class="res">
-            {#each p.resources as id}<span>{#if D.items[id]}<ItemIcon {id} size={20} />{D.items[id].name}{:else}{textOf(id) || id}{/if}</span>{/each}
+            {#each p.resources as id}<span><ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={24} />{D.items[id]?.name ?? (textOf(id) || id)}</span>{/each}
           </div>
         {:else}
           <p class="muted small">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
         {/if}
 
         {#if p.flora || p.fauna || p.minerals}
-          <p class="muted small finds">{p.flora} {t("Flora")} · {p.fauna} {t("Fauna")} · {p.minerals} {t("Minerals")}</p>
+          <div class="finds" title={t("Found")}>
+            {#each [["flora", p.flora, "Flora"], ["fauna", p.fauna, "Fauna"], ["mineral", p.minerals, "Minerals"]] as [icon, n, label]}
+              {#if n}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}</b><small>{t(label)}</small></span>{/if}
+            {/each}
+          </div>
         {/if}
         {#if p.bases.length}
           <h3>{t("Bases")}</h3>
@@ -147,9 +153,12 @@
   h3 { margin: 18px 0 8px; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--p-faint); font-weight: 600; }
   .res { display: flex; flex-wrap: wrap; gap: 6px; }
   .res span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--p-raised); white-space: nowrap; font-size: 0.9rem; }
-  .finds { margin-top: 16px; }
-  dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 6px 16px; margin: 0; }
-  dt { color: var(--p-faint); }
+  .finds { display: flex; gap: 18px; margin-top: 18px; }
+  .finds span { display: inline-flex; align-items: center; gap: 6px; }
+  .finds small { color: var(--p-faint); font-size: 0.78rem; }
+  h3 { display: flex; align-items: center; gap: 8px; }
+  dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 12px 16px; align-items: center; margin: 0; }
+  dt { display: flex; align-items: center; gap: 8px; color: var(--p-faint); }
   dd { margin: 0; }
   @media (max-width: 1000px) { .split-planets { grid-template-columns: minmax(0, 1fr); } }
 </style>
