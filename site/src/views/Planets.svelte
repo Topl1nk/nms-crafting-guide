@@ -165,7 +165,7 @@
 
 <style>
   .res-row { display: inline-flex; gap: 8px; align-items: center; }
-  .cnt { display: inline-flex; align-items: center; gap: 3px; font-variant-numeric: tabular-nums; font-size: 0.88rem; }
+  .cnt { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.1; font-variant-numeric: tabular-nums; font-size: 0.8rem; }
   .two { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .two small { font-size: 0.74rem; font-weight: 400; }
   /* narrow text columns: a long text is cut with an ellipsis (the whole of it is in the tooltip) */
