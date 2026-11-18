@@ -106,7 +106,7 @@
   // `fill: true`, or else the last of the long-text (`clip`) ones.
   // A text column with nothing in any row is left out, header and all.
   const cols = $derived(columns.map((c, i) => ({ c, i }))
-    .filter(({ c }) => c.cell || !rows.length || rows.some((r) => String(c.text(r) ?? "").trim() !== "")));
+    .filter(({ c }) => c.ghost || c.cell || !rows.length || rows.some((r) => String(c.text(r) ?? "").trim() !== "")));
   const fill = $derived(cols.some(({ c }) => c.fill) ? cols.find(({ c }) => c.fill).i
     : cols.findLast(({ c }) => c.cls?.includes("clip"))?.i ?? -1);
   const klass = (c, i) => `${c.cls || ""}${i === fill ? " fill" : ""}`;
@@ -132,7 +132,7 @@
       settle?.();
       const table = box?.querySelector("table");
       if (!table) { widths = null; return; }
-      const keys = cols.map(({ i }) => i);
+      const keys = cols.filter(({ c }) => !c.ghost).map(({ i }) => i);
       const now = new Map([...table.querySelectorAll("thead th")].map((th, k) => [keys[k], th.getBoundingClientRect().width]));
       const was = widths;
       widths = now;
@@ -173,19 +173,27 @@
     <table>
       <thead><tr>
         {#each cols as { c, i: ci } (ci)}
+          {#if !c.ghost}
           <th class={klass(c, ci)} aria-sort={ariaSort(ci)}>
             {#if c.sort}
               <button type="button" class="th" onclick={() => sortBy(ci)} title={t("Sort by this column")}>
                 <span>{c.title}</span><i class="arrow" class:on={sortCol === ci}>{sortCol === ci ? (sortDir === 1 ? "▲" : "▼") : "↕"}</i>
               </button>
             {:else}{c.title}{/if}
+            <!-- a `ghost` column right after this one sorts by its own key but has no cells: its button sits here, in the same head -->
+            {#if columns[ci + 1]?.ghost}
+              <button type="button" class="th ghost" onclick={() => sortBy(ci + 1)} title={t("Sort by this column")}>
+                <span>{columns[ci + 1].title}</span><i class="arrow" class:on={sortCol === ci + 1}>{sortCol === ci + 1 ? (sortDir === 1 ? "▲" : "▼") : "↕"}</i>
+              </button>
+            {/if}
           </th>
+          {/if}
         {/each}
       </tr></thead>
       <tbody>
         {#each view.slice(0, shown) as row, i (i)}
           <tr data-i={i} class:sel={i === sel}>
-            {#each cols as { c, i: ci } (ci)}
+            {#each cols.filter(({ c }) => !c.ghost) as { c, i: ci } (ci)}
               <td class={klass(c, ci)} title={c.text && String(c.text(row)).length > 28 ? c.text(row) : undefined}>{#if c.cell}{@render c.cell(row)}{:else}{c.text(row)}{/if}</td>
             {/each}
           </tr>
@@ -239,6 +247,7 @@
     text-transform: inherit; cursor: pointer;
   }
   .th:hover { color: var(--p-text); }
+  .th.ghost { margin-left: 14px; }
   .arrow { font-style: normal; font-size: 0.7em; width: 1em; text-align: center; color: var(--p-faint); opacity: 0.6; }
   .arrow.on { color: var(--p-accent-ink); opacity: 1; }
   /* Links in cells come from the views' snippets, hence :global. */

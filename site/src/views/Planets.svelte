@@ -89,7 +89,7 @@
 
 {#snippet dates(p)}{when(p.seen)}{/snippet}
 <!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
-{#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null, "#6fdc8c"], ["fauna", p.fauna, p.fauna_total, "#f3b878"], ["mineral", p.minerals, null, "#be96f6"]] as [icon, n, total, tone]}{#if n || total}<span class="cnt"><ItemIcon id="FIND_{icon}" size={32} color={tone} /><b>{n}{#if total}/{total}{/if}</b></span>{/if}{/each}</span>{/snippet}
+{#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null, "#6fdc8c", label("UI_DISC_FLORA", "Flora")], ["fauna", p.fauna, p.fauna_total, "#f3b878", label("UI_DISC_FAUNA", "Fauna")], ["mineral", p.minerals, null, "#be96f6", label("UI_DISC_MINERALS", "Minerals")]] as [icon, n, total, tone, name]}{#if n || total}<span class="cnt" title={name}><ItemIcon id="FIND_{icon}" size={32} color={tone} /><b>{n}{#if total}/{total}{/if}</b></span>{/if}{/each}</span>{/snippet}
 {#snippet baseCell(p)}{#if p.bases.length}<span class="cnt" title={p.bases.map((n) => n || t("Unnamed base")).join(", ")}><ItemIcon id="PLANET_base" size={32} color="#8fb6ff" />{#if p.bases.length > 1}<b>{p.bases.length}</b>{/if}</span>{/if}{/snippet}
 {#snippet hintCell(p)}<span class="res-row">{#each hintsOf(p) as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
 {#snippet subsCell(p)}<span class="res-row">{#each [0, 1, 2] as i}{@const id = subOf(p, i)}{#if id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/if}{/each}</span>{/snippet}
@@ -112,7 +112,8 @@
   <div class="split split-planets">
     <div class="main">
       <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
-        { title: t("Name"), cell: nameCell, cls: "strong", sort: shown },
+        { title: t("Planet"), cell: nameCell, cls: "strong", sort: shown },
+        { title: t("System"), ghost: true, sort: (p) => p.system_name || hex3(p.system) },
         { title: t("Planet type"), text: kindOf, cls: "clip w150", sort: kindOf },
         { title: label("WEATHER_L", "Weather"), text: (p) => unknown(p) ? t("Data not determined") : textOf(p.weather_key), cls: "wide-only clip w170 muted", sort: (p) => textOf(p.weather_key) },
         { title: label("SENTINELS_L", "Sentinels"), text: (p) => textOf(p.sentinel_key), cls: "wide-only clip w150 muted", sort: (p) => textOf(p.sentinel_key) },
@@ -157,11 +158,7 @@
 
         {#if p.flora || p.fauna || p.minerals || p.fauna_total}
           <h3>{t("Found by you")}</h3>
-          <div class="finds">
-            {#each [["flora", p.flora, "UI_DISC_FLORA", "Flora", null], ["fauna", p.fauna, "UI_DISC_FAUNA", "Fauna", p.fauna_total], ["mineral", p.minerals, "UI_DISC_MINERALS", "Minerals", null]] as [icon, n, loc, english, total]}
-              {#if n || total}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}{#if total} / {total}{/if}</b><small>{label(loc, english)}</small></span>{/if}
-            {/each}
-          </div>
+          {@render foundCell(p)}
         {/if}
         {#if p.bases.length}
           <h3>{t("Bases")}</h3>
@@ -193,9 +190,6 @@
   h3 { margin: 18px 0 8px; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--p-faint); font-weight: 600; }
   .res { display: flex; flex-wrap: wrap; gap: 6px; }
   .res span { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: var(--p-raised); white-space: nowrap; font-size: 0.9rem; }
-  .finds { display: flex; gap: 18px; }
-  .finds span { display: inline-flex; align-items: center; gap: 6px; }
-  .finds small { color: var(--p-faint); font-size: 0.78rem; }
   h3 { display: flex; align-items: center; gap: 8px; }
   dl { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 12px 16px; align-items: center; margin: 0; }
   dt { display: flex; align-items: center; gap: 8px; color: var(--p-faint); }
