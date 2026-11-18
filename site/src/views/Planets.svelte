@@ -82,13 +82,7 @@
 
 {#snippet dates(p)}{when(p.seen)}{/snippet}
 <!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
-{#snippet fl(p)}{#if p.flora}{p.flora}{/if}{/snippet}
-{#snippet fa(p)}{#if p.fauna || p.fauna_total}{p.fauna}{#if p.fauna_total} / {p.fauna_total}{/if}{/if}{/snippet}
-{#snippet mi(p)}{#if p.minerals}{p.minerals}{/if}{/snippet}
-{#snippet findHead(icon)}<ItemIcon id="FIND_{icon}" size={18} color="#8fb6ff" />{/snippet}
-{#snippet headFlora()}{@render findHead("flora")}{/snippet}
-{#snippet headFauna()}{@render findHead("fauna")}{/snippet}
-{#snippet headMineral()}{@render findHead("mineral")}{/snippet}
+{#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null], ["fauna", p.fauna, p.fauna_total], ["mineral", p.minerals, null]] as [icon, n, total]}{#if n || total}<span class="cnt"><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" />{n}{#if total}/{total}{/if}</span>{/if}{/each}</span>{/snippet}
 {#snippet hintCell(p)}<span class="res-row">{#each hintsOf(p) as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
 {#snippet subsCell(p)}<span class="res-row">{#each [0, 1, 2] as i}{@const id = subOf(p, i)}{#if id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/if}{/each}</span>{/snippet}
 <!-- the name over its system (and galaxy, outside the first): one column instead of three -->
@@ -115,9 +109,7 @@
         { title: label("WEATHER_L", "Weather"), text: (p) => unknown(p) ? t("Data not determined") : textOf(p.weather_key), cls: "wide-only clip w170 muted", sort: (p) => textOf(p.weather_key) },
         { title: label("SENTINELS_L", "Sentinels"), text: (p) => textOf(p.sentinel_key), cls: "wide-only clip w150 muted", sort: (p) => textOf(p.sentinel_key) },
         { title: label("FAUNA_L", "Fauna"), text: (p) => textOf(p.fauna_key), cls: "wide-only clip w130 muted", sort: (p) => p.fauna_key },
-        { title: label("UI_DISC_FLORA", "Flora"), head: headFlora, cell: fl, cls: "wide-only num", sort: (p) => p.flora },
-        { title: label("UI_DISC_FAUNA", "Fauna"), head: headFauna, cell: fa, cls: "wide-only num", sort: (p) => p.fauna },
-        { title: label("UI_DISC_MINERALS", "Minerals"), head: headMineral, cell: mi, cls: "wide-only num", sort: (p) => p.minerals },
+        { title: t("Found by you"), cell: foundCell, cls: "wide-only", sort: (p) => p.fauna + p.flora + p.minerals },
         { title: label("RESOURCES_L", "Resources"), cell: hintCell, cls: "wide-only", sort: (p) => hintsOf(p).length },
         { title: t("Rare, uncommon, common"), cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
         { title: t("Last seen"), cell: dates, cls: "num muted", sort: (p) => p.seen },
