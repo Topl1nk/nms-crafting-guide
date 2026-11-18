@@ -551,10 +551,6 @@ def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | No
     substances (its common, uncommon and rare substance ids), plant (the item id of its plant resource, "" if none)."""
     if mode in (0, 6) or setting is None:
         return None
-    if planet_gen.GALAXY_KIND[body.galaxy % 20] == 2:
-        # the "vicious" galaxies: the sentinel level and the weather of about one planet in seven there disagree with the game's
-        # (the step that checks the player's own sentinel setting is not understood), so nothing is said about them
-        return None
     lv = levels(body.seed, body, body.star, body.galaxy, body.index, setting)
     ground = terrain(body.seed, body, body.star)
     lv["fauna"] = fauna_level(body.seed, body, lv["fauna"], ground)
