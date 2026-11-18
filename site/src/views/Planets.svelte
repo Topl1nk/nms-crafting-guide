@@ -81,7 +81,7 @@
   const unknown = (p) => p.planet && !(p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key);
 
   // What the game shows beside a hint that is not an item (the bones, the salvage, the bugs, the swarm): a picture of an item that is the same.
-  const HINT_ICON = { UI_BONES_HINT: "HINT_bones", UI_SCRAP_HINT: "BP_SALVAGE", UI_BUGS_HINT: "FOOD_M_GRUB", UI_B_SWARM_HINT: "SWARMDUST" };
+  const HINT_ICON = { UI_BONES_HINT: "HINT_bones", UI_SCRAP_HINT: "BP_SALVAGE", UI_BUGS_HINT: "HINT_bugs", UI_B_SWARM_HINT: "HINT_swarm" };
 
   const typed = debounce((value) => { st.text = value; search = value; });
 
@@ -134,6 +134,7 @@
     <aside class="detail">
       {#if cur}
         {@const p = cur}
+        {#if p.planet && p.biome}<div class="globe"><ItemIcon id="GLOBE_{p.biome}" size={96} /></div>{/if}
         <h2>{nameOf(p)}</h2>
         <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
         {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
@@ -187,6 +188,7 @@
   .main :global(td.w150) { max-width: 150px; }
   .main :global(td.w170) { max-width: 170px; }
   .main :global(td.w190) { max-width: 190px; }
+  .globe { display: flex; justify-content: center; margin: 4px 0 10px; line-height: 0; }
   .ti { display: inline-block; margin-right: 8px; vertical-align: middle; line-height: 0; }
   .split-planets { grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 460px); }
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }

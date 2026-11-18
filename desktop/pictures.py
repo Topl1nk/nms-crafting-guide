@@ -24,7 +24,7 @@ import paths  # noqa: E402
 ICONS = paths.ICONS
 RAW = paths.CACHE / "pictures_raw"
 DONE_MARK = paths.PICTURES / "complete"  # written when an installation ran to its end; without it the pictures may be a part
-SET = "3"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
+SET = "4"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
 TABLES = paths.CACHE / "game" / "json"  # where scripts/extract_game.py writes, given NMS_CACHE
 UI = "textures/ui/frontend/icons/"
 CHUNK = 250  # names to a hgpaktool run (about 18 000 characters of command line; Windows allows 32 000)
@@ -51,7 +51,69 @@ PLACES = {
         ("Barren", "barren"), ("Dead", "mech"), ("Weird", "weird"))},
     "HINT_bones": f"{UI}u4products/product.bones.dds",  # the planet's "Ancient Bones" among its resources
     "PLANET_base": f"{UI}buildable/buildable.basecoreflag.dds",  # your base on a planet
+    # The planet hints that are not an item: the game's pictures of the same names in its missions ("Vile Brood" and "Swarm" ones).
+    # The game's own planet page keeps its mapping in the program, not in the data, so these are the nearest the files give.
+    "HINT_bugs": f"{UI}missions/mission.bugbutt.on.dds",
+    "HINT_swarm": f"{UI}missions/mission.swarm.on.dds",
 }
+
+# The grey layers the game builds a planet's globe of on its Discoveries page (it tints them in code, so each globe is composed here).
+GLOBE = "textures/ui/frontend/components/discovery/planets."
+GLOBE_LAYERS = [f"{GLOBE}{n}.dds" for n in ("7.terrain", "7.water", "7.clouds", "7.shadow", "7.innerglow", "gasgiant.1", "gasgiant.1.clouds")]
+# Colours of the terrain, the water and the rim, one globe for each kind of planet. They are our reading of what each type looks like.
+GLOBES = {
+    "Lush": ((110, 160, 70), (60, 130, 210), (150, 205, 255)),
+    "Toxic": ((160, 175, 50), (190, 215, 70), (210, 235, 90)),
+    "Scorched": ((200, 120, 60), (230, 90, 40), (255, 170, 90)),
+    "Radioactive": ((200, 160, 70), (120, 210, 90), (190, 240, 100)),
+    "Frozen": ((205, 225, 245), (140, 195, 240), (200, 235, 255)),
+    "Barren": ((195, 155, 115), None, (230, 190, 140)),
+    "Dead": ((130, 130, 140), None, (180, 180, 190)),
+    "Weird": ((175, 95, 205), (60, 205, 205), (210, 150, 255)),
+    "Swamp": ((95, 125, 60), (80, 110, 50), (160, 200, 110)),
+    "Lava": ((95, 55, 45), (255, 100, 25), (255, 140, 60)),
+    "Waterworld": ((60, 120, 190), (50, 110, 210), (140, 200, 255)),
+    "Red": ((195, 80, 70), (230, 140, 90), (255, 140, 120)),
+    "Green": ((80, 170, 90), (150, 220, 100), (150, 240, 160)),
+    "Blue": ((70, 110, 205), (110, 200, 240), (140, 180, 255)),
+    "GasGiant": ((205, 165, 115), None, (240, 210, 160)),
+}
+
+
+def _globes() -> None:
+    """One picture of a globe for each kind of planet, laid together of the game's grey layers."""
+    from PIL import Image, ImageChops
+
+    def layer(name: str):
+        return Image.open(RAW / f"{GLOBE}{name}.dds").convert("RGBA")
+
+    def tint(im, rgb, alpha=1.0):
+        r, g, b, a = im.split()
+        gray = im.convert("L").point(lambda v: min(255, int(150 + v * 0.55)))
+        out = ImageChops.multiply(Image.merge("RGB", (gray, gray, gray)), Image.new("RGB", im.size, rgb))
+        out.putalpha(a.point(lambda v: int(v * alpha)))
+        return out
+
+    shadow = layer("7.shadow")
+    for name, (land, water, rim) in GLOBES.items():
+        if name == "GasGiant":
+            globe = tint(layer("gasgiant.1"), land)
+            globe.alpha_composite(tint(layer("gasgiant.1.clouds"), (255, 255, 255), 0.6))
+            globe = globe.crop(globe.getbbox())  # this one is drawn smaller on its canvas than the others
+            globe.thumbnail((128, 128))
+            globe.save(ICONS / f"GLOBE_{name}.webp", quality=85, method=4)
+            continue
+        else:
+            globe = tint(layer("7.terrain"), land)
+            if water:
+                globe.alpha_composite(tint(layer("7.water"), water))
+            globe.alpha_composite(tint(layer("7.clouds"), (255, 255, 255), 0.5))
+        shade = Image.new("RGBA", globe.size, (0, 0, 10, 0))
+        shade.putalpha(shadow.split()[3].point(lambda v: int(v * 0.5)))
+        globe.alpha_composite(shade)
+        globe.alpha_composite(tint(layer("7.innerglow"), rim))
+        globe.thumbnail((128, 128))
+        globe.save(ICONS / f"GLOBE_{name}.webp", quality=85, method=4)
 
 state = {"state": "idle", "step": "", "done": 0, "total": 0, "error": ""}
 _lock = threading.Lock()
@@ -139,6 +201,8 @@ def install(force: bool = False) -> None:
                 want.setdefault(icon, []).append(item_id)
     for name, path in PLACES.items():
         want.setdefault(path.lower(), []).append(name)
+    for path in GLOBE_LAYERS:
+        want.setdefault(path, [])  # taken out for the globes, not kept as pictures of their own
 
     _say("listing")
     with tempfile.TemporaryDirectory() as tmp:
@@ -181,6 +245,7 @@ def install(force: bool = False) -> None:
                     pass
             done += len(chunk)
             _say("pictures", done, total)
+    _globes()
     DONE_MARK.write_text(SET, encoding="utf-8")
     _say("done", total, total)
 
