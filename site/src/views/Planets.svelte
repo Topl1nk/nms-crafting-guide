@@ -62,8 +62,11 @@
   // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
   const label = (key, english) => textOf(key) || t(english);
   // The resource list is the hints (plant, bones, salvage ...) and then the rare, the uncommon and the common substance.
-  // The types the game has an emblem for (pictures.py: its pets' biome pictures); swamp, lava and the rest have none.
-  const BIOME_ICON = new Set(["Lush", "Toxic", "Scorched", "Radioactive", "Frozen", "Barren", "Dead", "Weird"]);
+  // The emblem of each type (pictures.py: the game's pets' biome pictures, eight of them). The types the game has no picture for take
+  // the one of the type they belong to: swamp and waterworld are lush, lava is scorched, red, green and blue are the exotic (weird) ones.
+  // That is our reading of how they belong, not something the game files say. Gas giants have none.
+  const EMBLEM = { Lush: "Lush", Toxic: "Toxic", Scorched: "Scorched", Radioactive: "Radioactive", Frozen: "Frozen", Barren: "Barren", Dead: "Dead", Weird: "Weird",
+    Swamp: "Lush", Waterworld: "Lush", Lava: "Scorched", Red: "Weird", Green: "Weird", Blue: "Weird" };
   // The colour of a system's text is its star's (the game's order: yellow, green, blue, red, purple).
   const STAR = ["yellow", "green", "cyan", "red", "purple"];
   // The plant comes first (its hint is an item's id, the others' are the game's UI texts), then the rest in the game's order.
@@ -89,7 +92,7 @@
   });
 </script>
 
-{#snippet typeCell(p)}{#if p.planet && BIOME_ICON.has(p.biome)}<span class="ti"><ItemIcon id="BIOME_{p.biome}" size={32} /></span>{/if}{kindOf(p)}{/snippet}
+{#snippet typeCell(p)}{#if p.planet && EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={32} /></span>{/if}{kindOf(p)}{/snippet}
 {#snippet dates(p)}{when(p.seen)}{/snippet}
 <!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
 {#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null, "#6fdc8c", label("UI_DISC_FLORA", "Flora")], ["fauna", p.fauna, p.fauna_total, "#f3b878", label("UI_DISC_FAUNA", "Fauna")], ["mineral", p.minerals, null, "#be96f6", label("UI_DISC_MINERALS", "Minerals")]] as [icon, n, total, tone, name]}{#if n || total}<span class="cnt" title={name}><ItemIcon id="FIND_{icon}" size={32} color={tone} /><b>{n}{#if total}/{total}{/if}</b></span>{/if}{/each}</span>{/snippet}
@@ -133,7 +136,7 @@
         {@const p = cur}
         <h2>{nameOf(p)}</h2>
         <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
-        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if BIOME_ICON.has(p.biome)}<span class="ti"><ItemIcon id="BIOME_{p.biome}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
+        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
 
         <div class="portal">
           <GlyphStrip code={p.code} />
