@@ -24,7 +24,7 @@ import paths  # noqa: E402
 ICONS = paths.ICONS
 RAW = paths.CACHE / "pictures_raw"
 DONE_MARK = paths.PICTURES / "complete"  # written when an installation ran to its end; without it the pictures may be a part
-SET = "4"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
+SET = "5"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
 TABLES = paths.CACHE / "game" / "json"  # where scripts/extract_game.py writes, given NMS_CACHE
 UI = "textures/ui/frontend/icons/"
 CHUNK = 250  # names to a hgpaktool run (about 18 000 characters of command line; Windows allows 32 000)
@@ -59,7 +59,7 @@ PLACES = {
 
 # The grey layers the game builds a planet's globe of on its Discoveries page (it tints them in code, so each globe is composed here).
 GLOBE = "textures/ui/frontend/components/discovery/planets."
-GLOBE_LAYERS = [f"{GLOBE}{n}.dds" for n in ("7.terrain", "7.water", "7.clouds", "7.shadow", "7.innerglow", "gasgiant.1", "gasgiant.1.clouds")]
+GLOBE_LAYERS = [f"{GLOBE}{n}.dds" for n in ("7.terrain", "7.water", "7.continents", "7.clouds", "7.shadow", "7.innerglow", "outerglow", "water.full", "gasgiant.1", "gasgiant.1.clouds")]
 # Colours of the terrain, the water and the rim, one globe for each kind of planet. They are our reading of what each type looks like.
 GLOBES = {
     "Lush": ((110, 160, 70), (60, 130, 210), (150, 205, 255)),
@@ -105,13 +105,22 @@ def _globes() -> None:
             continue
         else:
             globe = tint(layer("7.terrain"), land)
-            if water:
+            if name == "Waterworld":  # the sea covers all of it (the small set's "full water", drawn larger to fit)
+                sea = layer("water.full").crop((120, 120, 392, 392)).resize(globe.size, Image.LANCZOS)
+                globe.alpha_composite(tint(sea, water, 0.85))
+            elif water:
                 globe.alpha_composite(tint(layer("7.water"), water))
+            globe.alpha_composite(tint(layer("7.continents"), land, 0.6))
             globe.alpha_composite(tint(layer("7.clouds"), (255, 255, 255), 0.5))
         shade = Image.new("RGBA", globe.size, (0, 0, 10, 0))
         shade.putalpha(shadow.split()[3].point(lambda v: int(v * 0.5)))
         globe.alpha_composite(shade)
         globe.alpha_composite(tint(layer("7.innerglow"), rim))
+        halo = layer("outerglow").crop((105, 105, 408, 408)).resize((int(512 * 303 / 272), int(512 * 303 / 272)), Image.LANCZOS)
+        canvas = Image.new("RGBA", halo.size, (0, 0, 0, 0))
+        canvas.alpha_composite(tint(halo, rim, 0.8))  # the halo round the globe
+        canvas.alpha_composite(globe, ((halo.width - 512) // 2, (halo.height - 512) // 2))
+        globe = canvas
         globe.thumbnail((128, 128))
         globe.save(ICONS / f"GLOBE_{name}.webp", quality=85, method=4)
 
