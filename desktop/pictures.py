@@ -24,7 +24,7 @@ import paths  # noqa: E402
 ICONS = paths.ICONS
 RAW = paths.CACHE / "pictures_raw"
 DONE_MARK = paths.PICTURES / "complete"  # written when an installation ran to its end; without it the pictures may be a part
-SET = "2"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
+SET = "3"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
 TABLES = paths.CACHE / "game" / "json"  # where scripts/extract_game.py writes, given NMS_CACHE
 UI = "textures/ui/frontend/icons/"
 CHUNK = 250  # names to a hgpaktool run (about 18 000 characters of command line; Windows allows 32 000)
@@ -45,6 +45,10 @@ PLACES = {
     "PLANET_resources": f"{UI}discovery/planetdata.dds",
     **{f"FIND_{n}": f"{UI}discovery/categories.{n}.dds" for n in ("flora", "fauna")},
     "FIND_mineral": f"{UI}discovery/categories.minerald.dds",
+    # the game's emblem of each kind of planet (its pets' biome pictures): the name of a type here, the game's word for it there
+    **{f"BIOME_{k}": f"{UI}pets/biomes/binocs.planet.{v}.dds" for k, v in (
+        ("Lush", "lush"), ("Toxic", "toxic"), ("Scorched", "fire"), ("Radioactive", "radioactive"), ("Frozen", "cold"),
+        ("Barren", "barren"), ("Dead", "mech"), ("Weird", "weird"))},
     "HINT_bones": f"{UI}u4products/product.bones.dds",  # the planet's "Ancient Bones" among its resources
     "PLANET_base": f"{UI}buildable/buildable.basecoreflag.dds",  # your base on a planet
 }

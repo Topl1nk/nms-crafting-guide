@@ -62,6 +62,8 @@
   // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
   const label = (key, english) => textOf(key) || t(english);
   // The resource list is the hints (plant, bones, salvage ...) and then the rare, the uncommon and the common substance.
+  // The types the game has an emblem for (pictures.py: its pets' biome pictures); swamp, lava and the rest have none.
+  const BIOME_ICON = new Set(["Lush", "Toxic", "Scorched", "Radioactive", "Frozen", "Barren", "Dead", "Weird"]);
   // The colour of a system's text is its star's (the game's order: yellow, green, blue, red, purple).
   const STAR = ["yellow", "green", "cyan", "red", "purple"];
   // The plant comes first (its hint is an item's id, the others' are the game's UI texts), then the rest in the game's order.
@@ -87,6 +89,7 @@
   });
 </script>
 
+{#snippet typeCell(p)}{#if p.planet && BIOME_ICON.has(p.biome)}<span class="ti"><ItemIcon id="BIOME_{p.biome}" size={32} /></span>{/if}{kindOf(p)}{/snippet}
 {#snippet dates(p)}{when(p.seen)}{/snippet}
 <!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
 {#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null, "#6fdc8c", label("UI_DISC_FLORA", "Flora")], ["fauna", p.fauna, p.fauna_total, "#f3b878", label("UI_DISC_FAUNA", "Fauna")], ["mineral", p.minerals, null, "#be96f6", label("UI_DISC_MINERALS", "Minerals")]] as [icon, n, total, tone, name]}{#if n || total}<span class="cnt" title={name}><ItemIcon id="FIND_{icon}" size={32} color={tone} /><b>{n}{#if total}/{total}{/if}</b></span>{/if}{/each}</span>{/snippet}
@@ -114,7 +117,7 @@
       <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
         { title: t("Planet"), cell: nameCell, cls: "strong", sort: shown },
         { title: t("System"), ghost: true, sort: (p) => p.system_name || hex3(p.system) },
-        { title: t("Planet type"), text: kindOf, cls: "clip w150", sort: kindOf },
+        { title: t("Planet type"), cell: typeCell, cls: "clip w190", sort: kindOf },
         { title: label("WEATHER_L", "Weather"), text: (p) => unknown(p) ? t("Data not determined") : textOf(p.weather_key), cls: "wide-only clip w170 muted", sort: (p) => textOf(p.weather_key) },
         { title: label("SENTINELS_L", "Sentinels"), text: (p) => textOf(p.sentinel_key), cls: "wide-only clip w150 muted", sort: (p) => textOf(p.sentinel_key) },
         { title: label("FAUNA_L", "Fauna"), text: (p) => textOf(p.fauna_key), cls: "wide-only clip w130 muted", sort: (p) => p.fauna_key },
@@ -130,7 +133,7 @@
         {@const p = cur}
         <h2>{nameOf(p)}</h2>
         <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
-        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span></div>{/if}
+        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if BIOME_ICON.has(p.biome)}<span class="ti"><ItemIcon id="BIOME_{p.biome}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
 
         <div class="portal">
           <GlyphStrip code={p.code} />
@@ -180,6 +183,8 @@
   .main :global(td.w130) { max-width: 130px; }
   .main :global(td.w150) { max-width: 150px; }
   .main :global(td.w170) { max-width: 170px; }
+  .main :global(td.w190) { max-width: 190px; }
+  .ti { display: inline-block; margin-right: 8px; vertical-align: middle; line-height: 0; }
   .split-planets { grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 460px); }
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }
   .main :global(.list) { flex: 1 1 0; height: auto; max-height: none; overflow: auto; min-height: 160px; }
