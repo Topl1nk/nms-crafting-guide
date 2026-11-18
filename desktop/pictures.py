@@ -24,6 +24,7 @@ import paths  # noqa: E402
 ICONS = paths.ICONS
 RAW = paths.CACHE / "pictures_raw"
 DONE_MARK = paths.PICTURES / "complete"  # written when an installation ran to its end; without it the pictures may be a part
+SET = "2"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
 TABLES = paths.CACHE / "game" / "json"  # where scripts/extract_game.py writes, given NMS_CACHE
 UI = "textures/ui/frontend/icons/"
 CHUNK = 250  # names to a hgpaktool run (about 18 000 characters of command line; Windows allows 32 000)
@@ -43,7 +44,7 @@ PLACES = {
     **{f"PLANET_{n}": f"{UI}discovery/planetdata.{n}.dds" for n in ("weather", "sentinels", "flora", "fauna")},
     "PLANET_resources": f"{UI}discovery/planetdata.dds",
     **{f"FIND_{n}": f"{UI}discovery/categories.{n}.dds" for n in ("flora", "fauna")},
-    "FIND_mineral": "textures/ui/frontend/components/discovery/silhouette.mineral.dds",
+    "FIND_mineral": f"{UI}discovery/categories.minerald.dds",
     "HINT_bones": f"{UI}u4products/product.bones.dds",  # the planet's "Ancient Bones" among its resources
     "PLANET_base": f"{UI}buildable/buildable.basecoreflag.dds",  # your base on a planet
 }
@@ -85,7 +86,8 @@ def installed() -> int:
 
 def status() -> dict:
     game = find_game()
-    return {"game": str(game) if game else "", "have": installed(), "complete": DONE_MARK.exists(), **state}
+    done = DONE_MARK.exists() and DONE_MARK.read_text(encoding="utf-8").strip() == SET
+    return {"game": str(game) if game else "", "have": installed(), "complete": done, **state}
 
 
 def _say(step: str, done: int = 0, total: int = 0) -> None:
@@ -175,7 +177,7 @@ def install(force: bool = False) -> None:
                     pass
             done += len(chunk)
             _say("pictures", done, total)
-    DONE_MARK.write_text("1", encoding="utf-8")
+    DONE_MARK.write_text(SET, encoding="utf-8")
     _say("done", total, total)
 
 

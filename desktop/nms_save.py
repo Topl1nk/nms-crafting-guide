@@ -193,11 +193,12 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "fauna_key": "", "sentinel_key": "", "fauna_total": None, "resources": [], "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "fauna_key": "", "sentinel_key": "", "fauna_total": None, "star": None, "resources": [], "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
     types: dict[int, str] = {}  # and its type, from the same record
+    stars: dict[int, int] = {}  # the star of its system (0 yellow, 1 green, 2 blue, 3 red, 4 purple)
     mode, setting = _game_rules(save)
     data: dict[int, dict] = {}  # what the game shows of a planet's weather, flora and sentinels (loc keys), where it is worked out
     words: dict[int, tuple[str, str]] = {}  # and the loc keys of the word the game puts before "Planet" and of "Planet" itself (planet_word.py)
@@ -205,6 +206,10 @@ def planets(save: dict, account: str = "") -> list[dict]:
         kind, key, owner = r["DD"]["DT"], _ua(r["DD"]["UA"]) & mask, r.get("OWS", {})
         if kind == "Planet" and r["DD"].get("VP"):
             seeds[key] = _ua(r["DD"]["VP"][0])
+            try:
+                stars[key] = planet_gen.bodies(key)[0].star  # the system's star, whatever the generator says of the planet's type
+            except (KeyError, IndexError, ValueError, RuntimeError):
+                pass
             if len(r["DD"]["VP"]) > 1:
                 vp1 = _ua(r["DD"]["VP"][1])
                 types[key] = BIOMES.get(vp1 & 0xFFFF, "")
@@ -257,6 +262,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
         p["weather_key"], p["flora_key"], p["fauna_key"], p["sentinel_key"] = (data.get(key, {}).get(k, "") for k in ("weather", "flora", "fauna", "sentinels"))
         p["resources"] = data.get(key, {}).get("resources", [])
         p["fauna_total"] = data.get(key, {}).get("fauna_total")
+        p["star"] = stars.get(key)
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")

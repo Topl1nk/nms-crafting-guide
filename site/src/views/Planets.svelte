@@ -62,6 +62,8 @@
   // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
   const label = (key, english) => textOf(key) || t(english);
   // The resource list is the hints (plant, bones, salvage ...) and then the rare, the uncommon and the common substance.
+  // The colour of a system's text is its star's (the game's order: yellow, green, blue, red, purple).
+  const STAR = ["yellow", "green", "cyan", "red", "purple"];
   // The plant comes first (its hint is an item's id, the others' are the game's UI texts), then the rest in the game's order.
   const hintsOf = (p) => {
     const hints = p.resources?.length >= 3 ? p.resources.slice(0, -3) : [];
@@ -92,7 +94,7 @@
 {#snippet hintCell(p)}<span class="res-row">{#each hintsOf(p) as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
 {#snippet subsCell(p)}<span class="res-row">{#each [0, 1, 2] as i}{@const id = subOf(p, i)}{#if id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/if}{/each}</span>{/snippet}
 <!-- the name over its system (and galaxy, outside the first): one column instead of three -->
-{#snippet nameCell(p)}<span class="two"><span>{#if shown(p)}{shown(p)}{:else}<span class="muted">{nameOf(p)}</span>{/if}</span><small class="muted">{p.system_name || hex3(p.system)}{p.galaxy > 1 ? ` · ${galaxyName(p.galaxy)}` : ""}</small></span>{/snippet}
+{#snippet nameCell(p)}<span class="two"><span>{#if shown(p)}{shown(p)}{:else}<span class="muted">{nameOf(p)}</span>{/if}</span><small class="muted" style:color={p.star != null ? `var(--p-${STAR[p.star]})` : undefined}>{p.system_name || hex3(p.system)}{p.galaxy > 1 ? ` · ${galaxyName(p.galaxy)}` : ""}</small></span>{/snippet}
 
 <div class="fbar">
   <h1><span>{t("Planets")}</span></h1>
