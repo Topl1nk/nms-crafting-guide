@@ -566,7 +566,7 @@ export default {
   "This page reads your game save through the desktop program, and there is none to read here.": "Cette page lit la sauvegarde de votre jeu via le programme de bureau, et il n'y en a aucune à lire ici.",
   "The save shows no planets you have visited.": "La sauvegarde ne montre aucune planète visitée.",
   "Data not determined": "Données non déterminées",
-  "Rare, uncommon, common": "Rare, peu commun, commun",  "No planets match this search.": "Aucune planète ne correspond à cette recherche.",
+  "Substances": "Substances",  "No planets match this search.": "Aucune planète ne correspond à cette recherche.",
   "Last seen": "Dernière visite",
   "Planetary data": "Données planétaires",
   "Weather": "Météo",

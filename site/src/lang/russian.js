@@ -393,7 +393,7 @@ export default {
   "This page reads your game save through the desktop program, and there is none to read here.": "Эта страница читает сохранение игры через программу для компьютера, а здесь читать нечего.",
   "The save shows no planets you have visited.": "В сохранении нет планет, на которых вы были.",
   "Data not determined": "Данные не определены",
-  "Rare, uncommon, common": "Редкий, необычный, обычный",  "No planets match this search.": "Нет планет, подходящих под этот поиск.",
+  "Substances": "Вещества",  "No planets match this search.": "Нет планет, подходящих под этот поиск.",
   "Last seen": "Последний раз",
   "Planetary data": "Планетарные данные",
   "Weather": "Погода",

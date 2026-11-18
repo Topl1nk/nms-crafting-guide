@@ -566,7 +566,7 @@ export default {
   "This page reads your game save through the desktop program, and there is none to read here.": "このページはデスクトップ版プログラムを通してゲームのセーブを読み取りますが、ここには読み取れるセーブがありません。",
   "The save shows no planets you have visited.": "セーブには訪れた惑星が記録されていません。",
   "Data not determined": "データは特定できません",
-  "Rare, uncommon, common": "レア、やや希少、一般",  "No planets match this search.": "この検索に一致する惑星はありません。",
+  "Substances": "物質",  "No planets match this search.": "この検索に一致する惑星はありません。",
   "Last seen": "最終確認",
   "Planetary data": "惑星データ",
   "Weather": "天候",

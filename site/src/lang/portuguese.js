@@ -566,7 +566,7 @@ export default {
   "This page reads your game save through the desktop program, and there is none to read here.": "Esta página lê o seu jogo guardado através do programa para computador, e aqui não há nenhum para ler.",
   "The save shows no planets you have visited.": "O jogo guardado não mostra nenhum planeta que visitou.",
   "Data not determined": "Dados não determinados",
-  "Rare, uncommon, common": "Raro, incomum, comum",  "No planets match this search.": "Nenhum planeta corresponde a esta pesquisa.",
+  "Substances": "Substâncias",  "No planets match this search.": "Nenhum planeta corresponde a esta pesquisa.",
   "Last seen": "Visto pela última vez",
   "Planetary data": "Dados do planeta",
   "Weather": "Clima",

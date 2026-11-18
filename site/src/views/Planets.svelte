@@ -82,7 +82,7 @@
 
 {#snippet dates(p)}{when(p.seen)}{/snippet}
 <!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
-{#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null], ["fauna", p.fauna, p.fauna_total], ["mineral", p.minerals, null]] as [icon, n, total]}{#if n || total}<span class="cnt"><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" />{n}{#if total}/{total}{/if}</span>{/if}{/each}</span>{/snippet}
+{#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null, "green"], ["fauna", p.fauna, p.fauna_total, "orange"], ["mineral", p.minerals, null, "purple"]] as [icon, n, total, tone]}{#if n || total}<span class="cnt" style="--sc: var(--p-{tone})"><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" />{n}{#if total}/{total}{/if}</span>{/if}{/each}</span>{/snippet}
 {#snippet hintCell(p)}<span class="res-row">{#each hintsOf(p) as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/each}</span>{/snippet}
 {#snippet subsCell(p)}<span class="res-row">{#each [0, 1, 2] as i}{@const id = subOf(p, i)}{#if id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={32} />{/if}{/each}</span>{/snippet}
 <!-- the name over its system (and galaxy, outside the first): one column instead of three -->
@@ -111,7 +111,7 @@
         { title: label("FAUNA_L", "Fauna"), text: (p) => textOf(p.fauna_key), cls: "wide-only clip w130 muted", sort: (p) => p.fauna_key },
         { title: t("Found by you"), cell: foundCell, cls: "wide-only", sort: (p) => p.fauna + p.flora + p.minerals },
         { title: label("RESOURCES_L", "Resources"), cell: hintCell, cls: "wide-only", sort: (p) => hintsOf(p).length },
-        { title: t("Rare, uncommon, common"), cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
+        { title: t("Substances"), cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
         { title: t("Last seen"), cell: dates, cls: "num muted", sort: (p) => p.seen },
       ]} />
     </div>
@@ -165,7 +165,7 @@
 
 <style>
   .res-row { display: inline-flex; gap: 8px; align-items: center; }
-  .cnt { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.1; font-variant-numeric: tabular-nums; font-size: 0.8rem; }
+  .cnt { display: inline-flex; flex-direction: column; align-items: center; gap: 1px; line-height: 1.1; font-variant-numeric: tabular-nums; font-size: 0.8rem; padding: 3px 7px; border-radius: 8px; border: 1px solid color-mix(in srgb, var(--sc) 50%, transparent); background: color-mix(in srgb, var(--sc) 16%, transparent); }
   .two { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .two small { font-size: 0.74rem; font-weight: 400; }
   /* narrow text columns: a long text is cut with an ellipsis (the whole of it is in the tooltip) */
