@@ -132,6 +132,7 @@ class Body:
     galaxy: int = 0
     extra: bool = False  # a body beyond the system's ordinary planets (descriptor byte +0x52: the prime planets and moons)
     empty: bool = False  # the system has no race (descriptor byte +0x4f)
+    abandoned: bool = False  # the system is abandoned (descriptor byte +0x4e)
 
 
 def _attributes(ua: int) -> dict:
@@ -333,7 +334,7 @@ def bodies(system: int) -> list[Body]:
     exact = system_attr.attributes(ua)
     for i, body in enumerate(body_list):
         body.star, body.index, body.galaxy = attrs["star_type"], i, (ua >> 32) & 0xFF
-        body.extra, body.empty = i >= exact["planets"], exact["race"] == 7
+        body.extra, body.empty, body.abandoned = i >= exact["planets"], exact["race"] == 7, exact["abandoned"]
     return body_list
 
 

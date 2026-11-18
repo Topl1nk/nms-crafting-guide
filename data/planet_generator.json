@@ -25345,6 +25345,739 @@
      ]
     ]
    }
-  ]
+  ],
+  "creatures": {
+   "biome": [
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": [
+       [
+        "WATERWORLD",
+        0.7
+       ],
+       [
+        "WATERGLOW",
+        0.3
+       ]
+      ]
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    }
+   ],
+   "sub": [
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDROLLPRED",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDROLL",
+        1.0
+       ],
+       [
+        "WRDCRYSTALPRED",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDCRYSTAL",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDFLOAT",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDFLOAT",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDFLOAT",
+        1.0
+       ],
+       [
+        "WRDCRYSTALPRED",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDROLL",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDBUTTERFLY",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDCRYSTAL",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDFLOAT",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [
+       [
+        "WRDFLOAT",
+        1.0
+       ]
+      ],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    },
+    {
+     "gate": 1.0,
+     "override": true,
+     "lists": {
+      "Ground": [],
+      "Air": [],
+      "Cave": [],
+      "Water": []
+     }
+    }
+   ],
+   "abandoned": {
+    "gate": 1.0,
+    "override": true,
+    "lists": {
+     "Ground": [],
+     "Air": [],
+     "Cave": [],
+     "Water": []
+    }
+   },
+   "empty": {
+    "gate": 0.1,
+    "override": true,
+    "lists": {
+     "Ground": [
+      [
+       "ROBOT",
+       1.0
+      ]
+     ],
+     "Air": [],
+     "Cave": [],
+     "Water": []
+    }
+   },
+   "purple": {
+    "gate": 0.35,
+    "override": false,
+    "lists": {
+     "Ground": [
+      [
+       "PLANTCATWORLD",
+       0.8
+      ],
+      [
+       "BEETLEWORLD",
+       0.8
+      ],
+      [
+       "PURPLEWEIRD",
+       2.0
+      ],
+      [
+       "GLOWSTRIDERS",
+       0.5
+      ]
+     ],
+     "Air": [],
+     "Cave": [],
+     "Water": [
+      [
+       "WATERWORLD",
+       0.5
+      ],
+      [
+       "WATERGLOW",
+       0.5
+      ]
+     ]
+    }
+   },
+   "generic": {
+    "Ground": [
+     [
+      "DEFAULT",
+      0.0
+     ],
+     [
+      "BUTTERFLY",
+      1.0
+     ],
+     [
+      "ALIEN",
+      1.5
+     ],
+     [
+      "DANGEROUS",
+      1.0
+     ],
+     [
+      "HERD",
+      1.0
+     ],
+     [
+      "HUNTEDHERD",
+      1.0
+     ],
+     [
+      "PARADISE",
+      1.5
+     ],
+     [
+      "EMPTY",
+      1.0
+     ],
+     [
+      "GIANT",
+      1.0
+     ],
+     [
+      "SPARSE",
+      1.0
+     ],
+     [
+      "BUSY",
+      1.0
+     ]
+    ],
+    "Air": [
+     [
+      "EMPTY",
+      0.1
+     ],
+     [
+      "DEFAULT",
+      11.0
+     ],
+     [
+      "FLYINGSNAKE",
+      2.0
+     ],
+     [
+      "ONLYSNAKE",
+      1.0
+     ],
+     [
+      "FLYINGLIZARD",
+      2.0
+     ],
+     [
+      "ONLYLIZARD",
+      1.0
+     ],
+     [
+      "BUSY",
+      4.0
+     ]
+    ],
+    "Cave": [
+     [
+      "DEFAULT",
+      1.0
+     ],
+     [
+      "EMPTY",
+      1.0
+     ]
+    ],
+    "Water": [
+     [
+      "DEFAULT",
+      1.0
+     ],
+     [
+      "CRABS",
+      0.05
+     ]
+    ]
+   },
+   "only_air": [
+    [
+     "ONLYAIR",
+     1.0
+    ]
+   ]
+  }
  }
 }

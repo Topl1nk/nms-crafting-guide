@@ -193,7 +193,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "sentinel_key": "", "resources": [], "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "fauna_key": "", "sentinel_key": "", "resources": [], "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
@@ -212,7 +212,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
                 if body:
                     info = planet_data.describe(body, setting, mode) or {}
                     words[key] = (info.get("word") or planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
-                    data[key] = {k: info[k] for k in ("weather", "flora", "sentinels") if info.get(k)}
+                    data[key] = {k: info[k] for k in ("weather", "flora", "fauna", "sentinels") if info.get(k)}
                     if info.get("substances"):  # in the order the game lists them: the plant, then the rare one ... the common one last
                         data[key]["resources"] = info.get("hints", []) + [info["substances"][k] for k in ("rare", "uncommon", "common")]
         if kind in count and mine(owner):
@@ -252,7 +252,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
     for key, p in found.items():
         p["biome"] = types.get(key, "")
         p["word_key"], p["class_key"] = words.get(key, ("", "")) if p["planet"] else ("", "")
-        p["weather_key"], p["flora_key"], p["sentinel_key"] = (data.get(key, {}).get(k, "") for k in ("weather", "flora", "sentinels"))
+        p["weather_key"], p["flora_key"], p["fauna_key"], p["sentinel_key"] = (data.get(key, {}).get(k, "") for k in ("weather", "flora", "fauna", "sentinels"))
         p["resources"] = data.get(key, {}).get("resources", [])
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():

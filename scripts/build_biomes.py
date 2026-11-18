@@ -185,12 +185,36 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
     for name in ("AbandonedSystemProbability", "EmptySystemProbability", "PirateSystemProbability"):
         chance[name] = [float(p.get("value")) for p in solar.find(f"Property[@name='{name}']")]
     chance["PercentChanceExtraPrime"] = float(solar.find("Property[@name='PercentChanceExtraPrime']").get("value"))
+    creature = unpack_named(game, ["metadata/simulation/ecosystem/creaturegenerationdata.mbin"], WORK / "creatures")
     voxel = unpack_named(game, ["metadata/simulation/solarsystem/voxelgeneratorsettings.mbin"], WORK / "voxel")
     settings = ET.parse(next(voxel.rglob("voxelgeneratorsettings.MXML"))).getroot().find("Property[@name='TerrainSettings']")
     return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances,
             "plants": plant_hints(files), "voxel": [voxel_layers(e) for e in settings],
             "common": [object_entry(e) for e in files.find("Property[@name='CommonExternalObjectLists']")],
-            "optional": [object_list(e) for e in files.find("Property[@name='OptionalExternalObjectLists']")]}
+            "optional": [object_list(e) for e in files.find("Property[@name='OptionalExternalObjectLists']")],
+            "creatures": creature_tables(ET.parse(next(creature.rglob("creaturegenerationdata.MXML"))).getroot())}
+
+
+def creature_tables(root: ET.Element) -> dict:
+    """What the game picks a planet's creature kinds from (desktop/planet_data.py, the creature slots): the lists per biome and per variant
+    with the chance each applies and whether it overrides the generic ones, those of an abandoned, an empty and a purple system, the
+    generic lists, and the air list used where the ground has no creatures."""
+    domains = ("Ground", "Air", "Cave", "Water")
+
+    def weighted(e: ET.Element | None) -> list:
+        return [[x.find("Property[@name='Archetype']").get("value"), float(x.find("Property[@name='Weight ']").get("value"))] for x in (e if e is not None else [])]
+
+    def lists(e: ET.Element) -> dict:
+        return {d: weighted(e.find(f"Property[@name='{d}']")) for d in domains}
+
+    def option(e: ET.Element) -> dict:
+        return {"gate": float(e.find("Property[@name='Probability']").get("value")), "override": e.find("Property[@name='OverrideAllDomains']").get("value") == "true",
+                "lists": lists(e.find("Property[@name='Archetypes']"))}
+
+    return {"biome": [option(e) for e in root.find("Property[@name='BiomeSpecific ']")], "sub": [option(e) for e in root.find("Property[@name='SubBiomeSpecific ']")],
+            "abandoned": option(root.find("Property[@name='AbandonedSystemSpecific']")), "empty": option(root.find("Property[@name='EmptySystemSpecific']")),
+            "purple": option(root.find("Property[@name='PurpleSystemSpecific']")), "generic": lists(root.find("Property[@name='Generic']")),
+            "only_air": weighted(root.find("Property[@name='AirArchetypesForEmptyGround']"))}
 
 
 # the kinds of ground an object list entry stands on (GcTerrainTileType); the generator skips some of them on some planets

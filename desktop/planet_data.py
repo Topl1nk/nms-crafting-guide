@@ -60,7 +60,8 @@ def _tables() -> dict:
     if _t is None:
         raw = json.loads((paths.RES / "data" / "planet_generator.json").read_text(encoding="utf-8"))["data"]
         _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"],
-              "substances": raw["substances"], "plants": raw["plants"], "voxel": raw["voxel"], "common": raw["common"], "optional": raw["optional"]}
+              "substances": raw["substances"], "plants": raw["plants"], "voxel": raw["voxel"], "common": raw["common"], "optional": raw["optional"],
+              "creatures": raw["creatures"]}
     return _t
 
 
@@ -273,7 +274,7 @@ def texts(seed: int, body: planet_gen.Body, lv: dict, setting: int = 2) -> dict:
     file = _file(_tables(), body)
     flora = file["flora"] or LEVEL_WORD[lv["flora"]]
     out = {"weather": pick(1, _weather_prefix(body, lv["weather_kind"], lv["weather_class"], lv["weather_extreme"])),
-           "flora": pick(3, flora), "fauna": None, "sentinels": pick(5 + setting, SENTINEL_WORD[lv["sentinels"][setting]]),
+           "flora": pick(3, flora), "fauna": pick(4, "RARITY_WEIRD" if body.biome == 7 else LEVEL_WORD[lv["fauna"]]), "sentinels": pick(5 + setting, SENTINEL_WORD[lv["sentinels"][setting]]),
            "extra": pick(2, "RARITY_LOW" if lv["extra"] else "RARITY_MID")}
     paradise = (body.biome == 0 and lv["weather_extreme"] == 0 and lv["weather_class"] == 0 and lv["sentinels"][setting] == 0)
     out["word"] = planet_word.word_key(seed, body.biome, body.subtype, paradise) or None
@@ -444,6 +445,106 @@ def objects(seed: int, body: planet_gen.Body, lv: dict, ground: dict, setting: i
     return out
 
 
+_EMPTY = "EMPTY"
+
+
+def fauna_level(seed: int, body: planet_gen.Body, level: int, ground: dict) -> int:
+    """The planet's fauna level (0 none, 1 low, 2 mid, 3 high) once the game has chosen its creature kinds (0x16d6050, stage seed 10):
+    stage A's level stays unless the planet's ground creatures turn out to be none ("EMPTY", one draw in ten), when it drops to 1, or to
+    0 if its air, water and cave creatures are none too. The kinds come from the lists of creaturegenerationdata (data "creatures"),
+    each pick is the first draw of a generator made from two draws of the one before (the game's stack of generators); checked on the
+    creature slots of every planet of tests/fixtures/planet_creatures.json. The start planet keeps stage A's level."""
+    if body.start:
+        return level
+    t = _tables()["creatures"]
+    state = _state(planet_word.stage_seed(seed, 10))
+
+    def step(s: list[int]) -> int:
+        x = s[0] * _MULT + s[1]
+        s[0], s[1] = x & 0xFFFFFFFF, x >> 32
+        return s[0]
+
+    def child(s: list[int]) -> list[int]:
+        lo1, lo2 = step(s), step(s)
+        h = (lo2 << 32) | lo1
+        h = (((h >> 33) ^ h) * 0x64DD81482CBD31D7) & 0xFFFFFFFFFFFFFFFF
+        h = (((h >> 33) ^ h) * 0xE36AA5C613612997) & 0xFFFFFFFFFFFFFFFF
+        return _state((h >> 33) ^ h)
+
+    stack = [child(state)]                 # the creature routine's generator, seeded from two draws
+
+    def fork() -> None:
+        stack.append(child(stack[-1]))
+
+    def pick(options: list) -> str | None:
+        fork()
+        u = F(step(stack[-1]) * 2.0 ** -32)
+        stack.pop()
+        total = F(0)
+        for _, w in options:
+            total = F(total + F(w))
+        target = F(F(u * total) + F(0))
+        for name, w in options:
+            target = F(target - F(w))
+            if F(0) >= target:
+                return name
+        return None
+
+    water, hazard, biome = ground["water"], ground["hazard"], body.biome
+    wet = water > 0 and not F(120) > F(water)
+    slots: list[str | None] = [None] * 4    # ground, air, water, cave
+    fork()
+    step(stack[-1])
+    step(stack[-1])
+    stack.pop()
+    fork()
+
+    def table(opt: dict) -> None:
+        fork()
+        u = F(step(stack[-1]) * 2.0 ** -32)
+        if not F(opt["gate"]) < u:
+            lists = opt["lists"]
+            if biome != 14:
+                slots[0] = pick(lists["Ground"])
+            if wet:
+                slots[2] = pick(lists["Water"])
+            slots[1] = pick(lists["Air"])
+            if hazard:
+                slots[3] = pick(lists["Cave"])
+            if opt["override"]:
+                for k in (0, 2, 1, 3):
+                    slots[k] = slots[k] or _EMPTY
+        stack.pop()
+
+    if level == 0:
+        slots = [_EMPTY] * 4
+    else:
+        special = t["empty"] if body.empty else t["purple"] if body.star == 4 else t["abandoned"] if body.abandoned else None
+        if special is not None:
+            table(special)
+        if all(s is None for s in slots):
+            if biome == 7:
+                table(t["sub"][body.subtype])
+            own = t["biome"][biome]
+            if all(s is None for s in slots) and any(own["lists"].values()):
+                table(own)
+    fork()
+    stack.pop()
+    if biome == 14:
+        slots[0] = slots[3] = _EMPTY
+    fork()
+    generic = t["generic"]
+    slots[0] = slots[0] or pick(generic["Ground"])
+    slots[1] = slots[1] or pick(t["only_air"] if slots[0] == _EMPTY else generic["Air"])
+    if slots[2] is None and wet:
+        slots[2] = pick(generic["Water"])
+    if slots[3] is None and hazard:
+        slots[3] = pick(generic["Cave"])
+    if slots[0] == _EMPTY and biome != 14:
+        return 0 if all(slots[k] == _EMPTY for k in (1, 2, 3)) else 1
+    return level
+
+
 def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | None:
     """The loc keys of a planet's "Planetary data" and its word, or None where they are not worked out (a game mode with extra rules,
     or a sentinel setting the save does not state clearly). Keys: weather, flora, sentinels, word (fauna is not worked out: None),
@@ -455,11 +556,12 @@ def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | No
         # (the step that checks the player's own sentinel setting is not understood), so nothing is said about them
         return None
     lv = levels(body.seed, body, body.star, body.galaxy, body.index, setting)
+    ground = terrain(body.seed, body, body.star)
+    lv["fauna"] = fauna_level(body.seed, body, lv["fauna"], ground)
     out = texts(body.seed, body, lv, setting)
     out["substances"] = substances(body.seed, body, body.star, lv["weather_extreme"])
     out["plant"] = plant_hint(body)
     out["scrap"] = bool(lv["scrap"])
-    ground = terrain(body.seed, body, body.star)
     # what the game's lists of objects add to the resource list besides the substances, in its order: the bones and salvage of the
     # Discoveries menu, the plant, the bugs and the swarm debris (UI_BONES_HINT, PLANT_DUST, UI_SCRAP_HINT, UI_BUGS_HINT ...)
     out["hints"] = [e[1] for e in objects(body.seed, body, lv, ground, setting) if e[1]]

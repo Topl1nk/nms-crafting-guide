@@ -109,12 +109,13 @@
         {#if kindOf(p)}<div class="ic-chips"><span class="pill">{kindOf(p)}</span>{#if chosen}<span class="muted small">{tn(chosen.variants, "{n} terrain variant|{n} terrain variants")}</span>{/if}</div>{/if}
         <GlyphStrip code={p.code} />
 
-        {#if p.weather_key || p.sentinel_key || p.flora_key || p.resources?.length}
+        {#if p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key || p.resources?.length}
           <h3>{t("Planetary data")}</h3>
           <dl>
             {#if p.weather_key}<dt>{t("Weather")}</dt><dd>{textOf(p.weather_key)}</dd>{/if}
             {#if p.sentinel_key}<dt>{t("Sentinels")}</dt><dd>{textOf(p.sentinel_key)}</dd>{/if}
             {#if p.flora_key}<dt>{t("Flora")}</dt><dd>{textOf(p.flora_key)}</dd>{/if}
+            {#if p.fauna_key}<dt>{t("Fauna")}</dt><dd>{textOf(p.fauna_key)}</dd>{/if}
             {#if p.resources?.length}
               <dt>{t("Resources")}</dt>
               <dd>
