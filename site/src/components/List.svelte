@@ -173,10 +173,10 @@
     <table>
       <thead><tr>
         {#each cols as { c, i: ci } (ci)}
-          <th class={klass(c, ci)} aria-sort={ariaSort(ci)}>
+          <th class={klass(c, ci)} aria-sort={ariaSort(ci)} title={c.head ? c.title : undefined}>
             {#if c.sort}
               <button type="button" class="th" onclick={() => sortBy(ci)} title={t("Sort by this column")}>
-                <span>{c.title}</span><i class="arrow" class:on={sortCol === ci}>{sortCol === ci ? (sortDir === 1 ? "▲" : "▼") : "↕"}</i>
+                <span>{#if c.head}{@render c.head()}{:else}{c.title}{/if}</span><i class="arrow" class:on={sortCol === ci}>{sortCol === ci ? (sortDir === 1 ? "▲" : "▼") : "↕"}</i>
               </button>
             {:else}{c.title}{/if}
           </th>
