@@ -60,7 +60,7 @@ def _tables() -> dict:
     if _t is None:
         raw = json.loads((paths.RES / "data" / "planet_generator.json").read_text(encoding="utf-8"))["data"]
         _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"],
-              "substances": raw["substances"]}
+              "substances": raw["substances"], "plants": raw["plants"]}
     return _t
 
 
@@ -207,6 +207,15 @@ def substances(seed: int, body: planet_gen.Body, star: int, extreme: int) -> dic
     return {"common": common, "uncommon": uncommon, "rare": rare}
 
 
+def plant_hint(body: planet_gen.Body) -> str:
+    """The plant in the planet's resource list (an item id such as PLANT_DUST, cactus flesh), "" where it has none. The game's list
+    of each Lush to Barren biome (data "plants") is always on, but it asks for the planet's biome with the swamp and lava variants
+    counted as biomes of their own, so those variants have none (0x16d2df0)."""
+    sub = planet_gen.SUBTYPE
+    biome = 12 if body.subtype == sub["Swamp"] else 13 if body.subtype == sub["Lava"] else body.biome
+    return _tables()["plants"].get(str(biome), "")
+
+
 def _file(t: dict, body: planet_gen.Body) -> dict:
     """The biome file the game uses for this body: the one of its variant, else the first the game has for the biome."""
     entry = t["files"].get((body.biome, body.subtype))
@@ -254,10 +263,11 @@ def texts(seed: int, body: planet_gen.Body, lv: dict, setting: int = 2) -> dict:
 def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | None:
     """The loc keys of a planet's "Planetary data" and its word, or None where they are not worked out (a game mode with extra rules,
     or a sentinel setting the save does not state clearly). Keys: weather, flora, sentinels, word (fauna is not worked out: None),
-    substances (its common, uncommon and rare substance ids)."""
+    substances (its common, uncommon and rare substance ids), plant (the item id of its plant resource, "" if none)."""
     if mode in (0, 6) or setting is None:
         return None
     lv = levels(body.seed, body, body.star, body.galaxy, body.index, setting)
     out = texts(body.seed, body, lv, setting)
     out["substances"] = substances(body.seed, body, body.star, lv["weather_extreme"])
+    out["plant"] = plant_hint(body)
     return out

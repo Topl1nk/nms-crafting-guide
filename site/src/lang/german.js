@@ -570,6 +570,7 @@ export default {
   "Planetary data": "Planetendaten",
   "Weather": "Wetter",
   "Sentinels": "Wächter",
+  "Bones, salvage and a few other finds are not worked out yet.": "Knochen, Schrott und einige andere Funde werden noch nicht berechnet.",
   "First found": "Entdeckt am",
   "What you found here": "Was Sie hier gefunden haben",
   "Flora": "Flora",

@@ -570,6 +570,7 @@ export default {
   "Planetary data": "行星資料",
   "Weather": "天氣",
   "Sentinels": "哨兵",
+  "Bones, salvage and a few other finds are not worked out yet.": "骨頭、廢料和其他一些發現物尚未計算。",
   "First found": "發現於",
   "What you found here": "你在這裡的發現",
   "Flora": "植物",

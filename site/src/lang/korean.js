@@ -570,6 +570,7 @@ export default {
   "Planetary data": "행성 데이터",
   "Weather": "날씨",
   "Sentinels": "센티넬",
+  "Bones, salvage and a few other finds are not worked out yet.": "뼈, 고철 및 기타 일부 발견물은 아직 계산되지 않습니다.",
   "First found": "발견일",
   "What you found here": "여기서 발견한 것",
   "Flora": "식물",

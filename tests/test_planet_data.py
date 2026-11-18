@@ -59,13 +59,15 @@ def test_substances_match_the_game() -> None:
         body = planet_gen.Body(int(p["seed"], 16), p["size"], -1, p["biome"], p["subtype"], False, star=p["star"])
         want = {k: p[k] for k in ("common", "uncommon", "rare")}
         assert planet_data.substances(body.seed, body, p["star"], p["extreme"]) == want, p["seed"]
+        assert planet_data.plant_hint(body) == p["plant"], (p["seed"], p["biome"], p["subtype"])
 
 
 def test_substances_of_odale_vi() -> None:
-    # In the game: Pyrite, Magnetised Ferrite, Copper (and bones and cactus flesh, which are not worked out)
+    # In the game: Ancient Bones, Cactus Flesh, Magnetised Ferrite, Pyrite, Copper (the bones are not worked out)
     body = planet_gen.Body(0x557B3D1B13177D2A, 1, -1, 5, 21, False, star=0, index=1, galaxy=0)
-    got = planet_data.describe(body, 2, 1)["substances"]
-    assert got == {"common": "YELLOW2", "uncommon": "DUSTY1", "rare": "LAND3"}
+    got = planet_data.describe(body, 2, 1)
+    assert got["substances"] == {"common": "YELLOW2", "uncommon": "DUSTY1", "rare": "LAND3"}
+    assert got["plant"] == "PLANT_DUST"
 
 
 def test_no_answer_where_the_rules_are_not_ported() -> None:

@@ -570,6 +570,7 @@ export default {
   "Planetary data": "Planeetgegevens",
   "Weather": "Weer",
   "Sentinels": "Schildwachten",
+  "Bones, salvage and a few other finds are not worked out yet.": "Botten, schroot en enkele andere vondsten worden nog niet berekend.",
   "First found": "Ontdekt op",
   "What you found here": "Wat je hier hebt gevonden",
   "Flora": "Flora",

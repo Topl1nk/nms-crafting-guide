@@ -61,7 +61,7 @@ import planet_gen  # noqa: E402
 import planet_word  # noqa: E402
 
 # The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
-WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET", "UI_DISC_MINERALS"]
+WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET"]
              + [f"{prefix}{i}" for prefix, n in planet_data.COUNTS.items() for i in range(1, n + 1)]
              # and what a made-up planet name is put together from: its template and the word added to it (Delta, Sigma ...)
              + [f"NAMEGEN_PLANET_STYLE_{i}" for i in range(1, 11)] + [f"NAMEGEN_PLANET_ADORN_{i}" for i in range(1, 11)])
@@ -174,7 +174,29 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
         "CorruptSentinelProbability", "ViciousSentinelProbability", "ViciousStormProbability", "ViciousWeatherProbability",
         "NonAggressiveLushSurvivalProbabability")}
     chance["ExtremePlanetChance"] = [float(p.get("value")) for p in solar.find("Property[@name='ExtremePlanetChance']")]
-    return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances}
+    return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances,
+            "plants": plant_hints(files)}
+
+
+def plant_hints(root: ET.Element) -> dict[str, str]:
+    """The plant a planet of each biome shows in its resource list (the game's hint, e.g. PLANT_DUST for cactus flesh). The game's
+    lists of objects per biome (biomefilenames.mbin) name one file as the hint; the list is always on (chance 1) and picks all its
+    files, so the hint is there on every planet of the biome - except on swamp and lava variants, whose lists do not match the biome
+    (planet_data.plant_hint) - and the infested twin of the list gives the same one."""
+    def value(e: ET.Element, name: str) -> str:
+        return e.find(f"Property[@name='{name}']").get("value")
+
+    out: dict[str, set[str]] = {}
+    for lst in root.find("Property[@name='OptionalExternalObjectLists']"):
+        files = list(lst.find("Property[@name='ExternalObjectFiles']"))
+        hints = {value(f, "ResourceHint") for f in files} - {""}
+        if not any(h.startswith("PLANT_") for h in hints):
+            continue
+        assert len(hints) == 1 and float(value(lst, "ProbabilityOfBeingActive")) == 1 and int(value(lst, "MinFilesToChoose")) == len(files) == int(
+            value(lst, "MaxFilesToChoose")), f"the plant list {value(lst, 'Id')} is no longer always on: port its choice"
+        out.setdefault(str(planet_gen.BIOME[lst.find("Property[@name='OnlyOnBiome']/Property").get("value")]), set()).update(hints)
+    assert all(len(v) == 1 for v in out.values())
+    return {k: next(iter(v)) for k, v in out.items()}
 
 
 def generator_tables(folder: Path) -> dict:

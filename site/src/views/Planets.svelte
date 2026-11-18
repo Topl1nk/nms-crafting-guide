@@ -116,8 +116,11 @@
             {#if p.sentinel_key}<dt>{t("Sentinels")}</dt><dd>{textOf(p.sentinel_key)}</dd>{/if}
             {#if p.flora_key}<dt>{t("Flora")}</dt><dd>{textOf(p.flora_key)}</dd>{/if}
             {#if p.resources?.length}
-              <dt>{D.biomes.words.UI_DISC_MINERALS || t("Minerals")}</dt>
-              <dd>{#each p.resources as id}<span class="chip-item"><ItemIcon {id} size={22} />{D.items[id]?.name ?? id}</span>{/each}</dd>
+              <dt>{t("Resources")}</dt>
+              <dd>
+                {#each p.resources as id}<span class="chip-item"><ItemIcon {id} size={22} />{D.items[id]?.name ?? id}</span>{/each}
+                <p class="muted small">{t("Bones, salvage and a few other finds are not worked out yet.")}</p>
+              </dd>
             {/if}
           </dl>
         {/if}

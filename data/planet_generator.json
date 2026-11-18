@@ -12914,6 +12914,14 @@
     "WATER1",
     "ASTEROID1"
    ]
+  },
+  "plants": {
+   "4": "PLANT_SNOW",
+   "1": "PLANT_TOXIC",
+   "2": "PLANT_HOT",
+   "3": "PLANT_RADIO",
+   "5": "PLANT_DUST",
+   "0": "PLANT_LUSH"
   }
  }
 }

@@ -213,8 +213,8 @@ def planets(save: dict, account: str = "") -> list[dict]:
                     info = planet_data.describe(body, setting, mode) or {}
                     words[key] = (info.get("word") or planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
                     data[key] = {k: info[k] for k in ("weather", "flora", "sentinels") if info.get(k)}
-                    if info.get("substances"):  # in the order the game lists them: the rare one first, the common one last
-                        data[key]["resources"] = [info["substances"][k] for k in ("rare", "uncommon", "common")]
+                    if info.get("substances"):  # in the order the game lists them: the plant, then the rare one ... the common one last
+                        data[key]["resources"] = ([info["plant"]] if info.get("plant") else []) + [info["substances"][k] for k in ("rare", "uncommon", "common")]
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1
