@@ -117,7 +117,7 @@
    What carries a colour is glass: a tag, a badge, a figure of a card. Its colour runs through it in a gradient (more at the upper
    left, less toward the lower right), its edge is the same colour one tone darker, one straight not strong glare crosses it with
    a clean edge, and under it a soft shadow in its own colour. Every other surface stays flat cloth. */
-:root[data-theme="dark"] :is(.chip2, .band, .act, .stat, .cnt) {
+:root[data-theme="dark"] :is(.chip2, .band, .act, .stat) {
   --g: var(--sc, currentColor);
   position: relative;
   background-color: transparent;
@@ -126,7 +126,7 @@
   box-shadow: var(--inner), 0 5px 8px -5px color-mix(in srgb, var(--g) 55%, #000);
 }
 :root[data-theme="dark"] .chip2 { --g: var(--c); }
-:root[data-theme="dark"] :is(.chip2, .band, .act, .stat, .cnt)::after {
+:root[data-theme="dark"] :is(.chip2, .band, .act, .stat)::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
   background: linear-gradient(128deg, rgb(255 255 255 / 0.24) 0%, rgb(255 255 255 / 0.08) 46%, rgb(255 255 255 / 0) 47%);
 }
