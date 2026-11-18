@@ -192,7 +192,38 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
             "plants": plant_hints(files), "voxel": [voxel_layers(e) for e in settings],
             "common": [object_entry(e) for e in files.find("Property[@name='CommonExternalObjectLists']")],
             "optional": [object_list(e) for e in files.find("Property[@name='OptionalExternalObjectLists']")],
-            "creatures": creature_tables(ET.parse(next(creature.rglob("creaturegenerationdata.MXML"))).getroot())}
+            "creatures": creature_tables(ET.parse(next(creature.rglob("creaturegenerationdata.MXML"))).getroot()),
+            "roles": creature_roles(game)}
+
+
+def creature_roles(game: Path) -> dict:
+    """What desktop/planet_data.py counts a planet's creature roles from: the archetypes of each domain (the role tables each adds, the
+    chances of the extra ones) and the chance each role of a role table has of being switched on."""
+    base = "metadata/simulation/ecosystem/"
+    arch = unpack_named(game, [base + "creaturegenerationarchetypes.mbin"], WORK / "archetypes")
+    root = ET.parse(next(arch.rglob("creaturegenerationarchetypes.MXML"))).getroot()
+
+    def files(e: ET.Element | None) -> list[str]:
+        return [t.find("Property[@name='File']").get("value").upper() for t in (e if e is not None else [])]
+
+    out: dict = {}
+    for domain in ("Ground", "Air", "Water", "Cave"):
+        entries = {}
+        for e in root.find(f"Property[@name='{domain}Archetypes']"):
+            entries[e.find("Property[@name='Id']").get("value")] = {
+                "tables": files(e.find("Property[@name='Tables']")), "chance": float(e.find("Property[@name='ChanceOfHemisphereLimit']").get("value")),
+                "max_to": int(e.find("Property[@name='MaxToHemisphereLimit']").get("value")),
+                "add": [{"tables": files(a.find("Property[@name='Tables']")), "chance": float(a.find("Property[@name='ChanceOfHemisphereLimit']").get("value")),
+                         "max_add": int(a.find("Property[@name='MaxTablesToAdd']").get("value")), "max_to": int(a.find("Property[@name='MaxToHemisphereLimit']").get("value"))}
+                        for a in e.find("Property[@name='AdditionalTables']")]}
+        out[domain] = entries
+    names = sorted({f for d in out.values() for e in d.values() for f in e["tables"] + [t for a in e["add"] for t in a["tables"]]})
+    tables = unpack_named(game, [n.lower() for n in names], WORK / "role_tables")
+    probs = {}
+    for n in names:
+        table = ET.parse(tables / n.lower().replace(".mbin", ".MXML")).getroot()
+        probs[n] = [float(r.find("Property[@name='ProbabilityOfBeingEnabled']").get("value")) for r in table.find("Property[@name='RoleDescription']")]
+    return {"archetypes": out, "tables": probs}
 
 
 def creature_tables(root: ET.Element) -> dict:

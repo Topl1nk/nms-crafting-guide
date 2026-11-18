@@ -61,7 +61,7 @@ def _tables() -> dict:
         raw = json.loads((paths.RES / "data" / "planet_generator.json").read_text(encoding="utf-8"))["data"]
         _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"],
               "substances": raw["substances"], "plants": raw["plants"], "voxel": raw["voxel"], "common": raw["common"], "optional": raw["optional"],
-              "creatures": raw["creatures"]}
+              "creatures": raw["creatures"], "roles": raw["roles"]}
     return _t
 
 
@@ -448,6 +448,21 @@ def objects(seed: int, body: planet_gen.Body, lv: dict, ground: dict, setting: i
 _EMPTY = "EMPTY"
 
 
+def _step(s: list[int]) -> int:
+    x = s[0] * _MULT + s[1]
+    s[0], s[1] = x & 0xFFFFFFFF, x >> 32
+    return s[0]
+
+
+def _child(s: list[int]) -> list[int]:
+    """The game's fork: two draws of s make the seed of a new generator."""
+    lo1, lo2 = _step(s), _step(s)
+    h = (lo2 << 32) | lo1
+    h = (((h >> 33) ^ h) * 0x64DD81482CBD31D7) & 0xFFFFFFFFFFFFFFFF
+    h = (((h >> 33) ^ h) * 0xE36AA5C613612997) & 0xFFFFFFFFFFFFFFFF
+    return _state((h >> 33) ^ h)
+
+
 def fauna_level(seed: int, body: planet_gen.Body, level: int, ground: dict) -> int:
     """The planet's fauna level (0 none, 1 low, 2 mid, 3 high) once the game has chosen its creature kinds (0x16d6050, stage seed 10):
     stage A's level stays unless the planet's ground creatures turn out to be none ("EMPTY", one draw in ten), when it drops to 1, or to
@@ -456,22 +471,19 @@ def fauna_level(seed: int, body: planet_gen.Body, level: int, ground: dict) -> i
     creature slots of every planet of tests/fixtures/planet_creatures.json. The start planet keeps stage A's level."""
     if body.start:
         return level
+    slots, _ = creature_slots(seed, body, level, ground)
+    if slots[0] == _EMPTY and body.biome != 14:
+        return 0 if all(slots[k] == _EMPTY for k in (1, 2, 3)) else 1
+    return level
+
+
+def creature_slots(seed: int, body: planet_gen.Body, level: int, ground: dict) -> tuple[list, list]:
+    """The creature kinds [ground, air, water, cave] the game picks for a planet and the generator stack it leaves behind (see fauna_level)."""
     t = _tables()["creatures"]
     state = _state(planet_word.stage_seed(seed, 10))
+    step, child = _step, _child
 
-    def step(s: list[int]) -> int:
-        x = s[0] * _MULT + s[1]
-        s[0], s[1] = x & 0xFFFFFFFF, x >> 32
-        return s[0]
-
-    def child(s: list[int]) -> list[int]:
-        lo1, lo2 = step(s), step(s)
-        h = (lo2 << 32) | lo1
-        h = (((h >> 33) ^ h) * 0x64DD81482CBD31D7) & 0xFFFFFFFFFFFFFFFF
-        h = (((h >> 33) ^ h) * 0xE36AA5C613612997) & 0xFFFFFFFFFFFFFFFF
-        return _state((h >> 33) ^ h)
-
-    stack = [child(state)]                 # the creature routine's generator, seeded from two draws
+    stack = [state, child(state)]          # the creature routine's generator, seeded from two draws, above the stage's own
 
     def fork() -> None:
         stack.append(child(stack[-1]))
@@ -540,9 +552,72 @@ def fauna_level(seed: int, body: planet_gen.Body, level: int, ground: dict) -> i
         slots[2] = pick(generic["Water"])
     if slots[3] is None and hazard:
         slots[3] = pick(generic["Cave"])
-    if slots[0] == _EMPTY and biome != 14:
-        return 0 if all(slots[k] == _EMPTY for k in (1, 2, 3)) else 1
-    return level
+    return slots, stack
+
+
+_ROLE_DOMAINS = ("Ground", "Air", "Water", "Cave")     # the slots of creature_slots, in the order the game visits them
+_MAX_ROLES = 23
+
+
+def creature_total(seed: int, body: planet_gen.Body, level: int, ground: dict) -> int | None:
+    """How many creature roles the game makes for a planet: the number of species its Discoveries page counts the fauna out of (the length
+    of the planet's creature list, 0x16d6050 after the slots). Each creature slot names an archetype (creaturegenerationarchetypes) that
+    adds role tables, then a second pass adds some of its extra tables; every role of every table is switched on when a draw is not above
+    its ProbabilityOfBeingEnabled, up to 23. Checked on the creature count the game made of every planet of tests/fixtures/planet_roles.json.
+    None for the start planet, whose creatures the game picks by other rules."""
+    if body.start:
+        return None
+    t = _tables()["roles"]
+    slots, stack = creature_slots(seed, body, level, ground)
+    stack.pop()                                         # the generic picks' generator, then the creature routine's own
+    stack.pop()
+    tables: list[str] = []
+
+    def add(files: list[str], pick: int | None) -> None:
+        _child(stack[-1])                               # the generator of the hemisphere limits: its draws change no count
+        if pick is None:
+            tables.extend(files)
+            return
+        left = list(files)
+        while left and pick > 0:
+            c = _child(stack[-1])
+            tables.append(left.pop((_step(c) * len(left)) >> 32))
+            pick -= 1
+
+    def archetype(second: bool) -> None:
+        for slot, domain in zip(slots, _ROLE_DOMAINS):
+            if slot in (None, _EMPTY):
+                continue
+            entry = t["archetypes"][domain].get(slot)
+            stack.append(_child(stack[-1]))
+            if entry is not None:
+                if not second:
+                    add(entry["tables"], None)
+                else:
+                    for extra in entry["add"]:
+                        add(extra["tables"], extra["max_add"])
+            stack.pop()
+
+    stack.append(_child(stack[-1]))
+    archetype(False)
+    stack.append(_child(stack[-1]))
+    archetype(True)
+    stack.pop()
+    stack.pop()
+    total = 0
+    for name in tables:
+        chances = t["tables"].get(name)
+        if chances is None:
+            continue
+        first = _child(stack[-1])                       # each table and each role forks a generator of its own
+        _child(first)
+        for chance in chances:
+            a = _child(first)
+            _child(a)
+            _child(a)
+            if not F(F(_step(a) * 2.0 ** -32)) > F(chance) and total < _MAX_ROLES:
+                total += 1
+    return total
 
 
 def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | None:
@@ -553,8 +628,10 @@ def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | No
         return None
     lv = levels(body.seed, body, body.star, body.galaxy, body.index, setting)
     ground = terrain(body.seed, body, body.star)
-    lv["fauna"] = fauna_level(body.seed, body, lv["fauna"], ground)
+    before = lv["fauna"]
+    lv["fauna"] = fauna_level(body.seed, body, before, ground)
     out = texts(body.seed, body, lv, setting)
+    out["fauna_total"] = creature_total(body.seed, body, before, ground)
     out["substances"] = substances(body.seed, body, body.star, lv["weather_extreme"])
     out["plant"] = plant_hint(body)
     out["scrap"] = bool(lv["scrap"])

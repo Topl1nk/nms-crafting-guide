@@ -126,11 +126,11 @@
           <p class="muted small">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
         {/if}
 
-        {#if p.flora || p.fauna || p.minerals}
+        {#if p.flora || p.fauna || p.minerals || p.fauna_total}
           <h3>{t("Found by you")}</h3>
           <div class="finds">
-            {#each [["flora", p.flora, "Flora"], ["fauna", p.fauna, "Fauna"], ["mineral", p.minerals, "Minerals"]] as [icon, n, label]}
-              {#if n}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}</b><small>{t(label)}</small></span>{/if}
+            {#each [["flora", p.flora, "Flora", null], ["fauna", p.fauna, "Fauna", p.fauna_total], ["mineral", p.minerals, "Minerals", null]] as [icon, n, label, total]}
+              {#if n || total}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}{#if total} / {total}{/if}</b><small>{t(label)}</small></span>{/if}
             {/each}
           </div>
         {/if}

@@ -26078,6 +26078,1151 @@
      1.0
     ]
    ]
+  },
+  "roles": {
+   "archetypes": {
+    "Ground": {
+     "T_HERMITCRAB": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEHERMITCRAB.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PLANTCAT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEPLANTCAT.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_ARTHROPOD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEARTHROPOD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_WALKBUILD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEWALKINGBUILDING.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PETS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEPETS.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_ROBEETLE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEROBOT.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLYINGBEETLE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_BUTTERFLOCK": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEBUTTERFLOCK.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_MOLE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEMOLE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_SMALLBIRD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLESMALLBIRD.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLESMALLBIRD.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLESMALLBIRD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_BUTTERFLY": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEBUTTERFLY.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEBUTTERFLY.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEBUTTERFLY.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_BEETLE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLYINGBEETLE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_DIGGERS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDIGGER.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_DRILL": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDRILL.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PLOUGH": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEPLOW.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PROTOFLYER": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLOATER.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLOATER.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLOATER.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PROTOROLLER": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEROLLER.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PROTODIGGER": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDIGGER.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDIGGER.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDIGGER.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_PURPLEWEIRD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 0,
+      "add": []
+     },
+     "T_BONECOWS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLEBONES.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 0,
+      "add": []
+     },
+     "DEFAULT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORESMALL.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREMED.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WRDFLOAT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDFLOAT.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WRDROLL": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDROLL.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WRDCRYSTAL": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDCRYSTAL.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WRDBUTTERFLY": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDBUTTERFLY.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WRDROLLPRED": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDROLLPREDATOR.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WRDCRYSTALPRED": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDCRYSTALPREDATOR.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "ROBOT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEROBOT.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEWALKINGBUILDING.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "BONE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEBONE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLEBONES.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "BUTTERFLY": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEBUTTERFLY.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEBUTTERFLY.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEMAYBEBUTTERFLY.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEMAYBEBUTTERFLY.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "ALIEN": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEALIEN.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEALIEN.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "DANGEROUS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLAYERPREDATORMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLAYERPREDATORLARGE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREMED.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "HERD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERDMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORELARGE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORLARGE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "HUNTEDHERD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERDMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORLARGE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "PARADISE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERDMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORELARGE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEBUTTERFLY.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "GIANT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORESMALL.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREGIANT.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREGIANT.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "SPARSE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORESMALL.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORELARGE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEMAYBEBUTTERFLY.MBIN"
+      ],
+      "chance": 0.7,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "BUSY": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORESMALL.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORESMALL.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERDMED.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREGIANT.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       },
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATPRED.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "PURPLEWEIRD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLEBONES.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 1,
+        "max_to": 1
+       }
+      ]
+     },
+     "GLOWSTRIDERS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDGLOWSTRIDERS.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "BEETLEWORLD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODWORLD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "PLANTCATWORLD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATWORLD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     }
+    },
+    "Air": {
+     "DEFAULT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLECOMMON.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "ONLYAIR": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEBUSY.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEBIGBIRD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "BIGBIRDS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEBIGBIRD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "FLYINGSNAKE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLECOMMONSNAKE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "FLYINGLIZARD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLECOMMONLIZARD.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "ONLYSNAKE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEFLYINGSNAKESONLY.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "ONLYLIZARD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEFLYINGLIZARDONLY.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "BUSY": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEBUSY.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     }
+    },
+    "Water": {
+     "T_JUSTFISH": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEJUSTFISH.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [],
+        "chance": 0.0,
+        "max_add": 2,
+        "max_to": 1
+       }
+      ]
+     },
+     "T_FISH": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLECOMMON.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": []
+     },
+     "T_JELLYFISH": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEJELLYFISH.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCKSHARK": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKSHARK.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCK3": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCK3.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCK2": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCK2.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCK": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCK.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_DEEPFLOCK": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEDEEPFLOCK.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCKMANTA": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKMANTA.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCKSEAHORSE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKSEAHORSE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_SHARKSNAKE": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLESHARKEATSNAKE.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_SQUID": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLESQUID.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "CRABS": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLECRABS.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "DEFAULT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLECOMMON.MBIN"
+      ],
+      "chance": 0.5,
+      "max_to": 1,
+      "add": [
+       {
+        "tables": [
+         "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHBASE.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHDEEPFISH.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHGLOW.MBIN",
+         "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHNOGLOW.MBIN"
+        ],
+        "chance": 0.0,
+        "max_add": 2,
+        "max_to": 1
+       }
+      ]
+     },
+     "WATERWORLD": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDBASE.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDDEEPFISH.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDGLOW.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDNOGLOW.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "WATERGLOW": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERALLGLOW.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_FLOCKPRAWN": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKPRAWN.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKPRAWN.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKPRAWN.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     },
+     "T_ALLNEWFISH": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEWATERALLNEWFISH.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEWATERALLNEWFISH.MBIN",
+       "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEWATERALLNEWFISH.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     }
+    },
+    "Cave": {
+     "DEFAULT": {
+      "tables": [
+       "METADATA/SIMULATION/ECOSYSTEM/CAVE/CAVETABLECOMMON.MBIN"
+      ],
+      "chance": 0.0,
+      "max_to": 1,
+      "add": []
+     }
+    }
+   },
+   "tables": {
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEBIGBIRD.MBIN": [
+     1.0,
+     0.25
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEBUSY.MBIN": [
+     1.0,
+     1.0,
+     0.3
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLECOMMON.MBIN": [
+     1.0,
+     0.25
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLECOMMONLIZARD.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLECOMMONSNAKE.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEFLYINGLIZARDONLY.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/AIR/AIRTABLEFLYINGSNAKESONLY.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/CAVE/CAVETABLECOMMON.MBIN": [
+     0.25,
+     0.75,
+     0.5
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEALIEN.MBIN": [
+     1.0,
+     0.5,
+     0.2,
+     0.8
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODHERB.MBIN": [
+     0.02,
+     0.05,
+     0.05
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODPRED.MBIN": [
+     0.12
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEARTHROPODWORLD.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEBONE.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEBUTTERFLY.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREGIANT.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORELARGE.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVOREMED.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERBIVORESMALL.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEHERDMED.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEMAYBEBUTTERFLY.MBIN": [
+     0.5
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATHERB.MBIN": [
+     0.02,
+     0.035,
+     0.035
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATPRED.MBIN": [
+     0.1
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLANTCATWORLD.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLAYERPREDATORLARGE.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPLAYERPREDATORMED.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORLARGE.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEPREDATORMED.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEROBOT.MBIN": [
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/GROUNDTABLEWALKINGBUILDING.MBIN": [
+     0.5,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEARTHROPOD.MBIN": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEBUTTERFLOCK.MBIN": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEBUTTERFLY.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDIGGER.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEDRILL.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLOATER.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEFLYINGBEETLE.MBIN": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEHERMITCRAB.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEMOLE.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEPETS.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEPLANTCAT.MBIN": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEPLOW.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEROLLER.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLESMALLBIRD.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/TEST/GROUNDTABLEWALKINGBUILDING.MBIN": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDBUTTERFLY.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDCRYSTAL.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDCRYSTALPREDATOR.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDFLOAT.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDGLOWSTRIDERS.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLE.MBIN": [
+     1.0,
+     0.5,
+     0.5
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDPURPLEBONES.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDROLL.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/GROUND/WEIRD/GROUNDTABLEWEIRDROLLPREDATOR.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEDEEPFLOCK.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCK.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCK2.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCK3.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKMANTA.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKPRAWN.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKSEAHORSE.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEFLOCKSHARK.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEJELLYFISH.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLESHARKEATSNAKE.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLESQUID.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/TEST/UNDERWATERTABLEWATERALLNEWFISH.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLECOMMON.MBIN": [
+     0.5,
+     1.0,
+     1.0,
+     0.3,
+     0.5
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLECRABS.MBIN": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHBASE.MBIN": [
+     0.3,
+     0.2,
+     0.2
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHDEEPFISH.MBIN": [
+     0.33,
+     0.33
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHGLOW.MBIN": [
+     0.1,
+     0.1
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEEXTRAFISHNOGLOW.MBIN": [
+     0.3,
+     0.3
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEJUSTFISH.MBIN": [
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERALLGLOW.MBIN": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDBASE.MBIN": [
+     0.5,
+     1.0,
+     0.3,
+     1.0
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDDEEPFISH.MBIN": [
+     0.33,
+     0.33,
+     0.33
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDGLOW.MBIN": [
+     0.1,
+     0.1,
+     0.1
+    ],
+    "METADATA/SIMULATION/ECOSYSTEM/UNDERWATER/UNDERWATERTABLEWATERWORLDNOGLOW.MBIN": [
+     0.5,
+     0.7,
+     0.2
+    ]
+   }
   }
  }
 }
