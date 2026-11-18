@@ -118,8 +118,8 @@
             {#if p.resources?.length}
               <dt>{t("Resources")}</dt>
               <dd>
-                {#each p.resources as id}<span class="chip-item"><ItemIcon {id} size={22} />{D.items[id]?.name ?? id}</span>{/each}
-                <p class="muted small">{t("Bones, salvage and a few other finds are not worked out yet.")}</p>
+                {#each p.resources as id}<span class="chip-item">{#if D.items[id]}<ItemIcon {id} size={22} />{D.items[id].name}{:else}{textOf(id) || id}{/if}</span>{/each}
+                <p class="muted small">{t("Bones and a few other finds are not worked out yet.")}</p>
               </dd>
             {/if}
           </dl>

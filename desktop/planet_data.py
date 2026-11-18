@@ -120,6 +120,23 @@ def _sentinel_level(g: dict, k: int, state: list[int], body: planet_gen.Body, st
         level = 3
     return level
 
+# Which planets can be scrap worlds. The game files a planet class (0x16cc6e6: start planet 3, weird 4, infested 5, waterworld 6, gas giant
+# 7, dead 0, any other 2) and looks up a chance per class in a table of its own memory ([0, 1, 1, 1, 0, 0, 0, 0 ...], read out of the running
+# game: it is not in the global files that build_biomes.py unpacks) and a draw of at most 0.2 (the constant at 0x4bf652c) decides.
+_SCRAP_CLASS = {0: False, 1: True, 2: True, 3: True, 4: False, 5: False, 6: False, 7: False}
+_SCRAP_CHANCE = F(0.2)
+
+
+def _class(body: planet_gen.Body) -> int:
+    if body.start:
+        return 3
+    if body.biome == 7:
+        return 4
+    if body.subtype == planet_gen.SUBTYPE["Infested"]:
+        return 5
+    return {14: 6, 15: 7, 6: 0}.get(body.biome, 2)
+
+
 def levels(seed: int, body: planet_gen.Body, star: int, galaxy: int, index: int, setting: int = 2) -> dict:
     """Stage A and the weather: flora and fauna level (0 none, 1 low, 2 mid, 3 high), the sentinel level for each setting, the
     weather kind (index in the game's weather list), how stormy (0 calm, 1 normal, 2/3 extreme) and whether extreme."""
@@ -135,6 +152,9 @@ def levels(seed: int, body: planet_gen.Body, star: int, galaxy: int, index: int,
         flora = 0 if body.biome in (6, 14, 15) else _weighted(state, life)
         fauna = 0 if body.biome in (6, 15) else 3 if body.biome == 14 else _weighted(state, life)
     extra = int(_draw(state) > F(0.75))
+    # the scrap flag (0x16cca91): the stage's own state is drawn once more after the sentinel loop, which worked on copies of it, so the
+    # draw is the sentinel loop's first one; but not on a weird planet
+    scrap = int(body.biome != 7 and _SCRAP_CLASS[_class(body)] and _draw(list(state)) <= _SCRAP_CHANCE)
     local = list(state)
     sentinels = [_sentinel_level(g, k, local, body, star, kind, galaxy_kind, index) for k in range(4)]
     # a corrupt level only stands where the level of the game's own sentinel setting is corrupt too
@@ -176,7 +196,7 @@ def levels(seed: int, body: planet_gen.Body, star: int, galaxy: int, index: int,
         klass = extreme = 0
     elif body.biome == 15:
         extreme, klass = 1, 0
-    return {"flora": flora, "fauna": fauna, "extra": extra, "sentinels": sentinels, "weather_kind": wkind, "weather_class": klass,
+    return {"flora": flora, "fauna": fauna, "extra": extra, "scrap": scrap, "sentinels": sentinels, "weather_kind": wkind, "weather_class": klass,
             "weather_extreme": extreme}
 
 
@@ -270,4 +290,5 @@ def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | No
     out = texts(body.seed, body, lv, setting)
     out["substances"] = substances(body.seed, body, body.star, lv["weather_extreme"])
     out["plant"] = plant_hint(body)
+    out["scrap"] = bool(lv["scrap"])
     return out

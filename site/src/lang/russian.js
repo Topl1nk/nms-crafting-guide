@@ -397,7 +397,7 @@ export default {
   "Planetary data": "Планетарные данные",
   "Weather": "Погода",
   "Sentinels": "Стражи",
-  "Bones, salvage and a few other finds are not worked out yet.": "Кости, обломки и некоторые другие находки пока не вычисляются.",
+  "Bones and a few other finds are not worked out yet.": "Кости и некоторые другие находки пока не вычисляются.",
   "First found": "Открыта",
   "What you found here": "Что вы здесь нашли",
   "Flora": "Растения",

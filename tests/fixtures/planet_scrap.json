@@ -1,0 +1,902 @@
+[
+{
+"seed": "eef8cb181f7735cc",
+"size": 2,
+"biome": 3,
+"subtype": 1,
+"start": 1,
+"star": 0,
+"galaxy": 6,
+"scrap": 0
+},
+{
+"seed": "d3b21d305c155b83",
+"size": 0,
+"biome": 8,
+"subtype": 18,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "88af270ca1969736",
+"size": 2,
+"biome": 0,
+"subtype": 21,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "504a413ec932ccf7",
+"size": 2,
+"biome": 0,
+"subtype": 3,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "58850e70b7f6918a",
+"size": 2,
+"biome": 5,
+"subtype": 2,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "e38f2257e88fcde3",
+"size": 1,
+"biome": 4,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "600aa09a96d7a6ce",
+"size": 2,
+"biome": 4,
+"subtype": 27,
+"start": 0,
+"star": 4,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "14bcf934c907b12",
+"size": 1,
+"biome": 1,
+"subtype": 7,
+"start": 0,
+"star": 4,
+"galaxy": 0,
+"scrap": 1
+},
+{
+"seed": "cb2db4ea22b3d768",
+"size": 2,
+"biome": 4,
+"subtype": 27,
+"start": 0,
+"star": 4,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "a5fd33cad4b7ffa1",
+"size": 0,
+"biome": 9,
+"subtype": 19,
+"start": 0,
+"star": 4,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "24066587c151f23d",
+"size": 2,
+"biome": 6,
+"subtype": 20,
+"start": 0,
+"star": 0,
+"galaxy": 6,
+"scrap": 0
+},
+{
+"seed": "4906412972251420",
+"size": 0,
+"biome": 3,
+"subtype": 22,
+"start": 0,
+"star": 0,
+"galaxy": 6,
+"scrap": 0
+},
+{
+"seed": "d096d68d15eaad44",
+"size": 2,
+"biome": 2,
+"subtype": 1,
+"start": 1,
+"star": 0,
+"galaxy": 6,
+"scrap": 0
+},
+{
+"seed": "79566730fc87770b",
+"size": 2,
+"biome": 6,
+"subtype": 20,
+"start": 0,
+"star": 0,
+"galaxy": 6,
+"scrap": 0
+},
+{
+"seed": "6338036122dbc69f",
+"size": 1,
+"biome": 8,
+"subtype": 17,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "1b21d8ce941abe55",
+"size": 0,
+"biome": 2,
+"subtype": 26,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 1
+},
+{
+"seed": "280f213d4f8383a9",
+"size": 3,
+"biome": 1,
+"subtype": 3,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "bb1744f4848d9d56",
+"size": 3,
+"biome": 0,
+"subtype": 19,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "c3c777451ff5120e",
+"size": 1,
+"biome": 4,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "a543767848bbc816",
+"size": 0,
+"biome": 3,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "1552d60c21866ae5",
+"size": 1,
+"biome": 3,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 6,
+"scrap": 0
+},
+{
+"seed": "5ec5686497694114",
+"size": 2,
+"biome": 0,
+"subtype": 21,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "b531396a36ca1817",
+"size": 2,
+"biome": 10,
+"subtype": 18,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "4bda9658a68bde85",
+"size": 1,
+"biome": 0,
+"subtype": 25,
+"start": 0,
+"star": 0,
+"galaxy": 5,
+"scrap": 0
+},
+{
+"seed": "f9ae1b977172a707",
+"size": 1,
+"biome": 2,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 5,
+"scrap": 0
+},
+{
+"seed": "d9d451bef323e4a1",
+"size": 2,
+"biome": 6,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 5,
+"scrap": 0
+},
+{
+"seed": "e525e77a0e5d0620",
+"size": 2,
+"biome": 3,
+"subtype": 20,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "fc722b4d332ebe15",
+"size": 0,
+"biome": 4,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 5,
+"scrap": 0
+},
+{
+"seed": "c36c07f25fbf3575",
+"size": 1,
+"biome": 12,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "c9273a4a3b40b4b4",
+"size": 0,
+"biome": 6,
+"subtype": 17,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "7a3e864bd086bfc7",
+"size": 2,
+"biome": 5,
+"subtype": 27,
+"start": 0,
+"star": 1,
+"galaxy": 2,
+"scrap": 1
+},
+{
+"seed": "896983befa8ae5ec",
+"size": 0,
+"biome": 3,
+"subtype": 27,
+"start": 0,
+"star": 1,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "3694d6f279c4c3e6",
+"size": 3,
+"biome": 5,
+"subtype": 1,
+"start": 0,
+"star": 1,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "dfc12ed68a208246",
+"size": 0,
+"biome": 6,
+"subtype": 1,
+"start": 0,
+"star": 1,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "fe183934cdefe6c0",
+"size": 0,
+"biome": 5,
+"subtype": 2,
+"start": 0,
+"star": 0,
+"galaxy": 1,
+"scrap": 1
+},
+{
+"seed": "14fd5c94948d95a",
+"size": 3,
+"biome": 0,
+"subtype": 20,
+"start": 0,
+"star": 0,
+"galaxy": 1,
+"scrap": 0
+},
+{
+"seed": "a6b1606099e5cc91",
+"size": 2,
+"biome": 2,
+"subtype": 21,
+"start": 1,
+"star": 0,
+"galaxy": 1,
+"scrap": 0
+},
+{
+"seed": "2e3f91fdddbb40a2",
+"size": 1,
+"biome": 12,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 1
+},
+{
+"seed": "6e4adffd2d525b30",
+"size": 1,
+"biome": 3,
+"subtype": 1,
+"start": 1,
+"star": 0,
+"galaxy": 4,
+"scrap": 1
+},
+{
+"seed": "e6cb7e2007d7168f",
+"size": 1,
+"biome": 2,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 0
+},
+{
+"seed": "8b2d47171b1170fa",
+"size": 0,
+"biome": 1,
+"subtype": 21,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 0
+},
+{
+"seed": "a1fea4a939819cc2",
+"size": 3,
+"biome": 4,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 1
+},
+{
+"seed": "a19e5bbd0063b492",
+"size": 2,
+"biome": 2,
+"subtype": 20,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 1
+},
+{
+"seed": "876cbde7cd5e1b3b",
+"size": 2,
+"biome": 5,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "5ef07669b253b9ce",
+"size": 0,
+"biome": 4,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "7fcecdac6b04504c",
+"size": 3,
+"biome": 0,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "8be9e57d2f8f96a1",
+"size": 3,
+"biome": 5,
+"subtype": 23,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 1
+},
+{
+"seed": "2e713c0be98124a9",
+"size": 3,
+"biome": 0,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "af0f7b453069fceb",
+"size": 0,
+"biome": 6,
+"subtype": 20,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "2e22fef6983bc5cc",
+"size": 3,
+"biome": 4,
+"subtype": 21,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "c9e36d20d399868d",
+"size": 2,
+"biome": 5,
+"subtype": 13,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "2e9931b787ed265",
+"size": 2,
+"biome": 0,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "d1bce76158a125f",
+"size": 0,
+"biome": 2,
+"subtype": 27,
+"start": 1,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "657e68d7264a7a9f",
+"size": 0,
+"biome": 0,
+"subtype": 15,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "70ed5deb7123ef22",
+"size": 2,
+"biome": 2,
+"subtype": 26,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "5215b0ea661059b8",
+"size": 1,
+"biome": 6,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "7865452c55ce75d3",
+"size": 2,
+"biome": 4,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "8ff615ae01177b34",
+"size": 1,
+"biome": 2,
+"subtype": 26,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "f00ef1806ca2798a",
+"size": 0,
+"biome": 0,
+"subtype": 25,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "6ed4e929de02c140",
+"size": 3,
+"biome": 4,
+"subtype": 2,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 1
+},
+{
+"seed": "7b80e72ab23e83bf",
+"size": 2,
+"biome": 3,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 1
+},
+{
+"seed": "c3512c64297cf2af",
+"size": 0,
+"biome": 0,
+"subtype": 2,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 1
+},
+{
+"seed": "bf00046a6f66e03d",
+"size": 3,
+"biome": 2,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 0
+},
+{
+"seed": "9eae10cdd83f81c",
+"size": 3,
+"biome": 1,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 0
+},
+{
+"seed": "1917ec72b20c7c07",
+"size": 0,
+"biome": 2,
+"subtype": 26,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 0
+},
+{
+"seed": "2d211538b8f365e0",
+"size": 2,
+"biome": 0,
+"subtype": 22,
+"start": 0,
+"star": 0,
+"galaxy": 4,
+"scrap": 1
+},
+{
+"seed": "7205ca30bece674a",
+"size": 1,
+"biome": 3,
+"subtype": 27,
+"start": 1,
+"star": 0,
+"galaxy": 4,
+"scrap": 0
+},
+{
+"seed": "f3214ab1847a0863",
+"size": 1,
+"biome": 4,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "c31bf5ded9052620",
+"size": 2,
+"biome": 1,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 1
+},
+{
+"seed": "1419f9a4d63bdcd6",
+"size": 2,
+"biome": 0,
+"subtype": 7,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "d84002d99be8612d",
+"size": 1,
+"biome": 3,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "e256dcb5f7f4c425",
+"size": 2,
+"biome": 0,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 3,
+"scrap": 0
+},
+{
+"seed": "6ca13d5ee7102dfb",
+"size": 1,
+"biome": 12,
+"subtype": 1,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 1
+},
+{
+"seed": "431c16a49bb043cf",
+"size": 1,
+"biome": 5,
+"subtype": 22,
+"start": 0,
+"star": 0,
+"galaxy": 7,
+"scrap": 0
+},
+{
+"seed": "2208540b539cdc15",
+"size": 2,
+"biome": 3,
+"subtype": 22,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "213c58aea3dfe954",
+"size": 1,
+"biome": 5,
+"subtype": 23,
+"start": 0,
+"star": 2,
+"galaxy": 7,
+"scrap": 0
+},
+{
+"seed": "cef198dd3938f1e1",
+"size": 1,
+"biome": 10,
+"subtype": 15,
+"start": 0,
+"star": 2,
+"galaxy": 7,
+"scrap": 0
+},
+{
+"seed": "83b7862ca365f7a0",
+"size": 1,
+"biome": 4,
+"subtype": 27,
+"start": 0,
+"star": 2,
+"galaxy": 7,
+"scrap": 0
+},
+{
+"seed": "9507b01667ab1e3e",
+"size": 0,
+"biome": 5,
+"subtype": 27,
+"start": 0,
+"star": 2,
+"galaxy": 7,
+"scrap": 0
+},
+{
+"seed": "61e73faaf7cd83ca",
+"size": 1,
+"biome": 1,
+"subtype": 24,
+"start": 0,
+"star": 2,
+"galaxy": 7,
+"scrap": 0
+},
+{
+"seed": "f7e982901e20c676",
+"size": 2,
+"biome": 3,
+"subtype": 22,
+"start": 0,
+"star": 2,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "71b7dce89c14fbc9",
+"size": 0,
+"biome": 4,
+"subtype": 20,
+"start": 0,
+"star": 2,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "cd74eca0d75ffcba",
+"size": 3,
+"biome": 1,
+"subtype": 1,
+"start": 0,
+"star": 2,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "20ff72f79e9631cc",
+"size": 0,
+"biome": 3,
+"subtype": 22,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 0
+},
+{
+"seed": "473ca742a908467",
+"size": 3,
+"biome": 5,
+"subtype": 2,
+"start": 0,
+"star": 0,
+"galaxy": 2,
+"scrap": 1
+},
+{
+"seed": "fc92575d5691a7e9",
+"size": 2,
+"biome": 2,
+"subtype": 26,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "9bee6d143e95aa3a",
+"size": 2,
+"biome": 1,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 5,
+"scrap": 0
+},
+{
+"seed": "23ab5c75eb95a3a1",
+"size": 0,
+"biome": 2,
+"subtype": 1,
+"start": 1,
+"star": 0,
+"galaxy": 5,
+"scrap": 0
+},
+{
+"seed": "fa064d989a9ff4da",
+"size": 0,
+"biome": 4,
+"subtype": 27,
+"start": 0,
+"star": 0,
+"galaxy": 0,
+"scrap": 0
+},
+{
+"seed": "51cb76ba17a3207c",
+"size": 2,
+"biome": 0,
+"subtype": 2,
+"start": 0,
+"star": 0,
+"galaxy": 1,
+"scrap": 0
+}
+]

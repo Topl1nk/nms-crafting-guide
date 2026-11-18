@@ -70,6 +70,18 @@ def test_substances_of_odale_vi() -> None:
     assert got["plant"] == "PLANT_DUST"
 
 
+SCRAP = json.loads((ROOT / "tests" / "fixtures" / "planet_scrap.json").read_text(encoding="utf-8"))
+
+
+def test_scrap_worlds_match_the_game() -> None:
+    # the flag the game's stage A sets at G+0x3ace (the scrap hint of the resource list follows it): 90 planets, 16 of them scrap worlds
+    assert sum(p["scrap"] for p in SCRAP) > 10
+    for p in SCRAP:
+        body = planet_gen.Body(int(p["seed"], 16), p["size"], -1, p["biome"], p["subtype"], bool(p["start"]), star=p["star"], index=0, galaxy=p["galaxy"])
+        got = planet_data.levels(body.seed, body, p["star"], p["galaxy"], 0)["scrap"]
+        assert got == p["scrap"], p["seed"]
+
+
 def test_no_answer_where_the_rules_are_not_ported() -> None:
     body = planet_gen.Body(1, 1, -1, 5, 1, False)
     assert planet_data.describe(body, 2, 0) is None   # the game mode 0: extra rules
