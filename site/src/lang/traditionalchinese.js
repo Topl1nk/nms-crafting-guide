@@ -565,6 +565,7 @@ export default {
   "Name, system or portal code": "名稱、星系或傳送門代碼",
   "This page reads your game save through the desktop program, and there is none to read here.": "此頁面透過桌面程式讀取你的遊戲存檔，而這裡沒有可讀取的存檔。",
   "The save shows no planets you have visited.": "存檔中沒有你到訪過的星球。",
+  "Data not determined": "資料無法確定",
   "No planets match this search.": "沒有符合此搜尋的星球。",
   "Last seen": "最近一次",
   "Planetary data": "行星資料",

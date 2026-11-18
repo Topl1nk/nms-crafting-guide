@@ -565,6 +565,7 @@ export default {
   "Name, system or portal code": "이름, 항성계 또는 포털 코드",
   "This page reads your game save through the desktop program, and there is none to read here.": "이 페이지는 데스크톱 프로그램을 통해 게임 세이브를 읽습니다. 여기에는 읽을 세이브가 없습니다.",
   "The save shows no planets you have visited.": "세이브에 방문한 행성이 없습니다.",
+  "Data not determined": "데이터를 확인할 수 없음",
   "No planets match this search.": "검색과 일치하는 행성이 없습니다.",
   "Last seen": "마지막 방문",
   "Planetary data": "행성 데이터",

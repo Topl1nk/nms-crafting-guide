@@ -565,6 +565,7 @@ export default {
   "Name, system or portal code": "Name, System oder Portalcode",
   "This page reads your game save through the desktop program, and there is none to read here.": "Diese Seite liest Ihren Spielstand über das Desktop-Programm, und hier gibt es keinen zum Lesen.",
   "The save shows no planets you have visited.": "Der Spielstand zeigt keine Planeten, die Sie besucht haben.",
+  "Data not determined": "Daten nicht bestimmt",
   "No planets match this search.": "Keine Planeten passen zu dieser Suche.",
   "Last seen": "Zuletzt gesehen",
   "Planetary data": "Planetendaten",

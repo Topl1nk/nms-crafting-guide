@@ -61,6 +61,8 @@
   const textOf = (key) => (D.biomes.words[key] || "").replace(/%[A-Z]+%/g, "").trim();
   // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
   const label = (key, english) => textOf(key) || t(english);
+  // A planet whose weather, sentinels, flora and fauna are not worked out (the save's record and the generator disagree on its type).
+  const unknown = (p) => p.planet && !(p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key);
 
   // What the game shows beside a hint that is not an item (the bones, the salvage, the bugs, the swarm): a picture of an item that is the same.
   const HINT_ICON = { UI_BONES_HINT: "ANY_BONE", UI_SCRAP_HINT: "SCRAP_GOODS", UI_BUGS_HINT: "FOOD_M_GRUB", UI_B_SWARM_HINT: "SWARMDUST" };
@@ -99,7 +101,7 @@
       <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
         { title: t("Name"), cell: nameCell, cls: "strong", sort: shown },
         { title: t("Planet type"), text: kindOf, cls: "clip w150", sort: kindOf },
-        { title: label("WEATHER_L", "Weather"), text: (p) => textOf(p.weather_key), cls: "wide-only clip w170 muted", sort: (p) => textOf(p.weather_key) },
+        { title: label("WEATHER_L", "Weather"), text: (p) => unknown(p) ? t("Data not determined") : textOf(p.weather_key), cls: "wide-only clip w170 muted", sort: (p) => textOf(p.weather_key) },
         { title: label("SENTINELS_L", "Sentinels"), text: (p) => textOf(p.sentinel_key), cls: "wide-only clip w150 muted", sort: (p) => textOf(p.sentinel_key) },
         { title: label("FAUNA_L", "Fauna"), text: (p) => textOf(p.fauna_key), cls: "wide-only clip w130 muted", sort: (p) => p.fauna_key },
         { title: t("Found by you"), cell: foundCell, cls: "wide-only", sort: (p) => p.fauna + p.flora + p.minerals },
@@ -125,6 +127,8 @@
               {#if key}<dt><ItemIcon id="PLANET_{icon}" size={32} color="#8fb6ff" />{label(loc, english)}</dt><dd>{textOf(key)}</dd>{/if}
             {/each}
           </dl>
+        {:else if unknown(p)}
+          <p class="muted small">{t("Data not determined")}</p>
         {/if}
 
         {#if p.resources?.length}
