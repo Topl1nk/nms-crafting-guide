@@ -152,8 +152,8 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         if url.path.startswith("/lang/"):
             # The texts built from the player's game (languages.py), else what the build holds.
             name = urllib.parse.unquote(url.path.removeprefix("/lang/"))
-            mine = (paths.LANGS / name).resolve()
-            if mine.parent == paths.LANGS.resolve() and mine.is_file():
+            mine = paths.LANGS / name
+            if Path(name).name == name and mine.is_file():
                 body = mine.read_bytes()
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -165,8 +165,8 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         if url.path.startswith("/icons/"):
             # The player's own pictures first (written by pictures.py), else what the build holds.
             name = urllib.parse.unquote(url.path.removeprefix("/icons/"))
-            mine = (pictures.ICONS / name).resolve()
-            if mine.parent == pictures.ICONS.resolve() and mine.is_file():
+            mine = pictures.ICONS / name
+            if Path(name).name == name and mine.is_file():  # a bare file name: never a path out of the folder (resolve() is not used: a folder behind a redirect resolves elsewhere)
                 body = mine.read_bytes()
                 self.send_response(200)
                 self.send_header("Content-Type", "image/webp")
