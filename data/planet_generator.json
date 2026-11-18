@@ -1552,6 +1552,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,2": {
@@ -1651,6 +1733,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -1752,6 +1916,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,21": {
@@ -1851,6 +2097,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -1952,6 +2280,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,23": {
@@ -2051,6 +2461,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -2152,6 +2644,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,7": {
@@ -2251,6 +2825,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -2352,6 +3008,97 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "INFESTATION",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,15": {
@@ -2451,6 +3198,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -2552,6 +3372,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,27": {
@@ -2651,6 +3553,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -2752,6 +3736,97 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      0.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "FOXGLOVE_VFX",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "0,13": {
@@ -2851,6 +3926,97 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "VFX",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -2952,6 +4118,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "1,1": {
@@ -3051,6 +4299,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -3152,6 +4473,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "1,21": {
@@ -3251,6 +4645,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -3352,6 +4819,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "1,23": {
@@ -3451,6 +4991,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -3552,6 +5165,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "INFESTATION",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "1,19": {
@@ -3651,6 +5346,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -3752,6 +5520,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "1,3": {
@@ -3851,6 +5692,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -3952,6 +5866,70 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "1,28": {
@@ -4051,6 +6029,70 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -4152,6 +6194,70 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.25
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "2,1": {
@@ -4251,6 +6357,79 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -4352,6 +6531,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "2,21": {
@@ -4451,6 +6703,79 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -4552,6 +6877,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "2,24": {
@@ -4651,6 +7058,88 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "INFESTATION",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -4752,6 +7241,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "2,27": {
@@ -4851,6 +7413,79 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -4952,6 +7587,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "2,7": {
@@ -5051,6 +7759,70 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -5152,6 +7924,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "3,1": {
@@ -5251,6 +8096,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -5352,6 +8270,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "3,21": {
@@ -5451,6 +8442,70 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -5552,6 +8607,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      2,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "3,24": {
@@ -5651,6 +8779,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "INFESTATION",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -5752,6 +8962,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "3,27": {
@@ -5851,6 +9134,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -5952,6 +9308,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "3,28": {
@@ -6051,6 +9480,70 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -6152,6 +9645,70 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.5,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "4,1": {
@@ -6251,6 +9808,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -6352,6 +9982,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "4,20": {
@@ -6451,6 +10154,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -6552,6 +10337,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "4,22": {
@@ -6651,6 +10509,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -6752,6 +10683,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "4,24": {
@@ -6851,6 +10855,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "INFESTATION",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -6952,6 +11038,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "4,3": {
@@ -7051,6 +11210,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -7152,6 +11384,70 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "4,29": {
@@ -7251,6 +11547,70 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.6,
+     "HighWaterActiveFrequency": 0.4
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -7352,6 +11712,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "5,2": {
@@ -7451,6 +11884,79 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -7552,6 +12058,70 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "5,21": {
@@ -7651,6 +12221,88 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -7752,6 +12404,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "5,23": {
@@ -7851,6 +12585,79 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -7952,6 +12759,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "INFESTATION",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "5,17": {
@@ -8051,6 +12940,70 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -8152,6 +13105,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "VFX",
+      "",
+      20240802,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "5,13": {
@@ -8251,6 +13286,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -8352,6 +13469,88 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "5,7": {
@@ -8451,6 +13650,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.2
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -8552,6 +13824,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "6,20": {
@@ -8651,6 +13978,61 @@
       0.0,
       1.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -8752,6 +14134,61 @@
       1.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "6,17": {
@@ -8851,6 +14288,61 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
      ]
     ]
    },
@@ -8952,6 +14444,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "7,4": {
@@ -9051,6 +14598,61 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -9152,6 +14754,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "7,6": {
@@ -9251,6 +14908,61 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -9352,6 +15064,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "7,8": {
@@ -9451,6 +15218,61 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -9552,6 +15374,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "7,10": {
@@ -9651,6 +15528,61 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -9752,6 +15684,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "7,12": {
@@ -9851,6 +15838,61 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -9952,6 +15994,61 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "8,14": {
@@ -10051,6 +16148,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -10152,6 +16322,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "8,16": {
@@ -10251,6 +16494,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -10352,6 +16668,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "8,18": {
@@ -10451,6 +16840,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -10552,6 +17014,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "9,14": {
@@ -10651,6 +17186,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -10752,6 +17360,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "9,16": {
@@ -10851,6 +17532,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -10952,6 +17706,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "9,18": {
@@ -11051,6 +17878,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -11152,6 +18052,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "10,14": {
@@ -11251,6 +18224,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -11352,6 +18398,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "10,16": {
@@ -11451,6 +18570,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -11552,6 +18744,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "10,18": {
@@ -11651,6 +18916,79 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -11752,6 +19090,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "12,1": {
@@ -11851,6 +19262,88 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -11952,6 +19445,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.9,
+     "HighWaterActiveFrequency": 0.5
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "13,1": {
@@ -12051,6 +19617,79 @@
       1.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
      ]
     ]
    },
@@ -12152,6 +19791,79 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 0.3,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      4,
+      true
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZPLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      3,
+      false
+     ]
     ]
    },
    "14,1": {
@@ -12251,6 +19963,79 @@
       0.0,
       1.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 1.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "BUILDINGDRESS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -12352,6 +20137,70 @@
       0.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 1.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "14,21": {
@@ -12451,6 +20300,70 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 1.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      2,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -12552,6 +20465,61 @@
       1.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      0.0,
+      1.0,
+      1.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 1.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "14,23": {
@@ -12651,6 +20619,70 @@
       0.0,
       0.0,
       0.0
+     ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 1.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
      ]
     ]
    },
@@ -12752,6 +20784,70 @@
       1.0,
       0.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 1.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    },
    "15,1": {
@@ -12852,6 +20948,70 @@
       0.0,
       1.0
      ]
+    ],
+    "terrain": {
+     "NoiseLayers": [
+      1.0,
+      1.0,
+      0.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Features": [
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      0.0
+     ],
+     "Caves": [
+      1.0
+     ],
+     "WaterActiveFrequency": 1.0,
+     "HighWaterActiveFrequency": 0.0
+    },
+    "objects": [
+     [
+      "MAIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PLANT",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "LEVELONEOBJECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "CRYSTALS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
     ]
    }
   },
@@ -12871,7 +21031,29 @@
     0.6,
     0.25,
     0.33
-   ]
+   ],
+   "AbandonedSystemProbability": [
+    0.0,
+    0.1,
+    0.1,
+    0.0,
+    0.35
+   ],
+   "EmptySystemProbability": [
+    0.0,
+    0.4,
+    0.4,
+    0.95,
+    0.2
+   ],
+   "PirateSystemProbability": [
+    0.25,
+    0.15,
+    0.15,
+    0.5,
+    0.05
+   ],
+   "PercentChanceExtraPrime": 33.0
   },
   "substances": {
    "biome": [
@@ -12922,6 +21104,4247 @@
    "3": "PLANT_RADIO",
    "5": "PLANT_DUST",
    "0": "PLANT_LUSH"
-  }
+  },
+  "voxel": [
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     false,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     false,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   },
+   {
+    "noise": [
+     true,
+     true,
+     true,
+     true,
+     true,
+     false,
+     true,
+     true
+    ],
+    "features": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "cave": true
+   }
+  ],
+  "common": [
+   [
+    "UNDERGROUND",
+    "",
+    0,
+    1.0,
+    5,
+    3,
+    false
+   ],
+   [
+    "UNDERWATER",
+    "",
+    0,
+    1.0,
+    4,
+    11,
+    false
+   ],
+   [
+    "MOUNTAIN",
+    "",
+    0,
+    1.0,
+    3,
+    2,
+    false
+   ],
+   [
+    "CRYSTALSCAVE",
+    "",
+    0,
+    1.0,
+    5,
+    1,
+    false
+   ],
+   [
+    "UNDERWATERVFX",
+    "",
+    20240802,
+    1.0,
+    4,
+    1,
+    false
+   ]
+  ],
+  "optional": [
+   {
+    "id": "DEEPWATER",
+    "flags": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "DEEPWATERPROPS",
+      "",
+      20240802,
+      1.0,
+      4,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "DEEPWATERCOLUMN",
+    "flags": [
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "COLUMN_DENSE",
+      "",
+      20240802,
+      1.0,
+      4,
+      1,
+      false
+     ],
+     [
+      "WATERCOLUMNBLOB",
+      "",
+      20240802,
+      2.0,
+      4,
+      1,
+      false
+     ],
+     [
+      "WATERCOLUMNROCK",
+      "",
+      20240802,
+      2.0,
+      4,
+      1,
+      false
+     ],
+     [
+      "COLUMN_V_SPARSE",
+      "",
+      20240802,
+      1.0,
+      4,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "VALUABLE_STUFF",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.4,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "PROC_SALVAGE",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PROC_BONES",
+      "UI_BONES_HINT",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "NEW_SCRAP",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      " NEW_SALVAGE",
+      "UI_SCRAP_HINT",
+      20260219,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WATER",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "WATER_HAZ",
+      "",
+      0,
+      1.0,
+      4,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "CAVE",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "CAVECUBES",
+      "",
+      0,
+      1.0,
+      5,
+      1,
+      false
+     ],
+     [
+      "CAVEEGGS",
+      "",
+      0,
+      1.0,
+      5,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WEATHERLUSH",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 0,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "CLAM",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WEATHERTOX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 1,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "TENTACLE",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WEATHERHOT",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 2,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "GEMS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WEATHERRADIO",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 3,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "PHYSICSSPOREPRO",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WEATHERCOLD",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 4,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "FLOATINGPROPS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WEATHERBARREN",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 5,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "RARECRYSTALPROP",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "DRONE",
+    "flags": [
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "PROXIMITY",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "SWARM_DEBRIS",
+    "flags": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.4,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "SWARM_DEBRIS",
+      "UI_B_SWARM_HINT",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "RARE",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "URCHIN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "METAL",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "PHYSICS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "FROZEN",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "biome": 4,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMSNOW",
+      "PLANT_SNOW",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDSNOW",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "FROZEN_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 4,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.5,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "COLD_EFFECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "FROZEN_INFEST",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 4,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMSNOW_INF",
+      "PLANT_SNOW",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDSNOW",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "TOXIC",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "biome": 1,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMTOXIC",
+      "PLANT_TOXIC",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDTOXIC",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "TOXIC_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 1,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.5,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "TOX_EFFECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "TOXIC_INFEST",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 1,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMTOXIC_INF",
+      "PLANT_TOXIC",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDTOXIC",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "SCORCHED",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "biome": 2,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMSCORCHED",
+      "PLANT_HOT",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDSCORCH",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "SCORCHED_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 2,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.3,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "HOT_EFFECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "SCORCHED_INFEST",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 2,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMSCORCH_INF",
+      "PLANT_HOT",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDSCORCH",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "RADIOACTIVE",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "biome": 3,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMRADIOACTIVE",
+      "PLANT_RADIO",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDRADIO",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "RADIOACTIVE_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 3,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.75,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "RAD_EFFECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "RADIOACTIVE_INF",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 3,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMRAD_INF",
+      "PLANT_RADIO",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDRADIO",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "BARREN",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "biome": 5,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMBARREN",
+      "PLANT_DUST",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDBARREN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "BARREN_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 5,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     1.0,
+     1.0,
+     1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     0.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.35,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "BARREN_EFFECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "BARREN_INFEST",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 5,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMBARREN_INF",
+      "PLANT_DUST",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDBARREN",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "LUSH",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true
+    ],
+    "biome": 0,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMLUSH",
+      "PLANT_LUSH",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDLUSH",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "LUSH_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 0,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     0.0,
+     0.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.3,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "LUSH_EFFECTS",
+      "",
+      0,
+      0.9,
+      1,
+      1,
+      false
+     ],
+     [
+      "FLORAL_EFFECTS",
+      "",
+      0,
+      0.1,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "LUSH_INFEST",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 0,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "FARMLUSH_INF",
+      "PLANT_LUSH",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "WILDLUSH",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "GASGIANT_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 15,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "GAS_EFFECTS",
+      "",
+      20240802,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "SWAMP_VFX",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 12,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "SWAMP_EFFECTS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WILDPLANT_ALL",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "ALLWILDFULL",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WILDPLANT_WEIRD",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 7,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "WILDWEIRD",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WILDPLANT_RED",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 8,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "WILDWEIRD",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WILDPLANT_GREEN",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 9,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "WILDWEIRD",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "WILDPLANT_BLUE",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 10,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "WILDWEIRD",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "RARE_ALWAYS",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "NAVDATA",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "RAREROCKS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "PLANTCROPS",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "PLANTCROP",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "FIENDS",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 6,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "FIENDEGGS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "STORMCRYSTALS",
+    "flags": [
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "CRYSTALPROPS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "GROUND_EXTRAS",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "BURIED_EXTRAS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "CORRUPTSENTINEL",
+    "flags": [
+     false,
+     false,
+     true,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 2,
+    "max": 2,
+    "files": [
+     [
+      "ROBOT_PROPS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "ROBOT_HEADS",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "BUGS_EVERYWHERE",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 0.05,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "GRUBS_ALL",
+      "UI_BUGS_HINT",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "BUGS_SWAMP",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     true,
+     true,
+     false,
+     false
+    ],
+    "biome": 12,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 1,
+    "files": [
+     [
+      "GRUBS",
+      "UI_BUGS_HINT",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   },
+   {
+    "id": "HAZARD_PLANTS",
+    "flags": [
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     false,
+     true,
+     false,
+     true,
+     true,
+     false
+    ],
+    "biome": 16,
+    "sub": [
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0,
+     -1.0
+    ],
+    "chance": 1.0,
+    "min": 1,
+    "max": 2,
+    "files": [
+     [
+      "HAZ_TENTACLE",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZ_SPORE",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZ_FLYTRAP",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ],
+     [
+      "HAZ_SPIKES",
+      "",
+      0,
+      1.0,
+      1,
+      1,
+      false
+     ]
+    ]
+   }
+  ]
  }
 }

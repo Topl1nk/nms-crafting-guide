@@ -61,7 +61,8 @@ import planet_gen  # noqa: E402
 import planet_word  # noqa: E402
 
 # The texts the planet's word is picked from (desktop/planet_word.py) and the two words "Planet" and "Moon" they end in.
-WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET", "UI_SCRAP_HINT"]
+WORD_KEYS = ([f"{prefix}{i}" for prefix, n in planet_word.COUNTS.items() for i in range(1, n + 1)] + ["PLANETCLASS1", "PLANETCLASS2", "DISC_TYPE_GIANT", "UI_PARADISE_PLANET",
+                                                                                           "UI_BONES_HINT", "UI_SCRAP_HINT", "UI_BUGS_HINT", "UI_B_SWARM_HINT"]
              + [f"{prefix}{i}" for prefix, n in planet_data.COUNTS.items() for i in range(1, n + 1)]
              # and what a made-up planet name is put together from: its template and the word added to it (Delta, Sigma ...)
              + [f"NAMEGEN_PLANET_STYLE_{i}" for i in range(1, 11)] + [f"NAMEGEN_PLANET_ADORN_{i}" for i in range(1, 11)])
@@ -157,10 +158,16 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
     per_file = {}
     for (biome, sub), path in options.items():
         root = ET.parse(next(biome_files.rglob(Path(path).stem + ".MXML"))).getroot()
+        terrain = root.find("Property[@name='Terrain']")
+        extra = root.find("Property[@name='ExternalObjectLists']")
         per_file[f"{biome},{sub}"] = {
             "flora": root.find("Property[@name='FloraLifeLocID']").get("value"),
             "weather": [[float(w.get("value")) for w in root.find("Property[@name='WeatherOptions']/Property[@name='%s']/Property" % star)]
-                        for star in ("Yellow", "Green", "Blue", "Red", "Purple")]}
+                        for star in ("Yellow", "Green", "Blue", "Red", "Purple")],
+            # the chances the terrain stage draws its layers, features, cave mouth and water against (GcTerrainControls)
+            "terrain": {n: [float(x.get("value")) for x in terrain.find(f"Property[@name='{n}']")] for n in ("NoiseLayers", "Features", "Caves")}
+                       | {n: float(terrain.find(f"Property[@name='{n}']").get("value")) for n in ("WaterActiveFrequency", "HighWaterActiveFrequency")},
+            "objects": [object_entry(e) for e in extra] if extra is not None else []}
     glob = unpack_named(game, ["gcgameplayglobals.global.mbin", "gcsolargenerationglobals.global.mbin", "gcterrainglobals.global.mbin"], WORK / "globals")
     play = ET.parse(next(glob.rglob("gcgameplayglobals.global.MXML"))).getroot()
     solar = ET.parse(next(glob.rglob("gcsolargenerationglobals.global.MXML"))).getroot()
@@ -174,8 +181,62 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
         "CorruptSentinelProbability", "ViciousSentinelProbability", "ViciousStormProbability", "ViciousWeatherProbability",
         "NonAggressiveLushSurvivalProbabability")}
     chance["ExtremePlanetChance"] = [float(p.get("value")) for p in solar.find("Property[@name='ExtremePlanetChance']")]
+    # what desktop/system_attr.py draws a system's abandoned, empty and pirate states and its extra prime planet from
+    for name in ("AbandonedSystemProbability", "EmptySystemProbability", "PirateSystemProbability"):
+        chance[name] = [float(p.get("value")) for p in solar.find(f"Property[@name='{name}']")]
+    chance["PercentChanceExtraPrime"] = float(solar.find("Property[@name='PercentChanceExtraPrime']").get("value"))
+    voxel = unpack_named(game, ["metadata/simulation/solarsystem/voxelgeneratorsettings.mbin"], WORK / "voxel")
+    settings = ET.parse(next(voxel.rglob("voxelgeneratorsettings.MXML"))).getroot().find("Property[@name='TerrainSettings']")
     return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances,
-            "plants": plant_hints(files)}
+            "plants": plant_hints(files), "voxel": [voxel_layers(e) for e in settings],
+            "common": [object_entry(e) for e in files.find("Property[@name='CommonExternalObjectLists']")],
+            "optional": [object_list(e) for e in files.find("Property[@name='OptionalExternalObjectLists']")]}
+
+
+# the kinds of ground an object list entry stands on (GcTerrainTileType); the generator skips some of them on some planets
+TILE = {"Air": 0, "Base": 1, "Rock": 2, "Mountain": 3, "Underwater": 4, "Cave": 5, "Dirt": 6, "Liquid": 7, "Substance": 8}
+
+
+def _prop(e: ET.Element, name: str) -> str | None:
+    p = e.find(f"Property[@name='{name}']")
+    if p is None:
+        return None
+    child = p.find("Property")
+    if child is not None and (p.get("value") is None or p.get("value", "").startswith(("Gc", "Tk"))):
+        return child.get("value")
+    return p.get("value")
+
+
+def object_entry(e: ET.Element) -> list:
+    """One entry of the game's lists of objects (GcExternalObjectListOptions): name, the resource hint it adds, order, chance, ground,
+    how many files it chooses among, whether it chooses by the planet's life level."""
+    options = e.find("Property[@name='Options']")
+    return [_prop(e, "Name"), _prop(e, "ResourceHint") or "", int(_prop(e, "Order")), float(_prop(e, "Probability")), TILE[_prop(e, "TileType")],
+            len(options) if options is not None else 0, _prop(e, "ChooseUsingLifeLevel") == "true"]
+
+
+OBJECT_FLAGS = ("OnlyOnExtremeWeather", "OnlyOnExtremeSentinels", "OnlyOnCorruptSentinels", "OnlyOnDeepWater", "OnlyOnInfested", "OnlyOnScrapWorlds",
+                "NotOnScrapWorlds", "NotOnExtremePlanets", "NotOnStartPlanets", "NotOnWeirdPlanets", "NotOnDeadPlanets", "NotOnGasGiant", "NotOnInfested")
+
+
+def object_list(e: ET.Element) -> dict:
+    """One optional list of objects (GcExternalObjectFileList): where it applies, its chance, how many of its files it takes, the files."""
+    on = _prop(e, "OnlyOnBiome")
+    return {"id": _prop(e, "Id"), "flags": [_prop(e, n) == "true" for n in OBJECT_FLAGS], "biome": 16 if on in (None, "None", "All") else planet_gen.BIOME[on],
+            "sub": [float(x.get("value")) for x in e.find("Property[@name='SubBiomeProbability']")], "chance": float(_prop(e, "ProbabilityOfBeingActive")),
+            "min": int(_prop(e, "MinFilesToChoose")), "max": int(_prop(e, "MaxFilesToChoose")),
+            "files": [object_entry(f) for f in e.find("Property[@name='ExternalObjectFiles']")]}
+
+
+def voxel_layers(e: ET.Element) -> dict:
+    """Which noise layers, features and cave mouth the terrain of a planet size class may have (the Max data of the voxel generator)."""
+    mx = e.find("Property[@name='Max']")
+
+    def active(x: ET.Element) -> bool:
+        return x.find("Property[@name='Active']").get("value") == "true"
+
+    return {"noise": [active(x) for x in mx.find("Property[@name='NoiseLayers']")], "features": [active(x) for x in mx.find("Property[@name='Features']")],
+            "cave": active(mx.find("Property[@name='Caves']")[0].find("Property[@name='Mouth']"))}
 
 
 def plant_hints(root: ET.Element) -> dict[str, str]:

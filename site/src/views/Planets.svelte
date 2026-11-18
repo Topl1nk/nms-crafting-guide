@@ -119,7 +119,6 @@
               <dt>{t("Resources")}</dt>
               <dd>
                 {#each p.resources as id}<span class="chip-item">{#if D.items[id]}<ItemIcon {id} size={22} />{D.items[id].name}{:else}{textOf(id) || id}{/if}</span>{/each}
-                <p class="muted small">{t("Bones and a few other finds are not worked out yet.")}</p>
               </dd>
             {/if}
           </dl>
@@ -147,8 +146,10 @@
           <ul>{#each p.bases as name}<li>{name || t("Unnamed base")}</li>{/each}</ul>
         {/if}
 
-        <h3>{t("Resources")}</h3>
-        <p class="warn">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
+        {#if !p.resources?.length}
+          <h3>{t("Resources")}</h3>
+          <p class="warn">{t("The game files do not say which resources a planet has. The game works them out from the planet's seed, and the save does not keep them, so none are listed here.")}</p>
+        {/if}
 
         {#if p.name_source === "generated" || p.system_name_source === "generated"}<p class="muted small foot">{t("The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.")}</p>{/if}
       {/if}

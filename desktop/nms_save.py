@@ -214,9 +214,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
                     words[key] = (info.get("word") or planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
                     data[key] = {k: info[k] for k in ("weather", "flora", "sentinels") if info.get(k)}
                     if info.get("substances"):  # in the order the game lists them: the plant, then the rare one ... the common one last
-                        # (the game's lists run in the order of its object lists: the plant's before the scrap's, whose list is the last)
-                        data[key]["resources"] = (([info["plant"]] if info.get("plant") else []) + (["UI_SCRAP_HINT"] if info.get("scrap") else [])
-                                                  + [info["substances"][k] for k in ("rare", "uncommon", "common")])
+                        data[key]["resources"] = info.get("hints", []) + [info["substances"][k] for k in ("rare", "uncommon", "common")]
         if kind in count and mine(owner):
             p = planet(key)
             p[count[kind]] += 1

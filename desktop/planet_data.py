@@ -60,7 +60,7 @@ def _tables() -> dict:
     if _t is None:
         raw = json.loads((paths.RES / "data" / "planet_generator.json").read_text(encoding="utf-8"))["data"]
         _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"],
-              "substances": raw["substances"], "plants": raw["plants"]}
+              "substances": raw["substances"], "plants": raw["plants"], "voxel": raw["voxel"], "common": raw["common"], "optional": raw["optional"]}
     return _t
 
 
@@ -280,15 +280,187 @@ def texts(seed: int, body: planet_gen.Body, lv: dict, setting: int = 2) -> dict:
     return out
 
 
+# The terrain stage (0x16cbfb0 and 0x16cae10, stage seed 4): the size class of the planet's terrain, its water and whether it has hazards. The
+# integers at 0x5012044 and 0x5012048 (10 and 21) and the floats 0.2, 35, 450, 10, 120 and 1500 of the water are constants of the exe, read out
+# of the running game. Each noise layer or feature that is on and drawn spends more draws on its own variation (30 and 12 of them).
+_SIZE_FROM, _SIZE_TO = F(10), F(21)
+_WATER = F(120)
+_LAYER_DRAWS, _FEATURE_DRAWS = 30, 12
+
+
+def terrain(seed: int, body: planet_gen.Body, star: int) -> dict:
+    """{"size_index": the terrain's size class (0..30), "water": the depth of the sea (0 none, 120 usual), "hazard": the planet has
+    hazard areas (caves with them)}; checked against the game on every planet of tests/fixtures/planet_resources.json."""
+    t = _file(_tables(), body)["terrain"]
+    state = _state(planet_word.stage_seed(seed, 4))
+
+    def draw_int() -> int:
+        s = state[0] * _MULT + state[1]
+        state[0], state[1] = s & 0xFFFFFFFF, s >> 32
+        return state[0]
+
+    def draw() -> np.float32:
+        return F(draw_int() * 2.0 ** -32)
+
+    low, high = int(_SIZE_FROM), int(_SIZE_TO)
+    if star == 4:
+        size = (((31 - high) * draw_int()) >> 32) + high
+    elif body.extra:
+        size = (((high - (low + 1)) * draw_int()) >> 32) + low + 1
+    else:
+        size = (low * draw_int()) >> 32
+    moon, giant, water_world = body.size == planet_gen.MOON, body.biome == 15, body.biome == 14
+    if (moon and star != 4) or body.start or body.biome in (6, 7):
+        wet = False
+    elif water_world:
+        wet = True
+    else:
+        wet = F(t["WaterActiveFrequency"]) > draw()
+    water = F(0)
+    if wet:
+        water = _WATER
+        if star == 4:
+            deep = min(F(t["HighWaterActiveFrequency"]), F(0.2)) > draw()
+            water = F(10) if moon else F(35) if giant else F(1500) if water_world else F(450) if deep else _WATER
+    layers = _tables()["voxel"][size]
+    for i in range(8):
+        on = layers["noise"][i] and F(t["NoiseLayers"][i]) > draw()
+        if i == 7:
+            on = False if water > _WATER else True if water > F(1) else on
+        if on:
+            for _ in range(_LAYER_DRAWS):
+                draw_int()
+    for j in range(7):
+        if layers["features"][j] and F(t["Features"][j]) > draw():
+            for _ in range(_FEATURE_DRAWS):
+                draw_int()
+    hazard = bool(layers["cave"] and F(t["Caves"][0]) > draw())
+    return {"size_index": size, "water": float(water), "hazard": hazard}
+
+
+def _extreme_applies(body: planet_gen.Body, extreme: int, kind: int) -> bool:
+    """0x9bfd50: an extreme planet that is not Lush or Barren, and whose weather is not one of the plain kinds."""
+    biome = 12 if body.subtype == planet_gen.SUBTYPE["Swamp"] else 13 if body.subtype == planet_gen.SUBTYPE["Lava"] else body.biome
+    if extreme == 0 or biome == 0 or body.biome == 5:
+        return False
+    return not (kind <= 0xF and (0xB007 >> kind) & 1)
+
+
+def objects(seed: int, body: planet_gen.Body, lv: dict, ground: dict, setting: int = 2) -> list[list]:
+    """The entries of the game's lists of objects a planet gets (0x16d2b00, stage seed 7), in order, each [name, resource hint, ...]: the
+    hints of them are what the Discoveries menu lists besides the substances (ancient bones, salvage, plants, bugs, swarm debris).
+    The lists are sorted by their order, each takes its own draws, entries that do not suit the planet are left out after drawing."""
+    t = _tables()
+    sub, biome = body.subtype, body.biome
+    mapped = 12 if sub == planet_gen.SUBTYPE["Swamp"] else 13 if sub == planet_gen.SUBTYPE["Lava"] else biome
+    sentinel = lv["sentinels"][2]    # the routine always looks at the "normal" combat setting
+    extreme = _extreme_applies(body, lv["weather_extreme"], lv["weather_kind"])
+    water, hazard = ground["water"], ground["hazard"]
+
+    def skipped(e: list, u: np.float32) -> bool:
+        tile = e[4]
+        return bool((tile in (4, 7) and water <= 0) or (tile == 5 and not hazard) or u > F(e[3]) or (body.empty and e[0] == "LEVELONEOBJECTS"))
+
+    def suits(lst: dict, u: np.float32) -> bool:
+        f = dict(zip(("extreme_weather", "extreme_sentinels", "corrupt", "deep", "only_infested", "only_scrap", "not_scrap", "not_extreme", "not_start",
+                      "not_weird", "not_dead", "not_giant", "not_infested"), lst["flags"]))
+        ok = True
+        if f["extreme_weather"]:
+            ok = extreme
+        if f["extreme_sentinels"]:
+            ok = ok and sentinel == 2
+        if f["corrupt"]:
+            ok = ok and sentinel == 3
+        if f["deep"]:
+            ok = ok and water > 120
+        if f["not_extreme"]:
+            ok = ok and not extreme and sentinel != 2
+        if f["not_start"]:
+            ok = ok and not body.start
+        if lst["biome"] != 16:
+            ok = ok and mapped == lst["biome"]
+        for key, bad in (("not_weird", mapped == 7), ("not_giant", mapped == 15), ("not_dead", mapped == 6), ("not_infested", sub == 24)):
+            if f[key]:
+                ok = ok and not bad
+        if f["only_infested"]:
+            ok = ok and sub == 24
+        if f["only_scrap"]:
+            ok = ok and bool(lv["scrap"])
+        if f["not_scrap"]:
+            ok = ok and not lv["scrap"]
+        chance = lst["sub"][sub] if 0 <= sub < len(lst["sub"]) and lst["sub"][sub] >= 0 else lst["chance"]
+        return bool(ok and F(chance) > u)
+
+    state = _state(planet_word.stage_seed(seed, 7))
+
+    def pdraw() -> int:
+        s = state[0] * _MULT + state[1]
+        state[0], state[1] = s & 0xFFFFFFFF, s >> 32
+        return state[0]
+
+    lo, hi = pdraw(), pdraw()
+    h = (hi << 32) | lo
+    h = (((h >> 33) ^ h) * 0x64DD81482CBD31D7) & 0xFFFFFFFFFFFFFFFF
+    h = (((h >> 33) ^ h) * 0xE36AA5C613612997) & 0xFFFFFFFFFFFFFFFF
+    local = _state((h >> 33) ^ h)
+
+    def ldraw() -> int:
+        s = local[0] * _MULT + local[1]
+        local[0], local[1] = s & 0xFFFFFFFF, s >> 32
+        return local[0]
+
+    entries = [(e[2], False, e) for e in _file(t, body)["objects"]] + [(e[2], False, e) for e in t["common"]]
+    entries += [(max([f[2] for f in lst["files"]] or [0]), True, lst) for lst in t["optional"]]
+    entries.sort(key=lambda x: x[0])          # stable, as the game's sort
+    out: list[list] = []
+    for _, is_list, item in entries:
+        u = F(ldraw() * 2.0 ** -32)
+        if not is_list:
+            if not skipped(item, u):
+                ldraw()
+                out.append(item)
+            continue
+        if not suits(item, u):
+            continue
+        count = (((item["max"] - item["min"] + 1) * ldraw()) >> 32) + item["min"]
+        total = F(0)
+        for f in item["files"]:
+            if not skipped(f, F(1.0)):
+                total = F(total + F(f[3]))
+        for _ in range(count):
+            target = F(F(F(pdraw() * 2.0 ** -32) * total) + F(0))
+            acc, chosen = F(0), None
+            for f in item["files"]:
+                if skipped(f, F(1.0)) or any(o is f for o in out):
+                    continue
+                if not target < acc and F(F(f[3]) + acc) >= target:
+                    chosen = f
+                    break
+                acc = F(acc + F(f[3]))
+            if chosen is not None:
+                pdraw()
+                out.append(chosen)
+                total = F(total - F(chosen[3]))
+    return out
+
+
 def describe(body: planet_gen.Body, setting: int | None, mode: int) -> dict | None:
     """The loc keys of a planet's "Planetary data" and its word, or None where they are not worked out (a game mode with extra rules,
     or a sentinel setting the save does not state clearly). Keys: weather, flora, sentinels, word (fauna is not worked out: None),
     substances (its common, uncommon and rare substance ids), plant (the item id of its plant resource, "" if none)."""
     if mode in (0, 6) or setting is None:
         return None
+    if planet_gen.GALAXY_KIND[body.galaxy % 20] == 2:
+        # the "vicious" galaxies: the sentinel level and the weather of about one planet in seven there disagree with the game's
+        # (the step that checks the player's own sentinel setting is not understood), so nothing is said about them
+        return None
     lv = levels(body.seed, body, body.star, body.galaxy, body.index, setting)
     out = texts(body.seed, body, lv, setting)
     out["substances"] = substances(body.seed, body, body.star, lv["weather_extreme"])
     out["plant"] = plant_hint(body)
     out["scrap"] = bool(lv["scrap"])
+    ground = terrain(body.seed, body, body.star)
+    # what the game's lists of objects add to the resource list besides the substances, in its order: the bones and salvage of the
+    # Discoveries menu, the plant, the bugs and the swarm debris (UI_BONES_HINT, PLANT_DUST, UI_SCRAP_HINT, UI_BUGS_HINT ...)
+    out["hints"] = [e[1] for e in objects(body.seed, body, lv, ground, setting) if e[1]]
     return out

@@ -130,6 +130,8 @@ class Body:
     star: int = 0    # the system's star colour (0 yellow, 1 green, 2 blue, 3 red, 4 purple)
     index: int = 0   # the body's number in the system minus one
     galaxy: int = 0
+    extra: bool = False  # a body beyond the system's ordinary planets (descriptor byte +0x52: the prime planets and moons)
+    empty: bool = False  # the system has no race (descriptor byte +0x4f)
 
 
 def _attributes(ua: int) -> dict:
@@ -327,8 +329,11 @@ def bodies(system: int) -> list[Body]:
     attrs = _attributes(ua)
     body_list = _body_list(ua, attrs)
     _biomes(ua, attrs, body_list, _orbit_draws(ua, body_list, attrs["planet_count"]))
+    import system_attr
+    exact = system_attr.attributes(ua)
     for i, body in enumerate(body_list):
         body.star, body.index, body.galaxy = attrs["star_type"], i, (ua >> 32) & 0xFF
+        body.extra, body.empty = i >= exact["planets"], exact["race"] == 7
     return body_list
 
 

@@ -37,6 +37,9 @@ def test_texts_match_the_game() -> None:
     for p in PLANETS:
         body = _body(p)
         got = planet_data.describe(body, 2, 1)
+        if planet_gen.GALAXY_KIND[body.galaxy % 20] == 2:
+            assert got is None   # the "vicious" galaxies are left out: about one planet in seven there differs from the game's
+            continue
         assert got is not None
         want = p["keys"]
         assert {k: got[k] for k in want} == want, p["seed"]

@@ -570,7 +570,6 @@ export default {
   "Planetary data": "Données planétaires",
   "Weather": "Météo",
   "Sentinels": "Sentinelles",
-  "Bones and a few other finds are not worked out yet.": "Les ossements et quelques autres trouvailles ne sont pas encore calculés.",
   "First found": "Découverte le",
   "What you found here": "Ce que vous avez trouvé ici",
   "Flora": "Flore",

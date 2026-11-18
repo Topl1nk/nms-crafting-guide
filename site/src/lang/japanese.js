@@ -570,7 +570,6 @@ export default {
   "Planetary data": "惑星データ",
   "Weather": "天候",
   "Sentinels": "センチネル",
-  "Bones and a few other finds are not worked out yet.": "骨とその他の一部の発見物はまだ算出されていません。",
   "First found": "発見日",
   "What you found here": "ここで見つけたもの",
   "Flora": "植物",
