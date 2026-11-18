@@ -13,7 +13,8 @@
   import { fmtInt } from "../lib/core.js";
   import { D, ENGLISH, ITEM_NAMES, name, placement } from "../lib/data.js";
   import { gamesave, refresh } from "../lib/gamesave.svelte.js";
-  import { collate, t, ui } from "../lib/i18n.js";
+  import { fmtStamp, fmtTime } from "../lib/dates.js";
+  import { collate, t } from "../lib/i18n.js";
   import { inventory } from "../lib/inventory.svelte.js";
   import { setKeys } from "../lib/keys.js";
   import { arrival, go, trapBack } from "../lib/router.svelte.js";
@@ -55,7 +56,7 @@
   // scheme has no line for (exocraft, ships, the freighter), each kind in the order the save gives it.
   const RANK = { suit: 10, food: 11, vehicle: 13, ship: 14, freighter: 15 };
   const rank = (c) => (/^chest(\d)$/.test(c.key) ? Number(c.key.slice(5)) : RANK[c.key.replace(/\d+$/, "")] ?? 16);
-  const slotChoices = $derived(gamesave.slots.map((s) => [gamesave.slotKey(s), `${s.file} · ${new Date(s.saved * 1000).toLocaleString(ui.locale, { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" })}`]));
+  const slotChoices = $derived(gamesave.slots.map((s) => [gamesave.slotKey(s), `${s.file} · ${fmtStamp(s.saved * 1000)}`]));
   const places = $derived([...(gamesave.report?.containers ?? [])].sort((a, b) => rank(a) - rank(b)));
   // The column "Where it lies" is there when the items are read from the save. No column is cut then: tags are never
   // clipped; a table wider than its pane scrolls sideways instead.
@@ -191,7 +192,7 @@
 <datalist id="item-names">{#each ITEM_NAMES as n}<option value={n}></option>{/each}</datalist>
 <div class="count">
   {#if gamesave.error}<span class="err">{gamesave.error}</span>
-  {:else if inventory.fromSave}{t("Items from the save")} · {t("read at {time}", { time: gamesave.readAt ? new Date(gamesave.readAt).toLocaleTimeString(ui.locale) : "—" })} · {t("refreshes by itself")}
+  {:else if inventory.fromSave}{t("Items from the save")} · {t("read at {time}", { time: gamesave.readAt ? fmtTime(gamesave.readAt) : "—" })} · {t("refreshes by itself")}
   {:else}{gamesave.available ? t("The save is turned off.") : t("The page cannot see your save.")} {t("Type in what is in your backpack, and how many — the list is kept only on this computer.")}{/if}
 </div>
 {#if only}<div class="count">{t("Showing every place of “{item}”", { item: name(only) })} · <button class="link" onclick={clearOnly}>{t("show all items")}</button></div>{/if}

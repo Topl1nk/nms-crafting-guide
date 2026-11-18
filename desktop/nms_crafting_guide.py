@@ -66,6 +66,7 @@ if len(sys.argv) > 2 and sys.argv[1] == "--tool":
 import languages  # noqa: E402
 import nms_save  # noqa: E402
 import pictures  # noqa: E402
+import sysformats  # noqa: E402
 
 
 # The window's lifetime is not the browser process's: with a profile that is already running (Edge lingers in the background
@@ -142,6 +143,8 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
                 return self.send_json(nms_save.report(match[0]))
             except Exception as exc:  # noqa: BLE001 - shown in the page
                 return self.send_json({"error": f"{type(exc).__name__}: {exc}"}, 500)
+        if url.path == "/api/formats":
+            return self.send_json(sysformats.formats())
         if url.path == "/api/pictures":
             return self.send_json({**pictures.status(), "saves": len(nms_save.save_files())})
         if url.path == "/api/lang":

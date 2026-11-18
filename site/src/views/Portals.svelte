@@ -25,6 +25,7 @@
     Address, AddressError, GLYPH_FIELD, looksLikeAddress,
   } from "../lib/core.js";
   import { D, galaxyName } from "../lib/data.js";
+  import { fmtIso } from "../lib/dates.js";
   import { ordinal, t } from "../lib/i18n.js";
   import { setKeys } from "../lib/keys.js";
   import { arrival } from "../lib/router.svelte.js";
@@ -266,7 +267,7 @@
           <div class="pick-text">
             {#if l.detail}<p><span class="hl2">{t("What is there")}</span> {t(l.detail)}</p>{/if}
             {#if l.where}<p><span class="hl2">{t("How to find it")}</span> {t(l.where)}</p>{/if}
-            <p class="muted small">{[t(l.source), l.added].filter(Boolean).join(" · ")}</p>
+            <p class="muted small">{[t(l.source), fmtIso(l.added)].filter(Boolean).join(" · ")}</p>
           </div>
         </div>
       </aside>

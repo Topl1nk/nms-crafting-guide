@@ -21,9 +21,10 @@
   import GlyphStrip from "../components/GlyphStrip.svelte";
   import ItemIcon from "../components/ItemIcon.svelte";
   import List from "../components/List.svelte";
+  import { fmtDate } from "../lib/dates.js";
   import { D, galaxyName } from "../lib/data.js";
   import { gamesave } from "../lib/gamesave.svelte.js";
-  import { ordinal, t, ui } from "../lib/i18n.js";
+  import { ordinal, t } from "../lib/i18n.js";
   import { setKeys } from "../lib/keys.js";
   import { copy } from "../lib/toast.svelte.js";
   import { debounce } from "../lib/util.js";
@@ -40,7 +41,7 @@
   });
 
   const hex3 = (n) => `0x${n.toString(16).toUpperCase().padStart(3, "0")}`;
-  const when = (ts) => (ts ? new Date(ts * 1000).toLocaleDateString(ui.locale, { year: "numeric", month: "short", day: "numeric" }) : "");
+  const when = (ts) => fmtDate(ts * 1000);
   // A name the save does not hold is put together the way the game does it, from its own texts in the chosen language: the
   // template (NAMEGEN_PLANET_STYLE_n) and the word added to it (Delta becomes Дельта). A name from the save is shown as it is.
   const shown = (p) => {
@@ -58,6 +59,8 @@
   const kindOf = (p) => (p.planet ? wordOf(p) || (TYPES[p.biome] ? t(TYPES[p.biome]) : "") : "");
   // The game's text under a loc key (weather, sentinels, flora), without the planet-word placeholders.
   const textOf = (key) => (D.biomes.words[key] || "").replace(/%[A-Z]+%/g, "").trim();
+  // A name of the game's planet page, as the game words it in the chosen language (the page's own word where the game has none).
+  const label = (key, english) => textOf(key) || t(english);
 
   // What the game shows beside a hint that is not an item (the bones, the salvage, the bugs, the swarm): a picture of an item that is the same.
   const HINT_ICON = { UI_BONES_HINT: "ANY_BONE", UI_SCRAP_HINT: "SCRAP_GOODS", UI_BUGS_HINT: "FOOD_M_GRUB", UI_B_SWARM_HINT: "SWARMDUST" };
@@ -72,7 +75,11 @@
 </script>
 
 {#snippet dates(p)}{when(p.seen)}{/snippet}
-{#snippet nameCell(p)}{shown(p) || ""}{#if !shown(p)}<span class="muted">{nameOf(p)}</span>{/if}{/snippet}
+<!-- what you found: a picture and a figure for each kind, the fauna out of how many there are -->
+{#snippet foundCell(p)}<span class="res-row">{#each [["flora", p.flora, null], ["fauna", p.fauna, p.fauna_total], ["mineral", p.minerals, null]] as [icon, n, total]}{#if n || total}<span class="cnt"><ItemIcon id="FIND_{icon}" size={18} color="#8fb6ff" />{n}{#if total}/{total}{/if}</span>{/if}{/each}</span>{/snippet}
+{#snippet resCell(p)}<span class="res-row">{#each p.resources ?? [] as id}<ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={20} />{/each}</span>{/snippet}
+<!-- the name over its system (and galaxy, outside the first): one column instead of three -->
+{#snippet nameCell(p)}<span class="two"><span>{#if shown(p)}{shown(p)}{:else}<span class="muted">{nameOf(p)}</span>{/if}</span><small class="muted">{p.system_name || hex3(p.system)}{p.galaxy > 1 ? ` · ${galaxyName(p.galaxy)}` : ""}</small></span>{/snippet}
 
 <div class="fbar">
   <h1><span>{t("Planets")}</span></h1>
@@ -91,10 +98,13 @@
     <div class="main">
       <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
         { title: t("Name"), cell: nameCell, cls: "strong", sort: shown },
-        { title: t("System"), text: (p) => p.system_name || hex3(p.system), sort: (p) => p.system_name || hex3(p.system) },
-        { title: t("Planet type"), text: kindOf, sort: kindOf },
-        { title: t("Galaxy"), text: (p) => galaxyName(p.galaxy), cls: "wide-only", sort: (p) => p.galaxy },
-        { title: t("Last seen"), cell: dates, cls: "muted", sort: (p) => p.seen },
+        { title: t("Planet type"), text: kindOf, cls: "clip w150", sort: kindOf },
+        { title: label("WEATHER_L", "Weather"), text: (p) => textOf(p.weather_key), cls: "wide-only clip w170 muted", sort: (p) => textOf(p.weather_key) },
+        { title: label("SENTINELS_L", "Sentinels"), text: (p) => textOf(p.sentinel_key), cls: "wide-only clip w150 muted", sort: (p) => textOf(p.sentinel_key) },
+        { title: label("FAUNA_L", "Fauna"), text: (p) => textOf(p.fauna_key), cls: "wide-only clip w130 muted", sort: (p) => p.fauna_key },
+        { title: t("Found by you"), cell: foundCell, cls: "wide-only", sort: (p) => p.fauna + p.flora + p.minerals },
+        { title: label("RESOURCES_L", "Resources"), cell: resCell, cls: "wide-only" },
+        { title: t("Last seen"), cell: dates, cls: "num muted", sort: (p) => p.seen },
       ]} />
     </div>
     <aside class="detail">
@@ -111,14 +121,14 @@
 
         {#if p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key}
           <dl>
-            {#each [["weather", "Weather", p.weather_key], ["sentinels", "Sentinels", p.sentinel_key], ["flora", "Flora", p.flora_key], ["fauna", "Fauna", p.fauna_key]] as [icon, label, key]}
-              {#if key}<dt><ItemIcon id="PLANET_{icon}" size={32} color="#8fb6ff" />{t(label)}</dt><dd>{textOf(key)}</dd>{/if}
+            {#each [["weather", "WEATHER_L", "Weather", p.weather_key], ["sentinels", "SENTINELS_L", "Sentinels", p.sentinel_key], ["flora", "FLORA_L", "Flora", p.flora_key], ["fauna", "FAUNA_L", "Fauna", p.fauna_key]] as [icon, loc, english, key]}
+              {#if key}<dt><ItemIcon id="PLANET_{icon}" size={32} color="#8fb6ff" />{label(loc, english)}</dt><dd>{textOf(key)}</dd>{/if}
             {/each}
           </dl>
         {/if}
 
         {#if p.resources?.length}
-          <h3>{t("Resources")}</h3>
+          <h3>{label("RESOURCES_L", "Resources")}</h3>
           <div class="res">
             {#each p.resources as id}<span><ItemIcon id={D.items[id] ? id : HINT_ICON[id] ?? id} size={24} />{D.items[id]?.name ?? (textOf(id) || id)}</span>{/each}
           </div>
@@ -129,8 +139,8 @@
         {#if p.flora || p.fauna || p.minerals || p.fauna_total}
           <h3>{t("Found by you")}</h3>
           <div class="finds">
-            {#each [["flora", p.flora, "Flora", null], ["fauna", p.fauna, "Fauna", p.fauna_total], ["mineral", p.minerals, "Minerals", null]] as [icon, n, label, total]}
-              {#if n || total}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}{#if total} / {total}{/if}</b><small>{t(label)}</small></span>{/if}
+            {#each [["flora", p.flora, "UI_DISC_FLORA", "Flora", null], ["fauna", p.fauna, "UI_DISC_FAUNA", "Fauna", p.fauna_total], ["mineral", p.minerals, "UI_DISC_MINERALS", "Minerals", null]] as [icon, n, loc, english, total]}
+              {#if n || total}<span><ItemIcon id="FIND_{icon}" size={24} color="#8fb6ff" /><b>{n}{#if total} / {total}{/if}</b><small>{label(loc, english)}</small></span>{/if}
             {/each}
           </div>
         {/if}
@@ -144,6 +154,14 @@
 {/if}
 
 <style>
+  .res-row { display: inline-flex; gap: 8px; align-items: center; }
+  .cnt { display: inline-flex; align-items: center; gap: 3px; font-variant-numeric: tabular-nums; font-size: 0.88rem; }
+  .two { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
+  .two small { font-size: 0.74rem; font-weight: 400; }
+  /* narrow text columns: a long text is cut with an ellipsis (the whole of it is in the tooltip) */
+  .main :global(td.w130) { max-width: 130px; }
+  .main :global(td.w150) { max-width: 150px; }
+  .main :global(td.w170) { max-width: 170px; }
   .split-planets { grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 460px); }
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }
   .main :global(.list) { flex: 1 1 0; height: auto; max-height: none; overflow: auto; min-height: 160px; }
