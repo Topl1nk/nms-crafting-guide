@@ -22,7 +22,8 @@ let polling = 0;
 export async function installPictures() {
   if (pictures.state === "running") return;
   try {
-    const res = await fetch(`api/pictures/install${pictures.have ? "?force=1" : ""}`, { method: "POST" });
+    // Pressed over a finished set: read the game's tables again too. Finishing a cut-short or older set needs only the pictures.
+    const res = await fetch(`api/pictures/install${pictures.have && pictures.complete ? "?force=1" : ""}`, { method: "POST" });
     if (!res.ok) throw new Error(`${res.status}`);
   } catch (exc) {
     pictures.state = "error";
