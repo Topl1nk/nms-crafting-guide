@@ -42,20 +42,33 @@ feature). Edit single lines by hand when the change is only a rewording.
 1. Build the site: `node node_modules/vite/bin/vite.js build` in `app/` (with `NMS_LANG=english`). `dist/lang/` must hold all
    languages (it is copied from `web/lang/`, which `scripts/build_langs.py` writes from the installed game; it is already there
    unless the game files changed).
-2. `pip install playwright pillow` (once; Chrome must be installed) and run `python scripts/readme_shots.py`
-   (all 14 sets, about 5 minutes) or with codes: `python scripts/readme_shots.py en ru`.
-3. Look at one or two pictures (`docs/img/ru/site-inventory.webp` shows the typed list in place of a save).
+2. `pip install playwright pillow` (once; Chrome must be installed). Set `NMS_LAUNCHER_PYTHON` to the Python that has the
+   program's requirements (`desktop/requirements.txt`; the repo's `.uv\venv` has them) and `NMS_SHOTS_VERSION` to the version being
+   released (Settings shows "you have the latest version" with it), then run `python scripts/readme_shots.py` (all 14 sets, about
+   10 minutes), or with codes: `python scripts/readme_shots.py en ru`. `--steam` also writes the Steam guide's pictures
+   (English and Russian, `NMSii/steam-guide/images-<en|ru>/NN-name.jpg`); `--no-launcher` leaves out Planets and Settings.
+3. Look at one or two pictures (`site-planets.webp` and `site-settings.webp` need the game, its pictures and a save).
 
-The script serves `dist/` itself, so no server has to be started. The pictures use no save and no launcher, so they have no
-personal data, and the Planets page (which needs a save) is **not** in the README set. If it is ever to be, take it from the
-desktop program with a test save, never with a real one (real planet names are the player's own).
+The script serves `dist/` itself and starts the desktop program (without its window) for the two pages that need it, Planets and
+Settings. The program reads the player's real save, so it is put behind a small server that **cleans the save on its way to the
+page** (`clean()` in the script): planets and systems the player named, the names of bases, ships and exocraft are dropped, and only
+what the game itself names is shown. Check a Planets picture for a name that is not the game's own before committing it.
 
 ## 3. Steam guide
 
-`NMSii/steam-guide/guide.en.txt` and `guide.ru.txt` are written in Steam's markup (`[h1]`, `[list]`, `[url=...]`). Update the
-same places as the README: the short description, "What it can do", "Is it safe?" (the privacy sentence), and the settings
-section. `[IMAGE n: file]` marks where a picture goes; the files are in `images-en/` and `images-ru/` (1920 wide jpg). A new
-page needs a new picture: take it with the desktop program, crop to 16:9.
+`NMSii/steam-guide/guide.en.txt` and `guide.ru.txt` are written in Steam's markup (`[h1]`, `[h2]`, `[list]`, `[url=...]`). They go
+window by window (Craft with cooking and nanites, Tree, Wiki, My items, Planets, Portals, Multi-tools, Settings, Help and keys);
+a new window or a new feature gets its own `[h2]` there, and the same sentences go to "What it can do", "Is it safe?" (the privacy
+sentence) and "Good to know". `[IMAGE n: file]` marks where a picture goes; the files are in `images-en/` and `images-ru/` (1920x1080
+jpg, `NN-name.jpg`), written by `python scripts/readme_shots.py --steam` (STEAM_ORDER in the script lists them: add a page to
+LAUNCHER_PAGES or PAGES and to STEAM_ORDER for a new picture). Numbers in the text (2,292 items, 1,688 recipes) come from the data:
+check them against the Wiki and Craft pages when the data changes.
+
+## 5. The new sections of the README
+
+`scripts/readme_add_section.mjs sections.json` adds, to the README and its 13 translations, two pictures with captions at the end of
+the first screenshot table, a text section under it and one bullet in "Good to know"; `docs/readme-sections.example.json` is the
+file of 2026-11-19 (the planets section and the search in any language). Like the bullets helper it refuses to run twice.
 
 ## 4. Check and commit
 

@@ -75,7 +75,15 @@ C'est un petit programme pour votre ordinateur. Il lit recettes, prix et noms **
     <td width="50%"><img src="../img/fr/site-multitools.webp" alt="Multi-outils."><br><sub><b>Multi-outils.</b> Huit types comparés et comment obtenir les meilleurs.</sub></td>
     <td width="50%"><img src="../img/fr/site-tree-picker.webp" alt="Choisissez n'importe quel objet"><br><sub><b>Choisissez n'importe quel objet</b> fabricable et voyez comment.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/fr/site-planets.webp" alt="Planètes"><br><sub><b>Planètes.</b> Vos planètes avec leur météo, leurs sentinelles, leurs plantes, leurs animaux et leurs ressources.</sub></td>
+    <td width="50%"><img src="../img/fr/site-settings.webp" alt="Réglages"><br><sub><b>Réglages.</b> Thème, langue, sauvegarde et mises à jour dans un seul menu.</sub></td>
+  </tr>
 </table>
+
+### Vos planètes
+
+La page Planètes liste toutes les planètes de votre sauvegarde : le nom et le système (dans la couleur de son étoile), le type, la météo, les sentinelles, les plantes et les animaux, ce que vous y avez trouvé, les ressources et substances de la planète, et vos bases. Tout ce que la sauvegarde ne contient pas est calculé comme le fait le jeu, à partir de la graine de la planète, donc cela correspond à ce que vous voyez en jeu. Choisissez une planète pour voir sa fiche avec le globe, les glyphes du portail et la liste complète. La liste se filtre par type, étoile, météo, sentinelles, plantes, animaux, ressource, bases ou ce que vous avez trouvé. Dans le Wiki, un objet présent sur des planètes a un bouton « Trouver sur une planète » qui ouvre cette page avec le bon filtre.
 
 ## Bon à savoir
 
@@ -84,6 +92,7 @@ C'est un petit programme pour votre ordinateur. Il lit recettes, prix et noms **
 - **Après une mise à jour du jeu,** l'application peut relire les chiffres de votre jeu : rien ne devient obsolète.
 - **Votre sauvegarde.** Choisissez la sauvegarde et son emplacement une fois, dans le menu des réglages ; toutes les pages qui la lisent utilisent ce choix.
 - **Mises à jour.** Un point sur la roue dentée signale qu'une version plus récente existe. L'installation automatique est désactivée par défaut ; activez-la dans le menu des réglages, ou mettez à jour d'un bouton.
+- **Recherche dans toutes les langues.** Tapez un nom dans n'importe quelle langue : « Tainted Metal » et « Испорченный металл » trouvent le même objet. Le programme prépare seul les autres langues à partir de votre jeu, en arrière-plan.
 - **Aide-mémoire imprimable** des recettes qui valent la peine d'être retenues, dans `docs/pdf/`.
 
 ## Crédits

@@ -75,7 +75,15 @@ Está diante de um refinador e pergunta-se: *em que se transforma isto e qual a 
     <td width="50%"><img src="../img/pt/site-multitools.webp" alt="Multiferramentas."><br><sub><b>Multiferramentas.</b> Oito tipos comparados e como obter os melhores.</sub></td>
     <td width="50%"><img src="../img/pt/site-tree-picker.webp" alt="Escolha qualquer item"><br><sub><b>Escolha qualquer item</b> que se possa fazer e veja como.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/pt/site-planets.webp" alt="Planetas"><br><sub><b>Planetas.</b> Os seus planetas com clima, sentinelas, plantas, animais e recursos.</sub></td>
+    <td width="50%"><img src="../img/pt/site-settings.webp" alt="Definições"><br><sub><b>Definições.</b> Tema, idioma, jogo guardado e atualizações num só menu.</sub></td>
+  </tr>
 </table>
+
+### Os seus planetas
+
+A página Planetas lista todos os planetas do seu jogo guardado: nome e sistema (na cor da sua estrela), tipo, clima, sentinelas, plantas e animais, o que encontrou lá, os recursos e substâncias do planeta e as suas bases. Tudo o que o jogo guardado não tem é calculado como o jogo faz, a partir da semente do planeta, por isso coincide com o que vê no jogo. Escolha um planeta para ver a sua ficha com o globo, os glifos do portal e a lista completa. A lista filtra-se por tipo, estrela, clima, sentinelas, plantas, animais, recurso, bases ou o que encontrou. Na Wiki, um item que existe em planetas tem o botão «Encontrar num planeta», que abre esta página com o filtro certo.
 
 ## Bom saber
 
@@ -84,6 +92,7 @@ Está diante de um refinador e pergunta-se: *em que se transforma isto e qual a 
 - **Depois de uma atualização do jogo** a aplicação volta a ler os números do seu jogo, por isso nada fica desatualizado.
 - **O seu jogo guardado.** Escolha o jogo guardado e a ranhura uma só vez, no menu de definições; todas as páginas que o leem usam essa escolha.
 - **Atualizações.** Um ponto na roda dentada avisa que há uma versão mais recente. A instalação automática vem desligada; ligue-a no menu de definições ou atualize com um botão.
+- **Pesquisa em qualquer idioma.** Escreva um nome em qualquer idioma: «Tainted Metal» e «Испорченный металл» encontram o mesmo item. Os outros idiomas, o programa prepara-os sozinho a partir do seu jogo, em segundo plano.
 - **Folha de consulta para imprimir** com as receitas que vale a pena decorar, em `docs/pdf/`.
 
 ## Créditos

@@ -75,7 +75,15 @@ Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **dire
     <td width="50%"><img src="../img/es/site-multitools.webp" alt="Multiherramientas."><br><sub><b>Multiherramientas.</b> Ocho tipos comparados y cómo conseguir las mejores.</sub></td>
     <td width="50%"><img src="../img/es/site-tree-picker.webp" alt="Elige cualquier objeto"><br><sub><b>Elige cualquier objeto</b> que se pueda fabricar y mira cómo.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/es/site-planets.webp" alt="Planetas"><br><sub><b>Planetas.</b> Tus planetas con su clima, centinelas, plantas, animales y recursos.</sub></td>
+    <td width="50%"><img src="../img/es/site-settings.webp" alt="Ajustes"><br><sub><b>Ajustes.</b> Tema, idioma, partida y actualizaciones en un solo menú.</sub></td>
+  </tr>
 </table>
+
+### Tus planetas
+
+La página Planetas lista todos los planetas de tu partida: nombre y sistema (con el color de su estrella), tipo, clima, centinelas, plantas y animales, lo que has encontrado allí, los recursos y sustancias del planeta y tus bases. Todo lo que la partida no guarda se calcula como lo hace el juego, a partir de la semilla del planeta, así que coincide con lo que ves en el juego. Elige un planeta para ver su ficha con el globo, los glifos del portal y la lista completa. La lista se filtra por tipo, estrella, clima, centinelas, plantas, animales, recurso, bases o lo que has encontrado. En la Wiki, un objeto que hay en planetas tiene el botón «Buscar en un planeta», que abre esta página con el filtro puesto.
 
 ## Conviene saber
 
@@ -84,6 +92,7 @@ Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **dire
 - **Tras una actualización del juego** la aplicación puede volver a leer las cifras de tu juego, así que nunca se quedan viejas.
 - **Tu partida.** Elige la partida y su ranura una sola vez, en el menú de ajustes; todas las páginas que la leen usan esa elección.
 - **Actualizaciones.** Un punto en la rueda dentada avisa de que hay una versión más nueva. Instalarla sola viene desactivado; actívalo en el menú de ajustes o actualiza con un botón.
+- **Búsqueda en cualquier idioma.** Escribe un nombre en cualquier idioma: «Tainted Metal» y «Испорченный металл» encuentran el mismo objeto. El programa prepara solo los demás idiomas a partir de tu juego, en segundo plano.
 - **Hoja de consulta para imprimir** con las recetas que merece la pena memorizar, en `docs/pdf/`.
 
 ## Créditos

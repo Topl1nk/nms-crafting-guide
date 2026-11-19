@@ -75,7 +75,15 @@ Het is een klein programma voor je computer. Het leest recepten, prijzen en name
     <td width="50%"><img src="../img/nl/site-multitools.webp" alt="Multitools."><br><sub><b>Multitools.</b> Acht typen vergeleken en hoe je de beste krijgt.</sub></td>
     <td width="50%"><img src="../img/nl/site-tree-picker.webp" alt="Kies een voorwerp"><br><sub><b>Kies een voorwerp</b> dat gemaakt kan worden en zie hoe.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/nl/site-planets.webp" alt="Planeten"><br><sub><b>Planeten.</b> Je planeten met weer, sentinels, planten, dieren en grondstoffen.</sub></td>
+    <td width="50%"><img src="../img/nl/site-settings.webp" alt="Instellingen"><br><sub><b>Instellingen.</b> Thema, taal, opslag en updates in één menu.</sub></td>
+  </tr>
 </table>
+
+### Je planeten
+
+De pagina Planeten toont alle planeten uit je opslag: naam en systeem (in de kleur van de ster), type, weer, sentinels, planten en dieren, wat je er vond, de grondstoffen en stoffen van de planeet en je bases. Alles wat de opslag niet bevat, wordt berekend zoals het spel dat doet, uit de seed van de planeet, en komt dus overeen met wat je in het spel ziet. Kies een planeet voor haar kaart met de bol, de portaalglyphs en de volledige lijst. De lijst filter je op type, ster, weer, sentinels, planten, dieren, een grondstof, bases of wat je vond. In de Wiki heeft een voorwerp dat op planeten voorkomt de knop 'Vind op een planeet', die deze pagina met het juiste filter opent.
 
 ## Goed om te weten
 
@@ -84,6 +92,7 @@ Het is een klein programma voor je computer. Het leest recepten, prijzen en name
 - **Na een game-update** kan de app de cijfers opnieuw uit je game lezen, zodat ze niet verouderen.
 - **Je opslag.** Kies de opslag en het slot één keer in het instellingenmenu; elke pagina die ze leest gebruikt die keuze.
 - **Updates.** Een stip op het tandwiel meldt dat er een nieuwere versie is. Zelf installeren staat standaard uit; zet het aan in het instellingenmenu of werk bij met één knop.
+- **Zoeken in elke taal.** Typ een naam in een willekeurige taal: 'Tainted Metal' en 'Испорченный металл' vinden hetzelfde voorwerp. De andere talen bereidt het programma zelf voor uit je spel, op de achtergrond.
 - **Afdrukbare spiekbrief** met de recepten die het onthouden waard zijn, in `docs/pdf/`.
 
 ## Credits

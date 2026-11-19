@@ -75,7 +75,15 @@ Es ist ein kleines Programm für Ihren Computer. Es liest Rezepte, Preise und Na
     <td width="50%"><img src="../img/de/site-multitools.webp" alt="Multiwerkzeuge."><br><sub><b>Multiwerkzeuge.</b> Acht Typen im Vergleich und wie man die besten bekommt.</sub></td>
     <td width="50%"><img src="../img/de/site-tree-picker.webp" alt="Wählen Sie einen beliebigen Gegenstand,"><br><sub><b>Wählen Sie einen beliebigen Gegenstand,</b> der herstellbar ist, und sehen Sie wie.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/de/site-planets.webp" alt="Planeten"><br><sub><b>Planeten.</b> Ihre Planeten mit Wetter, Wächtern, Pflanzen, Tieren und Ressourcen.</sub></td>
+    <td width="50%"><img src="../img/de/site-settings.webp" alt="Einstellungen"><br><sub><b>Einstellungen.</b> Design, Sprache, Spielstand und Updates in einem Menü.</sub></td>
+  </tr>
 </table>
+
+### Ihre Planeten
+
+Die Seite Planeten listet alle Planeten Ihres Spielstands: Name und System (in der Farbe seines Sterns), Typ, Wetter, Wächter, Pflanzen und Tiere, was Sie dort gefunden haben, die Ressourcen und Substanzen des Planeten und Ihre Basen. Alles, was der Spielstand nicht enthält, wird so berechnet, wie es das Spiel tut, aus dem Seed des Planeten, und stimmt daher mit dem überein, was Sie im Spiel sehen. Wählen Sie einen Planeten, um seine Karte mit dem Globus, den Portalglyphen und der vollständigen Liste zu sehen. Die Liste lässt sich nach Typ, Stern, Wetter, Wächtern, Pflanzen, Tieren, einer Ressource, Basen oder Ihren Funden filtern. Im Wiki hat ein Gegenstand, den es auf Planeten gibt, die Schaltfläche „Auf einem Planeten finden“, die diese Seite mit dem passenden Filter öffnet.
 
 ## Gut zu wissen
 
@@ -84,6 +92,7 @@ Es ist ein kleines Programm für Ihren Computer. Es liest Rezepte, Preise und Na
 - **Nach einem Spiel-Update** kann die App die Zahlen erneut aus Ihrem Spiel lesen, sie veralten also nicht.
 - **Ihr Spielstand.** Spielstand und Slot wählen Sie einmal im Einstellungsmenü; jede Seite, die ihn liest, nutzt diese Wahl.
 - **Updates.** Ein Punkt am Zahnrad zeigt, dass eine neuere Version erschienen ist. Selbstständiges Installieren ist standardmäßig aus; schalten Sie es im Einstellungsmenü ein oder aktualisieren Sie per Knopfdruck.
+- **Suche in jeder Sprache.** Geben Sie einen Namen in einer beliebigen Sprache ein: „Tainted Metal“ und „Испорченный металл“ finden denselben Gegenstand. Die übrigen Sprachen bereitet das Programm selbst aus Ihrem Spiel im Hintergrund vor.
 - **Druckbares Merkblatt** mit den Rezepten, die man sich merken sollte, in `docs/pdf/`.
 
 ## Mitwirkende

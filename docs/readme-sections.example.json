@@ -1,0 +1,100 @@
+{
+"README.md": {
+ "PT": "Planets.", "PX": "Your planets with their weather, sentinels, plants, animals and resources.",
+ "ST": "Settings.", "SX": "Theme, language, your save and updates in one menu.",
+ "H": "### Your planets",
+ "PP": "The Planets page lists every planet in your save: its name and system (in the colour of its star), the type, the weather, the sentinels, the plants and animals, how much you found there, the resources and substances it has, and your bases. Whatever the save does not hold is worked out the way the game does it, from the planet's seed, so it matches what you see in the game. Pick a planet to see its card with the globe, the portal glyphs and the full list. Filter the list by type, star, weather, sentinels, plants, animals, a resource, bases or what you found. In the Wiki, an item that can be found on planets has a \"Find on a planet\" button that opens this page with the right filter.",
+ "B": "- **Search in any language.** Type a name in any language: \"Tainted Metal\" and \"{RU}\" find the same item. The program prepares the other languages from your game by itself, in the background."
+},
+"README.ru.md": {
+ "PT": "Планеты.", "PX": "Ваши планеты с погодой, стражами, растениями, животными и ресурсами.",
+ "ST": "Настройки.", "SX": "Тема, язык, сохранение и обновления в одном меню.",
+ "H": "### Ваши планеты",
+ "PP": "Страница «Планеты» перечисляет все планеты из вашего сохранения: название и систему (цветом её звезды), тип, погоду, стражей, растения и животных, сколько вы там нашли, ресурсы и вещества планеты и ваши базы. Всё, чего нет в сохранении, рассчитывается так, как это делает игра, по зерну планеты, поэтому совпадает с тем, что вы видите в игре. Выберите планету, и откроется её карточка с глобусом, глифами портала и полным списком. Список можно фильтровать по типу, звезде, погоде, стражам, растениям, животным, ресурсу, базам и по тому, что вы нашли. В Вики у предмета, который встречается на планетах, есть кнопка «Найти на планете», она открывает эту страницу уже с нужным фильтром.",
+ "B": "- **Поиск на любом языке.** Название можно вводить на любом из языков: «Tainted Metal» и «{RU}» найдут один и тот же предмет. Остальные языки программа сама собирает из вашей игры в фоне."
+},
+"README.fr.md": {
+ "PT": "Planètes.", "PX": "Vos planètes avec leur météo, leurs sentinelles, leurs plantes, leurs animaux et leurs ressources.",
+ "ST": "Réglages.", "SX": "Thème, langue, sauvegarde et mises à jour dans un seul menu.",
+ "H": "### Vos planètes",
+ "PP": "La page Planètes liste toutes les planètes de votre sauvegarde : le nom et le système (dans la couleur de son étoile), le type, la météo, les sentinelles, les plantes et les animaux, ce que vous y avez trouvé, les ressources et substances de la planète, et vos bases. Tout ce que la sauvegarde ne contient pas est calculé comme le fait le jeu, à partir de la graine de la planète, donc cela correspond à ce que vous voyez en jeu. Choisissez une planète pour voir sa fiche avec le globe, les glyphes du portail et la liste complète. La liste se filtre par type, étoile, météo, sentinelles, plantes, animaux, ressource, bases ou ce que vous avez trouvé. Dans le Wiki, un objet présent sur des planètes a un bouton « Trouver sur une planète » qui ouvre cette page avec le bon filtre.",
+ "B": "- **Recherche dans toutes les langues.** Tapez un nom dans n'importe quelle langue : « Tainted Metal » et « {RU} » trouvent le même objet. Le programme prépare seul les autres langues à partir de votre jeu, en arrière-plan."
+},
+"README.de.md": {
+ "PT": "Planeten.", "PX": "Ihre Planeten mit Wetter, Wächtern, Pflanzen, Tieren und Ressourcen.",
+ "ST": "Einstellungen.", "SX": "Design, Sprache, Spielstand und Updates in einem Menü.",
+ "H": "### Ihre Planeten",
+ "PP": "Die Seite Planeten listet alle Planeten Ihres Spielstands: Name und System (in der Farbe seines Sterns), Typ, Wetter, Wächter, Pflanzen und Tiere, was Sie dort gefunden haben, die Ressourcen und Substanzen des Planeten und Ihre Basen. Alles, was der Spielstand nicht enthält, wird so berechnet, wie es das Spiel tut, aus dem Seed des Planeten, und stimmt daher mit dem überein, was Sie im Spiel sehen. Wählen Sie einen Planeten, um seine Karte mit dem Globus, den Portalglyphen und der vollständigen Liste zu sehen. Die Liste lässt sich nach Typ, Stern, Wetter, Wächtern, Pflanzen, Tieren, einer Ressource, Basen oder Ihren Funden filtern. Im Wiki hat ein Gegenstand, den es auf Planeten gibt, die Schaltfläche „Auf einem Planeten finden“, die diese Seite mit dem passenden Filter öffnet.",
+ "B": "- **Suche in jeder Sprache.** Geben Sie einen Namen in einer beliebigen Sprache ein: „Tainted Metal“ und „{RU}“ finden denselben Gegenstand. Die übrigen Sprachen bereitet das Programm selbst aus Ihrem Spiel im Hintergrund vor."
+},
+"README.it.md": {
+ "PT": "Pianeti.", "PX": "I tuoi pianeti con meteo, sentinelle, piante, animali e risorse.",
+ "ST": "Impostazioni.", "SX": "Tema, lingua, salvataggio e aggiornamenti in un solo menu.",
+ "H": "### I tuoi pianeti",
+ "PP": "La pagina Pianeti elenca tutti i pianeti del tuo salvataggio: nome e sistema (nel colore della sua stella), tipo, meteo, sentinelle, piante e animali, quanto hai trovato, le risorse e le sostanze del pianeta e le tue basi. Tutto ciò che il salvataggio non contiene è calcolato come fa il gioco, dal seed del pianeta, quindi coincide con quello che vedi nel gioco. Scegli un pianeta per vedere la sua scheda con il globo, i glifi del portale e l'elenco completo. L'elenco si filtra per tipo, stella, meteo, sentinelle, piante, animali, risorsa, basi o ciò che hai trovato. Nella Wiki un oggetto presente sui pianeti ha il pulsante «Trova su un pianeta», che apre questa pagina con il filtro giusto.",
+ "B": "- **Ricerca in ogni lingua.** Scrivi un nome in qualsiasi lingua: «Tainted Metal» e «{RU}» trovano lo stesso oggetto. Le altre lingue le prepara da sé il programma, dal tuo gioco, in background."
+},
+"README.es.md": {
+ "PT": "Planetas.", "PX": "Tus planetas con su clima, centinelas, plantas, animales y recursos.",
+ "ST": "Ajustes.", "SX": "Tema, idioma, partida y actualizaciones en un solo menú.",
+ "H": "### Tus planetas",
+ "PP": "La página Planetas lista todos los planetas de tu partida: nombre y sistema (con el color de su estrella), tipo, clima, centinelas, plantas y animales, lo que has encontrado allí, los recursos y sustancias del planeta y tus bases. Todo lo que la partida no guarda se calcula como lo hace el juego, a partir de la semilla del planeta, así que coincide con lo que ves en el juego. Elige un planeta para ver su ficha con el globo, los glifos del portal y la lista completa. La lista se filtra por tipo, estrella, clima, centinelas, plantas, animales, recurso, bases o lo que has encontrado. En la Wiki, un objeto que hay en planetas tiene el botón «Buscar en un planeta», que abre esta página con el filtro puesto.",
+ "B": "- **Búsqueda en cualquier idioma.** Escribe un nombre en cualquier idioma: «Tainted Metal» y «{RU}» encuentran el mismo objeto. El programa prepara solo los demás idiomas a partir de tu juego, en segundo plano."
+},
+"README.pt.md": {
+ "PT": "Planetas.", "PX": "Os seus planetas com clima, sentinelas, plantas, animais e recursos.",
+ "ST": "Definições.", "SX": "Tema, idioma, jogo guardado e atualizações num só menu.",
+ "H": "### Os seus planetas",
+ "PP": "A página Planetas lista todos os planetas do seu jogo guardado: nome e sistema (na cor da sua estrela), tipo, clima, sentinelas, plantas e animais, o que encontrou lá, os recursos e substâncias do planeta e as suas bases. Tudo o que o jogo guardado não tem é calculado como o jogo faz, a partir da semente do planeta, por isso coincide com o que vê no jogo. Escolha um planeta para ver a sua ficha com o globo, os glifos do portal e a lista completa. A lista filtra-se por tipo, estrela, clima, sentinelas, plantas, animais, recurso, bases ou o que encontrou. Na Wiki, um item que existe em planetas tem o botão «Encontrar num planeta», que abre esta página com o filtro certo.",
+ "B": "- **Pesquisa em qualquer idioma.** Escreva um nome em qualquer idioma: «Tainted Metal» e «{RU}» encontram o mesmo item. Os outros idiomas, o programa prepara-os sozinho a partir do seu jogo, em segundo plano."
+},
+"README.pt-BR.md": {
+ "PT": "Planetas.", "PX": "Seus planetas com clima, sentinelas, plantas, animais e recursos.",
+ "ST": "Configurações.", "SX": "Tema, idioma, save e atualizações em um só menu.",
+ "H": "### Seus planetas",
+ "PP": "A página Planetas lista todos os planetas do seu save: nome e sistema (na cor da estrela), tipo, clima, sentinelas, plantas e animais, o que você encontrou lá, os recursos e substâncias do planeta e suas bases. Tudo o que o save não guarda é calculado como o jogo faz, a partir da semente do planeta, então bate com o que você vê no jogo. Escolha um planeta para ver a ficha dele com o globo, os glifos do portal e a lista completa. A lista filtra por tipo, estrela, clima, sentinelas, plantas, animais, recurso, bases ou o que você encontrou. Na Wiki, um item que existe em planetas tem o botão «Encontrar em um planeta», que abre esta página com o filtro certo.",
+ "B": "- **Busca em qualquer idioma.** Digite um nome em qualquer idioma: «Tainted Metal» e «{RU}» acham o mesmo item. Os outros idiomas, o programa prepara sozinho a partir do seu jogo, em segundo plano."
+},
+"README.pl.md": {
+ "PT": "Planety.", "PX": "Twoje planety z pogodą, strażnikami, roślinami, zwierzętami i zasobami.",
+ "ST": "Ustawienia.", "SX": "Motyw, język, zapis i aktualizacje w jednym menu.",
+ "H": "### Twoje planety",
+ "PP": "Strona Planety wymienia wszystkie planety z twojego zapisu: nazwę i układ (w kolorze jego gwiazdy), typ, pogodę, strażników, rośliny i zwierzęta, ile tam znalazłeś, zasoby i substancje planety oraz twoje bazy. Wszystko, czego zapis nie zawiera, jest obliczane tak, jak robi to gra, z ziarna planety, więc zgadza się z tym, co widzisz w grze. Wybierz planetę, aby zobaczyć jej kartę z globusem, glifami portalu i pełną listą. Listę można filtrować według typu, gwiazdy, pogody, strażników, roślin, zwierząt, zasobu, baz lub tego, co znalazłeś. W Wiki przedmiot, który występuje na planetach, ma przycisk „Znajdź na planecie”, który otwiera tę stronę z właściwym filtrem.",
+ "B": "- **Wyszukiwanie w każdym języku.** Wpisz nazwę w dowolnym języku: „Tainted Metal” i „{RU}” znajdą ten sam przedmiot. Pozostałe języki program przygotowuje sam z twojej gry, w tle."
+},
+"README.nl.md": {
+ "PT": "Planeten.", "PX": "Je planeten met weer, sentinels, planten, dieren en grondstoffen.",
+ "ST": "Instellingen.", "SX": "Thema, taal, opslag en updates in één menu.",
+ "H": "### Je planeten",
+ "PP": "De pagina Planeten toont alle planeten uit je opslag: naam en systeem (in de kleur van de ster), type, weer, sentinels, planten en dieren, wat je er vond, de grondstoffen en stoffen van de planeet en je bases. Alles wat de opslag niet bevat, wordt berekend zoals het spel dat doet, uit de seed van de planeet, en komt dus overeen met wat je in het spel ziet. Kies een planeet voor haar kaart met de bol, de portaalglyphs en de volledige lijst. De lijst filter je op type, ster, weer, sentinels, planten, dieren, een grondstof, bases of wat je vond. In de Wiki heeft een voorwerp dat op planeten voorkomt de knop 'Vind op een planeet', die deze pagina met het juiste filter opent.",
+ "B": "- **Zoeken in elke taal.** Typ een naam in een willekeurige taal: 'Tainted Metal' en '{RU}' vinden hetzelfde voorwerp. De andere talen bereidt het programma zelf voor uit je spel, op de achtergrond."
+},
+"README.ja.md": {
+ "PT": "惑星。", "PX": "天候、センチネル、植物、動物、資源つきの、あなたの惑星一覧。",
+ "ST": "設定。", "SX": "テーマ、言語、セーブデータ、アップデートを一つのメニューに。",
+ "H": "### あなたの惑星",
+ "PP": "「惑星」ページには、セーブデータにあるすべての惑星が並びます。名前と星系（恒星の色で表示）、タイプ、天候、センチネル、植物と動物、そこで見つけた数、惑星の資源と物質、あなたの拠点です。セーブにないものは、ゲームと同じ方法で惑星のシード値から計算するので、ゲーム内で見るものと一致します。惑星を選ぶと、地球儀、ポータルのグリフ、全リストを載せたカードが開きます。一覧は、タイプ、恒星、天候、センチネル、植物、動物、資源、拠点、発見の有無で絞り込めます。Wikiでは、惑星で手に入るアイテムに「惑星で探す」ボタンがあり、適切な絞り込みでこのページを開きます。",
+ "B": "- **どの言語でも検索。** どの言語の名前でも入力できます。「Tainted Metal」も「{RU}」も同じアイテムが見つかります。ほかの言語は、プログラムがあなたのゲームからバックグラウンドで自動的に用意します。"
+},
+"README.ko.md": {
+ "PT": "행성.", "PX": "날씨, 센티널, 식물, 동물, 자원과 함께 보는 내 행성.",
+ "ST": "설정.", "SX": "테마, 언어, 세이브, 업데이트를 한 메뉴에서.",
+ "H": "### 내 행성",
+ "PP": "행성 페이지는 세이브에 있는 모든 행성을 보여 줍니다. 이름과 항성계(항성의 색으로 표시), 유형, 날씨, 센티널, 식물과 동물, 그곳에서 찾은 수, 행성의 자원과 물질, 그리고 내 기지입니다. 세이브에 없는 것은 게임이 하는 방식대로 행성의 시드에서 계산하므로 게임에서 보는 것과 일치합니다. 행성을 고르면 지구본, 포털 글리프, 전체 목록이 있는 카드가 열립니다. 목록은 유형, 항성, 날씨, 센티널, 식물, 동물, 자원, 기지, 발견 여부로 거를 수 있습니다. 위키에서는 행성에서 구할 수 있는 아이템에 '행성에서 찾기' 버튼이 있어, 알맞은 필터로 이 페이지를 엽니다.",
+ "B": "- **모든 언어로 검색.** 어떤 언어의 이름이든 입력할 수 있습니다. 'Tainted Metal'과 '{RU}'은 같은 아이템을 찾아 줍니다. 나머지 언어는 프로그램이 내 게임에서 백그라운드로 알아서 준비합니다."
+},
+"README.zh-CN.md": {
+ "PT": "星球。", "PX": "你的星球,附带天气、哨兵、植物、动物和资源。",
+ "ST": "设置。", "SX": "主题、语言、存档和更新,都在一个菜单里。",
+ "H": "### 你的星球",
+ "PP": "“星球”页面列出存档里的所有星球:名称和星系(用恒星的颜色显示)、类型、天气、哨兵、植物和动物、你在那里的发现、星球的资源和物质,以及你的基地。存档里没有的内容,按游戏的方式根据星球的种子算出,所以和你在游戏里看到的一致。选一颗星球,就会打开它的卡片,有地球仪、传送门字形和完整列表。列表可按类型、恒星、天气、哨兵、植物、动物、资源、基地或你的发现来筛选。在维基里,星球上能找到的物品有“在行星上寻找”按钮,点开就是带着相应筛选的这个页面。",
+ "B": "- **用任何语言搜索。** 可以输入任何语言的名称:“Tainted Metal”和“{RU}”找到的是同一个物品。其他语言由程序根据你的游戏在后台自己准备。"
+},
+"README.zh-TW.md": {
+ "PT": "星球。", "PX": "你的星球,附帶天氣、哨兵、植物、動物和資源。",
+ "ST": "設定。", "SX": "主題、語言、存檔和更新,都在一個選單裡。",
+ "H": "### 你的星球",
+ "PP": "「星球」頁面列出存檔裡的所有星球:名稱和星系(用恆星的顏色顯示)、類型、天氣、哨兵、植物和動物、你在那裡的發現、星球的資源和物質,以及你的基地。存檔裡沒有的內容,依遊戲的方式根據星球的種子算出,所以和你在遊戲裡看到的一致。選一顆星球,就會開啟它的卡片,有地球儀、傳送門字形和完整清單。清單可依類型、恆星、天氣、哨兵、植物、動物、資源、基地或你的發現來篩選。在維基裡,星球上找得到的物品有「在行星上尋找」按鈕,點開就是帶著相應篩選的這個頁面。",
+ "B": "- **用任何語言搜尋。** 可以輸入任何語言的名稱:「Tainted Metal」和「{RU}」找到的是同一個物品。其他語言由程式根據你的遊戲在背景自己準備。"
+}
+}

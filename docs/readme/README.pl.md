@@ -75,7 +75,15 @@ To mały program na komputer. Czyta receptury, ceny i nazwy **prosto z twojej w�
     <td width="50%"><img src="../img/pl/site-multitools.webp" alt="Multinarzędzia."><br><sub><b>Multinarzędzia.</b> Osiem typów w porównaniu i jak zdobyć najlepsze.</sub></td>
     <td width="50%"><img src="../img/pl/site-tree-picker.webp" alt="Wybierz dowolny przedmiot,"><br><sub><b>Wybierz dowolny przedmiot,</b> który da się zrobić, i zobacz jak.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/pl/site-planets.webp" alt="Planety"><br><sub><b>Planety.</b> Twoje planety z pogodą, strażnikami, roślinami, zwierzętami i zasobami.</sub></td>
+    <td width="50%"><img src="../img/pl/site-settings.webp" alt="Ustawienia"><br><sub><b>Ustawienia.</b> Motyw, język, zapis i aktualizacje w jednym menu.</sub></td>
+  </tr>
 </table>
+
+### Twoje planety
+
+Strona Planety wymienia wszystkie planety z twojego zapisu: nazwę i układ (w kolorze jego gwiazdy), typ, pogodę, strażników, rośliny i zwierzęta, ile tam znalazłeś, zasoby i substancje planety oraz twoje bazy. Wszystko, czego zapis nie zawiera, jest obliczane tak, jak robi to gra, z ziarna planety, więc zgadza się z tym, co widzisz w grze. Wybierz planetę, aby zobaczyć jej kartę z globusem, glifami portalu i pełną listą. Listę można filtrować według typu, gwiazdy, pogody, strażników, roślin, zwierząt, zasobu, baz lub tego, co znalazłeś. W Wiki przedmiot, który występuje na planetach, ma przycisk „Znajdź na planecie”, który otwiera tę stronę z właściwym filtrem.
 
 ## Warto wiedzieć
 
@@ -84,6 +92,7 @@ To mały program na komputer. Czyta receptury, ceny i nazwy **prosto z twojej w�
 - **Po aktualizacji gry** aplikacja może ponownie odczytać liczby z twojej gry, więc nie starzeją się.
 - **Twój zapis.** Zapis i jego slot wybierasz raz, w menu ustawień; każda strona, która go czyta, korzysta z tego wyboru.
 - **Aktualizacje.** Kropka na kółku zębatym mówi, że jest nowsza wersja. Samodzielna instalacja jest domyślnie wyłączona; włącz ją w menu ustawień albo zaktualizuj jednym przyciskiem.
+- **Wyszukiwanie w każdym języku.** Wpisz nazwę w dowolnym języku: „Tainted Metal” i „Испорченный металл” znajdą ten sam przedmiot. Pozostałe języki program przygotowuje sam z twojej gry, w tle.
 - **Ściągawka do druku** z recepturami wartymi zapamiętania, w `docs/pdf/`.
 
 ## Autorzy

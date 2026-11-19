@@ -75,7 +75,15 @@ Sei davanti a un raffinatore e ti chiedi: *in cosa si trasforma questo, e qual �
     <td width="50%"><img src="../img/it/site-multitools.webp" alt="Multiutensili."><br><sub><b>Multiutensili.</b> Otto tipi a confronto e come ottenere i migliori.</sub></td>
     <td width="50%"><img src="../img/it/site-tree-picker.webp" alt="Scegli qualsiasi oggetto"><br><sub><b>Scegli qualsiasi oggetto</b> che si possa creare e vedi come.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="../img/it/site-planets.webp" alt="Pianeti"><br><sub><b>Pianeti.</b> I tuoi pianeti con meteo, sentinelle, piante, animali e risorse.</sub></td>
+    <td width="50%"><img src="../img/it/site-settings.webp" alt="Impostazioni"><br><sub><b>Impostazioni.</b> Tema, lingua, salvataggio e aggiornamenti in un solo menu.</sub></td>
+  </tr>
 </table>
+
+### I tuoi pianeti
+
+La pagina Pianeti elenca tutti i pianeti del tuo salvataggio: nome e sistema (nel colore della sua stella), tipo, meteo, sentinelle, piante e animali, quanto hai trovato, le risorse e le sostanze del pianeta e le tue basi. Tutto ciò che il salvataggio non contiene è calcolato come fa il gioco, dal seed del pianeta, quindi coincide con quello che vedi nel gioco. Scegli un pianeta per vedere la sua scheda con il globo, i glifi del portale e l'elenco completo. L'elenco si filtra per tipo, stella, meteo, sentinelle, piante, animali, risorsa, basi o ciò che hai trovato. Nella Wiki un oggetto presente sui pianeti ha il pulsante «Trova su un pianeta», che apre questa pagina con il filtro giusto.
 
 ## Da sapere
 
@@ -84,6 +92,7 @@ Sei davanti a un raffinatore e ti chiedi: *in cosa si trasforma questo, e qual �
 - **Dopo un aggiornamento del gioco** l'app può rileggere i numeri dal tuo gioco, così non invecchiano.
 - **Il tuo salvataggio.** Scegli il salvataggio e il suo slot una volta, nel menu delle impostazioni; tutte le pagine che lo leggono usano quella scelta.
 - **Aggiornamenti.** Un puntino sull'ingranaggio avvisa che c'è una versione più recente. L'installazione automatica è disattivata di default; attivala nel menu delle impostazioni o aggiorna con un pulsante.
+- **Ricerca in ogni lingua.** Scrivi un nome in qualsiasi lingua: «Tainted Metal» e «Испорченный металл» trovano lo stesso oggetto. Le altre lingue le prepara da sé il programma, dal tuo gioco, in background.
 - **Promemoria stampabile** con le ricette che vale la pena ricordare, in `docs/pdf/`.
 
 ## Crediti

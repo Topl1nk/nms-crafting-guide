@@ -81,7 +81,15 @@ game**, so the numbers are the ones your game really uses, not what a wiki remem
     <td width="50%"><img src="docs/img/site-multitools.webp" alt="Multi-tools"><br><sub><b>Multi-tools.</b> Eight types compared, and how to get the best ones.</sub></td>
     <td width="50%"><img src="docs/img/site-tree-picker.webp" alt="Pick an item"><br><sub><b>Pick any item</b> that can be made and see how.</sub></td>
   </tr>
+  <tr>
+    <td width="50%"><img src="docs/img/site-planets.webp" alt="Planets"><br><sub><b>Planets.</b> Your planets with their weather, sentinels, plants, animals and resources.</sub></td>
+    <td width="50%"><img src="docs/img/site-settings.webp" alt="Settings"><br><sub><b>Settings.</b> Theme, language, your save and updates in one menu.</sub></td>
+  </tr>
 </table>
+
+### Your planets
+
+The Planets page lists every planet in your save: its name and system (in the colour of its star), the type, the weather, the sentinels, the plants and animals, how much you found there, the resources and substances it has, and your bases. Whatever the save does not hold is worked out the way the game does it, from the planet's seed, so it matches what you see in the game. Pick a planet to see its card with the globe, the portal glyphs and the full list. Filter the list by type, star, weather, sentinels, plants, animals, a resource, bases or what you found. In the Wiki, an item that can be found on planets has a "Find on a planet" button that opens this page with the right filter.
 
 ### Your language
 
@@ -102,6 +110,7 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 - **After a game update** the app can read the new numbers from your game again, so it does not go stale.
 - **Your save.** Pick the save and its slot once, in the settings menu; every page that reads it uses that choice.
 - **Updates.** A dot on the cog tells you a newer version is out. Installing it by itself is off by default; turn it on in the settings menu, or update with one button.
+- **Search in any language.** Type a name in any language: "Tainted Metal" and "Испорченный металл" find the same item. The program prepares the other languages from your game by itself, in the background.
 - **Printable cheat sheet** of the recipes worth memorising, in `docs/pdf/`.
 
 ## Credits
