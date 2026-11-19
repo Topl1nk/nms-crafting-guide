@@ -35,9 +35,10 @@ Sei davanti a un raffinatore e ti chiedi: *in cosa si trasforma questo, e qual �
 - 📦 **Dove si mette?** Ogni oggetto con il deposito a cui appartiene.
 - 🔁 **Cicli di denaro.** Ricette che si alimentano a vicenda e ti lasciano con più di quanto avevi.
 - 🔭 **Indirizzi dei portali.** Scrivi un codice in qualsiasi forma e vedi i glifi da comporre.
-- ⚔ **Multiutensili** messi a confronto, e come ottenere quelli buoni.
-- ️ **17 lingue,** le stesse del gioco. Anche i nomi degli oggetti cambiano con la lingua.
-- 🌍 **Privato.** Niente lascia il tuo computer. Nessun account e niente internet dopo il primo avvio.
+- 🪐 **Pianeti.** I pianeti in cui sei stato, dal tuo salvataggio: indirizzo del portale, cosa hai trovato, le tue basi e cosa ha ciascuno (meteo, sentinelle, piante, animali, risorse). Si possono filtrare e dalla Wiki si salta ai pianeti che hanno una risorsa.
+- ⚔️ **Multiutensili** messi a confronto, e come ottenere quelli buoni.
+- 🌍 **17 lingue,** le stesse del gioco. Anche i nomi degli oggetti cambiano con la lingua.
+- 🔒 **Privato.** Niente lascia il tuo computer. Nessun account e niente internet dopo il primo avvio. L'unica richiesta che fa è a GitHub, per chiedere se esiste una versione più recente.
 
 ## Installazione
 
@@ -81,6 +82,8 @@ Sei davanti a un raffinatore e ti chiedi: *in cosa si trasforma questo, e qual �
 - **Chiaro o scuro,** qualsiasi colore d'accento, testo più grande, icone luminose. Tutto nel menu delle impostazioni.
 - **Percorso breve.** Scegli un oggetto e NMS Crafting Guide trova come farlo con ciò che si raccoglie su qualsiasi pianeta, con il piano che impegna meno il raffinatore.
 - **Dopo un aggiornamento del gioco** l'app può rileggere i numeri dal tuo gioco, così non invecchiano.
+- **Il tuo salvataggio.** Scegli il salvataggio e il suo slot una volta, nel menu delle impostazioni; tutte le pagine che lo leggono usano quella scelta.
+- **Aggiornamenti.** Un puntino sull'ingranaggio avvisa che c'è una versione più recente. L'installazione automatica è disattivata di default; attivala nel menu delle impostazioni o aggiorna con un pulsante.
 - **Promemoria stampabile** con le ricette che vale la pena ricordare, in `docs/pdf/`.
 
 ## Crediti

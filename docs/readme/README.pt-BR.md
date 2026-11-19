@@ -35,9 +35,10 @@ Você está diante de um refinador e se pergunta: *no que isto se transforma e q
 - 📦 **Onde guardar?** Cada item com o armazenamento a que pertence.
 - 🔁 **Ciclos de dinheiro.** Receitas que se alimentam e deixam você com mais do que começou.
 - 🔭 **Endereços de portal.** Digite um código em qualquer formato e veja os glifos para discar.
-- ⚔ **Multiferramentas** comparadas lado a lado, e como conseguir as boas.
-- ️ **17 idiomas,** os mesmos do jogo. Os nomes dos itens também mudam com o idioma.
-- 🌍 **Privado.** Nada sai do seu computador. Sem conta e sem internet depois da primeira execução.
+- 🪐 **Planetas.** Os planetas que você visitou, do seu save: endereço de portal, o que você encontrou, suas bases e o que cada um tem (clima, sentinelas, plantas, animais, recursos). Dá para filtrar, e da Wiki você pula para os planetas que têm um recurso.
+- ⚔️ **Multiferramentas** comparadas lado a lado, e como conseguir as boas.
+- 🌍 **17 idiomas,** os mesmos do jogo. Os nomes dos itens também mudam com o idioma.
+- 🔒 **Privado.** Nada sai do seu computador. Sem conta e sem internet depois da primeira execução. A única requisição que ele faz é ao GitHub, para perguntar se existe uma versão mais nova.
 
 ## Instalação
 
@@ -81,6 +82,8 @@ Você está diante de um refinador e se pergunta: *no que isto se transforma e q
 - **Claro ou escuro,** qualquer cor de destaque, texto maior, ícones brilhantes. Tudo no menu de configurações.
 - **Caminho curto.** Escolha um item e o NMS Crafting Guide acha como fazê-lo com coisas que se pega em qualquer planeta, no plano que ocupa menos o refinador.
 - **Depois de uma atualização do jogo** o app lê de novo os números do seu jogo, então nada fica velho.
+- **Seu save.** Escolha o save e o slot uma vez, no menu de configurações; todas as páginas que o leem usam essa escolha.
+- **Atualizações.** Um ponto na engrenagem avisa que há uma versão mais nova. Instalar sozinho vem desligado; ligue no menu de configurações ou atualize com um botão.
 - **Folha de consulta para imprimir** com as receitas que valem decorar, em `docs/pdf/`.
 
 ## Créditos

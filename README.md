@@ -37,9 +37,10 @@ game**, so the numbers are the ones your game really uses, not what a wiki remem
 - 📦 **Where does it go?** Every item with the storage it belongs in.
 - 🔁 **Money loops.** Recipes that feed each other and leave you with more than you started with.
 - 🔭 **Portal addresses.** Type a code in either form and see the glyphs to dial.
+- 🪐 **Planets.** The planets you have been to, from your save: portal address, what you found, your bases, and what each one has (weather, sentinels, plants, animals, resources). Filter them, and from the Wiki jump to the planets that have a resource.
 - ⚔️ **Multi-tools** compared side by side, and how to get the good ones.
 - 🌍 **17 languages**, the same ones the game has. Item names change with the language too.
-- 🔒 **Private.** Nothing leaves your computer. No account, no internet needed after the first run.
+- 🔒 **Private.** Nothing leaves your computer. No account, no internet needed after the first run. The only request it makes is to GitHub, to ask whether a newer version is out.
 
 ## Install
 
@@ -99,6 +100,8 @@ One choice in the settings menu (the cog) changes the page and the game's own na
 - **Short path.** Pick an item and NMS Crafting Guide finds the way to make it from things you can pick up on any planet,
   choosing the plan that keeps your refiner busy the least.
 - **After a game update** the app can read the new numbers from your game again, so it does not go stale.
+- **Your save.** Pick the save and its slot once, in the settings menu; every page that reads it uses that choice.
+- **Updates.** A dot on the cog tells you a newer version is out. Installing it by itself is off by default; turn it on in the settings menu, or update with one button.
 - **Printable cheat sheet** of the recipes worth memorising, in `docs/pdf/`.
 
 ## Credits

@@ -35,9 +35,10 @@ Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **dire
 - 📦 **¿Dónde se guarda?** Cada objeto con el almacenamiento al que pertenece.
 - 🔁 **Bucles de dinero.** Recetas que se alimentan entre sí y te dejan con más de lo que pusiste.
 - 🔭 **Direcciones de portal.** Escribe un código en cualquier forma y mira los glifos que marcar.
-- ⚔ **Multiherramientas** comparadas una al lado de otra, y cómo conseguir las buenas.
-- ️ **17 idiomas,** los mismos del juego. Los nombres de los objetos también cambian con el idioma.
-- 🌍 **Privado.** Nada sale de tu ordenador. Sin cuenta y sin internet tras el primer arranque.
+- 🪐 **Planetas.** Los planetas que has visitado, desde tu partida: dirección de portal, lo que encontraste, tus bases y lo que tiene cada uno (clima, centinelas, plantas, animales, recursos). Se pueden filtrar, y desde la Wiki saltas a los planetas que tienen un recurso.
+- ⚔️ **Multiherramientas** comparadas una al lado de otra, y cómo conseguir las buenas.
+- 🌍 **17 idiomas,** los mismos del juego. Los nombres de los objetos también cambian con el idioma.
+- 🔒 **Privado.** Nada sale de tu ordenador. Sin cuenta y sin internet tras el primer arranque. La única petición que hace es a GitHub, para preguntar si hay una versión más nueva.
 
 ## Instalación
 
@@ -81,6 +82,8 @@ Es un programa pequeño para tu ordenador. Lee recetas, precios y nombres **dire
 - **Claro u oscuro,** cualquier color de acento, texto más grande, iconos brillantes. Todo en el menú de ajustes.
 - **Camino corto.** Elige un objeto y NMS Crafting Guide encuentra cómo hacerlo con cosas que se recogen en cualquier planeta, con el plan que menos ocupa el refinador.
 - **Tras una actualización del juego** la aplicación puede volver a leer las cifras de tu juego, así que nunca se quedan viejas.
+- **Tu partida.** Elige la partida y su ranura una sola vez, en el menú de ajustes; todas las páginas que la leen usan esa elección.
+- **Actualizaciones.** Un punto en la rueda dentada avisa de que hay una versión más nueva. Instalarla sola viene desactivado; actívalo en el menú de ajustes o actualiza con un botón.
 - **Hoja de consulta para imprimir** con las recetas que merece la pena memorizar, en `docs/pdf/`.
 
 ## Créditos

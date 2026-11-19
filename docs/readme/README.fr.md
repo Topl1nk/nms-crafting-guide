@@ -35,9 +35,10 @@ C'est un petit programme pour votre ordinateur. Il lit recettes, prix et noms **
 - 📦 **Où le ranger ?** Chaque objet avec le stockage auquel il appartient.
 - 🔁 **Boucles d'argent.** Des recettes qui s'alimentent et vous laissent avec plus qu'au départ.
 - 🔭 **Adresses de portail.** Saisissez un code sous n'importe quelle forme et voyez les glyphes à composer.
-- ⚔ **Multi-outils** comparés côte à côte, et comment obtenir les bons.
-- ️ **17 langues,** les mêmes que le jeu. Les noms des objets changent aussi avec la langue.
-- 🌍 **Privé.** Rien ne quitte votre ordinateur. Pas de compte, pas d'internet après le premier lancement.
+- 🪐 **Planètes.** Les planètes que vous avez visitées, d'après votre sauvegarde : adresse de portail, vos découvertes, vos bases et ce que chacune possède (météo, sentinelles, plantes, animaux, ressources). On peut les filtrer, et depuis le Wiki on saute aux planètes qui ont une ressource.
+- ⚔️ **Multi-outils** comparés côte à côte, et comment obtenir les bons.
+- 🌍 **17 langues,** les mêmes que le jeu. Les noms des objets changent aussi avec la langue.
+- 🔒 **Privé.** Rien ne quitte votre ordinateur. Pas de compte, pas d'internet après le premier lancement. La seule requête qu'il fait va à GitHub, pour demander si une version plus récente existe.
 
 ## Installation
 
@@ -81,6 +82,8 @@ C'est un petit programme pour votre ordinateur. Il lit recettes, prix et noms **
 - **Clair ou sombre,** n'importe quelle couleur d'accent, texte plus grand, icônes lumineuses. Tout est dans le menu des réglages.
 - **Chemin court.** Choisissez un objet et NMS Crafting Guide trouve comment le fabriquer avec ce qu'on ramasse sur n'importe quelle planète, par le plan qui occupe le moins le raffineur.
 - **Après une mise à jour du jeu,** l'application peut relire les chiffres de votre jeu : rien ne devient obsolète.
+- **Votre sauvegarde.** Choisissez la sauvegarde et son emplacement une fois, dans le menu des réglages ; toutes les pages qui la lisent utilisent ce choix.
+- **Mises à jour.** Un point sur la roue dentée signale qu'une version plus récente existe. L'installation automatique est désactivée par défaut ; activez-la dans le menu des réglages, ou mettez à jour d'un bouton.
 - **Aide-mémoire imprimable** des recettes qui valent la peine d'être retenues, dans `docs/pdf/`.
 
 ## Crédits

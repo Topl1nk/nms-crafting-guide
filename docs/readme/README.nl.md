@@ -35,9 +35,10 @@ Het is een klein programma voor je computer. Het leest recepten, prijzen en name
 - 📦 **Waar moet het heen?** Elk voorwerp met de opslag waar het in hoort.
 - 🔁 **Geldlussen.** Recepten die elkaar voeden en je meer geven dan je erin stopte.
 - 🔭 **Portaaladressen.** Typ een code in elke vorm en zie de glyphs om in te toetsen.
-- ⚔ **Multitools** naast elkaar vergeleken, en hoe je de goede krijgt.
-- ️ **17 talen,** dezelfde als in de game. Ook de namen van voorwerpen veranderen mee.
-- 🌍 **Privé.** Niets verlaat je computer. Geen account en na de eerste start geen internet nodig.
+- 🪐 **Planeten.** De planeten waar je bent geweest, uit je opslag: portaaladres, wat je vond, je bases en wat elke planeet heeft (weer, sentinels, planten, dieren, grondstoffen). Je kunt ze filteren, en vanuit de Wiki spring je naar de planeten met een grondstof.
+- ⚔️ **Multitools** naast elkaar vergeleken, en hoe je de goede krijgt.
+- 🌍 **17 talen,** dezelfde als in de game. Ook de namen van voorwerpen veranderen mee.
+- 🔒 **Privé.** Niets verlaat je computer. Geen account en na de eerste start geen internet nodig. Het enige verzoek dat het doet gaat naar GitHub, om te vragen of er een nieuwere versie is.
 
 ## Installatie
 
@@ -81,6 +82,8 @@ Het is een klein programma voor je computer. Het leest recepten, prijzen en name
 - **Licht of donker,** elke accentkleur, grotere tekst, gloeiende pictogrammen. Alles in het instellingenmenu.
 - **Korte weg.** Kies een voorwerp en NMS Crafting Guide vindt hoe je het maakt van wat je op elke planeet kunt oprapen, met het plan dat de raffinaderij het minst bezet.
 - **Na een game-update** kan de app de cijfers opnieuw uit je game lezen, zodat ze niet verouderen.
+- **Je opslag.** Kies de opslag en het slot één keer in het instellingenmenu; elke pagina die ze leest gebruikt die keuze.
+- **Updates.** Een stip op het tandwiel meldt dat er een nieuwere versie is. Zelf installeren staat standaard uit; zet het aan in het instellingenmenu of werk bij met één knop.
 - **Afdrukbare spiekbrief** met de recepten die het onthouden waard zijn, in `docs/pdf/`.
 
 ## Credits

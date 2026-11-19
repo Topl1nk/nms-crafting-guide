@@ -1,0 +1,86 @@
+{
+"README.md": {
+ "P": "- 🪐 **Planets.** The planets you have been to, from your save: portal address, what you found, your bases, and what each one has (weather, sentinels, plants, animals, resources). Filter them, and from the Wiki jump to the planets that have a resource.",
+ "T": " The only request it makes is to GitHub, to ask whether a newer version is out.",
+ "S": "- **Your save.** Pick the save and its slot once, in the settings menu; every page that reads it uses that choice.",
+ "U": "- **Updates.** A dot on the cog tells you a newer version is out. Installing it by itself is off by default; turn it on in the settings menu, or update with one button."
+},
+"README.de.md": {
+ "P": "- 🪐 **Planeten.** Die Planeten, auf denen Sie waren, aus Ihrem Spielstand: Portaladresse, Ihre Funde, Ihre Basen und was jeder Planet hat (Wetter, Wächter, Pflanzen, Tiere, Ressourcen). Sie lassen sich filtern, und aus dem Wiki springen Sie zu den Planeten mit einer Ressource.",
+ "T": " Die einzige Anfrage geht an GitHub: ob eine neuere Version erschienen ist.",
+ "S": "- **Ihr Spielstand.** Spielstand und Slot wählen Sie einmal im Einstellungsmenü; jede Seite, die ihn liest, nutzt diese Wahl.",
+ "U": "- **Updates.** Ein Punkt am Zahnrad zeigt, dass eine neuere Version erschienen ist. Selbstständiges Installieren ist standardmäßig aus; schalten Sie es im Einstellungsmenü ein oder aktualisieren Sie per Knopfdruck."
+},
+"README.es.md": {
+ "P": "- 🪐 **Planetas.** Los planetas que has visitado, desde tu partida: dirección de portal, lo que encontraste, tus bases y lo que tiene cada uno (clima, centinelas, plantas, animales, recursos). Se pueden filtrar, y desde la Wiki saltas a los planetas que tienen un recurso.",
+ "T": " La única petición que hace es a GitHub, para preguntar si hay una versión más nueva.",
+ "S": "- **Tu partida.** Elige la partida y su ranura una sola vez, en el menú de ajustes; todas las páginas que la leen usan esa elección.",
+ "U": "- **Actualizaciones.** Un punto en la rueda dentada avisa de que hay una versión más nueva. Instalarla sola viene desactivado; actívalo en el menú de ajustes o actualiza con un botón."
+},
+"README.fr.md": {
+ "P": "- 🪐 **Planètes.** Les planètes que vous avez visitées, d'après votre sauvegarde : adresse de portail, vos découvertes, vos bases et ce que chacune possède (météo, sentinelles, plantes, animaux, ressources). On peut les filtrer, et depuis le Wiki on saute aux planètes qui ont une ressource.",
+ "T": " La seule requête qu'il fait va à GitHub, pour demander si une version plus récente existe.",
+ "S": "- **Votre sauvegarde.** Choisissez la sauvegarde et son emplacement une fois, dans le menu des réglages ; toutes les pages qui la lisent utilisent ce choix.",
+ "U": "- **Mises à jour.** Un point sur la roue dentée signale qu'une version plus récente existe. L'installation automatique est désactivée par défaut ; activez-la dans le menu des réglages, ou mettez à jour d'un bouton."
+},
+"README.it.md": {
+ "P": "- 🪐 **Pianeti.** I pianeti in cui sei stato, dal tuo salvataggio: indirizzo del portale, cosa hai trovato, le tue basi e cosa ha ciascuno (meteo, sentinelle, piante, animali, risorse). Si possono filtrare e dalla Wiki si salta ai pianeti che hanno una risorsa.",
+ "T": " L'unica richiesta che fa è a GitHub, per chiedere se esiste una versione più recente.",
+ "S": "- **Il tuo salvataggio.** Scegli il salvataggio e il suo slot una volta, nel menu delle impostazioni; tutte le pagine che lo leggono usano quella scelta.",
+ "U": "- **Aggiornamenti.** Un puntino sull'ingranaggio avvisa che c'è una versione più recente. L'installazione automatica è disattivata di default; attivala nel menu delle impostazioni o aggiorna con un pulsante."
+},
+"README.nl.md": {
+ "P": "- 🪐 **Planeten.** De planeten waar je bent geweest, uit je opslag: portaaladres, wat je vond, je bases en wat elke planeet heeft (weer, sentinels, planten, dieren, grondstoffen). Je kunt ze filteren, en vanuit de Wiki spring je naar de planeten met een grondstof.",
+ "T": " Het enige verzoek dat het doet gaat naar GitHub, om te vragen of er een nieuwere versie is.",
+ "S": "- **Je opslag.** Kies de opslag en het slot één keer in het instellingenmenu; elke pagina die ze leest gebruikt die keuze.",
+ "U": "- **Updates.** Een stip op het tandwiel meldt dat er een nieuwere versie is. Zelf installeren staat standaard uit; zet het aan in het instellingenmenu of werk bij met één knop."
+},
+"README.pl.md": {
+ "P": "- 🪐 **Planety.** Planety, na których byłeś, z twojego zapisu: adres portalu, to, co znalazłeś, twoje bazy i co ma każda z nich (pogoda, strażnicy, rośliny, zwierzęta, zasoby). Można je filtrować, a z Wiki przeskoczysz do planet z danym zasobem.",
+ "T": " Jedyne zapytanie idzie do GitHuba i dotyczy tego, czy jest nowsza wersja.",
+ "S": "- **Twój zapis.** Zapis i jego slot wybierasz raz, w menu ustawień; każda strona, która go czyta, korzysta z tego wyboru.",
+ "U": "- **Aktualizacje.** Kropka na kółku zębatym mówi, że jest nowsza wersja. Samodzielna instalacja jest domyślnie wyłączona; włącz ją w menu ustawień albo zaktualizuj jednym przyciskiem."
+},
+"README.pt-BR.md": {
+ "P": "- 🪐 **Planetas.** Os planetas que você visitou, do seu save: endereço de portal, o que você encontrou, suas bases e o que cada um tem (clima, sentinelas, plantas, animais, recursos). Dá para filtrar, e da Wiki você pula para os planetas que têm um recurso.",
+ "T": " A única requisição que ele faz é ao GitHub, para perguntar se existe uma versão mais nova.",
+ "S": "- **Seu save.** Escolha o save e o slot uma vez, no menu de configurações; todas as páginas que o leem usam essa escolha.",
+ "U": "- **Atualizações.** Um ponto na engrenagem avisa que há uma versão mais nova. Instalar sozinho vem desligado; ligue no menu de configurações ou atualize com um botão."
+},
+"README.pt.md": {
+ "P": "- 🪐 **Planetas.** Os planetas que visitou, a partir do seu jogo guardado: endereço de portal, o que encontrou, as suas bases e o que cada um tem (clima, sentinelas, plantas, animais, recursos). Pode filtrá-los, e a partir da Wiki salta para os planetas que têm um recurso.",
+ "T": " O único pedido que faz é ao GitHub, para perguntar se existe uma versão mais recente.",
+ "S": "- **O seu jogo guardado.** Escolha o jogo guardado e a ranhura uma só vez, no menu de definições; todas as páginas que o leem usam essa escolha.",
+ "U": "- **Atualizações.** Um ponto na roda dentada avisa que há uma versão mais recente. A instalação automática vem desligada; ligue-a no menu de definições ou atualize com um botão."
+},
+"README.ru.md": {
+ "P": "- 🪐 **Планеты.** Планеты, где вы были, по вашему сохранению: адрес портала, находки, базы и то, что есть на каждой (погода, стражи, растения, животные, ресурсы). Их можно фильтровать, а из Вики перейти к планетам, где есть нужный ресурс.",
+ "T": " Единственный запрос уходит на GitHub: есть ли версия новее.",
+ "S": "- **Ваше сохранение.** Сохранение и слот выбираются один раз в меню настроек; все страницы, которые его читают, используют этот выбор.",
+ "U": "- **Обновления.** Точка на шестерёнке сообщает, что вышла новая версия. Самостоятельная установка по умолчанию выключена; включите её в меню настроек или обновитесь одной кнопкой."
+},
+"README.ja.md": {
+ "P": "- 🪐 **惑星。** セーブデータから、訪れた惑星を一覧表示します：ポータルアドレス、見つけたもの、拠点、そして各惑星にあるもの（天候、センチネル、植物、動物、資源）。絞り込みもでき、Wikiから資源のある惑星へ移動できます。",
+ "T": "行う通信は、新しいバージョンがあるかをGitHubに尋ねる1回だけです。",
+ "S": "- **セーブデータ。** セーブとそのスロットは設定メニューで一度選ぶだけ。それを読むすべてのページが同じ選択を使います。",
+ "U": "- **アップデート。** 歯車に点が付くと、新しいバージョンが出ています。自動インストールは初期状態でオフ。設定メニューでオンにするか、ボタン一つで更新できます。"
+},
+"README.ko.md": {
+ "P": "- 🪐 **행성.** 세이브에서 읽은 방문한 행성: 포털 주소, 발견한 것, 기지, 그리고 각 행성에 있는 것(날씨, 센티널, 식물, 동물, 자원). 필터로 거를 수 있고, 위키에서 자원이 있는 행성으로 바로 갈 수 있습니다.",
+ "T": " 보내는 요청은 새 버전이 있는지 GitHub에 묻는 것 하나뿐입니다.",
+ "S": "- **세이브.** 세이브와 슬롯은 설정 메뉴에서 한 번만 고릅니다. 세이브를 읽는 모든 페이지가 그 선택을 씁니다.",
+ "U": "- **업데이트.** 톱니바퀴에 점이 뜨면 새 버전이 나온 것입니다. 자동 설치는 기본적으로 꺼져 있으며, 설정 메뉴에서 켜거나 버튼 하나로 업데이트할 수 있습니다."
+},
+"README.zh-CN.md": {
+ "P": "- 🪐 **星球。** 从存档读取你去过的星球:传送门地址、你的发现、你的基地,以及每颗星球上有什么(天气、哨兵、植物、动物、资源)。可以筛选,也能从维基跳到拥有某种资源的星球。",
+ "T": "它发出的唯一请求是问 GitHub 是否有新版本。",
+ "S": "- **你的存档。** 存档和存档位只需在设置菜单里选一次,所有读取存档的页面都用这个选择。",
+ "U": "- **更新。** 齿轮上出现小圆点,说明有新版本。自动安装默认关闭,可在设置菜单里打开,也可以点一个按钮更新。"
+},
+"README.zh-TW.md": {
+ "P": "- 🪐 **星球。** 從存檔讀取你去過的星球:傳送門地址、你的發現、你的基地,以及每顆星球上有什麼(天氣、哨兵、植物、動物、資源)。可以篩選,也能從維基跳到擁有某種資源的星球。",
+ "T": "它發出的唯一請求是問 GitHub 是否有新版本。",
+ "S": "- **你的存檔。** 存檔和存檔欄位只需在設定選單裡選一次,所有讀取存檔的頁面都用這個選擇。",
+ "U": "- **更新。** 齒輪上出現小圓點,代表有新版本。自動安裝預設關閉,可在設定選單裡開啟,也可以按一個按鈕更新。"
+}
+}

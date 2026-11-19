@@ -35,9 +35,10 @@ Está diante de um refinador e pergunta-se: *em que se transforma isto e qual a 
 - 📦 **Onde guardar?** Cada item com o armazenamento a que pertence.
 - 🔁 **Ciclos de dinheiro.** Receitas que se alimentam umas às outras e deixam mais do que começou.
 - 🔭 **Endereços de portal.** Escreva um código em qualquer formato e veja os glifos a marcar.
-- ⚔ **Multiferramentas** comparadas lado a lado, e como obter as boas.
-- ️ **17 idiomas,** os mesmos do jogo. Os nomes dos itens também mudam com o idioma.
-- 🌍 **Privado.** Nada sai do seu computador. Sem conta e sem internet depois da primeira execução.
+- 🪐 **Planetas.** Os planetas que visitou, a partir do seu jogo guardado: endereço de portal, o que encontrou, as suas bases e o que cada um tem (clima, sentinelas, plantas, animais, recursos). Pode filtrá-los, e a partir da Wiki salta para os planetas que têm um recurso.
+- ⚔️ **Multiferramentas** comparadas lado a lado, e como obter as boas.
+- 🌍 **17 idiomas,** os mesmos do jogo. Os nomes dos itens também mudam com o idioma.
+- 🔒 **Privado.** Nada sai do seu computador. Sem conta e sem internet depois da primeira execução. O único pedido que faz é ao GitHub, para perguntar se existe uma versão mais recente.
 
 ## Instalação
 
@@ -81,6 +82,8 @@ Está diante de um refinador e pergunta-se: *em que se transforma isto e qual a 
 - **Claro ou escuro,** qualquer cor de destaque, texto maior, ícones brilhantes. Tudo no menu de definições.
 - **Caminho curto.** Escolha um item e o NMS Crafting Guide encontra como o fazer com coisas que se apanham em qualquer planeta, no plano que ocupa menos o refinador.
 - **Depois de uma atualização do jogo** a aplicação volta a ler os números do seu jogo, por isso nada fica desatualizado.
+- **O seu jogo guardado.** Escolha o jogo guardado e a ranhura uma só vez, no menu de definições; todas as páginas que o leem usam essa escolha.
+- **Atualizações.** Um ponto na roda dentada avisa que há uma versão mais recente. A instalação automática vem desligada; ligue-a no menu de definições ou atualize com um botão.
 - **Folha de consulta para imprimir** com as receitas que vale a pena decorar, em `docs/pdf/`.
 
 ## Créditos

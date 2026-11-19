@@ -35,9 +35,10 @@ Es ist ein kleines Programm für Ihren Computer. Es liest Rezepte, Preise und Na
 - 📦 **Wohin damit?** Jeder Gegenstand mit dem Lager, in das er gehört.
 - 🔁 **Geldschleifen.** Rezepte, die sich gegenseitig speisen und mehr zurücklassen, als Sie hineingesteckt haben.
 - 🔭 **Portaladressen.** Geben Sie einen Code in beliebiger Form ein und sehen Sie die Glyphen zum Wählen.
-- ⚔ **Multiwerkzeuge** nebeneinander verglichen, und wie man die guten bekommt.
-- ️ **17 Sprachen,** dieselben wie im Spiel. Auch die Namen der Gegenstände wechseln mit der Sprache.
-- 🌍 **Privat.** Nichts verlässt Ihren Computer. Kein Konto, nach dem ersten Start kein Internet nötig.
+- 🪐 **Planeten.** Die Planeten, auf denen Sie waren, aus Ihrem Spielstand: Portaladresse, Ihre Funde, Ihre Basen und was jeder Planet hat (Wetter, Wächter, Pflanzen, Tiere, Ressourcen). Sie lassen sich filtern, und aus dem Wiki springen Sie zu den Planeten mit einer Ressource.
+- ⚔️ **Multiwerkzeuge** nebeneinander verglichen, und wie man die guten bekommt.
+- 🌍 **17 Sprachen,** dieselben wie im Spiel. Auch die Namen der Gegenstände wechseln mit der Sprache.
+- 🔒 **Privat.** Nichts verlässt Ihren Computer. Kein Konto, nach dem ersten Start kein Internet nötig. Die einzige Anfrage geht an GitHub: ob eine neuere Version erschienen ist.
 
 ## Installation
 
@@ -81,6 +82,8 @@ Es ist ein kleines Programm für Ihren Computer. Es liest Rezepte, Preise und Na
 - **Hell oder dunkel,** jede Akzentfarbe, größerer Text, leuchtende Symbole. Alles im Einstellungsmenü.
 - **Kurzer Weg.** Wählen Sie einen Gegenstand, und NMS Crafting Guide findet, wie man ihn aus dem herstellt, was es auf jedem Planeten gibt, mit dem Plan, der die Raffinerie am wenigsten belegt.
 - **Nach einem Spiel-Update** kann die App die Zahlen erneut aus Ihrem Spiel lesen, sie veralten also nicht.
+- **Ihr Spielstand.** Spielstand und Slot wählen Sie einmal im Einstellungsmenü; jede Seite, die ihn liest, nutzt diese Wahl.
+- **Updates.** Ein Punkt am Zahnrad zeigt, dass eine neuere Version erschienen ist. Selbstständiges Installieren ist standardmäßig aus; schalten Sie es im Einstellungsmenü ein oder aktualisieren Sie per Knopfdruck.
 - **Druckbares Merkblatt** mit den Rezepten, die man sich merken sollte, in `docs/pdf/`.
 
 ## Mitwirkende

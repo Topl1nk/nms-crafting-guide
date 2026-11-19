@@ -35,9 +35,10 @@ To mały program na komputer. Czyta receptury, ceny i nazwy **prosto z twojej w�
 - 📦 **Gdzie to schować?** Każdy przedmiot z magazynem, do którego należy.
 - 🔁 **Pętle pieniędzy.** Receptury, które zasilają się nawzajem i zostawiają więcej, niż włożyłeś.
 - 🔭 **Adresy portali.** Wpisz kod w dowolnej postaci i zobacz glify do wybrania.
-- ⚔ **Multinarzędzia** porównane obok siebie i jak zdobyć te dobre.
-- ️ **17 języków,** tych samych co w grze. Nazwy przedmiotów też zmieniają się z językiem.
-- 🌍 **Prywatnie.** Nic nie opuszcza twojego komputera. Bez konta, po pierwszym uruchomieniu bez internetu.
+- 🪐 **Planety.** Planety, na których byłeś, z twojego zapisu: adres portalu, to, co znalazłeś, twoje bazy i co ma każda z nich (pogoda, strażnicy, rośliny, zwierzęta, zasoby). Można je filtrować, a z Wiki przeskoczysz do planet z danym zasobem.
+- ⚔️ **Multinarzędzia** porównane obok siebie i jak zdobyć te dobre.
+- 🌍 **17 języków,** tych samych co w grze. Nazwy przedmiotów też zmieniają się z językiem.
+- 🔒 **Prywatnie.** Nic nie opuszcza twojego komputera. Bez konta, po pierwszym uruchomieniu bez internetu. Jedyne zapytanie idzie do GitHuba i dotyczy tego, czy jest nowsza wersja.
 
 ## Instalacja
 
@@ -81,6 +82,8 @@ To mały program na komputer. Czyta receptury, ceny i nazwy **prosto z twojej w�
 - **Jasny lub ciemny,** dowolny kolor akcentu, większy tekst, świecące ikony. Wszystko w menu ustawień.
 - **Krótka ścieżka.** Wybierz przedmiot, a NMS Crafting Guide znajdzie, jak go zrobić z tego, co zbierzesz na każdej planecie, planem najmniej zajmującym rafinerię.
 - **Po aktualizacji gry** aplikacja może ponownie odczytać liczby z twojej gry, więc nie starzeją się.
+- **Twój zapis.** Zapis i jego slot wybierasz raz, w menu ustawień; każda strona, która go czyta, korzysta z tego wyboru.
+- **Aktualizacje.** Kropka na kółku zębatym mówi, że jest nowsza wersja. Samodzielna instalacja jest domyślnie wyłączona; włącz ją w menu ustawień albo zaktualizuj jednym przyciskiem.
 - **Ściągawka do druku** z recepturami wartymi zapamiętania, w `docs/pdf/`.
 
 ## Autorzy
