@@ -72,6 +72,8 @@ jobs:
         run: |
           if [[ "$GITHUB_REF" == refs/tags/v* ]]; then v="${GITHUB_REF_NAME#v}"; else v="0.0.0-${GITHUB_SHA::7}"; fi
           echo "value=$v" >>"$GITHUB_OUTPUT"
+          # The program reads its own version from this file (desktop/updater.py), to tell whether a newer release is out.
+          printf '%s\n' "$v" >desktop/VERSION
 
       # Its own environment: the program is built from desktop/requirements.txt, not from the TUI's dependencies.
       - run: |
@@ -94,6 +96,7 @@ jobs:
           curl -fs http://127.0.0.1:18765/ | grep -q 'api/ping'   # the page carries the heartbeat that keeps the app running
           curl -fs -X POST -H 'Origin: http://127.0.0.1:18765' http://127.0.0.1:18765/api/ping >/dev/null
           curl -fs http://127.0.0.1:18765/api/pictures | grep -q '"have"'
+          curl -fs http://127.0.0.1:18765/api/update | grep -q '"current"'   # the built program knows its version (desktop/VERSION)
 
       - name: Windows installer
         if: matrix.platform == 'windows'

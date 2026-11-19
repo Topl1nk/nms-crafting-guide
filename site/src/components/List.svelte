@@ -223,6 +223,7 @@
     border-bottom: 1px solid var(--p-outline);
     white-space: nowrap;
   }
+  :global(:root[data-theme="light"]) th { box-shadow: 0 7px 9px -7px rgb(16 23 46 / 0.28); }
   th.muted { color: var(--p-faint); }
   th, td { padding: 0 12px; vertical-align: middle; }
   th { height: 40px; }

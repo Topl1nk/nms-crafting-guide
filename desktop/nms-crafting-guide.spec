@@ -18,6 +18,7 @@ a = Analysis(
         (str(app / "data" / "items.json"), "data"),
         (str(app / "data" / "planet_generator.json"), "data"),  # the weights desktop/planet_gen.py draws biomes and variants with
         (str(app / "desktop" / "vendor"), "vendor"),  # fetch_tools.py
+        *([(str(app / "desktop" / "VERSION"), ".")] if (app / "desktop" / "VERSION").is_file() else []),  # written by the release build (desktop.yml): what updater.py compares with
         # nms_namegen (third_party/, MIT): its letter table is read from next to generator.py, so it goes where the module is
         (str(app / "third_party" / "nms_namegen" / "nms_namegen" / "letter_map.json"), "nms_namegen"),
         (str(app / "third_party" / "nms_namegen" / "LICENCE"), "third_party/nms_namegen"),

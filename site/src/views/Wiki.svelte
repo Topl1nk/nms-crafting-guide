@@ -22,8 +22,10 @@
   import { D, placement } from "../lib/data.js";
   import { applyFacets, FLAG, facets, flag } from "../lib/facets.js";
   import { collate, t } from "../lib/i18n.js";
+  import { gamesave } from "../lib/gamesave.svelte.js";
   import { inventory } from "../lib/inventory.svelte.js";
   import { setKeys } from "../lib/keys.js";
+  import { planetsWith } from "../lib/planetres.js";
   import { arrival, go } from "../lib/router.svelte.js";
   import { inStore, storeLines } from "../lib/store.js";
   import { toast } from "../lib/toast.svelte.js";
@@ -121,6 +123,7 @@
     {@const id = encodeURIComponent(x.id)}
     {@const carry = D.items[x.id]}
     {@const got = inventory.items[x.id] ?? 0}
+    {@const onPlanets = planetsWith(gamesave.report?.planets, x.id).length}
     <aside class="detail" use:swap={{ key: x.id, peel: true }}>
       <div class="ic-head">
         <ItemIcon id={x.id} size={60} color={x.color} />
@@ -147,6 +150,7 @@
         {#if x.makes}<a href="#/recipes?path={id}"><Icon name="route" />{t("Short path")}</a>{/if}
         {#if x.makes}<a href="#/recipes?item={id}&role=output"><Icon name="make" />{t("How to make")}<i>{x.makes}</i></a>{/if}
         {#if x.needs}<a href="#/recipes?item={id}&role=input"><Icon name="need" />{t("Where it is needed")}<i>{x.needs}</i></a>{/if}
+        {#if onPlanets}<a href="#/planets?resource={id}" title={t("Planets of your save that have this on them")}><Icon name="planet" />{t("Find on a planet")}<i>{onPlanets}</i></a>{/if}
       </nav>
     </aside>
   {/if}

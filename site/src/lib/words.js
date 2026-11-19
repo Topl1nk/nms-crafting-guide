@@ -2,6 +2,7 @@
 // the page's shared vocabulary, put into the page's language with t() / tn() (lib/i18n.svelte.js). Names of items,
 // recipes and buffs are not here: they come from the game's own language tables (lib/language.svelte.js).
 
+import { PACK } from "./data.js";
 import { N_, t, tn, ui } from "./i18n.js";
 
 export const machine = (m) => t(m);
@@ -42,8 +43,11 @@ export const ITEM_TYPES = {
   BuildingPart: [N_("Base part"), "#f3b878"],
   CustomisationPart: [N_("Cosmetic"), "#6a97f2"],
   Emote: [N_("Emote"), "#6a97f2"],
+  // Currency or standing given as a reward: the game keeps these rows in its substance table, but they are not things.
+  RewardItem: [N_("Reward item"), "#a6a8cf"],
 };
-export const typeLabel = (key) => (ITEM_TYPES[key] ? t(ITEM_TYPES[key][0]) : key);
+// The reward item type is named with the game's own subtitle of those rows ("Reward Item") in the game's language in use.
+export const typeLabel = (key) => (key === "RewardItem" ? PACK?.items.SET_PROD_POS?.[1] || t(ITEM_TYPES[key][0]) : ITEM_TYPES[key] ? t(ITEM_TYPES[key][0]) : key);
 
 export const RARITIES = { Uncommon: [N_("Uncommon"), "#64f19f"], Rare: [N_("Rare"), "#c595f6"] };
 export const rarityLabel = (key) => (key === "Common" ? t("Common") : RARITIES[key] ? t(RARITIES[key][0]) : key);

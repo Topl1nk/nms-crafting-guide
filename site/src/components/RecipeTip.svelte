@@ -39,7 +39,7 @@
 </script>
 
 <div class="tip" use:portal bind:this={box} style="left:{x}px; top:{y}px; width:{W}px">
-  <div class="top">
+  <div class="tip-top">
     <ItemIcon id={tip.id} size={40} />
     <div>
       <b>{name(tip.id)}</b>
@@ -71,9 +71,10 @@
     background: var(--p-panel); border: 1px solid var(--p-edge-accent); border-radius: 14px;
     box-shadow: 0 16px 40px rgb(0 0 0 / 0.5); font-size: 0.88rem; line-height: 1.3;
   }
-  .top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
-  .top div { display: grid; min-width: 0; }
-  .top b { font-size: 1rem; overflow-wrap: anywhere; }
+  /* not `.top`: that is the page header's class, and the dark theme gives it a shadow (velvet.css) */
+  .tip-top { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .tip-top div { display: grid; min-width: 0; }
+  .tip-top b { font-size: 1rem; overflow-wrap: anywhere; }
   .box { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 10px; margin-bottom: 8px; background: var(--p-raised); border-radius: 10px; }
   .box b { color: var(--p-text); }
   .arrow { color: var(--p-accent-ink); font-size: 1.2rem; }

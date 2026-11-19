@@ -5472,7 +5472,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "BUI_STANDING_UP": {
@@ -5486,7 +5486,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "CAPE_BIOFRIG": {
@@ -7344,7 +7344,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "EGUILD_STAND_UP": {
@@ -7358,7 +7358,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "EXOTIC_BIOPROD": {
@@ -11062,7 +11062,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "EXP_STANDING_UP": {
@@ -11076,7 +11076,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "EX_BLUE": {
@@ -24466,7 +24466,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "NIPNIPBUDS": {
@@ -24570,7 +24570,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "",
-  "type": "Curiosity",
+  "type": "RewardItem",
   "value": 0
  },
  "PET_XP": {
@@ -24588,7 +24588,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "",
-  "type": "Curiosity",
+  "type": "RewardItem",
   "value": 0
  },
  "PIRATE_BEACON": {
@@ -24728,7 +24728,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "PIR_STAND_UP": {
@@ -24742,7 +24742,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "PLANTPOT4": {
@@ -25166,7 +25166,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "RADIO1": {
@@ -27024,7 +27024,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SCRAP_GOODS": {
@@ -27056,7 +27056,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SCRAP_TECH": {
@@ -27088,7 +27088,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SCRAP_WEAP": {
@@ -27156,7 +27156,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_COST_POS": {
@@ -27170,7 +27170,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_DEBT_NEG": {
@@ -27184,7 +27184,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_DEBT_POS": {
@@ -27198,7 +27198,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_MOOD_NEG": {
@@ -27212,7 +27212,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_MOOD_POS": {
@@ -27226,7 +27226,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_POP_NEG": {
@@ -27240,7 +27240,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_POP_POS": {
@@ -27254,7 +27254,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_PROD_NEG": {
@@ -27268,7 +27268,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_PROD_POS": {
@@ -27282,7 +27282,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_SENT_NEG": {
@@ -27296,7 +27296,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SET_SENT_POS": {
@@ -27310,7 +27310,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "SHIPBRAIN": {
@@ -32100,7 +32100,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TEAM_GREEN": {
@@ -32114,7 +32114,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TEAM_RED": {
@@ -32128,7 +32128,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TECHBOX": {
@@ -32224,7 +32224,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TGUILD_STAND_UP": {
@@ -32238,7 +32238,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TIMEDUST": {
@@ -32320,7 +32320,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "",
-  "type": "Curiosity",
+  "type": "RewardItem",
   "value": 0
  },
  "TOXIC1": {
@@ -32924,7 +32924,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TRA_STANDING_UP": {
@@ -32938,7 +32938,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "TRA_TECH1": {
@@ -36840,7 +36840,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "U_BOLT1": {
@@ -40454,7 +40454,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "WAR_STANDING_UP": {
@@ -40468,7 +40468,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "WATER1": {
@@ -40592,7 +40592,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "WGUILD_STAND_UP": {
@@ -40606,7 +40606,7 @@
   "subtitle": "Reward Item",
   "subtitle_en": "",
   "symbol": "-",
-  "type": "Substance",
+  "type": "RewardItem",
   "value": 20
  },
  "WHALE_BEACON": {

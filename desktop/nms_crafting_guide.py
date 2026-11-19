@@ -67,6 +67,7 @@ import languages  # noqa: E402
 import nms_save  # noqa: E402
 import pictures  # noqa: E402
 import sysformats  # noqa: E402
+import updater  # noqa: E402
 
 
 # The window's lifetime is not the browser process's: with a profile that is already running (Edge lingers in the background
@@ -95,7 +96,7 @@ class Life:
     def watch(self):
         while not self.done.wait(1):
             now = time.monotonic()
-            if "running" in (pictures.state["state"], *(s["state"] for s in languages.state.values())):
+            if "running" in (pictures.state["state"], *(s["state"] for s in languages.state.values())) or updater.state["state"] in ("downloading", "installing"):
                 continue  # an installation in progress is not cut off, even by a closed window
             if (self.bye is not None and now - self.bye > 5
                     or self.last is None and now - self.started > 90  # the page never came up
@@ -147,6 +148,8 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
             return self.send_json(sysformats.formats())
         if url.path == "/api/pictures":
             return self.send_json({**pictures.status(), "saves": len(nms_save.save_files())})
+        if url.path == "/api/update":
+            return self.send_json(updater.status())
         if url.path == "/api/lang":
             return self.send_json(languages.status(urllib.parse.parse_qs(url.query).get("code", [""])[0]))
         if url.path.startswith("/lang/"):
@@ -219,6 +222,12 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
         if url.path == "/api/pictures/install":
             force = urllib.parse.parse_qs(url.query).get("force", ["0"])[0] == "1"
             return self.send_json({"started": pictures.start(force)}, 202)
+        if url.path == "/api/update/check":
+            force = urllib.parse.parse_qs(url.query).get("force", ["0"])[0] == "1"
+            return self.send_json({"started": updater.check(force)}, 202)
+        if url.path == "/api/update/install":
+            # The installer runs and this program closes under the page: a moment's grace, so that the page reads the last state
+            return self.send_json({"started": updater.install(lambda: threading.Timer(2.0, LIFE.done.set).start())}, 202)
         self.send_json({"error": "not found"}, 404)
 
 

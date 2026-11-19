@@ -1,8 +1,9 @@
 <script module>
   import { N_ } from "../lib/i18n.js";
 
-  // What you typed and which planet was chosen outlives a visit, as on the other pages.
-  const st = { text: "" };
+  // What you typed and the filters outlive a visit, as on the other pages (a link brings its own).
+  const st = { text: "", filters: null };
+  const DEFAULTS = { type: "any", star: "any", weather: "any", sentinel: "any", flora: "any", fauna: "any", resource: "any", bases: false, found: false };
 
   // The planet types as the game's tables name them, and the star colours; English keys for t().
   const TYPES = {
@@ -10,6 +11,7 @@
     Barren: N_("Barren"), Dead: N_("Dead"), Weird: N_("Weird planet"), Swamp: N_("Swamp"), Lava: N_("Lava"), Waterworld: N_("Waterworld"),
   };
   const STARS = { Yellow: N_("Yellow"), Green: N_("Green"), Blue: N_("Blue"), Red: N_("Red"), Purple: N_("Purple") };
+  const STAR_NAMES = ["Yellow", "Green", "Blue", "Red", "Purple"]; // a star's number is the game's order of colours
 </script>
 
 <script>
@@ -18,27 +20,69 @@
   // found on it and your bases there; it does not keep its resources (the game works those out from the planet's seed), and the
   // card says plainly that they are not known. A name is kept only if one was given: the desktop program works
   // the others out from the seed and the address (name_source "generated"), and the card says so.
+  import Check from "../components/Check.svelte";
   import GlyphStrip from "../components/GlyphStrip.svelte";
   import ItemIcon from "../components/ItemIcon.svelte";
   import List from "../components/List.svelte";
+  import Reset from "../components/Reset.svelte";
+  import Select from "../components/Select.svelte";
   import { fmtDate } from "../lib/dates.js";
   import { D, galaxyName } from "../lib/data.js";
+  import { applyFacets, FLAG, facets, flag } from "../lib/facets.js";
   import { gamesave } from "../lib/gamesave.svelte.js";
-  import { ordinal, t } from "../lib/i18n.js";
+  import { collate, ordinal, t, tn } from "../lib/i18n.js";
   import { setKeys } from "../lib/keys.js";
+  import { capture, swap } from "../lib/motion.js";
+  import { hintsOf, resOf, subOf } from "../lib/planetres.js";
+  import { arrival } from "../lib/router.svelte.js";
   import { copy } from "../lib/toast.svelte.js";
   import { debounce } from "../lib/util.js";
+  import { typeLabel } from "../lib/words.js";
 
-  let search = $state(st.text);
+  // A link may bring a resource (`resource`: an item's id, from the Wiki card), and the list is then of the planets that have it.
+  const { params } = arrival();
+  const linked = params.size > 0;
+
+  let search = $state(linked ? "" : st.text);
+  let f = $state(linked ? { ...DEFAULTS, resource: params.get("resource") ?? "any" } : { ...DEFAULTS, ...st.filters });
   let cur = $state.raw(null);
   let list = $state();
   let input = $state();
+  $effect(() => { const now = { ...f }; if (!linked) st.filters = now; });
 
-  const rows = $derived.by(() => {
-    const all = gamesave.report?.planets ?? [];
+  const all = $derived(gamesave.report?.planets ?? []);
+  const base = $derived.by(() => {
     const terms = search.toLowerCase().split(/\s+/).filter(Boolean);
-    return all.filter((p) => terms.every((w) => [shown(p), p.name, p.system_name, p.code, hex3(p.system), galaxyName(p.galaxy)].join(" ").toLowerCase().includes(w)));
+    return terms.length ? all.filter((p) => terms.every((w) => [shown(p), p.name, p.system_name, p.code, hex3(p.system), galaxyName(p.galaxy)].join(" ").toLowerCase().includes(w))) : all;
   });
+
+  // The filters: each lists only the choices that the other filters leave something for (lib/facets.js).
+  const choices = (get, label) => {
+    const seen = new Map();
+    for (const p of all) { const v = get(p); if (v != null && v !== "" && !seen.has(v)) seen.set(v, label(v)); }
+    return [...seen].sort((a, b) => collate(String(a[1]), String(b[1])));
+  };
+  const resourceIcon = (id) => (D.items[id] ? id : HINT_ICON[id] ?? id);
+  const resourceName = (id) => D.items[id]?.name ?? (textOf(id) || id);
+  const defs = $derived([
+    { key: "type", options: [["any", t("any kind")], ...choices((p) => (p.planet ? p.biome : null), (v) => typeName(v))], neutral: "any", test: (p, v) => v === "any" || p.biome === v },
+    { key: "star", options: [["any", t("any colour")], ...STAR_NAMES.map((n, i) => [i, t(STARS[n])]).filter(([i]) => all.some((p) => p.star === i))], neutral: "any", test: (p, v) => v === "any" || p.star === v },
+    { key: "weather", options: [["any", t("any")], ...choices((p) => textOf(p.weather_key), (v) => v)], neutral: "any", test: (p, v) => v === "any" || textOf(p.weather_key) === v },
+    { key: "sentinel", options: [["any", t("any")], ...choices((p) => textOf(p.sentinel_key), (v) => v)], neutral: "any", test: (p, v) => v === "any" || textOf(p.sentinel_key) === v },
+    { key: "flora", options: [["any", t("any")], ...choices((p) => textOf(p.flora_key), (v) => v)], neutral: "any", test: (p, v) => v === "any" || textOf(p.flora_key) === v },
+    { key: "fauna", options: [["any", t("any")], ...choices((p) => textOf(p.fauna_key), (v) => v)], neutral: "any", test: (p, v) => v === "any" || textOf(p.fauna_key) === v },
+    { key: "resource", options: [["any", t("any")], ...resourceChoices()], neutral: "any", test: (p, v) => v === "any" || resOf(p).includes(v) },
+    { key: "bases", options: FLAG, neutral: false, test: (p, v) => flag(v, p.bases.length > 0) },
+    { key: "found", options: FLAG, neutral: false, test: (p, v) => flag(v, p.flora + p.fauna + p.minerals > 0) },
+  ]);
+  const resourceChoices = () => {
+    const seen = new Set(all.flatMap((p) => resOf(p)));
+    return [...seen].map((id) => [id, resourceName(id), resourceIcon(id)]).sort((a, b) => collate(a[1], b[1]));
+  };
+  const fx = $derived(facets(base, defs, f));
+  const rows = $derived(applyFacets(base, defs, fx.effective));
+  const filtered = $derived(Object.keys(DEFAULTS).some((k) => f[k] !== DEFAULTS[k]) || search !== "");
+  const reset = () => { f = { ...DEFAULTS }; st.text = search = ""; if (input) input.value = ""; };
 
   const hex3 = (n) => `0x${n.toString(16).toUpperCase().padStart(3, "0")}`;
   const when = (ts) => fmtDate(ts * 1000);
@@ -79,13 +123,7 @@
   };
   // The colour of a system's text is its star's (the game's order: yellow, green, blue, red, purple).
   const STAR = ["yellow", "green", "cyan", "red", "purple"];
-  // The plant comes first (its hint is an item's id, the others' are the game's UI texts), then the rest in the game's order.
-  const hintsOf = (p) => {
-    const hints = p.resources?.length >= 3 ? p.resources.slice(0, -3) : [];
-    return [...hints.filter((id) => !id.startsWith("UI_")), ...hints.filter((id) => id.startsWith("UI_"))];
-  };
-  const resOf = (p) => [...hintsOf(p), ...(p.resources?.length >= 3 ? p.resources.slice(-3) : p.resources ?? [])];
-  const subOf = (p, i) => (p.resources?.length >= 3 ? p.resources[p.resources.length - 3 + i] : "");
+  // (what a planet has: lib/planetres.js)
   const subName = (p, i) => { const id = subOf(p, i); return id ? D.items[id]?.name ?? textOf(id) ?? id : ""; };
   // A planet whose weather, sentinels, flora and fauna are not worked out (the save's record and the generator disagree on its type).
   const unknown = (p) => p.planet && !(p.weather_key || p.sentinel_key || p.flora_key || p.fauna_key);
@@ -114,9 +152,20 @@
 
 <div class="fbar">
   <h1><span>{t("Planets")}</span></h1>
-  <input class="search" style="max-width:520px" type="search" placeholder={t("Name, system or portal code")} value={st.text}
+  <Reset active={filtered} onclick={reset} />
+  <input class="search" style="max-width:520px" type="search" placeholder={t("Name, system or portal code")} value={search}
     autocomplete="off" spellcheck="false" bind:this={input} oninput={(e) => typed(e.target.value)}>
+  <Select hidden={!fx.show.type} label={t("Type")} value={fx.effective.type} options={fx.options.type} all={fx.all.type} neutral={fx.neutral.type} onchange={(v) => { f.type = v; }} title={t("Planet type")} />
+  <Select hidden={!fx.show.star} label={t("Star")} value={fx.effective.star} options={fx.options.star} all={fx.all.star} neutral={fx.neutral.star} onchange={(v) => { f.star = v; }} title={t("The colour of the system's star")} />
+  <Select hidden={!fx.show.weather} label={label("WEATHER_L", "Weather")} value={fx.effective.weather} options={fx.options.weather} all={fx.all.weather} neutral={fx.neutral.weather} onchange={(v) => { f.weather = v; }} />
+  <Select hidden={!fx.show.sentinel} label={label("SENTINELS_L", "Sentinels")} value={fx.effective.sentinel} options={fx.options.sentinel} all={fx.all.sentinel} neutral={fx.neutral.sentinel} onchange={(v) => { f.sentinel = v; }} />
+  <Select hidden={!fx.show.flora} label={label("FLORA_L", "Flora")} value={fx.effective.flora} options={fx.options.flora} all={fx.all.flora} neutral={fx.neutral.flora} onchange={(v) => { f.flora = v; }} />
+  <Select hidden={!fx.show.fauna} label={label("FAUNA_L", "Fauna")} value={fx.effective.fauna} options={fx.options.fauna} all={fx.all.fauna} neutral={fx.neutral.fauna} onchange={(v) => { f.fauna = v; }} />
+  <Select hidden={!fx.show.resource} label={label("RESOURCES_L", "Resources")} value={fx.effective.resource} options={fx.options.resource} all={fx.all.resource} neutral={fx.neutral.resource} onchange={(v) => { f.resource = v; }} title={t("Planets that have this on them")} />
+  <Check hidden={!fx.show.bases} label={t("Bases")} value={fx.effective.bases} onchange={(v) => { f.bases = v; }} title={t("Only planets with your bases")} />
+  <Check hidden={!fx.show.found} label={t("Found by you")} value={fx.effective.found} onchange={(v) => { f.found = v; }} title={t("Only planets where you found something")} />
 </div>
+{#if gamesave.report?.planets?.length}<div class="count">{tn(rows.length, "{n} planet|{n} planets")}{rows.length !== all.length ? ` ${t("of {n}", { n: all.length })}` : ""}</div>{/if}
 
 {#if !gamesave.available || !gamesave.report}
   <section class="card">
@@ -127,7 +176,7 @@
 {:else}
   <div class="split split-planets">
     <div class="main">
-      <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { cur = p; }} columns={[
+      <List bind:this={list} {rows} keep {keyOf} empty={t("No planets match this search.")} onSelect={(p) => { capture(); cur = p; }} columns={[
         { title: t("Planet"), cell: nameCell, cls: "strong", sort: shown },
         { title: t("System"), ghost: true, sort: (p) => p.system_name || hex3(p.system) },
         { title: t("Planet type"), cell: typeCell, cls: "clip w190", sort: kindOf },
@@ -136,12 +185,12 @@
         { title: label("FAUNA_L", "Fauna"), text: (p) => textOf(p.fauna_key), cls: "wide-only clip w130 muted", sort: (p) => p.fauna_key },
         { title: t("Found by you"), cell: foundCell, cls: "wide-only", sort: (p) => p.fauna + p.flora + p.minerals },
         { title: label("RESOURCES_L", "Resources"), cell: hintCell, cls: "wide-only", sort: (p) => hintsOf(p).length },
-        { title: `${label("RESOURCES_L", "Resources")} 2`, cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
+        { title: typeLabel("Substance"), cell: subsCell, cls: "wide-only", sort: (p) => subName(p, 0) },
         { title: t("Bases"), cell: baseCell, cls: "wide-only", sort: (p) => p.bases.length },
         { title: t("Last seen"), cell: dates, cls: "num muted", sort: (p) => p.seen },
       ]} />
     </div>
-    <aside class="detail">
+    <aside class="detail" use:swap={{ key: cur ? keyOf(cur) : "", peel: true }}>
       {#if cur}
         {@const p = cur}
         {#if globeUrl(p)}<div class="globe"><img src={globeUrl(p)} alt="" width="210" height="210" /></div>{/if}
@@ -190,7 +239,7 @@
   .res-row { display: inline-flex; gap: 8px; align-items: center; }
   /* a find: the picture, with its figure on its lower edge like a stack's count */
   .cnt { position: relative; display: inline-flex; margin-right: 6px; }
-  .cnt b { position: absolute; right: -6px; bottom: -4px; padding: 0 5px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; line-height: 1.4; font-variant-numeric: tabular-nums; color: #fff; background: rgb(8 12 24 / 0.78); }
+  .cnt b { position: absolute; right: -6px; bottom: -4px; padding: 0 5px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; line-height: 1.4; white-space: nowrap; font-variant-numeric: tabular-nums; color: #fff; background: rgb(8 12 24 / 0.78); }
   .two { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
   .two small { font-size: 0.74rem; font-weight: 400; }
   /* narrow text columns: a long text is cut with an ellipsis (the whole of it is in the tooltip) */

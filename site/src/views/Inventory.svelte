@@ -7,13 +7,12 @@
   import ItemIcon from "../components/ItemIcon.svelte";
   import List from "../components/List.svelte";
   import PlaceTag from "../components/PlaceTag.svelte";
-  import Select from "../components/Select.svelte";
   import StorageCard from "../components/StorageCard.svelte";
   import Units from "../components/Units.svelte";
   import { fmtInt } from "../lib/core.js";
   import { D, ENGLISH, ITEM_NAMES, name, placement } from "../lib/data.js";
   import { gamesave, refresh } from "../lib/gamesave.svelte.js";
-  import { fmtStamp, fmtTime } from "../lib/dates.js";
+  import { fmtTime } from "../lib/dates.js";
   import { collate, t } from "../lib/i18n.js";
   import { inventory } from "../lib/inventory.svelte.js";
   import { setKeys } from "../lib/keys.js";
@@ -56,7 +55,6 @@
   // scheme has no line for (exocraft, ships, the freighter), each kind in the order the save gives it.
   const RANK = { suit: 10, food: 11, vehicle: 13, ship: 14, freighter: 15 };
   const rank = (c) => (/^chest(\d)$/.test(c.key) ? Number(c.key.slice(5)) : RANK[c.key.replace(/\d+$/, "")] ?? 16);
-  const slotChoices = $derived(gamesave.slots.map((s) => [gamesave.slotKey(s), `${s.file} · ${fmtStamp(s.saved * 1000)}`]));
   const places = $derived([...(gamesave.report?.containers ?? [])].sort((a, b) => rank(a) - rank(b)));
   // The column "Where it lies" is there when the items are read from the save. No column is cut then: tags are never
   // clipped; a table wider than its pane scrolls sideways instead.
@@ -156,12 +154,8 @@
 <div class="fbar">
   <h1><span>{t("My items")}</span></h1>
   <input class="search" type="search" placeholder={t("Search my items…")} value={q} autocomplete="off" bind:this={find} oninput={(e) => typed(e.target.value)}>
-  {#if gamesave.available}
-    <label class="chk" title={t("Take the items from your game save, not from a list typed in by hand")}>
-      <input type="checkbox" checked={gamesave.on} onchange={(e) => { gamesave.on = e.target.checked; }}><span>{t("From the save")}</span></label>
-  {/if}
   {#if inventory.fromSave}
-    <Select label={t("Slot")} value={gamesave.slot} options={slotChoices} onchange={(v) => { gamesave.slot = v; }} title={t("Which save to take the items from")} />    {#if gamesave.report}
+    {#if gamesave.report}
       <details class="drop" use:closeOutside>
         <summary class="btn">{t("Where it lies")}: {gamesave.report.containers.length - gamesave.skipped.filter((k) => gamesave.report.containers.some((c) => c.key === k)).length} {t("of {n}", { n: gamesave.report.containers.length })}</summary>
         <div class="drop-pop">
@@ -262,7 +256,6 @@
   .fit.ok { color: var(--p-green); }
   .fit.wrong { color: var(--p-yellow); font-weight: 900; }
   :global(td.fitcol), :global(th.fitcol) { text-align: center; }
-  .chk { display: inline-flex; align-items: center; gap: 6px; }
   .x { background: none; border: 0; color: var(--p-faint); cursor: pointer; font-size: 1.1em; padding: 0 4px; }
   .x:hover { color: var(--p-red); }
   /* Narrow: the table over the card, each with a height of its own. (With the rows of the wide grid left, the table was

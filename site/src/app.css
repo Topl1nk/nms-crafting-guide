@@ -49,6 +49,7 @@ body { font: 1.0625rem/1.5 var(--p-sans); -webkit-font-smoothing: antialiased; }
   --p-accent: color-mix(in srgb, var(--accent, #90a6c6) 40%, #0d1429); --p-on-accent: #f0f2fa;
   --p-accent-ink: var(--p-accent);
   --p-sel: color-mix(in srgb, var(--p-accent) 14%, var(--p-raised));
+  --p-head: #ccd4e8; /* the head of a table: a step darker than the panel, and opaque (rows scroll under it) */
 }
 
 /* ── One window, one scrolling place at a time ────────────────────────────

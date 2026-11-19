@@ -74,6 +74,11 @@ def load(name: str) -> dict:
     return json.loads(path.read_text())
 
 
+# The game's own subtitle for a currency or a standing given as a reward ("Reward Item"). Its rows sit in the substance and
+# the product tables, but they are not things: the Wiki gives them a type of their own.
+REWARD_SUBTITLE = "UI_REWARDPOP_SUB"
+
+
 def build_items(substances: dict, products: dict) -> dict:
     """One id -> item map across both upstream tables.
 
@@ -92,7 +97,7 @@ def build_items(substances: dict, products: dict) -> dict:
             "category": row.get("Category", ""),
             "rarity": row.get("Rarity", ""),
             "value": int(_num(row.get("BaseValue"))),
-            "type": row.get("Type", ""),
+            "type": "RewardItem" if row.get("Subtitle") == REWARD_SUBTITLE else row.get("Type", ""),
             "cooking_ingredient": row.get("CookingIngredient") == "True",
             "description": row.get("Description_Text", ""),
             "symbol": row.get("Symbol_Text", ""),
@@ -110,7 +115,7 @@ def build_items(substances: dict, products: dict) -> dict:
             "name": row.get("NameLower_Text") or row.get("Name_Text", key),
             "kind": "substance",
             "color": row.get("Colour_Hex", ""),
-            "type": "Substance",
+            "type": "RewardItem" if row.get("Subtitle") == REWARD_SUBTITLE else "Substance",
             "subtitle": row.get("Subtitle_Text", ""),
             "subtitle_en": row.get("Subtitle_Text_En", ""),
             "category": row.get("Category", ""),

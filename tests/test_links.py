@@ -21,7 +21,7 @@ PAGES = {
     "chain": {"tier", "qty", "cook"},
     "wiki": {"q", "type", "rar", "store", "item"},
     "portals": {"kind", "code"},
-    "planets": set(),
+    "planets": {"resource"},
     "multitools": {"tab"},
     "inventory": {"item"},
     "help": set(),
