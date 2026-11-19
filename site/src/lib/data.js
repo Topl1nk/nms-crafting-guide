@@ -7,6 +7,7 @@
 
 import { multiplierLabel, qtyLabel, timeLabel } from "./core.js";
 import { N_, t } from "./i18n.js";
+import { cleanSub } from "./placeholders.js";
 
 export let D; // data.json
 export let RECIPES = []; // D.recipes with labels and a search key attached
@@ -58,7 +59,7 @@ export function retext(pack) {
     const was = BASE.items[id];
     const t = pack?.items[id];
     item.name = t?.[0] || was.name;
-    item.sub = t?.[1] || was.sub;
+    item.sub = cleanSub(t?.[1] || was.sub);
     if (was.sym) item.sym = t?.[3] || was.sym;
     if (was.effect) item.effect = pack?.fx[item.effect_id] || was.effect;
   }

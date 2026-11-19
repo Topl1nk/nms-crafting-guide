@@ -145,12 +145,32 @@ def _install(job: dict, on_installing) -> None:
         with LOCK:
             state["state"] = "installing"
         run(target)
+        close_window()
         if on_installing:
             on_installing()
     except Exception as exc:  # noqa: BLE001
         with LOCK:
             state["error"] = f"{type(exc).__name__}: {exc}"[:200]
             state["state"] = "idle"
+
+
+def close_window() -> None:
+    """Close the browser window this program opened, so that the copy started after the update does not open a second one beside
+    it (the old window would only show a page whose server is gone). It is the browser running on this program's own profile
+    folder (paths.PROFILE); it is asked to close the way a click on its X does, and only what is still there after three seconds
+    is ended, so that it keeps what the page stored (the settings). This waits for the script: the program ends right after, and
+    a child left to itself may not outlive it."""
+    profile = str(paths.PROFILE)
+    if os.name == "nt":
+        # Asked to close first; what is still there after three seconds (a window that is hidden does not answer) is ended. Only the
+        # processes found now: the window the new copy opens later is not touched.
+        script = ("$old = @(Get-CimInstance Win32_Process | Where-Object { $_.CommandLine -and $_.CommandLine.Contains($env:NMS_PROFILE) }); "
+                  "foreach ($m in ($old | Where-Object { $_.CommandLine -notmatch '--type=' })) { taskkill /PID $m.ProcessId | Out-Null }; "
+                  "Start-Sleep 3; foreach ($p in $old) { Stop-Process -Id $p.ProcessId -Force -ErrorAction SilentlyContinue }")
+        subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", script], env={**os.environ, "NMS_PROFILE": profile},
+                       creationflags=subprocess.CREATE_NO_WINDOW, timeout=30, check=False)
+    elif shutil.which("pkill"):
+        subprocess.run(["pkill", "-TERM", "-f", "--", f"--user-data-dir={profile}"], timeout=30, check=False)
 
 
 def run(target: Path) -> None:

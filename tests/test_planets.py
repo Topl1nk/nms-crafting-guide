@@ -73,6 +73,16 @@ def test_a_planet_the_player_did_not_name_gets_the_name_the_game_made_up() -> No
     assert other["name_source"] == "generated" and other["name"]
 
 
+def test_a_systems_name_is_not_given_to_other_systems_with_the_same_index() -> None:
+    # the system index (here 0x15E) is shared by thousands of systems: only the one at the same voxel is the named system
+    elsewhere = HOME + 0x10  # the same index, another x
+    records = [_record("Planet", HOME), _record("Planet", elsewhere),
+               _record("SolarSystem", HOME & ~(0xF << 52), name="Sol")]
+    found = {p["code"]: p for p in nms_save.planets(_save(records), ME)}
+    assert found["415E00A24EA9"]["system_name"] == "Sol"
+    assert found["415E00A24EB9"]["system_name"] != "Sol"
+
+
 def test_planets_others_found_are_listed_whoever_found_them_and_wherever() -> None:
     other = "7657"
     beside = _record("Planet", HOME + (1 << 52), owner=other)  # planet 5 of a system the player has no discovery of

@@ -252,14 +252,51 @@ def find_browser() -> str | None:
     return None
 
 
+class Server(http.server.ThreadingHTTPServer):
+    # Not SO_REUSEADDR: on Windows that lets a second copy bind the same port while the first is listening on it.
+    allow_reuse_address = os.name != "nt"
+
+
+PORTS = range(47615, 47655)  # where the program looks for a place to listen, when it has none of its own
+
+
+def open_server(handler, port: int | None) -> http.server.ThreadingHTTPServer:
+    """The page's settings (theme, language, the typed list of items) are kept by the browser per address, port included, so the
+    program must listen on the same port every time: a new port is a new page, with everything forgotten. The last port is kept in
+    port.txt and tried again (for a few seconds: after an update the old copy may not have let go yet), then the others of PORTS,
+    and only then any free one. The first port found is the one that is kept."""
+    if port is not None:
+        return Server(("127.0.0.1", port), handler)
+    mark = paths.HOME / "port.txt"
+    try:
+        saved = int(mark.read_text().strip())
+    except (OSError, ValueError):
+        saved = 0
+    for candidate, tries in [*([(saved, 12)] if saved else []), *[(p, 1) for p in PORTS if p != saved], (0, 1)]:
+        for attempt in range(tries):
+            try:
+                server = Server(("127.0.0.1", candidate), handler)
+            except OSError:
+                if attempt + 1 < tries:
+                    time.sleep(0.5)
+                continue
+            if not saved:  # a second copy running beside the first takes another port, and must not move the first one's
+                try:
+                    paths.HOME.mkdir(parents=True, exist_ok=True)
+                    mark.write_text(str(server.server_address[1]))
+                except OSError:
+                    pass
+            return server
+    raise OSError("no port to listen on")
+
+
 def main() -> int:
     only_server = "--server" in sys.argv  # no window: for tests, prints the address
     if not (paths.DIST / "index.html").exists():
         print(f"{paths.DIST} has no site: it has not been built.", file=sys.stderr)
         return 1
     handler = functools.partial(Quiet, directory=str(paths.DIST))
-    port = int(sys.argv[sys.argv.index("--port") + 1]) if "--port" in sys.argv else 0
-    server = http.server.ThreadingHTTPServer(("127.0.0.1", port), handler)
+    server = open_server(handler, int(sys.argv[sys.argv.index("--port") + 1]) if "--port" in sys.argv else None)
     url = f"http://127.0.0.1:{server.server_address[1]}/"
     threading.Thread(target=server.serve_forever, daemon=True).start()
 

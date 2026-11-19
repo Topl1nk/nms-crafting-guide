@@ -259,8 +259,11 @@ def planets(save: dict, account: str = "") -> list[dict]:
         if r["DD"]["DT"] == "Planet" and key in found:
             found[key]["name"] = name
         elif r["DD"]["DT"] == "SolarSystem":
+            # A system is its whole address (voxel x, y, z and the system's index in it); the index alone (121, say) is shared by
+            # thousands of systems, and giving them all one name was how a planet came to be shown in the wrong system.
+            place = _place(key)
             for p in found.values():
-                if (p["galaxy"], p["system"]) == (_place(key)["galaxy"], _place(key)["system"]):
+                if (p["galaxy"], p["code"][1:]) == (place["galaxy"], place["code"][1:]):
                     p["system_name"] = name
     for key, p in found.items():
         p["biome"] = types.get(key, "")
