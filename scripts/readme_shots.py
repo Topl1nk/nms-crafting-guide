@@ -1,9 +1,9 @@
 """Retake the README screenshots (docs/img/site-*.webp: English; docs/img/<code>/site-*.webp: one set per language) and, with --steam,
-the pictures of the Steam guide (NMSii/steam-guide/images-<en|ru>/NN-name.jpg).
+the pictures of the Steam guide (NMSii/steam-guide/images-en/NN-name.jpg).
 
     python scripts/readme_shots.py                 every language
     python scripts/readme_shots.py en ru ja        only these (codes as in LANGS below; "en" is the English set)
-    python scripts/readme_shots.py --steam         the Steam guide's pictures too (English and Russian)
+    python scripts/readme_shots.py --steam         the Steam guide's pictures too (English only)
     python scripts/readme_shots.py --no-launcher   without the pages that need the desktop program (Planets, Settings)
 
 Two servers, both on 127.0.0.1, shot in headless Chrome at 1920x1080, dark theme, a language at a time:
@@ -162,7 +162,7 @@ def main(args: list[str]) -> None:
             probe.close()
             inv = {k: INVENTORY[v["name"]] for k, v in items.items() if v["name"] in INVENTORY}
             for code, game in LANGS.items():
-                want_steam = steam and code in ("en", "ru")
+                want_steam = steam and code == "en"
                 if only and code not in only and not (want_steam and not only):
                     continue
                 ctx = browser.new_context(viewport={"width": 1920, "height": 1080}, device_scale_factor=1, color_scheme="dark")
@@ -183,7 +183,7 @@ def main(args: list[str]) -> None:
                     for name, png in shots.items():
                         Image.open(io.BytesIO(png)).convert("RGB").save(folder / f"site-{name}.webp", "WEBP", quality=82)
                 if want_steam:
-                    folder = STEAM / f"images-{code}"
+                    folder = STEAM / "images-en"
                     folder.mkdir(parents=True, exist_ok=True)
                     for name, file in STEAM_ORDER:
                         if name in shots:

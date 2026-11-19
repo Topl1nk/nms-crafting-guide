@@ -11,7 +11,7 @@ be rediscovered: the screenshots are taken by a script, the texts follow fixed a
 | 13 translations | `docs/readme/README.<code>.md`: `ru`, `pt-BR`, `pt`, `es`, `fr`, `de`, `it`, `nl`, `pl`, `ja`, `ko`, `zh-CN`, `zh-TW` |
 | Screenshots | `docs/img/site-*.webp` (English) and `docs/img/<code>/site-*.webp`, nine pages each, 1920x1080, dark |
 | Screenshot script | `scripts/readme_shots.py` |
-| Steam guide (outside the repository) | `NMSii/steam-guide/guide.en.txt`, `guide.ru.txt`, pictures in `images-en/`, `images-ru/` |
+| Steam guide (outside the repository, English only) | `NMSii/steam-guide/00-guide-info.txt`, one text file per section in `sections/`, pictures in `images-en/` |
 | Developer README | `docs/DEVELOPERS.md` (English only, not part of this routine) |
 
 ## 1. Texts
@@ -46,7 +46,7 @@ feature). Edit single lines by hand when the change is only a rewording.
    program's requirements (`desktop/requirements.txt`; the repo's `.uv\venv` has them) and `NMS_SHOTS_VERSION` to the version being
    released (Settings shows "you have the latest version" with it), then run `python scripts/readme_shots.py` (all 14 sets, about
    10 minutes), or with codes: `python scripts/readme_shots.py en ru`. `--steam` also writes the Steam guide's pictures
-   (English and Russian, `NMSii/steam-guide/images-<en|ru>/NN-name.jpg`); `--no-launcher` leaves out Planets and Settings.
+   (English only, `NMSii/steam-guide/images-en/NN-name.jpg`); `--no-launcher` leaves out Planets and Settings.
 3. Look at one or two pictures (`site-planets.webp` and `site-settings.webp` need the game, its pictures and a save).
 
 The script serves `dist/` itself and starts the desktop program (without its window) for the two pages that need it, Planets and
@@ -56,13 +56,16 @@ what the game itself names is shown. Check a Planets picture for a name that is 
 
 ## 3. Steam guide
 
-`NMSii/steam-guide/guide.en.txt` and `guide.ru.txt` are written in Steam's markup (`[h1]`, `[h2]`, `[list]`, `[url=...]`). They go
-window by window (Craft with cooking and nanites, Tree, Wiki, My items, Planets, Portals, Multi-tools, Settings, Help and keys);
-a new window or a new feature gets its own `[h2]` there, and the same sentences go to "What it can do", "Is it safe?" (the privacy
-sentence) and "Good to know". `[IMAGE n: file]` marks where a picture goes; the files are in `images-en/` and `images-ru/` (1920x1080
-jpg, `NN-name.jpg`), written by `python scripts/readme_shots.py --steam` (STEAM_ORDER in the script lists them: add a page to
-LAUNCHER_PAGES or PAGES and to STEAM_ORDER for a new picture). Numbers in the text (2,292 items, 1,688 recipes) come from the data:
-check them against the Wiki and Craft pages when the data changes.
+The Steam guide is in English only, and it is one text file **per section** (the way Steam wants it): `NMSii/steam-guide/00-guide-info.txt`
+(title, the line under it, categories, what goes where) and `NMSii/steam-guide/sections/NN-name.txt`, fifteen of them, in order: What is
+it, How to install, The windows, Craft (with cooking and nanites), Tree, Wiki, My items, Planets, Portals, Multi-tools, Settings, Help
+and keys, Good to know, Is it safe, Links. The first lines of a file are the section's title, the text under the marked line is pasted
+into the section. They are in Steam's markup (`[h2]`, `[list]`, `[url=...]`). A new window or feature gets its own file (number the
+next ones after the last), and the same sentences go to 01 (the short list), 13 and 14 (the privacy sentence). `[IMAGE n: file]` marks
+where a picture goes; the files are in `images-en/` (1920x1080 jpg, `NN-name.jpg`), written by
+`python scripts/readme_shots.py --steam` (STEAM_ORDER in the script lists them: add a page to LAUNCHER_PAGES or PAGES and to STEAM_ORDER
+for a new picture). Numbers in the text (2,292 items, 1,688 recipes) come from the data: check them against the Wiki and Craft pages
+when the data changes.
 
 ## 5. The new sections of the README
 
