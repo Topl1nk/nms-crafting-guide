@@ -67,7 +67,9 @@ GLOBE_RINGS = ("rings.1", (1.0, 1.0, 1.0), 0.749)
 GLOBE_OUTER = ("outerglow", (1.0, 1.0, 1.0), 0.749)
 GLOBE_OVER = (("shadow", (0.1216, 0.0588, 0.0314), 0.502), ("shadow", (0.0, 0.0902, 0.1216), 0.502), ("innerglow", (0.6588, 0.8706, 0.9333), 0.702))
 GLOBE_CLOUD = (0.9373, 1.0, 0.9961)
-GLOBE_EXPOSURE = 1.9  # the game shows the page brighter than the plain tints: the factor that makes one globe (Ciusil) as bright as in a screenshot of it
+# The page shows the terrain and the water colour scaled so that their brightest channel is the same on every planet (the colours of dark and
+# of bright planets look alike in the game): the levels that fit the colours measured on five globes of in-game screenshots to within a few of 255.
+GLOBE_TERRAIN_LEVEL, GLOBE_WATER_LEVEL = 0.70, 0.60
 _globes: dict[tuple, bytes] = {}
 
 
@@ -97,11 +99,12 @@ def render_globe(terrain: int, terrain_rgb, water: int, water_rgb, waterworld: b
     if gas:
         parts += [("gasgiant.1", gas, 1.0), ("gasgiant.1.clouds", (1.0, 1.0, 1.0), 1.0)]
     else:
-        parts.append((f"terrain.{terrain}", terrain_rgb, 1.0))
+        level = lambda rgb, k: [c / max(max(rgb), 1e-6) * k for c in rgb]
+        parts.append((f"terrain.{terrain}", level(terrain_rgb, GLOBE_TERRAIN_LEVEL), 1.0))
         if waterworld:
-            parts.append(("water.full", water_rgb, 1.0))
+            parts.append(("water.full", level(water_rgb, GLOBE_WATER_LEVEL), 1.0))
         elif water:
-            parts.append((f"water.{water}", water_rgb, 1.0))
+            parts.append((f"water.{water}", level(water_rgb, GLOBE_WATER_LEVEL), 1.0))
         parts.append((f"clouds.{cloud}", GLOBE_CLOUD, opacity * 0.8))  # the layout's cloud opacity (0.8) times the planet's
     parts += GLOBE_OVER
     if rings:
@@ -112,8 +115,6 @@ def render_globe(terrain: int, terrain_rgb, water: int, water_rgb, waterworld: b
         if im is None:
             return None
         canvas.alpha_composite(tinted(im, rgb, alpha))
-    r, g, b, a = canvas.split()
-    canvas = Image.merge("RGBA", ([ch.point(lambda v: min(255, round(v * GLOBE_EXPOSURE))) for ch in (r, g, b)] + [a]))
     side = round(size * 512 / 312)  # the planet and its glow take 312 of the 512 pixels of the game's layers; the rest is room for rings
     canvas = canvas.resize((side, side), Image.LANCZOS)
     out = BytesIO()
