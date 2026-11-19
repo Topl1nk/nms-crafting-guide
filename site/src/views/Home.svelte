@@ -9,6 +9,7 @@
   import { collate, t, tn } from "../lib/i18n.js";
   import { inventory } from "../lib/inventory.svelte.js";
   import { ICONS } from "../lib/icons.js";
+  import { otherNames } from "../lib/names.svelte.js";
   import { go } from "../lib/router.svelte.js";
 
   // Every section, the same as the menu; the line under each is what it is for.
@@ -45,7 +46,7 @@
     for (const [id, item] of Object.entries(D.items)) {
       const n = item.name.toLowerCase();
       if (n.startsWith(text)) starts.push(id);
-      else if (n.includes(text)) contains.push(id);
+      else if (n.includes(text) || otherNames(id).includes(text)) contains.push(id);
     }
     const byName = (a, b) => collate(D.items[a].name, D.items[b].name);
     return [...starts.sort(byName), ...contains.sort(byName)].slice(0, 8);

@@ -8,6 +8,7 @@
   import UpdateToast from "./components/UpdateToast.svelte";
   import { gameRelease, load, NAV } from "./lib/data.js";
   import { startSave } from "./lib/gamesave.svelte.js";
+  import { startNames } from "./lib/names.svelte.js";
   import { startUpdates } from "./lib/update.svelte.js";
   import { loadFormats } from "./lib/dates.js";
   import { t } from "./lib/i18n.js";
@@ -37,7 +38,7 @@
   let palette;
 
   // The language is chosen before the first view is drawn, so it never flashes in the other one.
-  load().then(startLanguage).then(loadFormats).then(() => { ready = true; startSave(); startUpdates(); }, (exc) => { failed = exc.message; });
+  load().then(startLanguage).then(loadFormats).then(() => { ready = true; startSave(); startUpdates(); startNames(); }, (exc) => { failed = exc.message; });
 
   const View = $derived(VIEWS[route.section] ?? Home);
   // Item pages need the item list, so they wait for data.json.

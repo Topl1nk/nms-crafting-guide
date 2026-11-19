@@ -69,7 +69,8 @@
   .rows { display: grid; gap: 6px; margin: 8px 0; }
   .row { display: grid; gap: 2px; min-width: 0; }
   .lbl { font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--p-faint); }
-  .val { display: flex; flex-wrap: nowrap; align-items: center; gap: 8px; min-width: 0; }
+  /* A long tag ("Sell until then in «For sale»") leaves the container's name no room beside it: it goes under it, whole. */
+  .val { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; min-width: 0; }
   .n { flex: none; font-size: 0.875rem; color: var(--p-muted); white-space: nowrap; }
   /* What the place is: a grey block. */
   .about {

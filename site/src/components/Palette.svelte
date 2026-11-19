@@ -6,6 +6,7 @@
   import { Address } from "../lib/core.js";
   import { CONSUMED, D, name, NAV, PRODUCED } from "../lib/data.js";
   import { collate, t } from "../lib/i18n.js";
+  import { otherNames } from "../lib/names.svelte.js";
   import { go } from "../lib/router.svelte.js";
   import { search } from "../lib/search.svelte.js";
 
@@ -54,7 +55,7 @@
     for (const [id, item] of Object.entries(D.items)) {
       const n = item.name.toLowerCase();
       if (n.startsWith(lower)) starts.push(id);
-      else if (n.includes(lower)) contains.push(id);
+      else if (n.includes(lower) || otherNames(id).includes(lower)) contains.push(id);
     }
     const byName = (a, b) =>
       (name(a).toLowerCase() !== lower) - (name(b).toLowerCase() !== lower) || collate(name(a), name(b));

@@ -25,6 +25,7 @@
   import { gamesave } from "../lib/gamesave.svelte.js";
   import { inventory } from "../lib/inventory.svelte.js";
   import { setKeys } from "../lib/keys.js";
+  import { otherNames } from "../lib/names.svelte.js";
   import { planetsWith } from "../lib/planetres.js";
   import { arrival, go } from "../lib/router.svelte.js";
   import { inStore, storeLines } from "../lib/store.js";
@@ -65,7 +66,8 @@
   const base = $derived.by(() => {
     if (!all) return [];
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-    return terms.length ? all.filter((x) => terms.every((w) => x.key.includes(w))) : all;
+    // the name in the page's language, the subtitle, and the item's names in every other language the program has built
+    return terms.length ? all.filter((x) => { const hay = `${x.key}\n${x.en.toLowerCase()}\n${otherNames(x.id)}`; return terms.every((w) => hay.includes(w)); }) : all;
   });
   const fx = $derived(facets(base, defs, f));
   const rows = $derived(applyFacets(base, defs, fx.effective));

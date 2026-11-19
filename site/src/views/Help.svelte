@@ -53,7 +53,7 @@
   </div>
   <div class="side">
     <section class="card"><h3>{t("Appearance and language")}</h3>
-      <p>{t("The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.")}</p></section>
+      <p>{t("The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.")}</p></section>
     <section class="card"><h3>{t("Keys")}</h3>
       <div class="keys">
         {#each KEYS as [keys, text]}

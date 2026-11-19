@@ -35,6 +35,7 @@
   import { setKeys } from "../lib/keys.js";
   import { byColor, byRarity, byType } from "../lib/sortkeys.js";
   import { DEFAULTS, recipeDefs } from "../lib/recipefacets.js";
+  import { recipeNames } from "../lib/names.svelte.js";
   import { arrival, go, replace, trapBack } from "../lib/router.svelte.js";
   import { debounce } from "../lib/util.js";
   import { machineShort } from "../lib/words.js";
@@ -126,7 +127,8 @@
   }
   const base = $derived.by(() => {
     const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-    return terms.length ? scope().filter((r) => terms.every((w) => r.key.includes(w))) : scope();
+    // a recipe is found by what it is made of and makes, in any language the program has built
+    return terms.length ? scope().filter((r) => { const hay = `${r.key}\n${recipeNames(r)}`; return terms.every((w) => hay.includes(w)); }) : scope();
   });
   const fx = $derived(facets(base, defs, f));
   // "Reset": every filter, whoever set it (a link too: the item the page was opened on, its role), and the search.

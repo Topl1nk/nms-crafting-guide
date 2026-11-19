@@ -300,7 +300,7 @@ export default {
   "The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.": "Il simbolo chimico della sostanza, come nel gioco. Si può disattivare nel menu dell'aspetto.",
   "Help": "Aiuto",
   "Appearance and language": "Aspetto e lingua",
-  "The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.": "L'ingranaggio in alto a destra: tema chiaro o scuro, colore d'accento, lingua (i nomi e le descrizioni vengono dai file del gioco e le parole della pagina la seguono), icone luminose, simboli chimici sulle icone e dimensione del testo.",
+  "The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.": "L'ingranaggio in alto a destra: tema chiaro o scuro, colore d'accento, icone luminose, simboli chimici sulle icone e dimensione del testo; la lingua (nomi e descrizioni vengono dai file del gioco, e le parole della pagina la seguono); quale salvataggio leggere e il suo slot; le immagini del gioco; e gli aggiornamenti.",
   "Keys": "Tasti",
   "What the words mean": "Cosa significano le parole",
   "Where all this comes from": "Da dove viene tutto questo",
@@ -612,4 +612,5 @@ export default {
   "Check for updates": "Cerca aggiornamenti",
   "Installs a new version by itself when one is found": "Installa da sé una nuova versione quando la trova",
   "Update automatically": "Aggiorna automaticamente",
+  // -- settings, planet filters, updates
 };

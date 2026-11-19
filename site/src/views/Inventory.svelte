@@ -13,6 +13,7 @@
   import { D, ENGLISH, ITEM_NAMES, name, placement } from "../lib/data.js";
   import { gamesave, refresh } from "../lib/gamesave.svelte.js";
   import { fmtTime } from "../lib/dates.js";
+  import { idByAnyName, otherNames } from "../lib/names.svelte.js";
   import { collate, t } from "../lib/i18n.js";
   import { inventory } from "../lib/inventory.svelte.js";
   import { setKeys } from "../lib/keys.js";
@@ -84,7 +85,7 @@
   // The search: every word is in the name, the type or the place of the row.
   let q = $state("");
   const typed = debounce((value) => { q = value; });
-  const keyOfRow = ([id, , c]) => `${name(id)} ${typeLabel(D.items[id]?.type)} ${c ? place(c).name : ""}`.toLowerCase();
+  const keyOfRow = ([id, , c]) => `${name(id)} ${typeLabel(D.items[id]?.type)} ${c ? place(c).name : ""}\n${otherNames(id)}`.toLowerCase();
   const terms = $derived(q.toLowerCase().split(/\s+/).filter(Boolean));
   const shown = $derived(terms.length ? carried.filter((r) => { const k = keyOfRow(r); return terms.every((w) => k.includes(w)); }) : carried);
   const rows = $derived(only ? shown.filter(([id]) => id === only) : shown);
@@ -105,7 +106,7 @@
 
   function add(e) {
     e.preventDefault();
-    const id = byName[adding.trim().toLowerCase()];
+    const id = byName[adding.trim().toLowerCase()] || (D.items[idByAnyName(adding)] ? idByAnyName(adding) : "");
     if (!id) { toast(t("There is no such item: pick one from the hint")); return; }
     const n = inventory.add(id, Math.max(1, Number(count) || 1));
     adding = "";

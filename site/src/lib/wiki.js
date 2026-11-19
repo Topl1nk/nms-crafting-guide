@@ -22,7 +22,7 @@ export async function loadWiki() {
   rows = Object.entries(raw).map(([id, v]) => {
     const t = PACK?.items[id];
     return {
-      id, name: t?.[0] || v[0], sub: cleanSub(t?.[1] || v[1]), type: v[2], cat: v[3], rar: v[4], value: v[5], color: v[6],
+      id, en: v[0], name: t?.[0] || v[0], sub: cleanSub(t?.[1] || v[1]), type: v[2], cat: v[3], rar: v[4], value: v[5], color: v[6],
       desc: cleanDesc(t?.[2] || v[7]),
       makes: (PRODUCED[id] || []).length,
       needs: (CONSUMED[id] || []).length,

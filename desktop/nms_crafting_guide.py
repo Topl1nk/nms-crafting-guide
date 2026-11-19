@@ -96,7 +96,8 @@ class Life:
     def watch(self):
         while not self.done.wait(1):
             now = time.monotonic()
-            if "running" in (pictures.state["state"], *(s["state"] for s in languages.state.values())) or updater.state["state"] in ("downloading", "installing"):
+            # (the background building of every language, state["*"], is not waited for: closing the window ends the program)
+            if "running" in (pictures.state["state"], *(s["state"] for k, s in languages.state.items() if k != "*")) or updater.state["state"] in ("downloading", "installing"):
                 continue  # an installation in progress is not cut off, even by a closed window
             if (self.bye is not None and now - self.bye > 5
                     or self.last is None and now - self.started > 90  # the page never came up
@@ -150,6 +151,10 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
             return self.send_json({**pictures.status(), "saves": len(nms_save.save_files())})
         if url.path == "/api/update":
             return self.send_json(updater.status())
+        if url.path == "/api/names":
+            return self.send_json(languages.names())
+        if url.path == "/api/lang/all":
+            return self.send_json({**languages.state.get("*", {"state": "idle", "error": "", "done": 0, "total": 0}), "languages": languages.have(), "total": len(languages.codes())})
         if url.path == "/api/lang":
             return self.send_json(languages.status(urllib.parse.parse_qs(url.query).get("code", [""])[0]))
         if url.path.startswith("/lang/"):
@@ -316,6 +321,7 @@ def main() -> int:
     else:
         webbrowser.open(url)  # no browser with an app window: a tab in the default one, which the same beacon ends
     threading.Thread(target=LIFE.watch, daemon=True).start()
+    threading.Thread(target=languages.auto, daemon=True).start()
     try:
         LIFE.done.wait()
     except KeyboardInterrupt:

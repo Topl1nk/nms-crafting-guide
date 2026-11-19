@@ -1,4 +1,4 @@
-﻿<script>
+<script>
   // "Look": light or dark, the accent colour, glowing icons, chemical symbols, text size.
   import { onMount } from "svelte";
   import { fmtStamp } from "../lib/dates.js";
@@ -47,6 +47,7 @@
     {#if update.newer}<i class="mark" aria-hidden="true"></i>{/if}
   </button>
   <div class="panel" role="dialog" aria-label={t("Appearance")} hidden={!open}>
+    <section class="grp">
     <h4>{t("Theme")}</h4>
     <div class="seg">
       {#each THEMES as [k, label] (k)}
@@ -59,12 +60,34 @@
         <button type="button" class="sw" class:on={accent === k} style="--c:{hex}" title={t(label)} aria-label={t(label)} onclick={() => pickAccent(k)}></button>
       {/each}
     </div>
+    <h4>{t("Show")}</h4>
+    <label class="opt"><input type="checkbox" checked={glow} onchange={(e) => { glow = e.target.checked; setLook("glow", glow); }}>
+      <span>{t("Glow icons in the game's own colour")}</span></label>
+    <label class="opt"><input type="checkbox" checked={sym} onchange={(e) => { sym = e.target.checked; setLook("sym", sym); }}>
+      <span>{t("Chemical symbols on icons")}</span></label>
+    <h4>{t("Text size")} <b>{fs}</b></h4>
+    <input class="range" type="range" min="14" max="22" step="1" value={fs} aria-label={t("Text size")}
+      oninput={(e) => { fs = Number(e.target.value); setLook("fs", fs); }}>
+    </section>
+    <section class="grp">
     {#if language.list.length > 1}
       <h4>{t("Language")}</h4>
       <select class="lang" value={language.code} onchange={pickLanguage} aria-label={t("Language")}>
         {#each language.list as l (l.code)}<option value={l.code}>{l.name}</option>{/each}
       </select>
       {#if language.building}<span class="hint" aria-busy="true">…</span>{/if}
+    {/if}
+    </section>
+    <section class="grp">
+    {#if gamesave.available}
+      <h4>{t("Game save")}</h4>
+      <label class="opt" title={t("Take the items from your game save, not from a list typed in by hand")}>
+        <input type="checkbox" checked={gamesave.on} onchange={(e) => { gamesave.on = e.target.checked; }}><span>{t("From the save")}</span></label>
+      {#if gamesave.on && gamesave.slots.length}
+        <select class="lang" value={gamesave.slot} onchange={(e) => { gamesave.slot = e.target.value; }} aria-label={t("Slot")} title={t("Which save to take the items from")}>
+          {#each gamesave.slots as s (gamesave.slotKey(s))}<option value={gamesave.slotKey(s)}>{s.file} · {fmtStamp(s.saved * 1000)}</option>{/each}
+        </select>
+      {/if}
     {/if}
     {#if pictures.available}
       <h4>{t("Game pictures")}</h4>
@@ -81,16 +104,8 @@
         {/if}
       </div>
     {/if}
-    {#if gamesave.available}
-      <h4>{t("Game save")}</h4>
-      <label class="opt" title={t("Take the items from your game save, not from a list typed in by hand")}>
-        <input type="checkbox" checked={gamesave.on} onchange={(e) => { gamesave.on = e.target.checked; }}><span>{t("From the save")}</span></label>
-      {#if gamesave.on && gamesave.slots.length}
-        <select class="lang" value={gamesave.slot} onchange={(e) => { gamesave.slot = e.target.value; }} aria-label={t("Slot")} title={t("Which save to take the items from")}>
-          {#each gamesave.slots as s (gamesave.slotKey(s))}<option value={gamesave.slotKey(s)}>{t("Slot")} {s.file} · {fmtStamp(s.saved * 1000)}</option>{/each}
-        </select>
-      {/if}
-    {/if}
+    </section>
+    <section class="grp">
     {#if update.available && update.current}
       <h4>{t("Updates")}</h4>
       <div class="upd">
@@ -118,20 +133,18 @@
         {/if}
       </div>
     {/if}
-    <h4>{t("Show")}</h4>
-    <label class="opt"><input type="checkbox" checked={glow} onchange={(e) => { glow = e.target.checked; setLook("glow", glow); }}>
-      <span>{t("Glow icons in the game's own colour")}</span></label>
-    <label class="opt"><input type="checkbox" checked={sym} onchange={(e) => { sym = e.target.checked; setLook("sym", sym); }}>
-      <span>{t("Chemical symbols on icons")}</span></label>
-    <h4>{t("Text size")} <b>{fs}</b></h4>
-    <input class="range" type="range" min="14" max="22" step="1" value={fs} aria-label={t("Text size")}
-      oninput={(e) => { fs = Number(e.target.value); setLook("fs", fs); }}>
+    </section>
   </div>
 </div>
 
 <style>
   .theme-wrap { position: relative; }
   #theme { position: relative; }
+  /* Four groups, each its own block under a line: how it looks, the language, the game's save and pictures, the program's updates.
+     A group with nothing to show (no launcher, no update to speak of) is not drawn at all. */
+  .grp:not(:first-of-type) { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--p-outline); }
+  .grp:not(:has(h4)) { display: none; }
+  .grp h4:first-child { margin-top: 0; }
   /* a new version is waiting: a dot on the button's corner, in the accent's own colour */
   .mark { position: absolute; top: 5px; right: 5px; width: 9px; height: 9px; border-radius: 50%; background: var(--p-red); box-shadow: 0 0 0 2px var(--p-bg); }
   .upd, .pics { display: grid; gap: 8px; }
@@ -147,7 +160,7 @@
   .bar { display: block; height: 8px; border-radius: 999px; background: var(--p-raised); overflow: hidden; }
   .bar i { display: block; height: 100%; background: var(--p-accent); transition: width 0.3s; }
   .panel {
-    position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: 300px; padding: 16px 18px 14px;
+    position: absolute; right: 0; top: calc(100% + 8px); z-index: 30; width: 330px; padding: 16px 18px 14px;
     background: var(--p-panel); border: 1px solid var(--p-outline); border-radius: 16px;
     max-height: calc(100vh - 80px); overflow-y: auto;
     box-shadow: 0 16px 40px rgb(0 0 0 / 0.45);

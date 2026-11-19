@@ -300,7 +300,7 @@ export default {
   "The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.": "게임과 같은 물질의 화학 기호. 모양 메뉴에서 끌 수 있습니다.",
   "Help": "도움말",
   "Appearance and language": "모양과 언어",
-  "The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.": "오른쪽 위의 톱니바퀴: 밝은/어두운 테마, 강조 색상, 언어(이름과 설명은 게임 파일에서 가져오며 페이지의 문구도 따라갑니다), 빛나는 아이콘, 아이콘의 화학 기호, 글자 크기.",
+  "The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.": "오른쪽 위의 톱니바퀴: 라이트/다크 테마, 강조 색, 빛나는 아이콘, 아이콘의 화학 기호, 글자 크기. 언어(이름과 설명은 게임 파일에서 가져오고 페이지의 말도 그에 따릅니다). 읽을 게임 세이브와 슬롯. 게임 그림. 그리고 업데이트.",
   "Keys": "키",
   "What the words mean": "용어의 뜻",
   "Where all this comes from": "출처",
@@ -612,4 +612,5 @@ export default {
   "Check for updates": "업데이트 확인",
   "Installs a new version by itself when one is found": "새 버전이 발견되면 자동으로 설치합니다",
   "Update automatically": "자동으로 업데이트",
+  // -- settings, planet filters, updates
 };

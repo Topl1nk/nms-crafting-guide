@@ -18,6 +18,7 @@
   import { PICK_DEFAULTS, pickDefs, pickSorts } from "../lib/pickfacets.js";
   import { byColor, byPotency, byRarity, byType } from "../lib/sortkeys.js";
   import { quiet } from "../lib/motion.js";
+  import { nameMatches } from "../lib/names.svelte.js";
   import { debounce } from "../lib/util.js";
 
   const ids = Object.keys(PRODUCED).filter((id) => D.items[id]);
@@ -30,7 +31,7 @@
   const defs = $derived(pickDefs({ makeable, held: inventory.items }, ids));
   const base = $derived.by(() => {
     const terms = q.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    return terms.length ? ids.filter((id) => terms.every((w) => name(id).toLowerCase().includes(w))) : ids;
+    return terms.length ? ids.filter((id) => nameMatches(id, terms)) : ids;
   });
   const fx = $derived(facets(base, defs, f));
   // The quickest recipe of an item (none: last), and the easiest to supply of its recipes.

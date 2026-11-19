@@ -300,7 +300,7 @@ export default {
   "The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.": "Het chemische symbool van de substantie, zoals in het spel. Uit te zetten in het weergavemenu.",
   "Help": "Help",
   "Appearance and language": "Weergave en taal",
-  "The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.": "Het tandwiel rechtsboven: licht of donker thema, accentkleur, taal (namen en beschrijvingen komen uit de spelbestanden, en de woorden van de pagina volgen die taal), gloeiende pictogrammen, chemische symbolen op pictogrammen en tekstgrootte.",
+  "The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.": "Het tandwiel rechtsboven: licht of donker thema, accentkleur, gloeiende pictogrammen, scheikundige symbolen op pictogrammen en tekstgrootte; de taal (namen en beschrijvingen komen uit de spelbestanden, en de woorden van de pagina volgen die); welke opslag van het spel wordt gelezen en het slot; de afbeeldingen van het spel; en de updates.",
   "Keys": "Toetsen",
   "What the words mean": "Wat de woorden betekenen",
   "Where all this comes from": "Waar dit allemaal vandaan komt",
@@ -612,4 +612,5 @@ export default {
   "Check for updates": "Controleren op updates",
   "Installs a new version by itself when one is found": "Installeert zelf een nieuwe versie zodra er een is",
   "Update automatically": "Automatisch bijwerken",
+  // -- settings, planet filters, updates
 };

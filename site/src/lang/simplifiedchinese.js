@@ -300,7 +300,7 @@ export default {
   "The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.": "物质的化学符号，和游戏中一样。可以在外观菜单中关闭。",
   "Help": "帮助",
   "Appearance and language": "外观与语言",
-  "The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.": "右上角的齿轮：浅色或深色主题、强调色、语言（名称和描述来自游戏文件，页面的文字也随之变化）、发光图标、图标上的化学符号和文字大小。",
+  "The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.": "右上角的齿轮:浅色或深色主题、强调色、发光图标、图标上的化学符号和文字大小;语言(名称和描述来自游戏文件,页面自己的文字也随之变化);读取哪个游戏存档及其存档位;游戏图片;以及更新。",
   "Keys": "按键",
   "What the words mean": "这些词的含义",
   "Where all this comes from": "这一切从何而来",
@@ -612,4 +612,5 @@ export default {
   "Check for updates": "检查更新",
   "Installs a new version by itself when one is found": "发现新版本时自动安装",
   "Update automatically": "自动更新",
+  // -- settings, planet filters, updates
 };

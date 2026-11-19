@@ -236,7 +236,7 @@ export default {
   Raws: "Сырьё", "Easy — from what is on any planet. Fair and Takes work — asteroids, the atmosphere harvester or many steps are needed. Hard — a rare item that can only be found.": "Легко — из того, что есть на любой планете. Нормально и Придётся потрудиться — нужны астероиды, атмосферный сборщик или много шагов. Трудно — редкий предмет, его можно только найти.",
   "Letters on an icon": "Буквы на иконке", "The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.": "Химическое обозначение вещества, как в игре. Выключается в меню оформления.",
   "Appearance and language": "Оформление и язык",
-  "The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.": "Шестерёнка справа вверху: светлая или тёмная тема, цвет акцента, язык (названия и описания берутся из файлов игры, а слова интерфейса следуют за ним), подсветка иконок, химические обозначения на иконках и размер текста.",
+  "The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.": "Шестерёнка справа вверху: светлая или тёмная тема, цвет акцента, подсветка иконок, химические обозначения на иконках и размер текста; язык (названия и описания берутся из файлов игры, слова самой страницы следуют за ним); какое сохранение игры читать и какой слот; картинки игры; и обновления.",
   Keys: "Клавиши", "What the words mean": "Что значат слова", "Where all this comes from": "Откуда всё это",
   "Recipes, names, glyphs and pictures were extracted from the files of your installed game (Cosmos 7.06, build 180836). The captions for portals, storage and multi-tools were written by hand by the project's author. No Man's Sky and its data belong to Hello Games. The project is open source: github.com/Topl1nk/nms-crafting-guide.": "Рецепты, названия, символы и картинки извлечены из файлов вашей установленной игры (Cosmos 7.06, сборка 180836). Подписи к порталам, складу и мультитулам написаны автором проекта вручную. No Man's Sky и его данные принадлежат Hello Games. Проект с открытым кодом: github.com/Topl1nk/nms-crafting-guide.",
 
@@ -439,5 +439,6 @@ export default {
   "Check for updates": "Проверить обновления",
   "Installs a new version by itself when one is found": "Само установит новую версию, когда найдёт её",
   "Update automatically": "Обновлять автоматически",
+  // -- settings, planet filters, updates
   // @@END
 };

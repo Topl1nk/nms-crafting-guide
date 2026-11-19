@@ -300,7 +300,7 @@ export default {
   "The chemical symbol of the substance, as in the game. It can be turned off in the appearance menu.": "ゲームと同じ、物質の化学記号。外観メニューでオフにできます。",
   "Help": "ヘルプ",
   "Appearance and language": "外観と言語",
-  "The cog at the top right: light or dark theme, accent colour, language (names and descriptions come from the game's files, and the page's own words follow it), glowing icons, chemical symbols on icons and text size.": "右上の歯車: ライトまたはダークのテーマ、アクセントカラー、言語（名前と説明はゲームのファイルから取得し、ページの文言もそれに従います）、光るアイコン、アイコンの化学記号、文字サイズ。",
+  "The cog at the top right: light or dark theme, accent colour, glowing icons, chemical symbols on icons and text size; the language (names and descriptions come from the game's files, and the page's own words follow it); which game save to read and its slot; the game's pictures; and updates.": "右上の歯車：ライト/ダークのテーマ、アクセントカラー、光るアイコン、アイコン上の化学記号、文字サイズ。言語（名前と説明はゲームのファイルから取り、ページの言葉もそれに従います）。読み込むセーブデータとそのスロット。ゲームの画像。そしてアップデート。",
   "Keys": "キー",
   "What the words mean": "用語の意味",
   "Where all this comes from": "出典",
@@ -612,4 +612,5 @@ export default {
   "Check for updates": "更新を確認",
   "Installs a new version by itself when one is found": "新しいバージョンが見つかると自動でインストールします",
   "Update automatically": "自動で更新",
+  // -- settings, planet filters, updates
 };
