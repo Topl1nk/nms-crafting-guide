@@ -14,6 +14,7 @@ a = Analysis(
         (str(app / "dist"), "dist"),  # the built site (npm run build)
         (str(app / "scripts" / "extract_game.py"), "scripts"),
         (str(app / "scripts" / "build_langs.py"), "scripts"),
+        (str(app / "scripts" / "build_biomes.py"), "scripts"),  # build_langs.py imports it (the planet words of each language)
         (str(app / "data" / "wiki.json"), "data"),  # what build_langs.py keys the game's texts by
         (str(app / "data" / "items.json"), "data"),
         (str(app / "data" / "planet_generator.json"), "data"),  # the weights desktop/planet_gen.py draws biomes and variants with

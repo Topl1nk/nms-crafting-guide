@@ -193,10 +193,14 @@
     <aside class="detail" use:swap={{ key: cur ? keyOf(cur) : "", peel: true }}>
       {#if cur}
         {@const p = cur}
-        {#if globeUrl(p)}<div class="globe"><img src={globeUrl(p)} alt="" width="210" height="210" /></div>{/if}
-        <h2>{nameOf(p)}</h2>
-        <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
-        {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
+        <div class="head">
+          <div class="who">
+            <h2>{nameOf(p)}</h2>
+            <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{#if p.system_name}{" · "}<span style:color={p.star != null ? `var(--p-${STAR[p.star]})` : undefined}>{p.system_name}</span>{/if}</p>
+            {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
+          </div>
+          {#if globeUrl(p)}<div class="globe"><img src={globeUrl(p)} alt="" width="170" height="170" /></div>{/if}
+        </div>
 
         <div class="portal">
           <GlyphStrip code={p.code} />
@@ -247,8 +251,13 @@
   .main :global(td.w150) { max-width: 150px; }
   .main :global(td.w170) { max-width: 170px; }
   .main :global(td.w190) { max-width: 190px; }
-  .globe { display: flex; justify-content: center; margin: 4px 0 10px; line-height: 0; }
-  .globe img { margin: -41px 0; } /* the picture has room around the globe for its rings: the planet is 128 px wide in it */
+  /* the name and its lines on the left, the globe on the right */
+  .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 4px; }
+  .who { min-width: 0; flex: 1 1 auto; }
+  .who h2 { margin: 0; overflow-wrap: anywhere; }
+  /* the picture has room around the globe for its rings: the planet is 61% of it (104 px of 170), the rest hangs over its box */
+  .globe { position: relative; flex: none; width: 104px; height: 104px; margin: 0 14px 0 0; line-height: 0; }
+  .globe img { position: absolute; left: -33px; top: -33px; width: 170px; height: 170px; }
   .ti { display: inline-block; margin-right: 8px; vertical-align: middle; line-height: 0; }
   .split-planets { grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 460px); }
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }

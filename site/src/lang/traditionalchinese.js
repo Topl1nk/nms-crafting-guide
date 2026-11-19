@@ -588,7 +588,7 @@ export default {
   "The names the save does not hold are calculated from the planet's seed and address, the way the game makes them up. A name you gave in the game, or a change in how the game names things, may make them differ.": "存檔裡沒有的名字，是依遊戲生成名字的方式，根據星球的種子和位址計算出來的。你在遊戲中取的名字，或遊戲命名方式的變化，可能會使它們不一致。",
   "The planets you have been to, from your save: address, what you found, your bases": "你到訪過的星球（來自存檔）：位址、發現、基地",
   "{n} planet|{n} planets": "{n} 顆星球",
-  "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there, your bases and the planet's type. Names the save does not hold are calculated the way the game makes them up. The save does not hold a planet's resources, so they are not shown.": "從存檔讀取你去過的星球：帶字形的傳送門位址、發現時間、你在那裡發現的植物、動物和礦物數量、你的基地以及星球類型。存檔裡沒有的名字依遊戲生成名字的方式計算。存檔不保存星球的資源，所以不顯示。",
+  "The planets you have been to, read from the game save: the portal address with its glyphs, when you found it, how many plants, animals and minerals you found there, your bases and the planet's type. Names the save does not hold are calculated the way the game makes them up. So is everything else the save does not hold (the weather, sentinels, flora and fauna, the resources and the look of the planet): it is worked out from the planet's seed, the way the game does it. The list can be filtered by any of these, and the Wiki card of a resource leads to the planets that have it.": "從存檔讀取你去過的星球：帶字形的傳送門位址、發現時間、你在那裡發現的植物、動物和礦物數量、你的基地以及星球類型。存檔裡沒有的名字依遊戲生成名字的方式計算。存檔裡沒有的其他內容（天氣、哨兵、動植物、資源和星球的外觀）也一樣：依遊戲的方式根據星球的種子算出。清單可以依這些內容篩選，維基中資源的卡片會帶你到擁有它的星球。",
   // -- settings, planet filters, updates
   "Reward item": "獎勵物品",
   "any colour": "任何顏色",
