@@ -24,7 +24,7 @@ import paths  # noqa: E402
 ICONS = paths.ICONS
 RAW = paths.CACHE / "pictures_raw"
 DONE_MARK = paths.PICTURES / "complete"  # written when an installation ran to its end; without it the pictures may be a part
-SET = "7"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
+SET = "8"  # which set of pictures the installation takes (raise it when PLACES gains a picture): an older mark means "install again"
 TABLES = paths.CACHE / "game" / "json"  # where scripts/extract_game.py writes, given NMS_CACHE
 UI = "textures/ui/frontend/icons/"
 CHUNK = 250  # names to a hgpaktool run (about 18 000 characters of command line; Windows allows 32 000)
@@ -61,7 +61,8 @@ PLACES = {
 # a waterworld, the shadows and the glows (the game tints them in code: desktop/planet_globe.py says in what, render_globe() lays them up).
 GLOBE = "textures/ui/frontend/components/discovery/planets."
 GLOBE_LAYERS = ([f"{GLOBE}{kind}.{n}.dds" for kind in ("terrain", "water", "clouds") for n in range(1, 6)]
-                + [f"{GLOBE}{n}.dds" for n in ("water.full", "shadow", "innerglow", "outerglow", "rings.1")])
+                + [f"{GLOBE}{n}.dds" for n in ("water.full", "shadow", "innerglow", "outerglow", "rings.1", "gasgiant.1", "gasgiant.1.clouds")])
+GLOBE_RINGS = ("rings.1", (1.0, 1.0, 1.0), 0.749)
 # the layers over and under the planet and their tints (the game's own layout of the page, ui/pagediscovery/planetelement): RGB, opacity
 GLOBE_OUTER = ("outerglow", (1.0, 1.0, 1.0), 0.749)
 GLOBE_OVER = (("shadow", (0.1216, 0.0588, 0.0314), 0.502), ("shadow", (0.0, 0.0902, 0.1216), 0.502), ("innerglow", (0.6588, 0.8706, 0.9333), 0.702))
@@ -70,10 +71,12 @@ GLOBE_EXPOSURE = 1.9  # the game shows the page brighter than the plain tints: t
 _globes: dict[tuple, bytes] = {}
 
 
-def render_globe(terrain: int, terrain_rgb, water: int, water_rgb, waterworld: bool, cloud: int, opacity: float, size: int = 128) -> bytes | None:
-    """The picture of a planet's globe as the game lays it up, a webp of size x size; None where the game's pictures are not installed.
-    terrain, water, cloud: which of the five pictures (water 0: no sea)."""
-    key = (terrain, tuple(terrain_rgb), water, tuple(water_rgb), waterworld, cloud, round(opacity, 3), size)
+def render_globe(terrain: int, terrain_rgb, water: int, water_rgb, waterworld: bool, cloud: int, opacity: float, size: int = 128,
+                 gas=None, rings: bool = False) -> bytes | None:
+    """The picture of a planet's globe as the game lays it up, a webp; None where the game's pictures are not installed. The planet
+    is size pixels wide, the picture is a little wider (the rings reach beyond the globe). terrain, water, cloud: which of the five
+    pictures (water 0: no sea); gas: the colour of a gas giant, which has its own pictures instead of those."""
+    key = (terrain, tuple(terrain_rgb), water, tuple(water_rgb), waterworld, cloud, round(opacity, 3), size, tuple(gas) if gas else None, rings)
     if key in _globes:
         return _globes[key]
     from io import BytesIO
@@ -90,12 +93,19 @@ def render_globe(terrain: int, terrain_rgb, water: int, water_rgb, waterworld: b
         out.putalpha(im.split()[3].point(lambda v: int(v * alpha)))
         return out
 
-    parts = [(GLOBE_OUTER[0], GLOBE_OUTER[1], GLOBE_OUTER[2]), (f"terrain.{terrain}", terrain_rgb, 1.0)]
-    if waterworld:
-        parts.append(("water.full", water_rgb, 1.0))
-    elif water:
-        parts.append((f"water.{water}", water_rgb, 1.0))
-    parts += [(f"clouds.{cloud}", GLOBE_CLOUD, opacity * 0.8), *GLOBE_OVER]  # the layout's cloud opacity (0.8) times the planet's
+    parts = [GLOBE_OUTER]
+    if gas:
+        parts += [("gasgiant.1", gas, 1.0), ("gasgiant.1.clouds", (1.0, 1.0, 1.0), 1.0)]
+    else:
+        parts.append((f"terrain.{terrain}", terrain_rgb, 1.0))
+        if waterworld:
+            parts.append(("water.full", water_rgb, 1.0))
+        elif water:
+            parts.append((f"water.{water}", water_rgb, 1.0))
+        parts.append((f"clouds.{cloud}", GLOBE_CLOUD, opacity * 0.8))  # the layout's cloud opacity (0.8) times the planet's
+    parts += GLOBE_OVER
+    if rings:
+        parts.append(GLOBE_RINGS)
     canvas = Image.new("RGBA", (512, 512), (0, 0, 0, 0))
     for name, rgb, alpha in parts:
         im = layer(name)
@@ -104,8 +114,8 @@ def render_globe(terrain: int, terrain_rgb, water: int, water_rgb, waterworld: b
         canvas.alpha_composite(tinted(im, rgb, alpha))
     r, g, b, a = canvas.split()
     canvas = Image.merge("RGBA", ([ch.point(lambda v: min(255, round(v * GLOBE_EXPOSURE))) for ch in (r, g, b)] + [a]))
-    canvas = canvas.crop((100, 100, 412, 412))  # the glow round the planet and nothing beyond it
-    canvas = canvas.resize((size, size), Image.LANCZOS)
+    side = round(size * 512 / 312)  # the planet and its glow take 312 of the 512 pixels of the game's layers; the rest is room for rings
+    canvas = canvas.resize((side, side), Image.LANCZOS)
     out = BytesIO()
     canvas.save(out, "WEBP", quality=88, method=4)
     if len(_globes) > 2000:

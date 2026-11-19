@@ -195,7 +195,7 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
     settings = ET.parse(next(voxel.rglob("voxelgeneratorsettings.MXML"))).getroot().find("Property[@name='TerrainSettings']")
     colours = colour_tables(game, per_file)
     return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances,
-            "palettes": colours["palettes"], "tiles": colours["tiles"], "water": colours["water"],
+            "palettes": colours["palettes"], "tiles": colours["tiles"], "water": colours["water"], "gas": colours["gas"], "atmospheres": colours["atmospheres"],
             "plants": plant_hints(files), "voxel": [voxel_layers(e) for e in settings],
             "common": [object_entry(e) for e in files.find("Property[@name='CommonExternalObjectLists']")],
             "optional": [object_list(e) for e in files.find("Property[@name='OptionalExternalObjectLists']")],
@@ -245,7 +245,15 @@ def colour_tables(game: Path, per_file: dict) -> dict:
             return [float(e.find(f"Property[@name='{n}']/Property[@name='{k}']").get("value")) for k in "RGB"]
         water.append({"weight": float(e.find("Property[@name='SelectionWeighting']").get("value")), "scatter": rgb("ScatterColour"), "scatter_distance": float(e.find("Property[@name='MinScatterDistance']").get("value")),
                       "transmittance": rgb("TransmittanceColour"), "transmittance_distance": float(e.find("Property[@name='MinTransmittanceDistance']").get("value"))})
-    return {"palettes": palettes, "tiles": tiles, "water": water}
+    # a gas giant's colour: its day sky colour set (weighted draw among the six of the gas giant biome) names an atmosphere
+    sky = unpack_named(game, ["metadata/simulation/solarsystem/weather/skysettings/dayskycolours.mbin",
+                              "metadata/simulation/solarsystem/atmosphere/gasgiantatmospherelist.mbin"], WORK / "gas_giants")
+    day = ET.parse(next(sky.rglob("dayskycolours.MXML"))).getroot().find("Property[@name='PerBiomeSettings']")[15].find("Property[@name='Settings']")
+    gas = [[e.find("Property[@name='GasGiantAtmosphereID']").get("value"), float(e.find("Property[@name='SelectionWeighting']").get("value"))] for e in day]
+    atmospheres = {e.find("Property[@name='AtmosphereID']").get("value"):
+                   [float(e.find(f"Property[@name='DiscoveryPlanetColour']/Property[@name='{k}']").get("value")) for k in "RGB"]
+                   for e in ET.parse(next(sky.rglob("gasgiantatmospherelist.MXML"))).getroot().find("Property[@name='Settings']")}
+    return {"palettes": palettes, "tiles": tiles, "water": water, "gas": gas, "atmospheres": atmospheres}
 
 
 def creature_roles(game: Path) -> dict:

@@ -167,8 +167,11 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
             q = urllib.parse.parse_qs(url.query)
             try:
                 rgb = lambda k: [int(q[k][0][i:i + 2], 16) / 255 for i in (0, 2, 4)]
-                body = pictures.render_globe(int(q["t"][0]), rgb("tc"), int(q["w"][0]), rgb("wc"), q["ww"][0] == "1", int(q["c"][0]), int(q["ca"][0]) / 100,
-                                             min(512, max(16, int(q.get("s", ["128"])[0]))))
+                gas = "g" in q
+                body = pictures.render_globe(int(q["t"][0]) if not gas else 1, rgb("tc") if not gas else [0, 0, 0], int(q["w"][0]) if not gas else 0,
+                                             rgb("wc") if not gas else [0, 0, 0], q["ww"][0] == "1" if not gas else False, int(q["c"][0]) if not gas else 1,
+                                             int(q["ca"][0]) / 100 if not gas else 0, min(512, max(16, int(q.get("s", ["128"])[0]))),
+                                             gas=rgb("g") if gas else None, rings=q.get("r", ["0"])[0] == "1")
             except (KeyError, ValueError, IndexError):
                 return self.send_json({"error": "bad globe"}, 400)
             if body:

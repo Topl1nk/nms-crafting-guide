@@ -218,7 +218,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
                 body = planet_gen.find(key, seeds[key], vp1)  # None where the generator does not agree with the record
                 if body:
                     try:
-                        globes[key] = planet_globe.spec(body)
+                        globes[key] = planet_globe.spec(body, planet_gen.ring_body(key) == body.index)
                     except Exception:  # noqa: BLE001 - a planet whose globe is not worked out shows none
                         pass
                     info = planet_data.describe(body, setting, mode) or {}

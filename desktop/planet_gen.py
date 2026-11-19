@@ -202,6 +202,28 @@ def _orbit_draws(ua: int, bodies: list[Body], planets: int) -> _Rng:
     return rng
 
 
+def ring_body(system: int, variant: str = "A") -> int | None:
+    """The body of the system that has rings: the game gives them (descriptor byte +0x4d, in the orbit code 0x1683ec0) to exactly one body
+    that is no moon, the one drawn among the ordinary planets with the orbit code's random numbers (a draw after three for every planet
+    that is no extra one, and one for every planet with moons)."""
+    ua = system & UA_BITS
+    attrs = _attributes(ua)
+    listing = _body_list(ua, attrs)
+    n, extra = attrs["planet_count"], attrs["prime_planet_count"]
+    first = listing[:n]
+    count = sum(1 for b in first if b.size != MOON)
+    if count <= 0:
+        return None
+    parents = {b.parent for b in first if b.size == MOON and 0 <= b.parent < n}
+    rng = _Rng(ua)
+    draw = 0
+    for _ in range(1 + 3 * count + len(parents) + 1):
+        draw = rng.next()
+    pick = (draw * count) >> 32
+    planets = [i for i, b in enumerate(listing[:n + extra]) if b.size != MOON]
+    return planets[pick] if pick < len(planets) else None
+
+
 def _variant(t: dict, biome: int, star: int, no_infested: bool, draw: int, repick: int) -> int:
     """0x1683d10 and the archive table: the variant of a body of this biome, from the draw that picked the biome's file list."""
     files = t["files"].get(biome) or []

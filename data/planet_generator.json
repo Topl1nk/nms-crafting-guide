@@ -87818,6 +87818,64 @@
     "transmittance_distance": 8.0
    }
   ],
+  "gas": [
+   [
+    "ATMOS_BLUE",
+    1.0
+   ],
+   [
+    "ATMOS_GREEN",
+    1.0
+   ],
+   [
+    "ATMOS_RED",
+    1.0
+   ],
+   [
+    "ATMOS_YELLOW",
+    1.0
+   ],
+   [
+    "ATMOS_PURPLE",
+    1.0
+   ],
+   [
+    "ATMOS_ORANGE",
+    1.0
+   ]
+  ],
+  "atmospheres": {
+   "ATMOS_BLUE": [
+    0.2282,
+    0.345835,
+    1.0
+   ],
+   "ATMOS_GREEN": [
+    0.207649,
+    1.0,
+    0.42562
+   ],
+   "ATMOS_RED": [
+    1.0,
+    0.189382,
+    0.38827
+   ],
+   "ATMOS_YELLOW": [
+    1.0,
+    0.89037,
+    0.157414
+   ],
+   "ATMOS_PURPLE": [
+    0.694411,
+    0.177965,
+    1.0
+   ],
+   "ATMOS_ORANGE": [
+    1.0,
+    0.639235,
+    0.223634
+   ]
+  },
   "plants": {
    "4": "PLANT_SNOW",
    "1": "PLANT_TOXIC",

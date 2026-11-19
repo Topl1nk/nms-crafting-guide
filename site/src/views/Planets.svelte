@@ -72,7 +72,10 @@
   const hex = (c) => c.map((x) => Math.max(0, Math.min(255, Math.round(x * 255))).toString(16).padStart(2, "0")).join("");
   const globeUrl = (p) => {
     const g = p.globe;
-    return g ? `/globe?t=${g.terrain[0]}&tc=${hex(g.terrain[1])}&w=${g.water ? g.water[0] : 0}&wc=${hex(g.water ? g.water[1] : [0, 0, 0])}&ww=${g.waterworld ? 1 : 0}&c=${g.clouds[0]}&ca=${Math.round(g.clouds[1] * 100)}&s=192` : "";
+    if (!g) return "";
+    const rings = `&r=${g.rings ? 1 : 0}&s=192`;
+    return g.gas ? `/globe?g=${hex(g.gas)}${rings}`
+      : `/globe?t=${g.terrain[0]}&tc=${hex(g.terrain[1])}&w=${g.water ? g.water[0] : 0}&wc=${hex(g.water ? g.water[1] : [0, 0, 0])}&ww=${g.waterworld ? 1 : 0}&c=${g.clouds[0]}&ca=${Math.round(g.clouds[1] * 100)}${rings}`;
   };
   // The colour of a system's text is its star's (the game's order: yellow, green, blue, red, purple).
   const STAR = ["yellow", "green", "cyan", "red", "purple"];
@@ -141,7 +144,7 @@
     <aside class="detail">
       {#if cur}
         {@const p = cur}
-        {#if globeUrl(p)}<div class="globe"><img src={globeUrl(p)} alt="" width="128" height="128" /></div>{/if}
+        {#if globeUrl(p)}<div class="globe"><img src={globeUrl(p)} alt="" width="210" height="210" /></div>{/if}
         <h2>{nameOf(p)}</h2>
         <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
         {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}
@@ -196,6 +199,7 @@
   .main :global(td.w170) { max-width: 170px; }
   .main :global(td.w190) { max-width: 190px; }
   .globe { display: flex; justify-content: center; margin: 4px 0 10px; line-height: 0; }
+  .globe img { margin: -41px 0; } /* the picture has room around the globe for its rings: the planet is 128 px wide in it */
   .ti { display: inline-block; margin-right: 8px; vertical-align: middle; line-height: 0; }
   .split-planets { grid-template-columns: minmax(0, 1fr) clamp(340px, 32%, 460px); }
   .main { min-width: 0; min-height: 0; align-self: stretch; display: flex; flex-direction: column; }

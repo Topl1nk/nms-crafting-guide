@@ -174,16 +174,36 @@ def variants(seed: int) -> tuple[int, int, int]:
     return out[0], out[1], out[2]
 
 
-def spec(body: planet_gen.Body) -> dict | None:
+def gas_colour(seed: int) -> list[float]:
+    """The colour of a gas giant: its day sky colour set (stage 13 of its seed, one draw among the six, by weight) names an atmosphere
+    and the game's atmosphere list gives that one's colour on the Discoveries page."""
+    t = planet_data._tables()
+    a, b = pw._state(pw.stage_seed(seed, 13))
+    a, b = pw._step(a, b)
+    c = F(2.0 ** -23)
+    total = F(0)
+    for _, w in t["gas"]:
+        total = F(total + F(w))
+    target = F(F(F(float(a) * _U) * F(total - c)) + c)
+    cum = F(0)
+    for name, w in t["gas"]:
+        cum = F(cum + F(w))
+        if cum >= target:
+            return list(t["atmospheres"][name])
+    return list(t["atmospheres"][t["gas"][0][0]])
+
+
+def spec(body: planet_gen.Body, rings: bool = False) -> dict | None:
     """The globe of a planet: {"terrain": [variant, [r, g, b]], "water": [variant, [r, g, b]] or None, "waterworld": bool,
-    "clouds": [variant, opacity]}; None for the kinds it is not worked out for (gas giants)."""
+    "clouds": [variant, opacity], "rings": bool}, for a gas giant {"gas": [r, g, b], "rings": bool}. rings: whether the system's
+    generator gave this body rings (planet_gen.ring_body)."""
     if body.biome == 15:
-        return None
+        return {"gas": [round(x, 4) for x in gas_colour(body.seed)], "rings": rings}
     t, w, c = variants(body.seed)
     ground = planet_data.terrain(body.seed, body, body.star)
     colour = [round(x, 4) for x in water_colour(water_setting(body.seed))]
     klass = planet_data.levels(body.seed, body, body.star, body.galaxy, body.index)["weather_class"]
     return {"terrain": [t, [round(x, 4) for x in terrain_colour(body)]],
             "water": [w, colour] if ground["water"] > 0 else None,
-            "waterworld": body.biome == 14,
-            "clouds": [c, min(1.0, 0.5 * klass)]}
+            "waterworld": False,  # the game builds a waterworld's globe of the same three layers (its sea is only deeper); the full-sea picture is not used
+            "clouds": [c, min(1.0, 0.5 * klass)], "rings": rings}
