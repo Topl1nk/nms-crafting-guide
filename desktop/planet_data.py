@@ -61,7 +61,7 @@ def _tables() -> dict:
         raw = json.loads((paths.RES / "data" / "planet_generator.json").read_text(encoding="utf-8"))["data"]
         _t = {"files": {tuple(map(int, k.split(","))): v for k, v in raw["files"].items()}, "storms": raw["storms"], "globals": raw["globals"],
               "substances": raw["substances"], "plants": raw["plants"], "voxel": raw["voxel"], "common": raw["common"], "optional": raw["optional"],
-              "creatures": raw["creatures"], "roles": raw["roles"]}
+              "creatures": raw["creatures"], "roles": raw["roles"], "palettes": raw["palettes"], "tiles": raw["tiles"], "water": raw["water"]}
     return _t
 
 

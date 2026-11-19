@@ -22,6 +22,7 @@ import lz4.block
 import paths
 import planet_data
 import planet_gen
+import planet_globe
 import planet_word
 import word_filter
 
@@ -193,13 +194,14 @@ def planets(save: dict, account: str = "") -> list[dict]:
 
     def planet(key: int) -> dict:
         return found.setdefault(key, {**_place(key), "name": "", "system_name": "", "name_source": "", "system_name_source": "",
-                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "fauna_key": "", "sentinel_key": "", "fauna_total": None, "star": None, "resources": [], "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
+                                      "name_parts": None, "biome": "", "word_key": "", "class_key": "", "weather_key": "", "flora_key": "", "fauna_key": "", "sentinel_key": "", "fauna_total": None, "star": None, "globe": None, "resources": [], "found": 0, "seen": 0, "flora": 0, "fauna": 0, "minerals": 0, "bases": []})
 
     count = {"Flora": "flora", "Animal": "fauna", "Mineral": "minerals"}
     seeds: dict[int, int] = {}  # a planet's seed, from anyone's discovery record of it (it is the planet's, not the finder's)
     types: dict[int, str] = {}  # and its type, from the same record
     stars: dict[int, int] = {}  # the star of its system (0 yellow, 1 green, 2 blue, 3 red, 4 purple)
     mode, setting = _game_rules(save)
+    globes: dict[int, dict | None] = {}  # how the game builds the planet's globe (planet_globe.py), where it is worked out
     data: dict[int, dict] = {}  # what the game shows of a planet's weather, flora and sentinels (loc keys), where it is worked out
     words: dict[int, tuple[str, str]] = {}  # and the loc keys of the word the game puts before "Planet" and of "Planet" itself (planet_word.py)
     for r in records:
@@ -215,6 +217,10 @@ def planets(save: dict, account: str = "") -> list[dict]:
                 types[key] = BIOMES.get(vp1 & 0xFFFF, "")
                 body = planet_gen.find(key, seeds[key], vp1)  # None where the generator does not agree with the record
                 if body:
+                    try:
+                        globes[key] = planet_globe.spec(body)
+                    except Exception:  # noqa: BLE001 - a planet whose globe is not worked out shows none
+                        pass
                     info = planet_data.describe(body, setting, mode) or {}
                     words[key] = (info.get("word") or planet_word.word_key(body.seed, body.biome, body.subtype), planet_word.class_key(body.size))
                     data[key] = {k: info[k] for k in ("weather", "flora", "fauna", "sentinels") if info.get(k)}
@@ -263,6 +269,7 @@ def planets(save: dict, account: str = "") -> list[dict]:
         p["resources"] = data.get(key, {}).get("resources", [])
         p["fauna_total"] = data.get(key, {}).get("fauna_total")
         p["star"] = stars.get(key)
+        p["globe"] = globes.get(key) if p["planet"] else None
     namegen = _namegen() if any(not p["name"] or not p["system_name"] for p in found.values()) else None
     for key, p in found.items():
         p["name_source"], p["system_name_source"] = ("save" if p["name"] else ""), ("save" if p["system_name"] else "")

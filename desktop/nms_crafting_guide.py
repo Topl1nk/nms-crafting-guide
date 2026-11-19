@@ -162,6 +162,24 @@ class Quiet(http.server.SimpleHTTPRequestHandler):
                 self.end_headers()
                 self.wfile.write(body)
                 return
+        if url.path == "/globe":
+            # A planet's globe as the game lays it up: which pictures and which colours (planet_globe.py), drawn from the player's own game pictures.
+            q = urllib.parse.parse_qs(url.query)
+            try:
+                rgb = lambda k: [int(q[k][0][i:i + 2], 16) / 255 for i in (0, 2, 4)]
+                body = pictures.render_globe(int(q["t"][0]), rgb("tc"), int(q["w"][0]), rgb("wc"), q["ww"][0] == "1", int(q["c"][0]), int(q["ca"][0]) / 100,
+                                             min(512, max(16, int(q.get("s", ["128"])[0]))))
+            except (KeyError, ValueError, IndexError):
+                return self.send_json({"error": "bad globe"}, 400)
+            if body:
+                self.send_response(200)
+                self.send_header("Content-Type", "image/webp")
+                self.send_header("Cache-Control", "no-cache")
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            return self.send_json({"error": "no pictures"}, 404)
         if url.path.startswith("/icons/"):
             # The player's own pictures first (written by pictures.py), else what the build holds.
             name = urllib.parse.unquote(url.path.removeprefix("/icons/"))

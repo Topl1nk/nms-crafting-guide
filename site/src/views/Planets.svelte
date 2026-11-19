@@ -67,6 +67,13 @@
   // That is our reading of how they belong, not something the game files say. Gas giants have none.
   const EMBLEM = { Lush: "Lush", Toxic: "Toxic", Scorched: "Scorched", Radioactive: "Radioactive", Frozen: "Frozen", Barren: "Barren", Dead: "Dead", Weird: "Weird",
     Swamp: "Lush", Waterworld: "Lush", Lava: "Scorched", Red: "Weird", Green: "Weird", Blue: "Weird" };
+  // The globe of a planet as the game lays it up (desktop/planet_globe.py: which pictures, in which colours; the launcher draws it from the
+  // player's own game pictures). Gas giants and planets the generator does not agree on have none.
+  const hex = (c) => c.map((x) => Math.max(0, Math.min(255, Math.round(x * 255))).toString(16).padStart(2, "0")).join("");
+  const globeUrl = (p) => {
+    const g = p.globe;
+    return g ? `/globe?t=${g.terrain[0]}&tc=${hex(g.terrain[1])}&w=${g.water ? g.water[0] : 0}&wc=${hex(g.water ? g.water[1] : [0, 0, 0])}&ww=${g.waterworld ? 1 : 0}&c=${g.clouds[0]}&ca=${Math.round(g.clouds[1] * 100)}&s=192` : "";
+  };
   // The colour of a system's text is its star's (the game's order: yellow, green, blue, red, purple).
   const STAR = ["yellow", "green", "cyan", "red", "purple"];
   // The plant comes first (its hint is an item's id, the others' are the game's UI texts), then the rest in the game's order.
@@ -134,7 +141,7 @@
     <aside class="detail">
       {#if cur}
         {@const p = cur}
-        {#if p.planet && p.biome}<div class="globe"><ItemIcon id="GLOBE_{p.biome}" size={96} /></div>{/if}
+        {#if globeUrl(p)}<div class="globe"><img src={globeUrl(p)} alt="" width="128" height="128" /></div>{/if}
         <h2>{nameOf(p)}</h2>
         <p class="muted sub">{t("{ordinal} in the system", { ordinal: ordinal(p.planet), n: p.planet })}{p.system_name ? ` · ${p.system_name}` : ""}</p>
         {#if kindOf(p)}<div class="ic-chips"><span class="pill">{#if EMBLEM[p.biome]}<span class="ti"><ItemIcon id="BIOME_{EMBLEM[p.biome]}" size={24} /></span>{/if}{kindOf(p)}</span></div>{/if}

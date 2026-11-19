@@ -169,7 +169,10 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
             # the chances the terrain stage draws its layers, features, cave mouth and water against (GcTerrainControls)
             "terrain": {n: [float(x.get("value")) for x in terrain.find(f"Property[@name='{n}']")] for n in ("NoiseLayers", "Features", "Caves")}
                        | {n: float(terrain.find(f"Property[@name='{n}']").get("value")) for n in ("WaterActiveFrequency", "HighWaterActiveFrequency")},
-            "objects": [object_entry(e) for e in extra] if extra is not None else []}
+            "objects": [object_entry(e) for e in extra] if extra is not None else [],
+            # the file the planet's colour palettes are picked from (desktop/planet_globe.py)
+            "palette": root.find("Property[@name='ColourPaletteFile']").get("value").lower().replace(".mxml", ".mbin"),
+            "tiles": root.find("Property[@name='TileTypesFile']").get("value").lower().replace(".mxml", ".mbin")}
     glob = unpack_named(game, ["gcgameplayglobals.global.mbin", "gcsolargenerationglobals.global.mbin", "gcterrainglobals.global.mbin"], WORK / "globals")
     play = ET.parse(next(glob.rglob("gcgameplayglobals.global.MXML"))).getroot()
     solar = ET.parse(next(glob.rglob("gcsolargenerationglobals.global.MXML"))).getroot()
@@ -190,12 +193,59 @@ def planet_data_tables(game: Path, folder: Path) -> dict:
     creature = unpack_named(game, ["metadata/simulation/ecosystem/creaturegenerationdata.mbin"], WORK / "creatures")
     voxel = unpack_named(game, ["metadata/simulation/solarsystem/voxelgeneratorsettings.mbin"], WORK / "voxel")
     settings = ET.parse(next(voxel.rglob("voxelgeneratorsettings.MXML"))).getroot().find("Property[@name='TerrainSettings']")
+    colours = colour_tables(game, per_file)
     return {"weather_kinds": [k for k, _ in kinds], "storms": storms, "files": per_file, "globals": chance, "substances": substances,
+            "palettes": colours["palettes"], "tiles": colours["tiles"], "water": colours["water"],
             "plants": plant_hints(files), "voxel": [voxel_layers(e) for e in settings],
             "common": [object_entry(e) for e in files.find("Property[@name='CommonExternalObjectLists']")],
             "optional": [object_list(e) for e in files.find("Property[@name='OptionalExternalObjectLists']")],
             "creatures": creature_tables(ET.parse(next(creature.rglob("creaturegenerationdata.MXML"))).getroot()),
             "roles": creature_roles(game)}
+
+
+BASE_PALETTES = "metadata/simulation/solarsystem/colours/basecolourpalettes.mbin"  # what a biome's palette falls back to (the game's group 16)
+PALETTE_ENUM = ["Grass", "Plant", "Leaf", "Wood", "Rock", "Stone", "Crystal", "Sand", "Dirt", "Metal", "Paint", "Plastic", "Fur", "Scale", "Feather",
+                "Water", "Cloud", "Sky", "Space", "Underbelly", "Undercoat", "Snow", "SkyHorizon", "SkyFog", "SkyHeightFog", "SkySunset", "SkyNight",
+                "WaterNear", "SpaceCloud", "SpaceBottom", "SpaceSolar", "SpaceLight", "Warrior", "Scientific", "Trader", "WarriorAlt", "ScientificAlt",
+                "TraderAlt", "RockSaturated", "RockLight", "RockDark"]  # TkPaletteTexture.PaletteEnum (the first 41)
+ALT = {"Primary": 0, "Alternative1": 1, "Alternative2": 2}  # which of a palette's five picked colours a tile takes
+
+
+def colour_tables(game: Path, per_file: dict) -> dict:
+    """What desktop/planet_globe.py works the colours of a planet's globe out from: the terrain colour of a biome file is a colour of one
+    palette (the tile type file says which: tile 1 of the planet's tile set), so the tile type sets and the palettes they name (mode and
+    64 colours, of every biome palette file), and the settings of the game's 19 water colours."""
+    tile_names = sorted({f["tiles"] for f in per_file.values() if f["tiles"]})
+    tile_folder = unpack_named(game, tile_names, WORK / "tile_types")
+    tiles = {}
+    for name in tile_names:
+        sets = ET.parse(next(tile_folder.rglob(Path(name).stem + ".MXML"))).getroot().find("Property[@name='TileTypeSets']")
+        tiles[name] = []
+        for s in sets:
+            tile = s.find("Property[@name='Colours']")[1]  # tile 1 is the terrain colour
+            assert tile.find("Property[@name='Index']").get("value") == "-1"
+            tiles[name].append([PALETTE_ENUM.index(tile.find("Property[@name='Palette']").get("value")),
+                                ALT[tile.find("Property[@name='ColourAlt']").get("value")], float(s.find("Property[@name='Probability']").get("value"))])
+    wanted = sorted({p for sets in tiles.values() for p, _, _ in sets})
+    names = sorted({f["palette"] for f in per_file.values() if f["palette"]} | {BASE_PALETTES})
+    folder = unpack_named(game, names, WORK / "palettes")
+    palettes = {}
+    for name in names:
+        root = ET.parse(next(folder.rglob(Path(name).stem + ".MXML"))).getroot()
+        entries = list(root.find("Property[@name='Palettes']"))
+        palettes[name] = {}
+        for p in wanted:
+            assert entries[p].get("name") == PALETTE_ENUM[p], (entries[p].get("name"), PALETTE_ENUM[p])
+            palettes[name][str(p)] = [entries[p].find("Property[@name='NumColours']").get("value"),
+                                      [[float(c.find(f"Property[@name='{k}']").get("value")) for k in "RGB"] for c in entries[p].find("Property[@name='Colours']")]]
+    water_folder = unpack_named(game, ["metadata/simulation/solarsystem/colours/watercolours.mbin"], WORK / "water_colours")
+    water = []
+    for e in ET.parse(next(water_folder.rglob("watercolours.MXML"))).getroot().find("Property[@name='Settings']"):
+        def rgb(n: str) -> list[float]:
+            return [float(e.find(f"Property[@name='{n}']/Property[@name='{k}']").get("value")) for k in "RGB"]
+        water.append({"weight": float(e.find("Property[@name='SelectionWeighting']").get("value")), "scatter": rgb("ScatterColour"), "scatter_distance": float(e.find("Property[@name='MinScatterDistance']").get("value")),
+                      "transmittance": rgb("TransmittanceColour"), "transmittance_distance": float(e.find("Property[@name='MinTransmittanceDistance']").get("value"))})
+    return {"palettes": palettes, "tiles": tiles, "water": water}
 
 
 def creature_roles(game: Path) -> dict:
